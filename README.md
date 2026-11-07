@@ -125,4 +125,6 @@ Geometria, texturas e efeitos procedurais são produzidos para este projeto. A p
 
 ## Entrega local
 
+O arquivo `vercel.json` já configura a importação do projeto na Vercel. Veja o [passo a passo de publicação](docs/PUBLICAR-NA-VERCEL.md), com os campos exatos e a conferência do jogo após publicar.
+
 Os endereços `localhost` acima funcionam no computador onde o inicializador está aberto. A criação do repositório remoto no GitHub não foi concluída neste ambiente; não há endereço público de repositório ou prévia confirmado nesta entrega.
