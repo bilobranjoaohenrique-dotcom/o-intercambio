@@ -1,0 +1,46 @@
+{
+  "file": "mother-provisional.wav",
+  "text": "Ei, vem tomar café pra não se atrasar!",
+  "speaker": "MÃE",
+  "language": "pt-BR",
+  "provisional": true,
+  "kind": "synthetic-formant-placeholder",
+  "description": "Voz sintética provisória. Substituir por gravação humana feminina adulta natural.",
+  "tool": "eSpeak NG via espeakng-loader 0.2.4; pt-br+f3",
+  "engineLicense": "GPL-3.0-or-later; authoring tool only, not distributed with this game",
+  "source": "https://github.com/espeak-ng/espeak-ng",
+  "loaderSource": "https://github.com/thewh1teagle/espeakng-loader",
+  "sampleRate": 22050,
+  "channels": 1,
+  "bitsPerSample": 16,
+  "durationSeconds": 3.1766,
+  "sha256": "8a6225f99d26dc2e5dc3d72621b05607ae8e1a39654da5b2e2eacc5b35c6b5bf",
+  "bytes": 140132,
+  "peakDbFS": -4.08,
+  "authoringData": [
+    {
+      "path": "lang/roa/pt-BR",
+      "sha256": "84dd4e34c970fadbe32211eadecfdfaab52432479c0911e43300da88a33398ba"
+    },
+    {
+      "path": "voices/!v/f3",
+      "sha256": "d0342ee8ceebe3047831774634d234e90281ec73ce2aed8dd0bdd915ccf500fc"
+    },
+    {
+      "path": "phontab",
+      "sha256": "1b40690667e1e9aa1ba5e5234773c799e7e72ea751426e5150423d53c3f24fa2"
+    },
+    {
+      "path": "phondata",
+      "sha256": "a0b643b155cb6b12628d9e7865b57d9fca0d35844614f2594a5e009c80c80bb4"
+    },
+    {
+      "path": "phonindex",
+      "sha256": "384e5fa6f714ba5356c58008249b78699c31c1ad044b243068d263fb806b7d73"
+    },
+    {
+      "path": "pt_dict",
+      "sha256": "94c689153e12e9c5e0ecbf60518a93ebb2ea0fbe805c63d97fa84c43331424e9"
+    }
+  ]
+}
