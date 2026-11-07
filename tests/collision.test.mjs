@@ -24,9 +24,11 @@ test('física: pose final é caminhável e paredes/móveis usam as medidas do la
   for (const point of [{ x: ROOM.minX + .1, z: 0 }, { x: ROOM.maxX - .1, z: 2 },
     { x: 0, z: ROOM.minZ + .1 }, { x: -1, z: ROOM.maxZ - .1 },
     { x: HALL.minX + .1, z: 5 }, { x: HALL.maxX - .1, z: 9 },
-    { x: 2, z: HALL.endZ - .1 }, { x: 0, z: 6 }, { x: NaN, z: 0 }])
+    { x: 4.7, z: 17 }, { x: 0, z: 6 }, { x: NaN, z: 0 }])
     assert.equal(isWalkable(point), false, `no floor escape at ${JSON.stringify(point)}`);
   assert.equal(isWalkable({ x: 1.975, z: DOOR.z }), true, 'the static wall leaves a physical doorway');
+  assert.equal(isWalkable({ x: 2, z: HALL.endZ - .1 }), true, 'the stair landing now opens into the kitchen');
+  assert.equal(isWalkable({ x: 2, z: 14 }), true, 'the kitchen floor is connected to the stair landing');
 });
 
 test('física: movimentos longos não atravessam paredes, cama ou folha fina fechada', () => {

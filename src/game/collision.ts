@@ -1,4 +1,4 @@
-import { DOOR, FURNITURE, HALL, ROOM, STAIRS, type Point2 } from './layout';
+import { CHAPTER_ZONES, DOOR, FURNITURE, HALL, KITCHEN, ROOM, STAIRS, type Point2 } from './layout';
 import type { Obstacle } from './types';
 
 export const PLAYER_RADIUS = .22;
@@ -20,12 +20,16 @@ export const staticObstacles: readonly Obstacle[] = [
   box(DOOR.hingeX + DOOR.width, ROOM.maxX, ROOM.maxZ, ROOM.maxZ + WALL_THICKNESS),
   box(HALL.minX - WALL_THICKNESS, HALL.minX, HALL.startZ, HALL.endZ),
   box(HALL.maxX, HALL.maxX + WALL_THICKNESS, HALL.startZ, HALL.endZ),
-  box(HALL.minX, HALL.maxX, HALL.endZ, HALL.endZ + WALL_THICKNESS),
+  box(KITCHEN.minX, KITCHEN.minX + WALL_THICKNESS, KITCHEN.startZ, KITCHEN.endZ),
+  box(KITCHEN.maxX - WALL_THICKNESS, KITCHEN.maxX, KITCHEN.startZ, KITCHEN.endZ),
+  box(KITCHEN.minX, KITCHEN.maxX, KITCHEN.endZ, KITCHEN.endZ + WALL_THICKNESS),
   ...Object.values(FURNITURE).map(item => ({ x: item.x, z: item.z, halfWidth: item.width / 2, halfDepth: item.depth / 2 })),
 ];
 
 /** Height of the physical tread below the player's feet, never a camera offset. */
 export function floorHeight(point: Point2): number {
+  if (Object.values(CHAPTER_ZONES).some(zone => point.x >= zone.minX && point.x <= zone.maxX && point.z >= zone.minZ && point.z <= zone.maxZ)) return 0;
+  if (point.x >= KITCHEN.minX && point.x <= KITCHEN.maxX && point.z >= KITCHEN.startZ && point.z <= KITCHEN.endZ) return KITCHEN.floor;
   if (!Number.isFinite(point.z) || point.z < STAIRS.startZ) return ROOM.floor;
   if (point.z >= STAIRS.endZ) return STAIRS.bottomY;
   const tread = (STAIRS.endZ - STAIRS.startZ) / STAIRS.steps;
@@ -37,6 +41,10 @@ const insideFloor = (point: Point2) => (
   point.x >= ROOM.minX && point.x <= ROOM.maxX && point.z >= ROOM.minZ && point.z <= ROOM.maxZ
 ) || (
   point.x >= HALL.minX && point.x <= HALL.maxX && point.z >= HALL.startZ && point.z <= HALL.endZ
+) || (
+  point.x >= KITCHEN.minX && point.x <= KITCHEN.maxX && point.z >= KITCHEN.startZ && point.z <= KITCHEN.endZ
+) || Object.values(CHAPTER_ZONES).some(zone =>
+  point.x >= zone.minX && point.x <= zone.maxX && point.z >= zone.minZ && point.z <= zone.maxZ
 );
 type Edge = readonly [number, number, number, number];
 const floorEdges: readonly Edge[] = [
@@ -47,7 +55,15 @@ const floorEdges: readonly Edge[] = [
   [HALL.maxX, ROOM.maxZ, ROOM.maxX, ROOM.maxZ],
   [HALL.minX, HALL.startZ, HALL.minX, HALL.endZ],
   [HALL.maxX, HALL.startZ, HALL.maxX, HALL.endZ],
-  [HALL.minX, HALL.endZ, HALL.maxX, HALL.endZ],
+  [KITCHEN.minX, KITCHEN.endZ, KITCHEN.maxX, KITCHEN.endZ],
+  [KITCHEN.minX, KITCHEN.startZ, KITCHEN.minX, KITCHEN.endZ],
+  [KITCHEN.maxX, KITCHEN.startZ, KITCHEN.maxX, KITCHEN.endZ],
+  ...Object.values(CHAPTER_ZONES).flatMap(zone => [
+    [zone.minX, zone.minZ, zone.maxX, zone.minZ] as const,
+    [zone.minX, zone.maxZ, zone.maxX, zone.maxZ] as const,
+    [zone.minX, zone.minZ, zone.minX, zone.maxZ] as const,
+    [zone.maxX, zone.minZ, zone.maxX, zone.maxZ] as const,
+  ]),
 ];
 function edgeDistanceSquared(point: Point2, [ax, az, bx, bz]: Edge) {
   const dx = bx - ax, dz = bz - az;

@@ -1,7 +1,9 @@
 # O Intercâmbio
 
-This is an independent game. Only implement Prototype 01 — O Despertar, as specified in docs/ROTEIRO-PROTOTIPO-01.md. Do not copy code, assets, state or mechanics from other game projects in the workspace.
+Implement Chapter 1 — A Despedida, following docs/PROMPT-MASTER-02.md. Continue from the existing TypeScript, Babylon.js and Vite project; preserve working gameplay and build connected, playable first-person sequences.
 
-Use TypeScript, Babylon.js and Vite for an actual navigable 3D first-person scene. Keep environment, collision/controller, opening, door/interactions, UI, audio, settings and objective separate. Use sober PS1/PS2-inspired materials, warm morning light and native-resolution readable UI. No monsters, supernatural events, combat, inventory, extra chapters or backend.
+All dialogue is on-screen text. Never generate, synthesize, fetch, or play character voices, narration, speech-like ambience, or text-to-speech. Nonverbal ambience and interface effects are allowed.
 
-Run typecheck, meaningful unit tests, build and the browser flow. Inspect actual screenshots; do not use screenshots as a substitute for testing controls, collision, the physical door and descending the stairs. Measure performance in the running scene and state the environment and limits. Report provisional voice audio honestly. The Windows launcher cannot be claimed tested from Linux.
+Keep scene construction, movement/collision, interactions, dialogue, quests, transitions, audio, settings, and checkpoint logic in separable modules. Use original procedural assets where possible, maintain the PS1/PS2-inspired look, and keep controls responsive.
+
+Run typecheck, unit tests, production build, and browser-flow checks for changes that affect gameplay. Inspect actual runtime screenshots and exercise interactions; screenshots alone do not verify controls or collisions. Report implementation separately from tested behavior and state performance environment and limits.

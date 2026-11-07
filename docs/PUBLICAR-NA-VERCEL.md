@@ -26,9 +26,9 @@ Não use `npm run dev` como comando de build. A Vercel gera `dist` a partir do c
 
 ## Conferir a publicação
 
-No endereço publicado, confira se o quarto aparece após o despertar, se a legenda e o áudio da mãe funcionam, se WASD e mouse movem o personagem e se a porta e a descida da escada levam ao final. O navegador só libera o áudio depois de clicar em Começar. Use computador nesta versão.
+No endereço publicado, confira o despertar, a legenda da mãe, WASD e mouse, a porta e a descida até a cozinha. Continue a missão pelos diálogos escritos, portão, avião e encontro com a família anfitriã. Personagens não têm voz; o áudio é apenas ambiência e efeitos. Use computador nesta versão.
 
-O fluxo foi testado no build local de produção. Uma publicação só pode ser considerada verificada depois de abrir e testar o endereço que a Vercel gerar.
+Não considere a publicação verificada até abrir e jogar a sequência no endereço que a Vercel gerar.
 
 ## Atualizações
 

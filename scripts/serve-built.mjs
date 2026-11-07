@@ -30,7 +30,7 @@ server.on('error', error => {
 });
 server.on('listening', () => {
   const url = `http://localhost:${port}`;
-  console.log(`O Intercâmbio — O Despertar\nAbra ${url}\nMantenha esta janela aberta enquanto joga. Ctrl+C encerra.`);
+  console.log(`INTERCÂMBIO — Capítulo 1: A Despedida\nAbra ${url}\nMantenha esta janela aberta enquanto joga. Ctrl+C encerra.`);
   if (process.argv.includes('--open')) {
     const child = process.platform === 'win32' ? spawn('rundll32', ['url.dll,FileProtocolHandler', url])
       : process.platform === 'darwin' ? spawn('open', [url]) : spawn('xdg-open', [url]);

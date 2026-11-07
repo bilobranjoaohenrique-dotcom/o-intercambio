@@ -9,7 +9,7 @@ import {RenderTargetTexture} from '@babylonjs/core/Materials/Textures/renderTarg
 import '@babylonjs/core/Lights/Shadows/shadowGeneratorSceneComponent';
 import {VertexData} from '@babylonjs/core/Meshes/mesh.vertexData';
 import {Mesh} from '@babylonjs/core/Meshes/mesh';
-import {ROOM,HALL,STAIRS,DOOR,OBJECTS} from '../game/layout';
+import {ROOM,HALL,STAIRS,DOOR,OBJECTS,KITCHEN} from '../game/layout';
 import type {InteractionTarget} from '../game/types';
 import {homeMaterials} from './textures';
 import {HomeGeometry,bedroomProps} from './props';
@@ -90,7 +90,11 @@ export function buildEnvironment(scene:Scene){
   b('nariz do degrau '+(i+1),hallW,.026,.035,hallX,y-.007,z-depth/2+.008,m.darkWood);
  }
  b('patamar inferior',hallW,.13,HALL.endZ-STAIRS.endZ,hallX,STAIRS.bottomY-.065,(STAIRS.endZ+HALL.endZ)/2,m.floor);
- b('parede final do patamar',hallW+.32,ROOM.ceiling,.16,hallX,ROOM.ceiling/2,HALL.endZ+.08,m.plaster);
+ // The landing opens into the kitchen. Side wall returns frame the doorway.
+ b('parede final do patamar à esquerda',.55,ROOM.ceiling,.16,HALL.minX+.27,ROOM.ceiling/2,HALL.endZ+.08,m.plaster);
+ b('parede final do patamar à direita',.55,ROOM.ceiling,.16,HALL.maxX-.27,ROOM.ceiling/2,HALL.endZ+.08,m.plaster);
+ b('verga da entrada da cozinha',1.05,1.02,.16,hallX,ROOM.ceiling-.51,HALL.endZ+.08,m.plaster);
+ b('piso de ligação da cozinha',KITCHEN.maxX-KITCHEN.minX,.14,.42,0,-.07,KITCHEN.startZ+.02,m.floor);
  for(const x of[HALL.minX+.06,HALL.maxX-.06])g.rod('corrimão da escada',{x,y:STAIRS.topY+.9,z:STAIRS.startZ-.15},{x,y:STAIRS.bottomY+.9,z:STAIRS.endZ-.05},.028,m.darkWood);
  for(const side of[-1,1])for(let i=0;i<4;i++){
   const z=STAIRS.startZ+.2+i*1.2,y=STAIRS.topY-Math.min(STAIRS.topY,(z-STAIRS.startZ)/(STAIRS.endZ-STAIRS.startZ)*STAIRS.topY)+.88,x=side<0?HALL.minX+.05:HALL.maxX-.05;

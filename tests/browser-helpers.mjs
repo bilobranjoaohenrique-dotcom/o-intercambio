@@ -12,6 +12,7 @@ export async function launchBrowser() {
 }
 export async function openScene(browser, profile = 'balanced', webgl1 = false) {
   const page = await browser.newPage({ viewport: { width: 1280, height: 800 }, deviceScaleFactor: 1 });
+  await page.addInitScript(() => localStorage.removeItem('o-intercambio.chapter1.checkpoint.v1'));
   page.setDefaultTimeout(45000);
   const errors = [], consoleErrors = [], failed = [];
   page.on('pageerror', error => errors.push(error.message));

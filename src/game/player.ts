@@ -125,6 +125,12 @@ export function createPlayer(canvas: HTMLCanvasElement, camera: UniversalCamera,
     camera.rotation.set(pitch, yaw, STANDING_POSE.roll);
     bob = 0; bobPhase = 0; stepDistance = 0;
   }
+  function teleport(point: Point3, heading = 0) {
+    if (![point.x,point.y,point.z,heading].every(Number.isFinite)) return;
+    clearInput(); position={x:point.x,z:point.z}; eyeY=point.y; yaw=heading; pitch=0;
+    bob=0;bobPhase=0;stepDistance=0;
+    camera.position.set(point.x,point.y,point.z);camera.rotation.set(0,heading,0);
+  }
   function update(seconds: number) {
     if (!active || disposed || document.hidden || !Number.isFinite(seconds) || seconds <= 0) return;
     const dt = Math.min(.05, seconds);
@@ -162,7 +168,7 @@ export function createPlayer(canvas: HTMLCanvasElement, camera: UniversalCamera,
     canvas.removeEventListener('pointerdown', pointerDown);
     window?.removeEventListener('blur', clearInput);
   }
-  return { update, setActive, activateFromCamera, reset, requestPointerLock, clearInput, dispose,
+  return { update, setActive, activateFromCamera, reset, teleport, requestPointerLock, clearInput, dispose,
     get enabled() { return active && !disposed; },
     get position(): Point3 { return { x: camera.position.x, y: camera.position.y, z: camera.position.z }; } };
 }

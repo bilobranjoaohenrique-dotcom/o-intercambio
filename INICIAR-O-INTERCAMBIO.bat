@@ -1,7 +1,7 @@
 @echo off
 setlocal
 cd /d "%~dp0"
-title O Intercambio - O Despertar
+title INTERCAMBIO - Capitulo 1 A Despedida
 if not exist "package.json" goto missing
 where node >nul 2>&1
 if errorlevel 1 goto nodeMissing

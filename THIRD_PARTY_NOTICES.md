@@ -14,8 +14,4 @@ As versões exatas constam em package-lock.json. As ferramentas de desenvolvimen
 
 A licença redistribuível do motor está em [BabylonJS-Apache-2.0.txt](public/licenses/BabylonJS-Apache-2.0.txt).
 
-## Voz provisória
-
-A frase da mãe está em um WAV local, gerado com eSpeak-NG em português brasileiro e voz de teste feminina. **É uma voz sintética provisória**, não uma gravação humana ou uma alegação de dublagem natural. O arquivo é substituível por gravação licenciada da mesma frase. Veja [origem, hashes e substituição](public/audio/README.md) e [áudio da cena](docs/AUDIO-PROTOTIPO-01.md).
-
-A ferramenta de autoria e seus dados não precisam ser instalados para jogar. A licença e a procedência da ferramenta estão preservadas junto ao arquivo de áudio. Pássaros, vento, movimentos, passos e outros efeitos são sintetizados localmente para este projeto.
+Personagens comunicam-se somente por texto. Pássaros, vento, passos e outros efeitos são sintetizados localmente para este projeto; nenhum pacote de voz é incluído.

@@ -1,132 +1,53 @@
-# O Intercâmbio — O Despertar
+# INTERCÂMBIO — Capítulo 1: A Despedida
 
-**Protótipo 01 · versão 0.1.0.** Cena 3D navegável em primeira pessoa, feita com **TypeScript, Babylon.js e Vite**. Um adolescente acorda em casa antes de sua viagem de intercâmbio. A missão é simples: **Desça para o café**.
+Jogo narrativo 3D em primeira pessoa, com visual retrô inspirado em PS1/PS2. O capítulo acompanha o protagonista na manhã da viagem: despertar, café com os pais, embarque, avião e chegada à cidade anfitriã.
 
-O protótipo cobre o despertar, o quarto, o corredor e a descida da escada. A estética usa geometria trabalhada, texturas pequenas e luz quente da manhã, inspirada nos jogos do começo dos anos 2000. A interface permanece legível em resolução nativa.
+**Diálogos são exclusivamente textos na tela.** Não há dublagem, vozes sintéticas, narração nem fala ambiente. Os sons são efeitos e ambiência procedural.
 
-![Quarto do protagonista](docs/capturas/quarto.png)
+## Executar
 
-## Abrir no computador com Windows
-
-1. Instale **Node.js 24 ou superior**, disponível em [nodejs.org](https://nodejs.org/). Não é necessário abrir a janela do Node.js.
-2. Extraia o ZIP inteiro do projeto.
-3. Abra a pasta que contém **package.json** e **INICIAR-O-INTERCAMBIO.bat**.
-4. Dê dois cliques em **INICIAR-O-INTERCAMBIO.bat**.
-5. O navegador abrirá o jogo. Clique em **Começar**.
-
-O ZIP compilado de entrega inclui a cena pronta em **dist/**. Com Node.js instalado, o inicializador usa esse build e o servidor HTTP local do próprio Node, sem instalar pacotes npm. O ZIP baixado pelo botão **Code → Download ZIP** do GitHub contém o código-fonte; nessa cópia, o mesmo `.bat` instala as dependências e abre o servidor de desenvolvimento automaticamente.
-
-Mantenha a janela do inicializador aberta enquanto joga. Para encerrar, feche essa janela. Se o navegador não abrir sozinho, digite na barra de endereços o endereço exibido pelo inicializador.
-
-No ZIP pronto, se a porta estiver ocupada, o inicializador procura outra automaticamente. No servidor de desenvolvimento, feche a janela da sessão anterior antes de abrir outra; fechar apenas a aba do navegador não encerra o servidor. Não abra `index.html` com dois cliques. O inicializador foi preparado neste ambiente Linux e não foi executado em Windows.
-
-## Jogar
-
-A abertura dura aproximadamente **13,5 segundos**. O protagonista começa deitado, abre os olhos, ouve a mãe e se levanta. O movimento livre fica bloqueado durante essa sequência e é liberado na posição final da câmera.
-
-| Ação | Controle |
-| --- | --- |
-| Andar | WASD |
-| Olhar | Mouse |
-| Correr | Segurar Shift |
-| Interagir com objeto próximo sob a mira | E |
-| Pausar ou continuar | Esc |
-| Retomar a captura do mouse | Clicar no cenário ou em “Clique para olhar com o mouse” |
-| Reiniciar a cena | Menu de pausa → Reiniciar cena |
-
-Se a captura do mouse não estiver disponível, segure o botão esquerdo e arraste para olhar. A indicação de interação aparece ao mirar perto de um objeto: a porta abre e fecha sobre a dobradiça, o interruptor alterna a luz e a mala, o calendário e a fotografia podem ser examinados. Examinar esses três objetos é opcional.
-
-Saia pela porta, atravesse o corredor e desça a escada. Ao alcançar o último degrau, aparece **OBJETIVO CONCLUÍDO**, seguido de **Fim do Protótipo 01 — O Despertar**. O botão **Repetir cena** volta ao despertar.
-
-## Configurações
-
-As configurações estão na tela inicial e no menu de pausa:
-
-- Sensibilidade do mouse, de **0,2× a 2,5×**.
-- Balanço suave da câmera, com opção de desligar.
-- Volume e legendas.
-- Qualidade **Baixa**, **Equilibrada** ou **Alta**, que ajusta a resolução interna da cena.
-- Granulação discreta e indicador opcional de desempenho.
-
-As preferências são guardadas neste navegador. Se o armazenamento estiver indisponível, continuam valendo na sessão. A posição do jogador e o progresso da cena não são salvos; uma nova sessão começa novamente na cama.
-
-## Voz e ambiência
-
-A mãe diz a frase exata do roteiro:
-
-> **MÃE:** Ei, vem tomar café pra não se atrasar!
-
-O WAV incluído é **voz sintética provisória e substituível**, em português brasileiro, gerada offline com eSpeak NG `pt-br+f3`. Não é uma gravação humana natural final. O arquivo existe, tem cerca de **3,18 segundos** e é carregado localmente; não depende de síntese de voz do navegador ou de serviço externo.
-
-A fonte sonora fica no andar inferior, com direção, redução por distância e filtro de abafamento. Vento, pássaros, relógio, ruídos domésticos, passos, roupa, cama, maçaneta e porta usam síntese original em Web Audio. O áudio começa após o gesto de início e acompanha a pausa.
-
-Veja a [documentação sonora](docs/AUDIO-PROTOTIPO-01.md), o [inventário da voz](public/audio/voice-info.json) e as [instruções para substituir o WAV por uma gravação humana](public/audio/README.md).
-
-![Escrivaninha e objetos do quarto](docs/capturas/mesa.png)
-
-## Instalar, executar e gerar o build
-
-O ZIP com **dist/** pronto pode ser servido diretamente com Node.js **24 ou superior**:
-
-```bash
-node scripts/serve-built.mjs
-```
-
-Para desenvolver a partir do código-fonte, abra a pasta de `package.json` e execute:
+Requer Node.js 24 ou superior.
 
 ```bash
 npm ci
 npm run dev
 ```
 
-O servidor de desenvolvimento usa **http://localhost:5180**. Para gerar e abrir os arquivos de produção:
+Abra [http://localhost:5180](http://localhost:5180). Para gerar o build:
 
 ```bash
 npm run build
 npm run preview
 ```
 
-O build fica em **dist/**, e a prévia do Vite usa **http://localhost:4180**. Sirva esses arquivos por HTTP; abrir o HTML diretamente por `file://` não executa o projeto corretamente. O servidor local apenas entrega arquivos estáticos. Não é necessário backend, conta de jogador ou API paga.
+O build fica em `dist/`; sirva por HTTP, não abra `index.html` via `file://`.
 
-Depois de alterar o código-fonte, use `npm run dev` para trabalhar ou rode `npm run build` novamente. O `.bat` prefere o build existente em `dist/`.
+## Controles
 
-## Verificação
-
-```bash
-npm run typecheck
-npm test
-npm run build
-CHROMIUM_PATH=/usr/bin/chromium npm run verify
-```
-
-`verify` executa tipos, testes e build, inicia uma prévia temporária de produção na porta **4181** e percorre o fluxo com Chromium. O navegador precisa estar instalado; `CHROMIUM_PATH` informa seu executável. Com um servidor de desenvolvimento já aberto, `npm run test:browser` executa a suíte separadamente.
-
-O [registro de validação](docs/VALIDACAO-PROTOTIPO-01.md) reúne o método e os resultados das execuções, capturas e medições. Os testes incluem abertura, controles, colisões, porta física, interações, pausa, configurações e descida real da escada. A existência dos comandos não comprova uma execução aprovada. Resultados de FPS devem ser lidos junto ao ambiente e ao perfil medidos; esta documentação não promete 60 FPS em qualquer computador.
-
-Nesta entrega passaram **35 testes**, TypeScript, build e quatro perfis no Chromium. O servidor Linux com **SwiftShader, sem GPU física**, mediu **7,9 a 14,5 FPS** conforme o perfil; a meta de 60 FPS ainda não foi atingida nesse ambiente. O ZIP extraído também foi jogado até o final pelo navegador, sem instalar dependências do projeto.
-
-## Código e escopo
-
-| Módulo | Responsabilidade |
+| Ação | Controle |
 | --- | --- |
-| `src/scene/` | Geometria, materiais, texturas, objetos e iluminação |
-| `src/game/opening.ts` | Despertar e eventos da abertura |
-| `src/game/player.ts` e `collision.ts` | Mouse, movimento e colisões |
-| `src/game/door.ts` e `interactions.ts` | Porta articulada e interação por mira |
-| `src/game/audio.ts` | Ambiência, efeitos e fala espacializada |
-| `src/game/settings.ts` | Preferências do navegador |
-| `src/game/objective.ts` | Ativação e conclusão única da missão no último degrau |
-| `src/ui.ts` e `src/style.css` | Interface, máscaras das pálpebras e aparência |
-| `src/main.ts` | Integração dos componentes e ciclo da cena |
+| Andar | WASD |
+| Olhar | Mouse |
+| Correr | Shift |
+| Interagir | E |
+| Avançar diálogo | E, Enter ou clique |
+| Pausar | Esc |
 
-Este é um projeto independente. A cena segue o [roteiro do Protótipo 01](docs/ROTEIRO-PROTOTIPO-01.md), sem reutilizar código, assets ou estados de outros jogos da área de trabalho. O recorte termina na escada: não inclui escola, cidade estrangeira, monstros, acontecimentos sobrenaturais, combate, inventário ou outros capítulos. O alvo desta entrega é navegador de computador.
+Procure os objetos destacados pelo prompt de interação. O café permite escolher uma resposta; as escolhas registram um checkpoint.
 
-Geometria, texturas e efeitos procedurais são produzidos para este projeto. A procedência da ferramenta usada na voz provisória está registrada na pasta de áudio, incluindo o texto de licença; o sintetizador não precisa ser instalado para jogar.
+## Estrutura
 
-## Entrega e publicação
+- `src/scene/`: quarto/casa e cenários 3D do capítulo.
+- `src/game/player.ts`, `collision.ts`: controle, câmera e colisões.
+- `src/game/narrative.ts`: missões, checkpoint e dados de diálogo.
+- `src/game/interactions.ts`: alvos por mira.
+- `src/ui.ts`, `src/style.css`: interface, legendas e escolhas.
+- `docs/PROMPT-MASTER-02.md`: especificação integral do capítulo.
 
-Repositório do projeto: [o-intercambio no GitHub](https://github.com/bilobranjoaohenrique-dotcom/o-intercambio).
+## Validação
 
-O arquivo `vercel.json` já configura a importação do projeto na Vercel. Veja o [passo a passo de publicação](docs/PUBLICAR-NA-VERCEL.md), com os campos exatos e a conferência do jogo após publicar.
+`npm run typecheck`, `npm test` e `npm run build` verificam tipos, regras de movimento e build de produção. A validação de navegador cobre a sequência jogável em Chromium. Desempenho depende da GPU e do navegador; não se promete 60 FPS em todos os computadores.
 
-Os endereços `localhost` acima funcionam no computador onde o inicializador está aberto. Para gerar o endereço do site, importe o repositório na sua conta da Vercel conforme o passo a passo acima.
+## Publicação
+
+O repositório já inclui `vercel.json`. Consulte [o guia de publicação](docs/PUBLICAR-NA-VERCEL.md) para importar o projeto na Vercel e testar a URL publicada.

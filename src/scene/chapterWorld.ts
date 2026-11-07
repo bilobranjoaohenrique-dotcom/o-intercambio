@@ -1,0 +1,155 @@
+import { Color3 } from '@babylonjs/core/Maths/math.color';
+import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial';
+import { DynamicTexture } from '@babylonjs/core/Materials/Textures/dynamicTexture';
+import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder';
+import type { AbstractMesh } from '@babylonjs/core/Meshes/abstractMesh';
+import { TransformNode } from '@babylonjs/core/Meshes/transformNode';
+import type { Scene } from '@babylonjs/core/scene';
+import type { InteractionTarget } from '../game/types';
+
+type Zone = 'home' | 'airport' | 'plane' | 'town';
+const ZONE_ORIGIN: Record<Exclude<Zone,'home'>, number> = { airport: 30, plane: 58, town: 86 };
+
+/** Additional first-chapter sets. Everything is made from original Babylon
+ * geometry so the chapter stays self-contained and does not depend on remote assets. */
+export function buildChapterWorld(scene: Scene) {
+  const materials = new Map<string, StandardMaterial>();
+  const mat = (name: string, hex: string, emissive?: string) => {
+    if (!materials.has(name)) {
+      const m = new StandardMaterial(name, scene); m.diffuseColor = Color3.FromHexString(hex);
+      m.specularColor = new Color3(.12,.12,.12); if (emissive) m.emissiveColor = Color3.FromHexString(emissive);
+      materials.set(name,m);
+    }
+    return materials.get(name)!;
+  };
+  const wall=mat('chapter-wall','#d5cbbb'), floor=mat('chapter-floor','#9c8d78'), tile=mat('airport-tile','#b9c1c3'),
+    wood=mat('chapter-wood','#6e4934'), dark=mat('chapter-dark','#342f31'), linen=mat('chapter-linen','#b7aa92'),
+    blue=mat('chapter-blue','#557b8d'), green=mat('chapter-green','#61795a'), red=mat('chapter-red','#a4493c'), fruit=mat('chapter-fruit','#d89b43'),
+    metal=mat('chapter-metal','#9ba3a2'), glass=mat('chapter-glass','#92b1b8'), screen=mat('chapter-screen','#27393c','#243b39');
+  const targets: InteractionTarget[]=[];
+  const textures:DynamicTexture[]=[];
+  const roots = new Map<Zone,TransformNode>();
+  const meshes = new Map<Zone, AbstractMesh[]>();
+  function add(zone: Zone, name:string, kind:string, dims:Record<string,number>, x:number,y:number,z:number, material:StandardMaterial, target?:string) {
+    const mesh=kind==='box'?MeshBuilder.CreateBox(name,dims,scene):kind==='sphere'?MeshBuilder.CreateSphere(name,dims,scene):MeshBuilder.CreateCylinder(name,dims,scene);
+    mesh.position.set(x,y,z); mesh.material=material; mesh.parent=roots.get(zone)!;
+    mesh.isPickable=!!target; mesh.metadata={...(mesh.metadata??{}),castShadow:false};
+    meshes.get(zone)!.push(mesh);
+    if(target) targets.push({id:target,meshes:[mesh],label:()=>target==='parents'?'Conversar com seus pais':target==='suitcase'?'Pegar a mala':target==='gate'?'Consultar portão de embarque':target==='seat'?'Sentar e preparar-se':target==='host'?'Conversar com a família anfitriã':'Examinar cartaz',execute:()=>undefined});
+    return mesh;
+  }
+  function box(zone:Zone,name:string,w:number,h:number,d:number,x:number,y:number,z:number,m:StandardMaterial,target?:string) { return add(zone,name,'box',{width:w,height:h,depth:d},x,y,z,m,target); }
+  function sphere(zone:Zone,name:string,d:number,x:number,y:number,z:number,m:StandardMaterial,target?:string) { return add(zone,name,'sphere',{diameter:d,segments:8},x,y,z,m,target); }
+  function cyl(zone:Zone,name:string,d:number,h:number,x:number,y:number,z:number,m:StandardMaterial) { return add(zone,name,'cylinder',{diameter:d,height:h,tessellation:8},x,y,z,m); }
+  function character(zone:Zone,x:number,z:number,shirt:StandardMaterial,faceTarget?:string) {
+    box(zone,'sapatos do personagem',.55,.16,.32,x,.08,z,dark);
+    box(zone,'pernas do personagem',.43,.72,.3,x,.49,z,blue);
+    const torso=box(zone,'corpo do personagem',.68,.76,.34,x,1.18,z,shirt,faceTarget);
+    sphere(zone,'cabeça do personagem',.47,x,1.82,z,linen,faceTarget);
+    box(zone,'cabelo do personagem',.49,.16,.5,x,2.04,z,dark);
+    sphere(zone,'olho esquerdo',.055,x-.09,1.85,z+.22,dark);
+    sphere(zone,'olho direito',.055,x+.09,1.85,z+.22,dark);
+    box(zone,'boca estilizada',.09,.025,.02,x,1.72,z+.238,red);
+    const left=box(zone,'braço esquerdo',.2,.66,.23,x-.43,1.2,z,shirt);left.rotation.z=-.08;
+    const right=box(zone,'braço direito',.2,.66,.23,x+.43,1.2,z,shirt);right.rotation.z=.08;
+    return {torso,left,right};
+  }
+  function makeZone(zone:Zone, origin:number, ground:number, groundMat:StandardMaterial) {
+    const root=new TransformNode(zone+' chapter set',scene); roots.set(zone,root); meshes.set(zone,[]);
+    // Ground and an enclosing three-sided backdrop keep the playable set clear.
+    box(zone,zone+' floor',12,.18,12,origin,ground-.09,0,groundMat);
+    box(zone,zone+' rear wall',12,4,.22,origin,ground+2,-6,wall);
+    box(zone,zone+' left wall',.22,4,12,origin-6,ground+2,0,wall);
+    box(zone,zone+' right wall',.22,4,12,origin+6,ground+2,0,wall);
+  }
+  function sign(zone:Zone,text:string,x:number,y:number,z:number,w:number,h:number,front=true) {
+    const texture=new DynamicTexture('texto de cenário '+text,{width:512,height:256},scene,false);
+    texture.hasAlpha=true;texture.drawText(text,24,156,'bold 42px Arial','#e8e1cf','rgba(24,31,30,0.96)',true,true);
+    textures.push(texture);
+    const material=new StandardMaterial('material de placa '+text,scene);material.diffuseTexture=texture;material.emissiveColor=new Color3(.22,.22,.19);material.backFaceCulling=false;materials.set('sign-'+text,material);
+    const plane=MeshBuilder.CreatePlane('placa escrita '+text,{width:w,height:h},scene);plane.position.set(x,y,z);plane.material=material;plane.parent=roots.get(zone)!;plane.isPickable=false;
+    if(!front)plane.rotation.y=Math.PI;
+    meshes.get(zone)!.push(plane);
+  }
+  // Kitchen joins the bottom of the existing staircase through its open landing.
+  const kitchenRoot=new TransformNode('cozinha da família',scene);roots.set('home',kitchenRoot);meshes.set('home',[]);
+  box('home','piso da cozinha',10,.16,11,0,-.08,17.45,floor);
+  box('home','teto da cozinha',10,.16,11,0,3.28,17.45,wall);
+  box('home','parede ao fundo da cozinha',10,3.2,.18,0,1.6,22.92,wall);
+  box('home','parede esquerda da cozinha',.18,3.2,11,-4.92,1.6,17.45,wall);
+  box('home','parede direita da cozinha',.18,3.2,11,4.92,1.6,17.45,wall);
+  box('home','mesa de café da manhã',2.25,.18,1.25,.1,.82,17.3,wood);
+  for(const [x,z] of [[-.8,16.8],[1,16.8],[-.8,18],[1,18]] as const) {
+    box('home','pé da mesa',.12,.8,.12,x,.4,z,wood);
+    cyl('home','prato de café',.43,.035,x,.94,z,linen);
+    cyl('home','xícara',.19,.23,x+.27,1.04,z,wall);
+  }
+  box('home','balcão',3,.86,.65,-2.9,.43,20.7,wood);
+  box('home','armários superiores',2.8,.9,.4,-2.9,2.3,20.8,green);
+  box('home','geladeira',.9,2,.75,3.8,1,20.8,metal);
+  box('home','fogão',1.1,.9,.7,-2.9,.46,18.8,metal);
+  for(const x of[-3.2,-2.85,-2.55]) cyl('home','boca do fogão',.23,.035,x,.94,18.8,dark);
+  cyl('home','fruteira',.5,.12,-.05,1.03,17.3,metal);
+  for(const [x,z] of [[-.18,17.27],[.04,17.35],[.18,17.24]] as const)sphere('home','fruta do café',.19,x,1.16,z,fruit);
+  box('home','janela da cozinha',2,1.2,.07,0,2.15,22.79,glass);
+  box('home','luminária da cozinha',.45,.08,.45,0,3.14,17.2,linen);
+  character('home',-1.2,17.3,red,'parents'); character('home',1.4,17.3,blue,'parents');
+  box('home','mala pronta',.92,.58,.55,3.25,.29,15.6,wood,'suitcase');
+
+  makeZone('airport',ZONE_ORIGIN.airport,0,tile);
+  box('airport','balcão do aeroporto',3,1.1,.9,ZONE_ORIGIN.airport-3.8,.55,-3,metal);
+  box('airport','painel de voos',3,1.35,.1,ZONE_ORIGIN.airport,3.15,-5.7,screen);
+  sign('airport','VOOS  •  DESTINO: VILA NOVA  •  EMBARQUE',ZONE_ORIGIN.airport,3.15,-5.62,2.85,1.15);
+  box('airport','letreiro do portão',2,.4,.1,ZONE_ORIGIN.airport+3.3,3,-5.7,blue);
+  box('airport','banco do terminal',3,.35,.65,ZONE_ORIGIN.airport-1.5,.62,2,blue);
+  box('airport','faixa até embarque',1.1,.015,8,ZONE_ORIGIN.airport+2,.01,0,mat('airport-path','#d7c886'));
+  box('airport','totem do portão',.7,2,.45,ZONE_ORIGIN.airport,1,-1.8,green,'gate');
+  sign('airport','PORTÃO 13',ZONE_ORIGIN.airport,2.15,-1.55,.85,.42);
+  character('airport',ZONE_ORIGIN.airport-4,1,red); character('airport',ZONE_ORIGIN.airport-3,1,blue);
+
+  makeZone('plane',ZONE_ORIGIN.plane,0,dark);
+  for(let row=0;row<4;row++) for(const side of[-1,1]) {
+    const x=ZONE_ORIGIN.plane+side*1.5,z=-3+row*1.8;
+    box('plane','poltrona de avião',1,.95,.85,x,.52,z,blue);
+    box('plane','encosto da poltrona',.95,1.1,.2,x,1.05,z-.35,blue,row===1&&side===-1?'seat':undefined);
+    box('plane','janela do avião',.12,.65,.75,ZONE_ORIGIN.plane+side*5.75,1.7,z,glass);
+  }
+  box('plane','corredor do avião',1.2,.02,9,ZONE_ORIGIN.plane,0,0,mat('plane-aisle','#807a70'));
+  box('plane','teto interno do avião',11,.16,12,ZONE_ORIGIN.plane,3.25,0,dark);
+  box('plane','parede lateral do avião esquerda',.16,3.2,12,ZONE_ORIGIN.plane-5.9,1.6,0,wall);
+  box('plane','parede lateral do avião direita',.16,3.2,12,ZONE_ORIGIN.plane+5.9,1.6,0,wall);
+  box('plane','placa de aproximação',2,.5,.08,ZONE_ORIGIN.plane,2.65,-5.82,screen);
+  sign('plane','VOO EM APROXIMAÇÃO',ZONE_ORIGIN.plane,2.65,-5.75,1.9,.4);
+  box('plane','folheto de boas vindas',.45,.02,.3,ZONE_ORIGIN.plane-1.5,1.03,-1.2,linen,'seat');
+
+  makeZone('town',ZONE_ORIGIN.town,0,mat('town-ground','#777763'));
+  box('town','casa de chegada',4,3,2,ZONE_ORIGIN.town+3,1.5,-5,green);
+  for(const x of[ZONE_ORIGIN.town-4,ZONE_ORIGIN.town+5]) {
+    cyl('town','poste da rua',.16,4,x,2,2,metal);
+    sphere('town','árvore',1.8,x,2.5,-3,green);
+  }
+  box('town','placa com o nome da cidade',2.8,1.2,.15,ZONE_ORIGIN.town-4,1.6,-3,wood);
+  sign('town','VILA NOVA',ZONE_ORIGIN.town-4,1.6,-2.91,2.5,.8);
+  const host=character('town',ZONE_ORIGIN.town,0,green,'host');
+  box('town','cartaz de estudante desaparecido',.8,1.05,.09,ZONE_ORIGIN.town+4,1.5,3,dark,'poster');
+  sign('town','DESAPARECIDO',ZONE_ORIGIN.town+4,1.5,2.94,.7,.9);
+  box('town','placa de boas vindas',1.4,.65,.08,ZONE_ORIGIN.town,2.3,-.7,linen);
+
+  function activate(zone:Zone) { for(const [key,root]of roots) root.setEnabled(key===zone); }
+  activate('home');
+  return {
+    targets,
+    activate,
+    teleportPoint(zone:Exclude<Zone,'home'>) {
+      return zone==='airport'?{x:ZONE_ORIGIN.airport,y:1.65,z:-3.7}:zone==='plane'?{x:ZONE_ORIGIN.plane-1.5,y:1.65,z:-3.4}:{x:ZONE_ORIGIN.town,y:1.65,z:-2};
+    },
+    animate(time:number) {
+      // Quiet body language; mouths never move and there is no voice playback.
+      const parent=meshes.get('home')?.filter(m=>m.name==='braço esquerdo'||m.name==='braço direito')??[];
+      parent.forEach((arm,i)=>{arm.rotation.z=(i%2?1:-1)*(.08+Math.sin(time*1.2+i)*.025);});
+      const hostArms=meshes.get('town')?.filter(m=>m.name==='braço esquerdo'||m.name==='braço direito')??[];
+      hostArms.forEach((arm,i)=>{arm.rotation.z=(i%2?1:-1)*(.06+Math.sin(time*.9+i)*.02);});
+    },
+    dispose(){for(const root of roots.values())root.dispose(false,false);for(const material of materials.values())material.dispose();for(const texture of textures)texture.dispose();}
+  };
+}
