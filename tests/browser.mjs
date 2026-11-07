@@ -47,6 +47,7 @@ try{
   await page.locator('#dialogueBox').waitFor({state:'visible'});
   await pressDialogue(page,2);
   await page.waitForFunction(()=>window.__INTERCAMBIO__.chapterMission==='airport-gate'&&!window.__INTERCAMBIO__.dialogue);
+  await walkTo(page,{x:30,z:.4});
   await aimInteraction(page,'gate',{x:30,y:1.1,z:-1.8});
   await page.keyboard.press('KeyE');
   await waitPhase(page,'playing');

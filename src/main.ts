@@ -36,7 +36,8 @@ const objective = createBreakfastObjective();
 const chapter = createChapterProgress();
 const dialogue = createDialogue();
 let selectedChoice: StoryChoice | null = null;
-let chapterStage: 'home'|'airport'|'plane'|'town'='home';
+let chapterStage: 'home'|'car'|'airport'|'plane'|'town'='home';
+let transitionKind: 'drive'|'arrival'='arrival';
 let pendingAirportDialogue=false;
 let pendingTownTravel=false;
 let freshStartRequested=false;
@@ -188,16 +189,22 @@ try {
     player.setActive(true);player.requestPointerLock();
   }
   function travelTo(zone:'airport'|'plane'|'town', mission:'airport-gate'|'plane-seat'|'find-host') {
-    phase='transition';transitionTime=0;player.setActive(false);interactions.clear();el('interaction').hidden=true;el('dialogueBox').hidden=true;
+    phase='transition';transitionKind='arrival';transitionTime=0;player.setActive(false);interactions.clear();el('interaction').hidden=true;el('dialogueBox').hidden=true;
     el('sceneFade').style.opacity='1';chapterStage=zone;chapterWorld.activate(zone);player.teleport(chapterWorld.teleportPoint(zone));
     chapter.advance(mission);el('objectiveText').textContent=chapter.label;el('objectiveState').textContent='NOVA MISSÃO';el('objective').classList.remove('compact');
     pendingAirportDialogue=zone==='airport';
+  }
+  function travelByCar() {
+    phase='transition';transitionKind='drive';transitionTime=0;player.setActive(false);player.clearInput();interactions.clear();
+    el('interaction').hidden=true;el('dialogueBox').hidden=true;el('sceneFade').style.opacity='0';
+    chapterStage='car';chapterWorld.activate('car');player.teleport(chapterWorld.teleportPoint('car'));
+    camera.rotation.set(0,0,0);audio.play('engine');releaseMouse();
   }
   function activateInteraction() {
     if (phase !== 'playing'||dialogue.active) return;
     const result = interactions.activate();
     if(result?.id==='parents'&&chapter.mission==='talk-parents'){selectedChoice=null;startDialogue(breakfastConversation,breakfastChoices);return;}
-    if(result?.id==='suitcase'&&chapter.mission==='pack-suitcase'){travelTo('airport','airport-gate');return;}
+    if(result?.id==='suitcase'&&chapter.mission==='pack-suitcase'){travelByCar();return;}
     if(result?.id==='gate'&&chapter.mission==='airport-gate'){travelTo('plane','plane-seat');return;}
     if(result?.id==='seat'&&chapter.mission==='plane-seat'){
       pendingTownTravel=true;
@@ -210,6 +217,9 @@ try {
     }
     if(result?.id==='host'&&chapter.mission==='find-host'){startDialogue([{speaker:'ANFITRIÃO',text:'Você deve ser nosso novo estudante. Bem-vindo!'}],[]);return;}
     if(result?.id==='poster'){el('examine').textContent='ESTUDANTE DESAPARECIDO — informações parcialmente cobertas por anúncios.';examineUntil=worldTime+4;el('examine').hidden=false;return;}
+    if(result?.id==='flightBoard'){el('examine').textContent='PAINEL DE EMBARQUE — VILA NOVA · PORTÃO 13 · EMBARQUE IMEDIATO';examineUntil=worldTime+4;el('examine').hidden=false;return;}
+    if(result?.id==='phone'){el('examine').textContent='MENSAGEM DA MÃE: “Me avisa quando pousar. A gente te ama.”';examineUntil=worldTime+4;el('examine').hidden=false;return;}
+    if(result?.id==='leaflet'){el('examine').textContent='FOLHETO DA ESCOLA — “Sua nova jornada começa aqui.” O endereço está marcado à mão.';examineUntil=worldTime+4;el('examine').hidden=false;return;}
     if (result?.text) {
       if (['suitcase', 'calendar', 'photo'].includes(result.id)) examined.add(result.id);
       el('examine').textContent = result.text; examineUntil = worldTime + 3.5;
@@ -294,11 +304,17 @@ try {
       }
     } else if (phase === 'transition') {
       transitionTime+=dt;
+      if(transitionKind==='drive'){
+        const progress=Math.min(1,transitionTime/3);
+        player.teleport({x:46,y:1.65,z:-3+progress*7.5});
+        if(progress>=1){chapterStage='airport';chapterWorld.activate('airport');player.teleport(chapterWorld.teleportPoint('airport'));chapter.advance('airport-gate');el('objectiveText').textContent=chapter.label;el('objectiveState').textContent='NOVA MISSÃO';el('objective').classList.remove('compact');pendingAirportDialogue=true;transitionKind='arrival';transitionTime=0;el('sceneFade').style.opacity='1';}
+      } else {
       el('sceneFade').style.opacity=String(Math.max(0,1-transitionTime/1.4));
       if(transitionTime>=1.4){
         phase='playing';playingAt=worldTime;el('sceneFade').style.opacity='0';el('reticle').hidden=false;
         player.setActive(true);player.requestPointerLock();
         if(pendingAirportDialogue){pendingAirportDialogue=false;startDialogue(airportGoodbye,[]);}
+      }
       }
     } else if (phase === 'ending') {
       endingTime += dt;

@@ -7,8 +7,9 @@ import { TransformNode } from '@babylonjs/core/Meshes/transformNode';
 import type { Scene } from '@babylonjs/core/scene';
 import type { InteractionTarget } from '../game/types';
 
-type Zone = 'home' | 'airport' | 'plane' | 'town';
-const ZONE_ORIGIN: Record<Exclude<Zone,'home'>, number> = { airport: 30, plane: 58, town: 86 };
+type Zone = 'home' | 'car' | 'airport' | 'plane' | 'town';
+const ZONE_ORIGIN: Record<Exclude<Zone,'home'|'car'>, number> = { airport: 30, plane: 58, town: 86 };
+const CAR_ORIGIN=46;
 
 /** Additional first-chapter sets. Everything is made from original Babylon
  * geometry so the chapter stays self-contained and does not depend on remote assets. */
@@ -26,6 +27,7 @@ export function buildChapterWorld(scene: Scene) {
     wood=mat('chapter-wood','#6e4934'), dark=mat('chapter-dark','#342f31'), linen=mat('chapter-linen','#b7aa92'),
     blue=mat('chapter-blue','#557b8d'), green=mat('chapter-green','#61795a'), red=mat('chapter-red','#a4493c'), fruit=mat('chapter-fruit','#d89b43'),
     metal=mat('chapter-metal','#9ba3a2'), glass=mat('chapter-glass','#92b1b8'), screen=mat('chapter-screen','#27393c','#243b39');
+  glass.alpha=.3;glass.backFaceCulling=false;
   const targets: InteractionTarget[]=[];
   const textures:DynamicTexture[]=[];
   const roots = new Map<Zone,TransformNode>();
@@ -35,7 +37,11 @@ export function buildChapterWorld(scene: Scene) {
     mesh.position.set(x,y,z); mesh.material=material; mesh.parent=roots.get(zone)!;
     mesh.isPickable=!!target; mesh.metadata={...(mesh.metadata??{}),castShadow:false};
     meshes.get(zone)!.push(mesh);
-    if(target) targets.push({id:target,meshes:[mesh],label:()=>target==='parents'?'Conversar com seus pais':target==='suitcase'?'Pegar a mala':target==='gate'?'Consultar portão de embarque':target==='seat'?'Sentar e preparar-se':target==='host'?'Conversar com a família anfitriã':'Examinar cartaz',execute:()=>undefined});
+    if(target) targets.push({id:target,meshes:[mesh],label:()=>({
+      parents:'Conversar com seus pais',suitcase:'Pegar a mala',gate:'Consultar portão de embarque',
+      flightBoard:'Consultar painel de voos',seat:'Sentar e preparar-se',phone:'Consultar celular',
+      leaflet:'Examinar folheto',host:'Conversar com a família anfitriã',poster:'Examinar cartaz',
+    }[target]??'Interagir'),execute:()=>undefined});
     return mesh;
   }
   function box(zone:Zone,name:string,w:number,h:number,d:number,x:number,y:number,z:number,m:StandardMaterial,target?:string) { return add(zone,name,'box',{width:w,height:h,depth:d},x,y,z,m,target); }
@@ -96,12 +102,27 @@ export function buildChapterWorld(scene: Scene) {
   character('home',-1.2,17.3,red,'parents'); character('home',1.4,17.3,blue,'parents');
   box('home','mala pronta',.92,.58,.55,3.25,.29,15.6,wood,'suitcase');
 
+  const carRoot=new TransformNode('viagem de carro',scene);roots.set('car',carRoot);meshes.set('car',[]);
+  box('car','estrada durante a viagem',5,.06,35,CAR_ORIGIN,-.03,12,mat('car-road','#535454'));
+  box('car','painel do carro',2.8,.48,.62,CAR_ORIGIN,.91,-1.4,dark);
+  box('car','capô visto pelo para-brisa',2.6,.14,.7,CAR_ORIGIN,1.17,-.72,red);
+  box('car','teto do carro',2.8,.18,2.6,CAR_ORIGIN,3.1,-3.1,dark);
+  box('car','coluna esquerda do para-brisa',.13,1.45,.14,CAR_ORIGIN-1.35,2.1,-1.9,dark);
+  box('car','coluna direita do para-brisa',.13,1.45,.14,CAR_ORIGIN+1.35,2.1,-1.9,dark);
+  box('car','volante',.65,.08,.08,CAR_ORIGIN,.97,-1.9,wood);
+  const windshield=MeshBuilder.CreatePlane('para-brisa do carro',{width:2.5,height:1.3},scene);windshield.position.set(CAR_ORIGIN,2.12,-1.9);windshield.material=glass;windshield.parent=carRoot;windshield.isPickable=false;meshes.get('car')!.push(windshield);
+  for(const z of[5,12,20])for(const x of[CAR_ORIGIN-4,CAR_ORIGIN+4]){
+    box('car','casa vista da estrada',2.8,2.4,2,x,1.2,z,wall);
+    cyl('car','árvore junto à estrada',.16,3.4,x+(x<CAR_ORIGIN?-1:1),1.7,z+2,wood);
+    sphere('car','copa junto à estrada',1.8,x+(x<CAR_ORIGIN?-1:1),3.5,z+2,green);
+  }
+
   makeZone('airport',ZONE_ORIGIN.airport,0,tile);
   box('airport','balcão do aeroporto',3,1.1,.9,ZONE_ORIGIN.airport-3.8,.55,-3,metal);
-  box('airport','painel de voos',3,1.35,.1,ZONE_ORIGIN.airport,3.15,-5.7,screen);
+  box('airport','painel de voos',3,1.35,.1,ZONE_ORIGIN.airport,3.15,-5.7,screen,'flightBoard');
   sign('airport','VOOS  •  DESTINO: VILA NOVA  •  EMBARQUE',ZONE_ORIGIN.airport,3.15,-5.62,2.85,1.15);
   box('airport','letreiro do portão',2,.4,.1,ZONE_ORIGIN.airport+3.3,3,-5.7,blue);
-  box('airport','banco do terminal',3,.35,.65,ZONE_ORIGIN.airport-1.5,.62,2,blue);
+  for(const z of[-2,1.2,3.2])box('airport','banco do terminal',2.2,.35,.65,ZONE_ORIGIN.airport-1.4,.62,z,blue);
   box('airport','faixa até embarque',1.1,.015,8,ZONE_ORIGIN.airport+2,.01,0,mat('airport-path','#d7c886'));
   box('airport','totem do portão',.7,2,.45,ZONE_ORIGIN.airport,1,-1.8,green,'gate');
   sign('airport','PORTÃO 13',ZONE_ORIGIN.airport,2.15,-1.55,.85,.42);
@@ -121,6 +142,8 @@ export function buildChapterWorld(scene: Scene) {
   box('plane','placa de aproximação',2,.5,.08,ZONE_ORIGIN.plane,2.65,-5.82,screen);
   sign('plane','VOO EM APROXIMAÇÃO',ZONE_ORIGIN.plane,2.65,-5.75,1.9,.4);
   box('plane','folheto de boas vindas',.45,.02,.3,ZONE_ORIGIN.plane-1.5,1.03,-1.2,linen,'seat');
+  box('plane','celular sobre a poltrona',.25,.035,.14,ZONE_ORIGIN.plane-3,1.06,-1.2,screen,'phone');
+  box('plane','folheto da escola',.45,.025,.3,ZONE_ORIGIN.plane+1.3,1.08,-1.2,linen,'leaflet');
 
   makeZone('town',ZONE_ORIGIN.town,0,mat('town-ground','#777763'));
   box('town','casa de chegada',4,3,2,ZONE_ORIGIN.town+3,1.5,-5,green);
@@ -141,7 +164,7 @@ export function buildChapterWorld(scene: Scene) {
     targets,
     activate,
     teleportPoint(zone:Exclude<Zone,'home'>) {
-      return zone==='airport'?{x:ZONE_ORIGIN.airport,y:1.65,z:-3.7}:zone==='plane'?{x:ZONE_ORIGIN.plane-1.5,y:1.65,z:-3.4}:{x:ZONE_ORIGIN.town,y:1.65,z:-2};
+      return zone==='car'?{x:CAR_ORIGIN,y:1.65,z:-3}:zone==='airport'?{x:ZONE_ORIGIN.airport,y:1.65,z:4.5}:zone==='plane'?{x:ZONE_ORIGIN.plane-1.5,y:1.65,z:-3.4}:{x:ZONE_ORIGIN.town,y:1.65,z:-2};
     },
     animate(time:number) {
       // Quiet body language; mouths never move and there is no voice playback.

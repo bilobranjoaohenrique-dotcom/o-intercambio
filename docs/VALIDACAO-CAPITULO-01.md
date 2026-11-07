@@ -8,9 +8,9 @@
 
 ## Não confirmado nesta execução
 
-O fluxo automatizado do Chromium (`npm run test:browser`) não iniciou neste ambiente. O executável Chromium abortou antes de abrir a página com `socket() failed: Operation not permitted`. Portanto, o fluxo completo de diálogos e transições precisa ser verificado em um navegador funcional; o build não comprova a jogabilidade ponta a ponta.
+O fluxo automatizado do Chromium (`npm run test:browser`) não iniciou neste ambiente. O executável Chromium abortou antes de abrir a página com `socket() failed: Operation not permitted`. Uma nova tentativa também não conseguiu iniciar o Vite: o ambiente retornou erro ao consultar interfaces de rede (`uv_interface_addresses`). Portanto, o fluxo completo de diálogos e transições precisa ser verificado em um navegador funcional; o build não comprova a jogabilidade ponta a ponta.
 
-Também faltam medições atuais de FPS em GPU física, acabamento detalhado do aeroporto e da cabine, a viagem curta de carro como cena própria, e validação de checkpoints por recarga em cada sequência. As transições de ambiente são fades curtos entre cenários construídos proceduralmente.
+Também faltam medições atuais de FPS em GPU física, acabamento detalhado do aeroporto e da cabine, e validação de checkpoints por recarga em cada sequência. A viagem de carro foi adicionada como cena procedural curta; as transições entre os demais ambientes usam fades.
 
 ## Diálogos e áudio
 

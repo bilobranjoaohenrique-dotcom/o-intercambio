@@ -1,6 +1,6 @@
 import type { Settings } from './types';
 
-export type AudioCue = 'cloth' | 'bed' | 'foot' | 'door' | 'handle' | 'objective';
+export type AudioCue = 'cloth' | 'bed' | 'foot' | 'door' | 'handle' | 'objective' | 'engine';
 type Point = { x:number;y:number;z:number };
 const clamp=(n:number,a:number,b:number)=>Math.max(a,Math.min(b,n));
 const valid=(p:Point)=>[p.x,p.y,p.z].every(Number.isFinite);
@@ -68,6 +68,7 @@ export function createAudio(settings:()=>Settings) {
     if(cue==='handle'){tone(1120,760,.07,.02);rustle(.07,.03,2800);}
     if(cue==='door'){tone(119,82,.4,.014,0,'triangle');rustle(.44,.026,640);}
     if(cue==='objective'){tone(523.25,523.25,.22,.016);tone(659.25,659.25,.25,.012,.12);}
+    if(cue==='engine'){tone(76,58,2.7,.035,0,'sawtooth');rustle(2.6,.025,360);}
   }
   function unlock(){if(disposed)return;unlocked=true;graph();if(context&&!paused)void context.resume().then(setVolume).catch(()=>undefined);}
   function pause(value:boolean){

@@ -8,6 +8,7 @@ export const KITCHEN = { minX: -4.8, maxX: 4.8, startZ: 12, endZ: 22.8, floor: 0
 export const CHAPTER_ZONES = {
   airport: { minX: 24, maxX: 36, minZ: -6, maxZ: 6 },
   plane: { minX: 52, maxX: 64, minZ: -6, maxZ: 6 },
+  car: { minX: 40, maxX: 52, minZ: -6, maxZ: 6 },
   town: { minX: 80, maxX: 92, minZ: -6, maxZ: 6 },
 } as const;
 export const DOOR = { hingeX: 1.45, z: 3.3, width: 1.05, height: 2.13, thickness: .07, openAngle: -Math.PI / 2 } as const;
