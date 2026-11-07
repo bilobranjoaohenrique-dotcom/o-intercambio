@@ -3,7 +3,6 @@ import { Scene } from '@babylonjs/core/scene';
 import { UniversalCamera } from '@babylonjs/core/Cameras/universalCamera';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import { Color4 } from '@babylonjs/core/Maths/math.color';
-import type { ShadowGenerator } from '@babylonjs/core/Lights/Shadows/shadowGenerator';
 import { buildEnvironment } from './scene/environment';
 import { createPlayer, LOOK_RADIANS_PER_PIXEL } from './game/player';
 import { createBreakfastObjective } from './game/objective';
@@ -58,6 +57,10 @@ try {
   const scene = new Scene(engine);
   scene.clearColor = new Color4(.58, .61, .60, 1);
   const camera = new UniversalCamera('protagonist', new Vector3(BED_POSE.position.x, BED_POSE.position.y, BED_POSE.position.z), scene);
+  // Keep the horizon tied to the current pose when switching from the lying
+  // opening to mouse look or a restored checkpoint; Babylon otherwise caches
+  // an up vector from the last change of roll.
+  camera.updateUpVectorFromRotation = true;
   camera.minZ = .045; camera.maxZ = 95; camera.fov = 1.13;
   camera.rotation.set(BED_POSE.pitch, BED_POSE.yaw, BED_POSE.roll);
   scene.activeCamera = camera;
@@ -65,10 +68,7 @@ try {
   const chapterWorld = buildChapterWorld(scene);
   const audio = createAudio(() => settings);
   const door = createDoor(scene, cue => audio.play(cue));
-  for (const light of scene.lights) {
-    const shadow = light.getShadowGenerator() as ShadowGenerator | null;
-    if (shadow?.addShadowCaster) for (const mesh of door.target.meshes) shadow.addShadowCaster(mesh);
-  }
+  for (const mesh of door.target.meshes) environment.shadowGenerator.addShadowCaster(mesh);
   const interactions = createInteractions(scene, camera, [door.target, ...environment.targets, ...chapterWorld.targets]);
   const player = createPlayer(canvas, camera, () => settings, () => [door.collider()], () => audio.play('foot'));
   player.setActive(false);
@@ -171,7 +171,7 @@ try {
   }
   function startDialogue(lines: StoryBeat[], choices: StoryChoice[] = []) {
     if(!dialogue.start(lines,choices,choice=>{selectedChoice=choice;chapter.select(choice.id);}))return;
-    player.setActive(false);player.clearInput();releaseMouse();interactions.clear();renderDialogue();
+    player.setActive(false);player.clearInput();releaseMouse();interactions.clear();el('reticle').hidden=true;renderDialogue();
   }
   function advanceDialogue(choiceIndex=-1) {
     const result=dialogue.advance(choiceIndex);
@@ -186,7 +186,7 @@ try {
     }
     if(chapter.mission==='talk-parents') { chapter.advance('pack-suitcase');el('objectiveText').textContent=chapter.label;el('objectiveState').textContent='NOVA MISSÃO'; }
     if(chapterStage==='town'&&chapter.mission==='find-host'){chapter.advance('complete');finishScene();return;}
-    player.setActive(true);player.requestPointerLock();
+    player.setActive(true);el('reticle').hidden=false;player.requestPointerLock();
   }
   function travelTo(zone:'airport'|'plane'|'town', mission:'airport-gate'|'plane-seat'|'find-host') {
     phase='transition';transitionKind='arrival';transitionTime=0;player.setActive(false);interactions.clear();el('interaction').hidden=true;el('dialogueBox').hidden=true;
@@ -257,15 +257,17 @@ try {
   });
 
   Object.defineProperty(window, '__INTERCAMBIO__', { configurable: true, get: () => ({
-    phase, introTime, duration: OPENING_DURATION, mission: objective.state, chapterMission: chapter.mission, chapterStage, dialogue: dialogue.active,
+    build:'chapter1-kitchen-visual-1',phase, introTime, duration: OPENING_DURATION, mission: objective.state, chapterMission: chapter.mission, chapterStage, dialogue: dialogue.active,
     position: { x: camera.position.x, y: camera.position.y, z: camera.position.z },
-    rotation: { yaw: camera.rotation.y, pitch: camera.rotation.x },
+    rotation: { yaw: camera.rotation.y, pitch: camera.rotation.x, roll: camera.rotation.z },
+    horizonTilt: camera.getDirection(Vector3.Right()).y,
     door: { angle: door.angle, isOpen: door.isOpen }, interaction: interactions.current?.id ?? null,
     examined: [...examined], light: environment.roomLightOn,
     objectiveState: objective.state,
     perf: { ...perf, frames: frameCount }, renderer: 'Babylon.js', webgl: engine.webGLVersion, gpu: engine.getGlInfo(), settings: { ...settings },
     input: { pointerLocked: document.pointerLockElement === canvas, mouseScale: LOOK_RADIANS_PER_PIXEL * settings.sensitivity },
     meshes: scene.meshes.length, vertices: scene.getTotalVertices(), errors: [...errors], dialogueAudio: false,
+    kitchen: chapterWorld.kitchenDiagnostics, dialogueSpeaker: dialogue.current?.speaker ?? null,
     audio: audio.diagnostics,
   }) });
 
@@ -325,8 +327,8 @@ try {
     }
     el('subtitle').hidden = !settings.subtitles || worldTime >= subtitleUntil || phase === 'ready' || phase === 'complete';
     if (worldTime >= examineUntil) el('examine').hidden = true;
-    chapterWorld.animate(worldTime);
-    el('captureMouse').hidden = phase !== 'playing' || document.pointerLockElement === canvas;
+    chapterWorld.animate(worldTime,dialogue.current?.speaker,camera.position);
+    el('captureMouse').hidden = phase !== 'playing' || dialogue.active || document.pointerLockElement === canvas;
     audio.updateListener(camera);
     scene.render(); frameCount++;
     canvas.dataset.phase = phase; canvas.dataset.frames = String(frameCount);

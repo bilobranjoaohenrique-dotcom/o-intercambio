@@ -7,3 +7,5 @@ All dialogue is on-screen text. Never generate, synthesize, fetch, or play chara
 Keep scene construction, movement/collision, interactions, dialogue, quests, transitions, audio, settings, and checkpoint logic in separable modules. Use original procedural assets where possible, maintain the PS1/PS2-inspired look, and keep controls responsive.
 
 Run typecheck, unit tests, production build, and browser-flow checks for changes that affect gameplay. Inspect actual runtime screenshots and exercise interactions; screenshots alone do not verify controls or collisions. Report implementation separately from tested behavior and state performance environment and limits.
+
+Current priority: kitchen and parent visual reconstruction, following docs/PROMPT-RECONSTRUCAO-COZINHA.md. Preserve the existing chapter flow and text-only dialogue. Do not expand scenes or rebuild the airport before the kitchen is reviewed. Use actual runtime captures for the visual report.

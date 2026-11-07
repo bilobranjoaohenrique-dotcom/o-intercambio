@@ -6,6 +6,8 @@ import type { AbstractMesh } from '@babylonjs/core/Meshes/abstractMesh';
 import { TransformNode } from '@babylonjs/core/Meshes/transformNode';
 import type { Scene } from '@babylonjs/core/scene';
 import type { InteractionTarget } from '../game/types';
+import { buildKitchen } from './kitchen';
+import type { Point3 } from '../game/layout';
 
 type Zone = 'home' | 'car' | 'airport' | 'plane' | 'town';
 const ZONE_ORIGIN: Record<Exclude<Zone,'home'|'car'>, number> = { airport: 30, plane: 58, town: 86 };
@@ -77,30 +79,13 @@ export function buildChapterWorld(scene: Scene) {
     if(!front)plane.rotation.y=Math.PI;
     meshes.get(zone)!.push(plane);
   }
-  // Kitchen joins the bottom of the existing staircase through its open landing.
-  const kitchenRoot=new TransformNode('cozinha da família',scene);roots.set('home',kitchenRoot);meshes.set('home',[]);
-  box('home','piso da cozinha',10,.16,11,0,-.08,17.45,floor);
-  box('home','teto da cozinha',10,.16,11,0,3.28,17.45,wall);
-  box('home','parede ao fundo da cozinha',10,3.2,.18,0,1.6,22.92,wall);
-  box('home','parede esquerda da cozinha',.18,3.2,11,-4.92,1.6,17.45,wall);
-  box('home','parede direita da cozinha',.18,3.2,11,4.92,1.6,17.45,wall);
-  box('home','mesa de café da manhã',2.25,.18,1.25,.1,.82,17.3,wood);
-  for(const [x,z] of [[-.8,16.8],[1,16.8],[-.8,18],[1,18]] as const) {
-    box('home','pé da mesa',.12,.8,.12,x,.4,z,wood);
-    cyl('home','prato de café',.43,.035,x,.94,z,linen);
-    cyl('home','xícara',.19,.23,x+.27,1.04,z,wall);
-  }
-  box('home','balcão',3,.86,.65,-2.9,.43,20.7,wood);
-  box('home','armários superiores',2.8,.9,.4,-2.9,2.3,20.8,green);
-  box('home','geladeira',.9,2,.75,3.8,1,20.8,metal);
-  box('home','fogão',1.1,.9,.7,-2.9,.46,18.8,metal);
-  for(const x of[-3.2,-2.85,-2.55]) cyl('home','boca do fogão',.23,.035,x,.94,18.8,dark);
-  cyl('home','fruteira',.5,.12,-.05,1.03,17.3,metal);
-  for(const [x,z] of [[-.18,17.27],[.04,17.35],[.18,17.24]] as const)sphere('home','fruta do café',.19,x,1.16,z,fruit);
-  box('home','janela da cozinha',2,1.2,.07,0,2.15,22.79,glass);
-  box('home','luminária da cozinha',.45,.08,.45,0,3.14,17.2,linen);
-  character('home',-1.2,17.3,red,'parents'); character('home',1.4,17.3,blue,'parents');
-  box('home','mala pronta',.92,.58,.55,3.25,.29,15.6,wood,'suitcase');
+  // The rebuilt kitchen owns only the existing home set. Chapter progression
+  // and every travel environment remain in their original modules below.
+  const kitchenRoot=new TransformNode('cozinha da família',scene);
+  roots.set('home',kitchenRoot);
+  const kitchen=buildKitchen(scene,kitchenRoot);
+  meshes.set('home',kitchen.meshes);
+  targets.push(...kitchen.targets);
 
   const carRoot=new TransformNode('viagem de carro',scene);roots.set('car',carRoot);meshes.set('car',[]);
   box('car','estrada durante a viagem',5,.06,35,CAR_ORIGIN,-.03,12,mat('car-road','#535454'));
@@ -158,7 +143,13 @@ export function buildChapterWorld(scene: Scene) {
   sign('town','DESAPARECIDO',ZONE_ORIGIN.town+4,1.5,2.94,.7,.9);
   box('town','placa de boas vindas',1.4,.65,.08,ZONE_ORIGIN.town,2.3,-.7,linen);
 
-  function activate(zone:Zone) { for(const [key,root]of roots) root.setEnabled(key===zone); }
+  const hostArms=[host.left,host.right];
+  let activeZone:Zone='home';
+  function activate(zone:Zone) {
+    activeZone=zone;
+    for(const [key,root]of roots) root.setEnabled(key===zone);
+    kitchen.setActive(zone==='home');
+  }
   activate('home');
   return {
     targets,
@@ -166,13 +157,14 @@ export function buildChapterWorld(scene: Scene) {
     teleportPoint(zone:Exclude<Zone,'home'>) {
       return zone==='car'?{x:CAR_ORIGIN,y:1.65,z:-3}:zone==='airport'?{x:ZONE_ORIGIN.airport,y:1.65,z:4.5}:zone==='plane'?{x:ZONE_ORIGIN.plane-1.5,y:1.65,z:-3.4}:{x:ZONE_ORIGIN.town,y:1.65,z:-2};
     },
-    animate(time:number) {
-      // Quiet body language; mouths never move and there is no voice playback.
-      const parent=meshes.get('home')?.filter(m=>m.name==='braço esquerdo'||m.name==='braço direito')??[];
-      parent.forEach((arm,i)=>{arm.rotation.z=(i%2?1:-1)*(.08+Math.sin(time*1.2+i)*.025);});
-      const hostArms=meshes.get('town')?.filter(m=>m.name==='braço esquerdo'||m.name==='braço direito')??[];
-      hostArms.forEach((arm,i)=>{arm.rotation.z=(i%2?1:-1)*(.06+Math.sin(time*.9+i)*.02);});
+    animate(time:number,speaker?:string,observer?:Point3) {
+      if(activeZone==='home') kitchen.animate(time,speaker,observer);
+      // Existing host body language is preserved, without rebuilding an arm
+      // list on each frame while the other chapter sets are active.
+      if(activeZone==='town') for(let i=0;i<hostArms.length;i++)
+        hostArms[i].rotation.z=(i%2?1:-1)*(.06+Math.sin(time*.9+i)*.02);
     },
-    dispose(){for(const root of roots.values())root.dispose(false,false);for(const material of materials.values())material.dispose();for(const texture of textures)texture.dispose();}
+    get kitchenDiagnostics(){return {active:activeZone==='home',version:'cozinha-visual-1',meshes:kitchen.meshes.length};},
+    dispose(){kitchen.dispose();for(const root of roots.values())root.dispose(false,false);for(const material of materials.values())material.dispose();for(const texture of textures)texture.dispose();}
   };
 }

@@ -1,4 +1,5 @@
 import { CHAPTER_ZONES, DOOR, FURNITURE, HALL, KITCHEN, ROOM, STAIRS, type Point2 } from './layout';
+import { KITCHEN_SOLIDS } from './kitchenLayout';
 import type { Obstacle } from './types';
 
 export const PLAYER_RADIUS = .22;
@@ -20,10 +21,13 @@ export const staticObstacles: readonly Obstacle[] = [
   box(DOOR.hingeX + DOOR.width, ROOM.maxX, ROOM.maxZ, ROOM.maxZ + WALL_THICKNESS),
   box(HALL.minX - WALL_THICKNESS, HALL.minX, HALL.startZ, HALL.endZ),
   box(HALL.maxX, HALL.maxX + WALL_THICKNESS, HALL.startZ, HALL.endZ),
+  box(KITCHEN.minX, HALL.minX, KITCHEN.startZ - WALL_THICKNESS, KITCHEN.startZ),
+  box(HALL.maxX, KITCHEN.maxX, KITCHEN.startZ - WALL_THICKNESS, KITCHEN.startZ),
   box(KITCHEN.minX, KITCHEN.minX + WALL_THICKNESS, KITCHEN.startZ, KITCHEN.endZ),
   box(KITCHEN.maxX - WALL_THICKNESS, KITCHEN.maxX, KITCHEN.startZ, KITCHEN.endZ),
   box(KITCHEN.minX, KITCHEN.maxX, KITCHEN.endZ, KITCHEN.endZ + WALL_THICKNESS),
   ...Object.values(FURNITURE).map(item => ({ x: item.x, z: item.z, halfWidth: item.width / 2, halfDepth: item.depth / 2 })),
+  ...KITCHEN_SOLIDS,
 ];
 
 /** Height of the physical tread below the player's feet, never a camera offset. */
@@ -55,6 +59,8 @@ const floorEdges: readonly Edge[] = [
   [HALL.maxX, ROOM.maxZ, ROOM.maxX, ROOM.maxZ],
   [HALL.minX, HALL.startZ, HALL.minX, HALL.endZ],
   [HALL.maxX, HALL.startZ, HALL.maxX, HALL.endZ],
+  [KITCHEN.minX, KITCHEN.startZ, HALL.minX, KITCHEN.startZ],
+  [HALL.maxX, KITCHEN.startZ, KITCHEN.maxX, KITCHEN.startZ],
   [KITCHEN.minX, KITCHEN.endZ, KITCHEN.maxX, KITCHEN.endZ],
   [KITCHEN.minX, KITCHEN.startZ, KITCHEN.minX, KITCHEN.endZ],
   [KITCHEN.maxX, KITCHEN.startZ, KITCHEN.maxX, KITCHEN.endZ],

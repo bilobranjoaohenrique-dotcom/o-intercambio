@@ -1,0 +1,385 @@
+{
+  "schema": 1,
+  "project": "INTERCÂMBIO — Capítulo 1: A Despedida",
+  "update": "Reconstrução visual da cozinha e dos pais",
+  "executionDate": "2026-11-07",
+  "dateTimezone": "America/Sao_Paulo",
+  "environment": {
+    "node": "24.19.0",
+    "chromium": "154",
+    "os": "Debian 13 / Linux",
+    "graphics": "SwiftShader, software rendering",
+    "webgl": 2,
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    }
+  },
+  "checks": {
+    "typecheck": "passed",
+    "unitTests": {
+      "passed": 41,
+      "failed": 0
+    },
+    "finalProductionBuild": {
+      "status": "passed",
+      "mainChunkKb": 1403.42,
+      "mainChunkGzipKb": 358.88,
+      "warning": "Vite chunk above 500 kB; warning retained"
+    }
+  },
+  "runs": [
+    {
+      "id": "full-chapter-fresh-balanced",
+      "status": "passed",
+      "entry": "fresh game from bed",
+      "coverage": [
+        "fresh opening",
+        "physical door and stairs",
+        "six kitchen perspectives",
+        "table and parent collisions",
+        "pause",
+        "real checkpoint reload",
+        "text-only parent dialogue and choice",
+        "suitcase",
+        "existing car trip",
+        "airport gate",
+        "plane",
+        "host-family ending"
+      ],
+      "kitchen": {
+        "lighting": {
+          "whiteClipFraction": 0,
+          "samples": 58255
+        },
+        "performance": {
+          "profile": "kitchen-balanced",
+          "renderer": "Babylon.js",
+          "webgl": 2,
+          "environment": "Chromium/SwiftShader, Linux, stationary camera, 1280×800 viewport",
+          "internal": {
+            "width": 914,
+            "height": 571
+          },
+          "seconds": 10.002703003000002,
+          "frames": 81,
+          "measuredFps": 8.1,
+          "reported": {
+            "frames": 1408,
+            "meanFrameMs": 105.4,
+            "p95FrameMs": 154.6,
+            "fps": 9.5
+          }
+        },
+        "idle": {
+          "changedPixels": 520,
+          "totalPixels": 521894,
+          "observedFrames": 7
+        },
+        "horizon": [
+          {
+            "view": "balanced kitchen overview",
+            "basisRightY": 1.0967893260271921e-10,
+            "rotation": {
+              "yaw": -0.026399999999999132,
+              "pitch": 0.11120000000000023,
+              "roll": 0
+            }
+          },
+          {
+            "view": "both parents across the table",
+            "basisRightY": 1.2123706483180285e-09,
+            "rotation": {
+              "yaw": -0.19439999999999913,
+              "pitch": 0.17120000000000024,
+              "roll": 0
+            }
+          },
+          {
+            "view": "looking downward while approaching the table",
+            "basisRightY": -3.231829387440044e-11,
+            "rotation": {
+              "yaw": 0.004799999999999083,
+              "pitch": 0.38720000000000027,
+              "roll": 0
+            }
+          },
+          {
+            "view": "mother close-up after turning left",
+            "basisRightY": 3.721013497326453e-09,
+            "rotation": {
+              "yaw": 0.5279999999999995,
+              "pitch": 0.0680000000000003,
+              "roll": 0
+            }
+          },
+          {
+            "view": "father close-up after turning right",
+            "basisRightY": -2.502614560029315e-09,
+            "rotation": {
+              "yaw": -0.2112000000000009,
+              "pitch": 0.1520000000000004,
+              "roll": 0
+            }
+          }
+        ],
+        "collisions": {
+          "tableStop": {
+            "x": -0.007168032850422928,
+            "y": 1.6499979233063358,
+            "z": 17.662760719898998
+          },
+          "parentStop": {
+            "x": -1.5547937811967132,
+            "y": 1.6500140722380199,
+            "z": 18.472805638623075
+          },
+          "separation": 0.47721843936303654
+        }
+      },
+      "renderer": "Babylon.js",
+      "webgl": 2,
+      "sceneMeshes": 268,
+      "sceneVertices": 83229,
+      "sourceEvidence": [
+        "intercambio-cozinha-verificacao-final.log",
+        "o-intercambio-browser-results.json"
+      ]
+    },
+    {
+      "id": "final-kitchen-ui-checkpoint-balanced",
+      "status": "passed",
+      "entry": "targeted final-build kitchen/UI regression entered by supported saved-checkpoint fixture; fresh full chapter verified separately",
+      "coverage": [
+        "final kitchen/UI",
+        "six actual views",
+        "table and parent collisions",
+        "pause and checkpoint reload",
+        "text-only parent dialogue and choice",
+        "advance to pack-suitcase mission"
+      ],
+      "kitchen": {
+        "lighting": {
+          "whiteClipFraction": 0,
+          "samples": 58255
+        },
+        "performance": {
+          "profile": "kitchen-balanced",
+          "renderer": "Babylon.js",
+          "webgl": 2,
+          "environment": "Chromium/SwiftShader, Linux, stationary camera, 1280×800 viewport",
+          "internal": {
+            "width": 914,
+            "height": 571
+          },
+          "seconds": 10.007237193000002,
+          "frames": 83,
+          "measuredFps": 8.3,
+          "reported": {
+            "frames": 168,
+            "meanFrameMs": 117.4,
+            "p95FrameMs": 204.7,
+            "fps": 8.5
+          }
+        },
+        "idle": {
+          "changedPixels": 540,
+          "totalPixels": 521894,
+          "observedFrames": 7
+        },
+        "horizon": [
+          {
+            "view": "balanced kitchen overview",
+            "basisRightY": 0,
+            "rotation": {
+              "yaw": 2.7755575615628914e-17,
+              "pitch": 0.10800000000000001,
+              "roll": 0
+            }
+          },
+          {
+            "view": "both parents across the table",
+            "basisRightY": 7.586242745105665e-10,
+            "rotation": {
+              "yaw": -0.23999999999999982,
+              "pitch": 0.18000000000000005,
+              "roll": 0
+            }
+          },
+          {
+            "view": "looking downward while approaching the table",
+            "basisRightY": -6.468142688120793e-11,
+            "rotation": {
+              "yaw": 0.01920000000000016,
+              "pitch": 0.38880000000000003,
+              "roll": 0
+            }
+          },
+          {
+            "view": "mother close-up after turning left",
+            "basisRightY": -2.9605999873894007e-09,
+            "rotation": {
+              "yaw": 0.5567999999999985,
+              "pitch": 0.06960000000000005,
+              "roll": 0
+            }
+          },
+          {
+            "view": "father close-up after turning right",
+            "basisRightY": -1.33039534944146e-09,
+            "rotation": {
+              "yaw": -0.2112000000000016,
+              "pitch": 0.15119999999999995,
+              "roll": 0
+            }
+          }
+        ],
+        "collisions": {
+          "before": {
+            "x": -0.034872346175419386,
+            "y": 1.649999999931547,
+            "z": 17.02082974151055
+          },
+          "tableStop": {
+            "x": -0.0348723461754192,
+            "y": 1.6499842925235293,
+            "z": 17.650829741510535
+          },
+          "parentStop": {
+            "x": -1.5528778867964605,
+            "y": 1.6499758812932401,
+            "z": 18.473952787596698
+          },
+          "separation": 0.47605591128497426
+        }
+      },
+      "stateAfter": {
+        "build": "chapter1-kitchen-visual-1",
+        "chapterMission": "pack-suitcase",
+        "chapterStage": "home",
+        "errors": [],
+        "dialogueAudio": false
+      },
+      "sourceEvidence": [
+        "intercambio-cozinha-interface-final.log",
+        "cozinha-interface-final-results.json"
+      ]
+    },
+    {
+      "id": "fresh-kitchen-low",
+      "status": "passed",
+      "entry": "fresh game from bed, physical stairs and kitchen approach",
+      "coverage": "fresh actual approach, image and measured performance",
+      "kitchen": {
+        "lighting": {
+          "whiteClipFraction": 0,
+          "samples": 23474
+        },
+        "performance": {
+          "profile": "kitchen-low",
+          "renderer": "Babylon.js",
+          "webgl": 2,
+          "environment": "Chromium/SwiftShader, Linux, stationary camera, 1280×800 viewport",
+          "internal": {
+            "width": 581,
+            "height": 363
+          },
+          "seconds": 9.999982806,
+          "frames": 122,
+          "measuredFps": 12.2,
+          "reported": {
+            "frames": 1299,
+            "meanFrameMs": 74,
+            "p95FrameMs": 93.2,
+            "fps": 13.5
+          }
+        },
+        "horizon": [
+          {
+            "view": "low kitchen overview",
+            "basisRightY": -3.5347336169166965e-11,
+            "rotation": {
+              "yaw": 0.01919999999999509,
+              "pitch": 0.11600000000000009,
+              "roll": 0
+            }
+          }
+        ]
+      },
+      "renderer": "Babylon.js",
+      "webgl": 2,
+      "sceneMeshes": 268,
+      "sceneVertices": 83229,
+      "chapterMissionAfter": "talk-parents",
+      "sourceEvidence": [
+        "intercambio-cozinha-baixo-final.log",
+        "o-intercambio-kitchen-results.json"
+      ]
+    }
+  ],
+  "captures": [
+    {
+      "title": "Vista geral da cozinha",
+      "path": "capturas/cozinha-geral.png",
+      "native": {
+        "width": 1280,
+        "height": 800
+      },
+      "method": "final kitchen/UI regression, supported saved-checkpoint entry, actual keyboard and mouse"
+    },
+    {
+      "title": "Mãe visível na cena",
+      "path": "capturas/cozinha-mae.png",
+      "native": {
+        "width": 1280,
+        "height": 800
+      },
+      "method": "final kitchen/UI regression, supported saved-checkpoint entry, actual keyboard and mouse"
+    },
+    {
+      "title": "Pai visível na cena",
+      "path": "capturas/cozinha-pai.png",
+      "native": {
+        "width": 1280,
+        "height": 800
+      },
+      "method": "final kitchen/UI regression, supported saved-checkpoint entry, actual keyboard and mouse"
+    },
+    {
+      "title": "Ambos os pais à mesa",
+      "path": "capturas/cozinha-pais.png",
+      "native": {
+        "width": 1280,
+        "height": 800
+      },
+      "method": "final kitchen/UI regression, supported saved-checkpoint entry, actual keyboard and mouse"
+    },
+    {
+      "title": "Aproximação do jogador à mesa",
+      "path": "capturas/cozinha-aproximacao.png",
+      "native": {
+        "width": 1280,
+        "height": 800
+      },
+      "method": "final kitchen/UI regression, supported saved-checkpoint entry, actual keyboard and mouse"
+    },
+    {
+      "title": "Diálogo na cozinha",
+      "path": "capturas/cozinha-dialogo.png",
+      "native": {
+        "width": 1280,
+        "height": 800
+      },
+      "method": "final kitchen/UI regression, supported saved-checkpoint entry, actual keyboard and mouse"
+    }
+  ],
+  "notes": [
+    "The full fresh chapter run completed before two dialogue UI visibility conditions were adjusted. The final-build focused regression verified those UI changes and the kitchen; it is not claimed as another full fresh chapter run.",
+    "Each kitchen object preserves the raw measured performance, lighting, horizon and collision fields from its source result. Moving-window mean/P95/fps values reported by the game are not treated as statistics for the exact ten-second interval.",
+    "No acceptable-performance or 60 FPS claim is made for these software-rendering measurements. Physical GPU performance, Windows execution and the player computer remain unmeasured.",
+    "All character dialogue is text only. No voice, TTS or dubbing is generated, loaded or played.",
+    "The supplied reference image was art direction only; scene, models and textures are original procedural project assets.",
+    "Kitchen visuals remain less detailed than the reference image; window lighting is an approximation. Airport geometry was kept outside this visual-rework scope pending user approval.",
+    "No deployed Vercel URL was checked in this validation."
+  ]
+}

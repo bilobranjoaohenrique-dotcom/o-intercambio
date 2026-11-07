@@ -1,17 +1,24 @@
 # Validação — Capítulo 1: A Despedida
 
+A reconstrução da cozinha foi executada e verificada em **7 de novembro de 2026**. O [relatório visual](RECONSTRUCAO-COZINHA.md) apresenta os arquivos alterados, as seis capturas reais, os resultados e as limitações. Os números também estão em [resultados-cozinha.json](resultados-cozinha.json).
+
 ## Executado
 
-- `npm run typecheck`: aprovado.
-- `npm test`: 37 testes aprovados, incluindo câmera, colisões, escada, porta, interações, missões e escolhas.
-- `npm run build`: aprovado com Vite. O bundle principal ultrapassa 500 kB após minificação; ainda precisa ser otimizado.
+- Checagem de TypeScript: aprovada.
+- Testes unitários: **41 aprovados, zero falhas**, incluindo os obstáculos e os limites novos da cozinha.
+- Build Vite de produção: aprovado. O chunk principal tem 1.403,42 kB, ou 358,88 kB com gzip; o aviso de tamanho acima de 500 kB permanece.
+- Fluxo completo no Chromium: despertar, porta, escada, cozinha, diálogo e escolha, mala, carro, aeroporto, avião e chegada à família anfitriã. As interações foram realizadas com teclado e mouse, sem setters de progresso ou teletransporte de teste.
+- Cozinha: mesa e mãe bloqueiam a caminhada; a câmera mantém o horizonte após diferentes movimentos do mouse; pausa e restauração real do checkpoint foram verificadas.
+- Ajuste final da interface: revalidado a partir de um checkpoint da cozinha, com seis capturas e mira/captura do mouse ocultas durante falas e escolhas. Essa rodada direcionada não é apresentada como uma nova passagem desde a cama.
+- Modo baixo: nova partida desde o despertar até a cozinha, imagem e benchmark próprios aprovados.
+- Sem erros críticos de página, shaders, console ou arquivos locais nos percursos concluídos.
 
-## Não confirmado nesta execução
+## Ambiente e limites
 
-O fluxo automatizado do Chromium (`npm run test:browser`) não iniciou neste ambiente. O executável Chromium abortou antes de abrir a página com `socket() failed: Operation not permitted`. Uma nova tentativa também não conseguiu iniciar o Vite: o ambiente retornou erro ao consultar interfaces de rede (`uv_interface_addresses`). Portanto, o fluxo completo de diálogos e transições precisa ser verificado em um navegador funcional; o build não comprova a jogabilidade ponta a ponta.
+Os testes usaram Node.js 24.19.0 e Chromium 154.0.8037.57 em Debian 13/Linux, com SwiftShader e viewport de 1280 × 800. As medições de dez segundos ficaram entre **8,1 e 12,2 FPS**, dependendo da resolução interna e da rodada. O relatório detalha cada amostra. Isso não estabelece desempenho aceitável ou 60 FPS em GPU física.
 
-Também faltam medições atuais de FPS em GPU física, acabamento detalhado do aeroporto e da cabine, e validação de checkpoints por recarga em cada sequência. A viagem de carro foi adicionada como cena procedural curta; as transições entre os demais ambientes usam fades.
+O executável `.bat` não foi testado em Windows e a URL de produção da Vercel não foi verificada nesta rodada. O acabamento visual do aeroporto, do avião e da cidade não foi refeito; o percurso existente foi preservado e exercitado.
 
 ## Diálogos e áudio
 
-O roteiro aparece somente como texto. O WAV sintético antigo, o inventário de voz e o gerador de voz foram removidos. Os sons restantes são efeitos e ambiência procedural, sem fala.
+Todos os diálogos continuam somente em texto. Não há voz gravada, voz sintética, TTS ou narração. Os sons disponíveis são efeitos e ambiência não verbal.

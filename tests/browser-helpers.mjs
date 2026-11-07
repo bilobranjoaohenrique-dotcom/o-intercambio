@@ -12,7 +12,6 @@ export async function launchBrowser() {
 }
 export async function openScene(browser, profile = 'balanced', webgl1 = false) {
   const page = await browser.newPage({ viewport: { width: 1280, height: 800 }, deviceScaleFactor: 1 });
-  await page.addInitScript(() => localStorage.removeItem('o-intercambio.chapter1.checkpoint.v1'));
   page.setDefaultTimeout(45000);
   const errors = [], consoleErrors = [], failed = [];
   page.on('pageerror', error => errors.push(error.message));
@@ -52,7 +51,7 @@ export async function startScene(page) {
 export async function finishOpening(page) {
   await waitPhase(page, 'playing');
   await page.locator('#objective').waitFor({ state: 'visible' });
-  assert.match(await page.locator('#objective').textContent(), /Desça para o café/);
+  assert.equal((await page.locator('#objectiveText').textContent()).trim(), 'Desça para tomar café');
   const state = await snapshot(page);
   assert.equal(state.mission, 'active');
   assert.ok(Math.hypot(state.position.x + 1.25, state.position.z + 1.1) < .06,
