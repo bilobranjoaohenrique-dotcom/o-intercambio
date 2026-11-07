@@ -123,8 +123,10 @@ Este é um projeto independente. A cena segue o [roteiro do Protótipo 01](docs/
 
 Geometria, texturas e efeitos procedurais são produzidos para este projeto. A procedência da ferramenta usada na voz provisória está registrada na pasta de áudio, incluindo o texto de licença; o sintetizador não precisa ser instalado para jogar.
 
-## Entrega local
+## Entrega e publicação
+
+Repositório do projeto: [O-Intercambio no GitHub](https://github.com/bilobranjoaohenrique-dotcom/O-Intercambio).
 
 O arquivo `vercel.json` já configura a importação do projeto na Vercel. Veja o [passo a passo de publicação](docs/PUBLICAR-NA-VERCEL.md), com os campos exatos e a conferência do jogo após publicar.
 
-Os endereços `localhost` acima funcionam no computador onde o inicializador está aberto. A criação do repositório remoto no GitHub não foi concluída neste ambiente; não há endereço público de repositório ou prévia confirmado nesta entrega.
+Os endereços `localhost` acima funcionam no computador onde o inicializador está aberto. Para gerar o endereço do site, importe o repositório na sua conta da Vercel conforme o passo a passo acima.
