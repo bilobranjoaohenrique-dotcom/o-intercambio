@@ -7,7 +7,7 @@ O projeto está preparado para publicação como site estático. A configuraçã
 Depois que o projeto estiver no seu GitHub:
 
 1. Entre na sua conta da [Vercel](https://vercel.com/new).
-2. Em **Import Git Repository**, escolha o repositório **O-Intercambio**. Se ele não aparecer, use **Adjust GitHub App Permissions** para permitir que a Vercel o veja.
+2. Em **Import Git Repository**, escolha o repositório **o-intercambio**. Se ele não aparecer, use **Adjust GitHub App Permissions** para permitir que a Vercel o veja.
 3. Confira as opções abaixo. As opções de instalação, build e saída já são preenchidas pelo arquivo do projeto.
 4. Clique em **Deploy** e aguarde o término.
 5. Abra o endereço gerado pela Vercel e clique em **Começar**.

@@ -14,7 +14,7 @@ O protótipo cobre o despertar, o quarto, o corredor e a descida da escada. A es
 4. Dê dois cliques em **INICIAR-O-INTERCAMBIO.bat**.
 5. O navegador abrirá o jogo. Clique em **Começar**.
 
-O ZIP de entrega inclui a cena já compilada em **dist/**. Com Node.js instalado, o inicializador usa esse build e o servidor HTTP local do próprio Node, sem instalar pacotes npm. Em uma cópia apenas do código-fonte, o mesmo `.bat` prepara as dependências e usa o servidor de desenvolvimento.
+O ZIP compilado de entrega inclui a cena pronta em **dist/**. Com Node.js instalado, o inicializador usa esse build e o servidor HTTP local do próprio Node, sem instalar pacotes npm. O ZIP baixado pelo botão **Code → Download ZIP** do GitHub contém o código-fonte; nessa cópia, o mesmo `.bat` instala as dependências e abre o servidor de desenvolvimento automaticamente.
 
 Mantenha a janela do inicializador aberta enquanto joga. Para encerrar, feche essa janela. Se o navegador não abrir sozinho, digite na barra de endereços o endereço exibido pelo inicializador.
 
@@ -125,7 +125,7 @@ Geometria, texturas e efeitos procedurais são produzidos para este projeto. A p
 
 ## Entrega e publicação
 
-Repositório do projeto: [O-Intercambio no GitHub](https://github.com/bilobranjoaohenrique-dotcom/O-Intercambio).
+Repositório do projeto: [o-intercambio no GitHub](https://github.com/bilobranjoaohenrique-dotcom/o-intercambio).
 
 O arquivo `vercel.json` já configura a importação do projeto na Vercel. Veja o [passo a passo de publicação](docs/PUBLICAR-NA-VERCEL.md), com os campos exatos e a conferência do jogo após publicar.
 
