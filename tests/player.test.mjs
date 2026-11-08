@@ -107,10 +107,10 @@ test('player: frame longo, aba escondida e descarte não acumulam movimento nem 
 
 test('player: passos dependem de deslocamento físico e a opção de balanço permanece discreta', () => {
   const fixtureState = fixture(), { document, camera, settings, player } = fixtureState;
-  player.activateFromCamera(); document.dispatchEvent(event('keydown', { code: 'KeyA' }));
+  player.activateFromCamera(); document.dispatchEvent(event('keydown', { code: 'KeyD' }));
   advance(player, 2); assert.equal(fixtureState.footsteps, 0, 'pressing into the nearby bed cannot play walking steps');
-  document.dispatchEvent(event('keyup', { code: 'KeyA' })); player.clearInput();
-  camera.position.set(-1.25, 4.65, -1.1); camera.rotation.set(0, 0, 0); player.activateFromCamera();
+  document.dispatchEvent(event('keyup', { code: 'KeyD' })); player.clearInput();
+  camera.position.set(STANDING_POSE.position.x, STANDING_POSE.position.y, STANDING_POSE.position.z); camera.rotation.set(0, 0, 0); player.activateFromCamera();
   settings.headBob = true; document.dispatchEvent(event('keydown', { code: 'KeyW' }));
   for (let i = 0; i < 60; i++) {
     player.update(1 / 60);

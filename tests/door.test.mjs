@@ -54,7 +54,7 @@ test('porta: collider OBB coincide com a folha Babylon no hinge, meio e final da
 
 test('porta: bloqueia a passagem e costuras fechada; aberta permite atravessar a abertura real',()=>fixture(({door})=>{
   for(const x of [1.68,1.9,2.1,2.28]) {
-    const end=moveWithCollisions({x,z:2.5},0,2,[door.collider()]);
+    const end=moveWithCollisions({x,z:3.03},0,2,[door.collider()]);
     assert.ok(end.z<DOOR.z,'closed leaf and adjacent walls form a continuous barrier');
     assert.equal(circleOverlapsObstacle(end,door.collider()),false);
   }

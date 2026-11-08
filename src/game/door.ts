@@ -24,7 +24,7 @@ export function createDoor(scene: Scene, onSound?: (cue: 'door' | 'handle') => v
   const inset = new StandardMaterial('porta.paineis',scene);
   inset.diffuseColor=Color3.FromHexString('#6c4b33');inset.specularColor.set(.025,.022,.018);
   const metal = new StandardMaterial('porta.latão',scene);
-  metal.diffuseColor=Color3.FromHexString('#96846a');metal.specularColor.set(.22,.20,.16);metal.specularPower=32;
+  metal.diffuseColor=Color3.FromHexString('#92703e');metal.specularColor.set(.30,.23,.12);metal.specularPower=32;
 
   // A small authored grain texture gives the large wooden surface a sober,
   // low-resolution finish. It has no external asset or canvas dependency.
@@ -39,6 +39,7 @@ export function createDoor(scene: Scene, onSound?: (cue: 'door' | 'handle') => v
     const texture=RawTexture.CreateRGBTexture(pixels,width,height,scene,false,false,Texture.NEAREST_SAMPLINGMODE);
     texture.name='porta.veios-locais-64x128';texture.wrapU=texture.wrapV=Texture.WRAP_ADDRESSMODE;
     wood.diffuseTexture=texture;wood.diffuseColor=Color3.White();
+    inset.diffuseTexture=texture;inset.diffuseColor.set(.83,.78,.71);
   }
 
   const hinge = new TransformNode('porta.dobradiça',scene);
@@ -68,8 +69,9 @@ export function createDoor(scene: Scene, onSound?: (cue: 'door' | 'handle') => v
     const stem=MeshBuilder.CreateCylinder('porta.eixo-maçaneta',{height:.055,diameter:.025,tessellation:8},scene);
     stem.parent=hinge;stem.rotation.x=Math.PI/2;stem.position.set(handleX,1.02,side*(DOOR.thickness/2+.034));
     for(const mesh of [plate,stem]){mesh.material=metal;mesh.isPickable=true;mesh.metadata={doorPart:'handle',interaction:'door'};moving.push(mesh);}
-    const lever=box('porta.maçaneta',.13,.027,.029,handleX-.042,1.02,side*(DOOR.thickness/2+.066),metal);
-    lever.metadata={doorPart:'handle',interaction:'door'};
+    const knob=MeshBuilder.CreateSphere('porta.maçaneta-redonda',{diameter:.073,segments:12},scene);
+    knob.parent=hinge;knob.scaling.z=.82;knob.position.set(handleX,1.02,side*(DOOR.thickness/2+.069));
+    knob.material=metal;knob.isPickable=true;knob.metadata={doorPart:'handle',interaction:'door'};moving.push(knob);
   }
   for(const y of [.24,1.04,1.84]) {
     const barrel=MeshBuilder.CreateCylinder('porta.ferragem-dobradiça',{height:.12,diameter:.042,tessellation:8},scene);

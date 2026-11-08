@@ -11,7 +11,7 @@ const box = (minX: number, maxX: number, minZ: number, maxZ: number): Obstacle =
   halfWidth: (maxX - minX) / 2, halfDepth: (maxZ - minZ) / 2,
 });
 
-/** Inner wall faces coincide with layout bounds. The bedroom's north wall has
+/** Inner wall faces coincide with layout bounds. The bedroom's doorway wall has
  * a real opening; the moving leaf is supplied separately as an oriented box. */
 export const staticObstacles: readonly Obstacle[] = [
   box(ROOM.minX - WALL_THICKNESS, ROOM.minX, ROOM.minZ, ROOM.maxZ),
@@ -73,7 +73,12 @@ const floorEdges: readonly Edge[] = [
 ];
 function edgeDistanceSquared(point: Point2, [ax, az, bx, bz]: Edge) {
   const dx = bx - ax, dz = bz - az;
-  const along = Math.max(0, Math.min(1, ((point.x - ax) * dx + (point.z - az) * dz) / (dx * dx + dz * dz)));
+  // Matching room/hall extents can produce a zero-length boundary segment.
+  // Its endpoint still has a physical distance; dividing by zero would make
+  // every position non-walkable through NaN comparisons.
+  const squaredLength = dx * dx + dz * dz;
+  if (squaredLength <= EPSILON) return (point.x - ax) ** 2 + (point.z - az) ** 2;
+  const along = Math.max(0, Math.min(1, ((point.x - ax) * dx + (point.z - az) * dz) / squaredLength));
   return (point.x - ax - along * dx) ** 2 + (point.z - az - along * dz) ** 2;
 }
 export function circleOverlapsObstacle(point: Point2, obstacle: Obstacle, radius = PLAYER_RADIUS): boolean {

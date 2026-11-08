@@ -28,3 +28,16 @@ Os materiais, modelos e padrões domésticos da reconstrução são autorais e p
 | Pele, rostos, cabelo e roupas dos pais | Padrões originais gerados localmente em Canvas | `src/scene/parentsMaterials.ts` |
 
 Nenhum pacote externo de cozinha ou personagem foi adicionado para essa reconstrução. Os personagens continuam comunicando-se exclusivamente por legendas, sem arquivos de voz ou síntese de fala.
+
+## Reconstrução do quarto do protagonista
+
+A imagem original do quarto e a prancha multivista enviadas pelo usuário servem como referência de composição e direção artística. Não são arquivos de modelos, não conferem licença sobre recursos de terceiros e não são incorporadas como texturas ou cenário plano.
+
+| Recurso | Origem | Arquivos |
+| --- | --- | --- |
+| Quarto, móveis, computador CRT, objetos e paisagem vista pela janela | Geometria original construída para o projeto | `src/scene/bedroom.ts` |
+| Papel de parede, parquet, madeira, xadrez, cortinas, tapete e tecidos | Desenhos procedurais originais gerados localmente em Canvas | `src/scene/bedroomMaterials.ts` |
+| Fotografia da família, calendário, documentos, mostrador 06:30 e pôsteres fictícios | Ilustrações procedurais originais do projeto | `src/scene/bedroomMaterials.ts` |
+| Bandeira brasileira e céu distante | Representação gráfica procedural; sem pacote de imagem externo | `src/scene/bedroomMaterials.ts` |
+
+A banda fictícia “Horizonte” e o cartaz “Lado de Dentro” são ilustrações autorais, sem uso de capas ou fotografias de bandas comerciais. O céu é um material de fundo externo; os móveis, a casa vizinha e a vegetação são objetos 3D. Nenhum pacote externo de quarto ou textura foi incorporado nesta reconstrução. O [relatório do quarto](docs/RECONSTRUCAO-QUARTO.md) registra a implementação e os limites da comparação visual.

@@ -9,6 +9,7 @@ const { ROOM, HALL, STAIRS, DOOR, FURNITURE, STANDING_POSE } = await import('../
 const { PLAYER_RADIUS, floorHeight, staticObstacles, isWalkable, moveWithCollisions,
   circleOverlapsObstacle, reachedBreakfast } = await import('../src/game/collision.ts');
 const { movementVector, approachVelocity, WALK_SPEED, RUN_SPEED } = await import('../src/game/player.ts');
+const doorCenter = DOOR.hingeX + DOOR.width / 2;
 const near = (actual, expected, epsilon = 1e-7) => assert.ok(Math.abs(actual - expected) <= epsilon, `${actual} ≈ ${expected}`);
 const leaf = angle => ({ x: DOOR.hingeX + Math.cos(angle) * DOOR.width / 2,
   z: DOOR.z - Math.sin(angle) * DOOR.width / 2, halfWidth: DOOR.width / 2,
@@ -26,7 +27,7 @@ test('física: pose final é caminhável e paredes/móveis usam as medidas do la
     { x: HALL.minX + .1, z: 5 }, { x: HALL.maxX - .1, z: 9 },
     { x: 4.7, z: 17 }, { x: 0, z: 6 }, { x: NaN, z: 0 }])
     assert.equal(isWalkable(point), false, `no floor escape at ${JSON.stringify(point)}`);
-  assert.equal(isWalkable({ x: 1.975, z: DOOR.z }), true, 'the static wall leaves a physical doorway');
+  assert.equal(isWalkable({ x: doorCenter, z: DOOR.z }), true, 'the static wall leaves a physical doorway');
   assert.equal(isWalkable({ x: 2, z: HALL.endZ - .1 }), true, 'the stair landing now opens into the kitchen');
   assert.equal(isWalkable({ x: 2, z: 14 }), true, 'the kitchen floor is connected to the stair landing');
 });
@@ -34,13 +35,13 @@ test('física: pose final é caminhável e paredes/móveis usam as medidas do la
 test('física: movimentos longos não atravessam paredes, cama ou folha fina fechada', () => {
   const start = { x: STANDING_POSE.position.x, z: STANDING_POSE.position.z };
   const original = { ...start };
-  const bed = moveWithCollisions(start, -1000, 0);
+  const bed = moveWithCollisions(start, 1000, 0);
   assert.deepEqual(start, original);
   assert.ok(isWalkable(bed));
-  assert.ok(bed.x >= FURNITURE.bed.x + FURNITURE.bed.width / 2 + PLAYER_RADIUS - 1e-7);
-  const wall = moveWithCollisions({ x: 0, z: 0 }, -1000, 0);
+  assert.ok(bed.x <= FURNITURE.bed.x - FURNITURE.bed.width / 2 - PLAYER_RADIUS + 1e-7);
+  const wall = moveWithCollisions({ x: 1.2, z: 2.7 }, -1000, 0);
   assert.ok(isWalkable(wall)); assert.ok(wall.x >= ROOM.minX + PLAYER_RADIUS - 1e-7);
-  const door = moveWithCollisions({ x: 1.975, z: 2.7 }, 0, 1000, [leaf(0)]);
+  const door = moveWithCollisions({ x: doorCenter, z: 2.7 }, 0, 1000, [leaf(0)]);
   assert.ok(isWalkable(door, [leaf(0)]));
   assert.ok(door.z <= DOOR.z - DOOR.thickness / 2 - PLAYER_RADIUS + 1e-7);
   for (const [dx, dz] of [[NaN, 1], [1, Infinity], [-Infinity, 0], [0, 0]])
@@ -56,12 +57,12 @@ test('física: círculo e OBB seguem o giro Babylon e a porta aberta libera a pa
     const normalOutside = { x: obstacle.x + Math.sin(angle) * .4, z: obstacle.z + Math.cos(angle) * .4 };
     assert.equal(circleOverlapsObstacle(normalOutside, obstacle), false);
   }
-  const partially = moveWithCollisions({ x: 1.975, z: 2.7 }, 0, 2, [leaf(-Math.PI / 4)]);
+  const partially = moveWithCollisions({ x: doorCenter, z: 2.7 }, 0, 2, [leaf(-Math.PI / 4)]);
   assert.ok(partially.z < 4, 'a visible partly open leaf remains solid');
-  const open = moveWithCollisions({ x: 1.975, z: 2.7 }, 0, 2, [leaf(DOOR.openAngle)]);
+  const open = moveWithCollisions({ x: doorCenter, z: 2.7 }, 0, 2, [leaf(DOOR.openAngle)]);
   near(open.z, 4.7); assert.ok(isWalkable(open, [leaf(DOOR.openAngle)]));
-  const diagonal = { x: 0, z: .2, halfWidth: .7, halfDepth: .04, rotation: Math.PI / 4 };
-  assert.equal(isWalkable({ x: .6, z: .6 }, [diagonal]), true,
+  const diagonal = { x: 1.1, z: 2.4, halfWidth: .7, halfDepth: .04, rotation: Math.PI / 4 };
+  assert.equal(isWalkable({ x: 1.7, z: 3 }, [diagonal]), true,
     'the rotated leaf does not obstruct its entire enclosing world-axis rectangle');
 });
 
@@ -75,7 +76,7 @@ test('física: desliza junto à parede sem atravessar quinas ou sair da união d
     point = next;
   }
   assert.ok(point.z > 7, 'forward motion continues while the sideways component touches the wall');
-  point = moveWithCollisions({ x: .4, z: 2.4 }, .5, 1.7);
+  point = moveWithCollisions({ x: .9, z: 2.8 }, 0, 1.7);
   assert.ok(isWalkable(point));
   assert.ok(point.z < HALL.startZ, 'the hall cannot be entered through the wall beside the door');
 });
@@ -103,8 +104,8 @@ test('física: dezesseis pisos da escada coincidem com os degraus e último degr
 
 test('física: rota cama–porta–corredor–último degrau é contínua com abertura real', () => {
   let point = { x: STANDING_POSE.position.x, z: STANDING_POSE.position.z };
-  for (const target of [{ x: -1.25, z: .2 }, { x: 1.975, z: .2 }, { x: 1.975, z: 2.8 },
-    { x: 1.975, z: 4.6 }, { x: 1.975, z: 11.4 }]) {
+  for (const target of [{ x: 1.68, z: 1.4 }, { x: doorCenter, z: 1.8 }, { x: doorCenter, z: 2.8 },
+    { x: doorCenter, z: 4.6 }, { x: doorCenter, z: 11.4 }]) {
     const from = { ...point }, length = Math.hypot(target.x - from.x, target.z - from.z);
     const steps = Math.ceil(length / .04);
     for (let i = 0; i < steps; i++) {
@@ -130,4 +131,20 @@ test('movimento: diagonal tem a mesma velocidade, yaw orienta WASD e parada não
   near(velocity.x, WALK_SPEED);
   for (let i = 0; i < 8; i++) velocity = approachVelocity(velocity, { x: 0, z: 0 }, .02);
   near(velocity.x, 0); near(velocity.z, 0);
+});
+
+// The matching room/hall right edge must not poison boundary distances with
+// NaN. This also checks the realistic .8m aperture still clears the .44m body.
+test('física: quarto compacto mantém proporções e corredor livre sem aresta NaN', () => {
+  near(ROOM.maxX - ROOM.minX, 3.2);
+  near(ROOM.maxZ - ROOM.minZ, 3.8);
+  near(ROOM.ceiling - ROOM.floor, 2.6);
+  near(DOOR.width, .8); near(DOOR.height, 2.1);
+  near(FURNITURE.bed.width, .9); near(FURNITURE.bed.depth, 2);
+  near(FURNITURE.desk.width, 1.4); near(FURNITURE.desk.depth, .6);
+  near(FURNITURE.wardrobe.depth, 1.8); near(FURNITURE.wardrobe.width, .6);
+  assert.equal(ROOM.maxX, HALL.maxX);
+  for (const z of [.9, 1.2, 1.5, 1.8, 2.1, 2.5, 2.9, 3.3, 3.7, 4.5])
+    assert.equal(isWalkable({ x: 1.8, z }, [leaf(DOOR.openAngle)]), true,
+      `continuous clear aisle at z=${z}`);
 });

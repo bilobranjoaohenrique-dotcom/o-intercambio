@@ -1,0 +1,836 @@
+{
+  "build": "chapter1-bedroom-reference-1",
+  "environment": {
+    "node": "24.19.0",
+    "chromium": "154.0.8037.57",
+    "os": "Debian 13/Linux",
+    "renderer": "SwiftShader",
+    "webgl": 2,
+    "physicalGpuTested": false,
+    "windowsTested": false
+  },
+  "checks": {
+    "typecheck": "passed",
+    "unitTests": {
+      "status": "passed",
+      "passed": 42
+    },
+    "productionBuild": {
+      "status": "passed",
+      "mainChunkKb": 1427.26,
+      "mainChunkGzipKb": 367.54,
+      "chunkSizeWarning": true
+    },
+    "verify": {
+      "status": "passed",
+      "exitCode": 0,
+      "command": "CHROMIUM_PATH=/usr/bin/chromium npm run verify",
+      "scope": "typecheck, 42 unit tests, production build, focused bedroom browser suite, then a separate fresh full chapter browser suite"
+    }
+  },
+  "bedroomFocused": {
+    "status": "passed",
+    "profile": "balanced",
+    "pictures": [
+      {
+        "label": "quarto-entrada",
+        "path": "/tmp/o-intercambio-quarto-entrada.png",
+        "native": {
+          "width": 1280,
+          "height": 720
+        },
+        "blackRatio": 0.02216796875,
+        "raw": {
+          "width": 914,
+          "height": 514,
+          "colours": 413,
+          "visible": 31141,
+          "warm": 30169,
+          "samples": 33672,
+          "path": "/tmp/o-intercambio-quarto-entrada-interno.png"
+        }
+      },
+      {
+        "label": "quarto-inversa",
+        "path": "/tmp/o-intercambio-quarto-inversa.png",
+        "native": {
+          "width": 1280,
+          "height": 720
+        },
+        "blackRatio": 6.510416666666667e-05,
+        "raw": {
+          "width": 914,
+          "height": 514,
+          "colours": 362,
+          "visible": 32589,
+          "warm": 33043,
+          "samples": 33672,
+          "path": "/tmp/o-intercambio-quarto-inversa-interno.png"
+        }
+      },
+      {
+        "label": "quarto-cama",
+        "path": "/tmp/o-intercambio-quarto-cama.png",
+        "native": {
+          "width": 1280,
+          "height": 720
+        },
+        "blackRatio": 0.0048828125,
+        "raw": {
+          "width": 914,
+          "height": 514,
+          "colours": 492,
+          "visible": 31701,
+          "warm": 30873,
+          "samples": 33672,
+          "path": "/tmp/o-intercambio-quarto-cama-interno.png"
+        }
+      },
+      {
+        "label": "quarto-escrivaninha",
+        "path": "/tmp/o-intercambio-quarto-escrivaninha.png",
+        "native": {
+          "width": 1280,
+          "height": 720
+        },
+        "blackRatio": 0.046647135416666666,
+        "raw": {
+          "width": 914,
+          "height": 514,
+          "colours": 225,
+          "visible": 30148,
+          "warm": 29583,
+          "samples": 33672,
+          "path": "/tmp/o-intercambio-quarto-escrivaninha-interno.png"
+        }
+      },
+      {
+        "label": "quarto-guarda-roupa",
+        "path": "/tmp/o-intercambio-quarto-guarda-roupa.png",
+        "native": {
+          "width": 1280,
+          "height": 720
+        },
+        "blackRatio": 0.025911458333333335,
+        "raw": {
+          "width": 914,
+          "height": 514,
+          "colours": 248,
+          "visible": 31592,
+          "warm": 31640,
+          "samples": 33672,
+          "path": "/tmp/o-intercambio-quarto-guarda-roupa-interno.png"
+        }
+      },
+      {
+        "label": "quarto-prateleiras",
+        "path": "/tmp/o-intercambio-quarto-prateleiras.png",
+        "native": {
+          "width": 1280,
+          "height": 720
+        },
+        "blackRatio": 0.0025390625,
+        "raw": {
+          "width": 914,
+          "height": 514,
+          "colours": 242,
+          "visible": 31612,
+          "warm": 31395,
+          "samples": 33672,
+          "path": "/tmp/o-intercambio-quarto-prateleiras-interno.png"
+        }
+      },
+      {
+        "label": "quarto-luz-alternada",
+        "path": "/tmp/o-intercambio-quarto-luz-alternada.png",
+        "native": {
+          "width": 1280,
+          "height": 720
+        },
+        "blackRatio": 0,
+        "raw": {
+          "width": 914,
+          "height": 514,
+          "colours": 171,
+          "visible": 33571,
+          "warm": 33593,
+          "samples": 33672,
+          "path": "/tmp/o-intercambio-quarto-luz-alternada-interno.png"
+        }
+      }
+    ],
+    "views": [
+      {
+        "label": "quarto-entrada",
+        "position": {
+          "x": 1.8687241874961598,
+          "y": 4.649999989711165,
+          "z": 3.041302269548606
+        },
+        "rotation": {
+          "yaw": -2.985592653589793,
+          "pitch": 0.20480000000000004,
+          "roll": 0
+        },
+        "horizonTilt": 1.5816787879430194e-09
+      },
+      {
+        "label": "quarto-inversa",
+        "position": {
+          "x": 1.6507375591802453,
+          "y": 4.649999999768534,
+          "z": 0.43174355392823166
+        },
+        "rotation": {
+          "yaw": 0.08640734641020675,
+          "pitch": 0.24320000000000014,
+          "roll": 0
+        },
+        "horizonTilt": -1.823021733571295e-09
+      },
+      {
+        "label": "quarto-cama",
+        "position": {
+          "x": 1.7482219707996745,
+          "y": 4.649999994282303,
+          "z": 2.93379763101353
+        },
+        "rotation": {
+          "yaw": -3.482392653589793,
+          "pitch": 0.3128000000000002,
+          "roll": 0
+        },
+        "horizonTilt": 5.182104967360601e-09
+      },
+      {
+        "label": "quarto-escrivaninha",
+        "position": {
+          "x": 1.6280207162067193,
+          "y": 4.6499998526029795,
+          "z": 1.2230167819451232
+        },
+        "rotation": {
+          "yaw": -2.620792653589793,
+          "pitch": 0.40400000000000014,
+          "roll": 0
+        },
+        "horizonTilt": 1.5909513706446887e-09
+      },
+      {
+        "label": "quarto-guarda-roupa",
+        "position": {
+          "x": 1.6481538775223186,
+          "y": 4.650000111776292,
+          "z": 2.5728659985290663
+        },
+        "rotation": {
+          "yaw": -2.207992653589793,
+          "pitch": 0.32960000000000017,
+          "roll": 0
+        },
+        "horizonTilt": 9.539506962141786e-10
+      },
+      {
+        "label": "quarto-prateleiras",
+        "position": {
+          "x": 1.5110434280724188,
+          "y": 4.649999997393416,
+          "z": 1.6431697080951542
+        },
+        "rotation": {
+          "yaw": -3.587992653589793,
+          "pitch": -0.0975999999999998,
+          "roll": 0
+        },
+        "horizonTilt": 4.3464414289928754e-09
+      },
+      {
+        "label": "quarto-luz-alternada",
+        "position": {
+          "x": 1.7981142079833865,
+          "y": 4.65,
+          "z": 2.7812053115308717
+        },
+        "rotation": {
+          "yaw": -5.351992653589791,
+          "pitch": 0.49520000000000036,
+          "roll": 0
+        },
+        "horizonTilt": -1.148698913766566e-09
+      }
+    ],
+    "interactions": [
+      {
+        "id": "photo",
+        "text": "Nós três, antes de tudo mudar. Vou sentir falta de casa."
+      },
+      {
+        "id": "calendar",
+        "text": "13 de junho. Hoje é o dia da viagem."
+      },
+      {
+        "id": "suitcase",
+        "text": "Minha mochila. Quase tudo pronto para a viagem."
+      },
+      {
+        "id": "switch",
+        "toggles": 2,
+        "changedPixels": 439851,
+        "totalPixels": 469796
+      },
+      {
+        "id": "door",
+        "animatedOpenAndClose": true
+      }
+    ],
+    "physics": {
+      "beforeBed": {
+        "x": 1.5952945797726434,
+        "y": 4.650000215613541,
+        "z": 1.3151692776498207
+      },
+      "bedStop": {
+        "x": 1.8052944294968924,
+        "y": 4.648552871807521,
+        "z": 1.314038749098311
+      }
+    },
+    "performance": {
+      "profile": "bedroom-balanced",
+      "renderer": "Babylon.js",
+      "webgl": 2,
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "environment": "Chromium/SwiftShader, Linux, stationary camera, 1280×720 viewport",
+      "internal": {
+        "width": 914,
+        "height": 514
+      },
+      "seconds": 10.005692729000002,
+      "frames": 66,
+      "measuredFps": 6.6,
+      "reported": {
+        "frames": 402,
+        "meanFrameMs": 139.8,
+        "p95FrameMs": 205.3,
+        "fps": 7.2
+      }
+    },
+    "renderer": "Babylon.js",
+    "webgl": 2,
+    "meshes": 282,
+    "vertices": 104664,
+    "coverage": [
+      "fresh waking",
+      "six views in one real room",
+      "photo memory",
+      "travel calendar",
+      "backpack examination",
+      "light switch twice",
+      "animated door open and close",
+      "bed and closed-door collision",
+      "pause",
+      "physical exit and stairs",
+      "preserved breakfast mission"
+    ],
+    "limits": [
+      "The six reference images are compared by human inspection, not a numerical claim of identical fidelity.",
+      "SwiftShader software-renderer measurement does not establish physical-GPU or Windows performance."
+    ]
+  },
+  "fullChapter": {
+    "status": "passed",
+    "pictures": [
+      {
+        "label": "chapter-bedroom",
+        "path": "/tmp/o-intercambio-chapter-bedroom.png",
+        "native": {
+          "width": 1280,
+          "height": 800
+        },
+        "blackRatio": 0.014837919776119403,
+        "raw": {
+          "width": 914,
+          "height": 571,
+          "colours": 257,
+          "visible": 32445,
+          "warm": 32056,
+          "samples": 37332,
+          "path": "/tmp/o-intercambio-chapter-bedroom-interno.png"
+        }
+      },
+      {
+        "label": "balanced-cozinha-geral",
+        "path": "/tmp/o-intercambio-balanced-cozinha-geral.png",
+        "native": {
+          "width": 1280,
+          "height": 800
+        },
+        "blackRatio": 0.0012243470149253732,
+        "raw": {
+          "width": 914,
+          "height": 571,
+          "colours": 511,
+          "visible": 32217,
+          "warm": 35876,
+          "samples": 37332,
+          "path": "/tmp/o-intercambio-balanced-cozinha-geral-interno.png"
+        }
+      },
+      {
+        "label": "cozinha-pais-a-mesa",
+        "path": "/tmp/o-intercambio-cozinha-pais-a-mesa.png",
+        "native": {
+          "width": 1280,
+          "height": 800
+        },
+        "blackRatio": 0.0011077425373134328,
+        "raw": {
+          "width": 914,
+          "height": 571,
+          "colours": 552,
+          "visible": 34789,
+          "warm": 35625,
+          "samples": 37332,
+          "path": "/tmp/o-intercambio-cozinha-pais-a-mesa-interno.png"
+        }
+      },
+      {
+        "label": "cozinha-aproximacao-mesa",
+        "path": "/tmp/o-intercambio-cozinha-aproximacao-mesa.png",
+        "native": {
+          "width": 1280,
+          "height": 800
+        },
+        "blackRatio": 0.0002915111940298507,
+        "raw": {
+          "width": 914,
+          "height": 571,
+          "colours": 571,
+          "visible": 36997,
+          "warm": 36170,
+          "samples": 37332,
+          "path": "/tmp/o-intercambio-cozinha-aproximacao-mesa-interno.png"
+        }
+      },
+      {
+        "label": "cozinha-mae",
+        "path": "/tmp/o-intercambio-cozinha-mae.png",
+        "native": {
+          "width": 1280,
+          "height": 800
+        },
+        "blackRatio": 0.0021863339552238804,
+        "raw": {
+          "width": 914,
+          "height": 571,
+          "colours": 457,
+          "visible": 31626,
+          "warm": 36052,
+          "samples": 37332,
+          "path": "/tmp/o-intercambio-cozinha-mae-interno.png"
+        }
+      },
+      {
+        "label": "cozinha-pai",
+        "path": "/tmp/o-intercambio-cozinha-pai.png",
+        "native": {
+          "width": 1280,
+          "height": 800
+        },
+        "blackRatio": 0.001515858208955224,
+        "raw": {
+          "width": 914,
+          "height": 571,
+          "colours": 309,
+          "visible": 35752,
+          "warm": 35123,
+          "samples": 37332,
+          "path": "/tmp/o-intercambio-cozinha-pai-interno.png"
+        }
+      },
+      {
+        "label": "cozinha-dialogo",
+        "path": "/tmp/o-intercambio-cozinha-dialogo.png",
+        "native": {
+          "width": 1280,
+          "height": 800
+        },
+        "blackRatio": 0.0019239738805970148,
+        "raw": {
+          "width": 914,
+          "height": 571,
+          "colours": 452,
+          "visible": 31661,
+          "warm": 35965,
+          "samples": 37332,
+          "path": "/tmp/o-intercambio-cozinha-dialogo-interno.png"
+        }
+      },
+      {
+        "label": "chapter-ending",
+        "path": "/tmp/o-intercambio-chapter-ending.png",
+        "native": {
+          "width": 1280,
+          "height": 800
+        },
+        "blackRatio": 0.9595673973880597,
+        "raw": null
+      }
+    ],
+    "kitchen": {
+      "lighting": {
+        "whiteClipFraction": 0,
+        "samples": 58255
+      },
+      "performance": {
+        "profile": "kitchen-balanced",
+        "renderer": "Babylon.js",
+        "webgl": 2,
+        "viewport": {
+          "width": 1280,
+          "height": 800
+        },
+        "environment": "Chromium/SwiftShader, Linux, stationary camera, 1280×800 viewport",
+        "internal": {
+          "width": 914,
+          "height": 571
+        },
+        "seconds": 10.002323179,
+        "frames": 81,
+        "measuredFps": 8.1,
+        "reported": {
+          "frames": 1157,
+          "meanFrameMs": 104.6,
+          "p95FrameMs": 145.5,
+          "fps": 9.6
+        }
+      },
+      "idle": {
+        "changedPixels": 1127,
+        "totalPixels": 521894,
+        "observedFrames": 7
+      },
+      "horizon": [
+        {
+          "view": "balanced kitchen overview",
+          "basisRightY": -3.98067134810276e-11,
+          "rotation": {
+            "yaw": -0.011992653589793234,
+            "pitch": 0.11360000000000019,
+            "roll": 0
+          }
+        },
+        {
+          "view": "both parents across the table",
+          "basisRightY": -3.2817872863688535e-09,
+          "rotation": {
+            "yaw": -0.20159265358979322,
+            "pitch": 0.1736000000000002,
+            "roll": 0
+          }
+        },
+        {
+          "view": "looking downward while approaching the table",
+          "basisRightY": -5.990428986191176e-11,
+          "rotation": {
+            "yaw": 0.009607346410206774,
+            "pitch": 0.3896000000000002,
+            "roll": 0
+          }
+        },
+        {
+          "view": "mother close-up after turning left",
+          "basisRightY": 2.27711449696244e-09,
+          "rotation": {
+            "yaw": 0.5304073464102067,
+            "pitch": 0.06800000000000035,
+            "roll": 0
+          }
+        },
+        {
+          "view": "father close-up after turning right",
+          "basisRightY": -1.5236472084012576e-09,
+          "rotation": {
+            "yaw": -0.2159926535897932,
+            "pitch": 0.1520000000000004,
+            "roll": 0
+          }
+        }
+      ],
+      "collisions": {
+        "before": {
+          "x": -0.017665088493444694,
+          "y": 1.65,
+          "z": 17.016782825823025
+        },
+        "tableStop": {
+          "x": -0.020931057527345264,
+          "y": 1.6557001928758286,
+          "z": 17.64678102251466
+        },
+        "parentStop": {
+          "x": -1.5486267412163492,
+          "y": 1.6500184986490145,
+          "z": 18.46752567510393
+        },
+        "separation": 0.48247627923412584
+      }
+    },
+    "renderer": "Babylon.js",
+    "webgl": 2,
+    "meshes": 282,
+    "vertices": 104664,
+    "coverage": [
+      "fresh opening",
+      "physical door and stairs",
+      "six kitchen perspectives",
+      "table and parent collisions",
+      "pause",
+      "real checkpoint reload",
+      "text-only parent dialogue and choice",
+      "suitcase",
+      "existing car trip",
+      "airport gate",
+      "plane",
+      "host-family ending"
+    ]
+  },
+  "captureCopies": {
+    "directory": "docs/capturas",
+    "format": "PNG",
+    "modified": false,
+    "names": [
+      "quarto-entrada.png",
+      "quarto-inversa.png",
+      "quarto-cama.png",
+      "quarto-escrivaninha.png",
+      "quarto-guarda-roupa.png",
+      "quarto-prateleiras.png",
+      "quarto-vista-ampla.png",
+      "quarto-relogio.png"
+    ]
+  },
+  "limits": [
+    "Only balanced quality was measured in this reconstruction.",
+    "Software-renderer FPS is low and does not establish physical-GPU, Windows or player-machine performance.",
+    "Vercel deployment was not validated in this local production-build verification.",
+    "The reference images are not original 3D assets. Visual inspection does not establish identical fidelity or user approval."
+  ],
+  "supplementalCaptures": {
+    "status": "passed",
+    "method": "Fresh actual opening and physical mouse/keyboard movement, unchanged production build, no camera setters, no new benchmark.",
+    "pictures": [
+      {
+        "label": "quarto-vista-ampla",
+        "path": "/tmp/o-intercambio-quarto-vista-ampla.png",
+        "native": {
+          "width": 1280,
+          "height": 720
+        },
+        "blackRatio": 0.023697916666666666,
+        "raw": {
+          "width": 914,
+          "height": 514,
+          "colours": 487,
+          "visible": 31440,
+          "warm": 30288,
+          "samples": 33672,
+          "path": "/tmp/o-intercambio-quarto-vista-ampla-interno.png"
+        },
+        "state": {
+          "build": "chapter1-bedroom-reference-1",
+          "phase": "playing",
+          "introTime": 13.5,
+          "duration": 13.5,
+          "mission": "active",
+          "chapterMission": "breakfast",
+          "chapterStage": "home",
+          "dialogue": false,
+          "position": {
+            "x": 1.9869965858734695,
+            "y": 4.649999994216984,
+            "z": 2.994060484935133
+          },
+          "rotation": {
+            "yaw": -3.038392653589793,
+            "pitch": 0.23840000000000006,
+            "roll": 0
+          },
+          "horizonTilt": -2.1607793332378833e-09,
+          "door": {
+            "angle": 0,
+            "isOpen": false
+          },
+          "interaction": null,
+          "examined": [],
+          "light": true,
+          "objectiveState": "active",
+          "perf": {
+            "frames": 317,
+            "meanFrameMs": 133.6,
+            "p95FrameMs": 201.5,
+            "fps": 7.5
+          },
+          "renderer": "Babylon.js",
+          "webgl": 2,
+          "gpu": {
+            "vendor": "Google Inc. (Google)",
+            "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+          },
+          "settings": {
+            "sensitivity": 1,
+            "headBob": true,
+            "volume": 0.65,
+            "subtitles": true,
+            "quality": "balanced",
+            "grain": true,
+            "performance": false
+          },
+          "input": {
+            "pointerLocked": true,
+            "mouseScale": 0.0024
+          },
+          "meshes": 282,
+          "vertices": 104664,
+          "errors": [],
+          "dialogueAudio": false,
+          "bedroom": {
+            "version": "quarto-referencia-1",
+            "meshes": 48,
+            "width": 3.1999999999999997,
+            "depth": 3.8,
+            "height": 2.5999999999999996
+          },
+          "kitchen": {
+            "active": true,
+            "version": "cozinha-visual-1",
+            "meshes": 80
+          },
+          "dialogueSpeaker": null,
+          "audio": {
+            "supported": true,
+            "unlocked": true,
+            "paused": false,
+            "state": "running",
+            "listener": {
+              "_isDirty": true,
+              "_x": 1.9869965314865112,
+              "_y": 4.650000095367432,
+              "_z": 2.994060516357422
+            },
+            "dialogueAudio": false,
+            "transientSources": 0
+          }
+        }
+      },
+      {
+        "label": "quarto-relogio",
+        "path": "/tmp/o-intercambio-quarto-relogio.png",
+        "native": {
+          "width": 1280,
+          "height": 720
+        },
+        "blackRatio": 0.020149739583333333,
+        "raw": {
+          "width": 914,
+          "height": 514,
+          "colours": 457,
+          "visible": 32052,
+          "warm": 31070,
+          "samples": 33672,
+          "path": "/tmp/o-intercambio-quarto-relogio-interno.png"
+        },
+        "state": {
+          "build": "chapter1-bedroom-reference-1",
+          "phase": "playing",
+          "introTime": 13.5,
+          "duration": 13.5,
+          "mission": "active",
+          "chapterMission": "breakfast",
+          "chapterStage": "home",
+          "dialogue": false,
+          "position": {
+            "x": 1.9548844571879682,
+            "y": 4.6499999924368645,
+            "z": 2.8680890151839007
+          },
+          "rotation": {
+            "yaw": -3.928792653589793,
+            "pitch": 0.7808000000000002,
+            "roll": 0
+          },
+          "horizonTilt": -1.4788312796554237e-08,
+          "door": {
+            "angle": 0,
+            "isOpen": false
+          },
+          "interaction": null,
+          "examined": [],
+          "light": true,
+          "objectiveState": "active",
+          "perf": {
+            "frames": 345,
+            "meanFrameMs": 134.5,
+            "p95FrameMs": 222.2,
+            "fps": 7.4
+          },
+          "renderer": "Babylon.js",
+          "webgl": 2,
+          "gpu": {
+            "vendor": "Google Inc. (Google)",
+            "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+          },
+          "settings": {
+            "sensitivity": 1,
+            "headBob": true,
+            "volume": 0.65,
+            "subtitles": true,
+            "quality": "balanced",
+            "grain": true,
+            "performance": false
+          },
+          "input": {
+            "pointerLocked": true,
+            "mouseScale": 0.0024
+          },
+          "meshes": 282,
+          "vertices": 104664,
+          "errors": [],
+          "dialogueAudio": false,
+          "bedroom": {
+            "version": "quarto-referencia-1",
+            "meshes": 48,
+            "width": 3.1999999999999997,
+            "depth": 3.8,
+            "height": 2.5999999999999996
+          },
+          "kitchen": {
+            "active": true,
+            "version": "cozinha-visual-1",
+            "meshes": 80
+          },
+          "dialogueSpeaker": null,
+          "audio": {
+            "supported": true,
+            "unlocked": true,
+            "paused": false,
+            "state": "running",
+            "listener": {
+              "_isDirty": true,
+              "_x": 1.9548842906951904,
+              "_y": 4.650000095367432,
+              "_z": 2.868088960647583
+            },
+            "dialogueAudio": false,
+            "transientSources": 0
+          }
+        }
+      }
+    ]
+  }
+}

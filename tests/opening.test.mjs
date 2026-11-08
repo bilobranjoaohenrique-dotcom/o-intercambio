@@ -62,11 +62,11 @@ test('opening: initial blur clears gradually without returning', () => {
 
 test('opening: head turns, body sits, feet settle, then the camera rises', () => {
   const turning = sampleOpening(7.5), seated = sampleOpening(9.2);
-  assert.ok(turning.yaw > BED_POSE.yaw);
+  assert.ok(turning.yaw < BED_POSE.yaw, 'head turns left from the +X bed toward the free -X aisle');
   assert.ok(turning.pitch > BED_POSE.pitch);
   assert.ok(seated.position.y > BED_POSE.position.y);
   assert.ok(seated.position.y < STANDING_POSE.position.y);
-  assert.ok(seated.position.x > -1.59, 'seated head reaches the open side of the bed');
+  assert.ok(seated.position.x < layout.FURNITURE.bed.x - layout.FURNITURE.bed.width / 2, 'seated head reaches the open left side of the bed');
   for (const t of [9.2, 9.8, 10.6, 11.3])
     assert.deepEqual(sampleOpening(t).position, seated.position);
   assert.ok(sampleOpening(10.6).pitch > seated.pitch, 'subtle glance toward the feet');

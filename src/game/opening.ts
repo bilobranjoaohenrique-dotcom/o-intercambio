@@ -32,19 +32,19 @@ const BLUR: readonly ScalarKey[] = [
   { at: 6.4, value: .08 }, { at: 7.4, value: 0 },
 ];
 const SITTING: Pose = {
-  position: { x: STANDING_POSE.position.x - .1, y: BED_POSE.position.y + .24, z: STANDING_POSE.position.z },
-  yaw: STANDING_POSE.yaw, pitch: .1, roll: .006,
+  position: { x: STANDING_POSE.position.x + .1, y: BED_POSE.position.y + .24, z: STANDING_POSE.position.z },
+  yaw: -2.1, pitch: .1, roll: .006,
 };
 const POSES: readonly PoseKey[] = [
   { at: 0, pose: BED_POSE },
   { at: 6.35, pose: BED_POSE },
   // Look toward the room first, then move the body to the edge of the bed.
-  { at: 7.5, pose: { position: { x: BED_POSE.position.x + .07, y: BED_POSE.position.y + .03, z: BED_POSE.position.z + .11 }, yaw: 1.15, pitch: -.82, roll: .028 } },
+  { at: 7.5, pose: { position: { x: BED_POSE.position.x - .07, y: BED_POSE.position.y + .03, z: BED_POSE.position.z + .11 }, yaw: -1.05, pitch: -.82, roll: .028 } },
   { at: 9.2, pose: SITTING },
   // Sitting remains spatially still: only a small glance toward the feet.
   { at: 10.6, pose: { ...SITTING, pitch: .28, roll: 0 } },
   { at: 11.3, pose: { ...SITTING, pitch: .16, roll: 0 } },
-  { at: 11.7, pose: { position: { x: STANDING_POSE.position.x + .02, y: SITTING.position.y + .04, z: STANDING_POSE.position.z + .06 }, yaw: STANDING_POSE.yaw, pitch: .2, roll: -.008 } },
+  { at: 11.7, pose: { position: { x: STANDING_POSE.position.x + .02, y: SITTING.position.y + .04, z: STANDING_POSE.position.z + .06 }, yaw: SITTING.yaw, pitch: .2, roll: -.008 } },
   { at: OPENING_DURATION, pose: STANDING_POSE },
 ];
 const CUES: readonly { at: number; cue: OpeningCue }[] = [

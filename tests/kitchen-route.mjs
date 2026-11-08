@@ -2,8 +2,9 @@ import assert from 'node:assert/strict';
 import { PNG } from 'pngjs';
 import './register-typescript.mjs';
 import { PARENT_ANCHORS, KITCHEN_FURNITURE } from '../src/game/kitchenLayout.ts';
-import { snapshot, waitFrames, waitPhase, waitIntro, startScene, finishOpening,
-  capture, walkTo, aimInteraction, faceYaw, lookAt, pause, hold, benchmark } from './browser-helpers.mjs';
+import { wakeInBedroom, leaveBedroomForKitchen } from './bedroom-route.mjs';
+import { snapshot, waitFrames, waitPhase,
+  walkTo, aimInteraction, faceYaw, lookAt, pause, hold, benchmark } from './browser-helpers.mjs';
 
 const horizontalDistance = (a, b) => Math.hypot(a.x - b.x, a.z - b.z);
 /** Observe the rendered camera basis rather than a configuration flag or the
@@ -42,40 +43,9 @@ async function pushUntilBlocked(page) {
 }
 
 export async function wakeAndReachKitchen(page, record) {
-  console.log('STAGE opening and text-only call');
-  await startScene(page);
-  await waitIntro(page, 4.8);
-  await page.locator('#subtitle').waitFor({ state: 'visible' });
-  assert.equal((await page.locator('#subtitleText').textContent()).trim(), 'Ei, vem tomar café pra não se atrasar!');
-  assert.equal((await snapshot(page)).dialogueAudio, false, 'dialogue must not use voices or TTS');
-  await finishOpening(page);
-  await assertLevelHorizon(page, 'bedroom after the actual waking animation');
-  if (record) await record('chapter-bedroom');
-  // Go around the existing bedroom suitcase instead of walking through it.
-  await walkTo(page, { x: -1.25, z: .2 });
-  await walkTo(page, { x: 1.975, z: .2 });
-  await walkTo(page, { x: 1.975, z: 2.8 });
-  await faceYaw(page, 0);
-  const blocked = await pushUntilBlocked(page);
-  assert.ok(blocked.z < 3.12 && blocked.z > 2.8, 'the closed door stops the physical capsule');
-  await aimInteraction(page, 'door', { x: 1.975, y: 4.65, z: 3.3 });
-  await page.keyboard.press('KeyE');
-  await page.waitForFunction(() => window.__INTERCAMBIO__.door.isOpen);
-  await walkTo(page, { x: 1.975, z: 4.6 });
-  console.log('STAGE physical staircase');
-  await walkTo(page, { x: 1.975, z: 7.8 });
-  const middle = await snapshot(page);
-  assert.equal(middle.chapterMission, 'breakfast');
-  assert.ok(middle.position.y > 2.5 && middle.position.y < 4.4, 'eye height follows the actual treads');
-  await walkTo(page, { x: 1.975, z: 10.7 });
-  assert.equal((await snapshot(page)).chapterMission, 'breakfast');
-  // walkTo allows a 16 cm arrival radius. Aim beyond the last tread so its
-  // legal early stop still crosses the real 11.05 m objective threshold.
-  await walkTo(page, { x: 1.975, z: 11.35 });
-  assert.ok((await snapshot(page)).position.z >= 11.05, 'the actual capsule must cross the last-tread trigger');
-  await page.waitForFunction(() => window.__INTERCAMBIO__.chapterMission === 'talk-parents');
-  await walkTo(page, { x: 1.975, z: 14.3 });
-  assert.equal((await page.locator('#objectiveText').textContent()).trim(), 'Converse com seus pais');
+  await wakeInBedroom(page, record);
+  await assertLevelHorizon(page, 'compact bedroom after the actual waking animation');
+  await leaveBedroomForKitchen(page);
 }
 
 async function canvasFrame(page) {

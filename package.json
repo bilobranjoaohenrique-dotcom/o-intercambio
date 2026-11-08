@@ -10,6 +10,7 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host 0.0.0.0 --port 4180",
     "test:browser": "node tests/browser.mjs",
+    "test:bedroom": "node tests/bedroom-browser.mjs",
     "verify": "node scripts/verify.mjs"
   },
   "dependencies": { "@babylonjs/core": "^8.0.0" },

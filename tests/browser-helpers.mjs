@@ -2,6 +2,8 @@ import assert from 'node:assert/strict';
 import { writeFileSync } from 'node:fs';
 import { PNG } from 'pngjs';
 import { chromium } from 'playwright';
+import './register-typescript.mjs';
+import { STANDING_POSE } from '../src/game/layout.ts';
 
 export const BASE = process.env.INTERCAMBIO_URL || 'http://127.0.0.1:5180';
 export const MOTHER_LINE = 'Ei, vem tomar café pra não se atrasar!';
@@ -54,9 +56,9 @@ export async function finishOpening(page) {
   assert.equal((await page.locator('#objectiveText').textContent()).trim(), 'Desça para tomar café');
   const state = await snapshot(page);
   assert.equal(state.mission, 'active');
-  assert.ok(Math.hypot(state.position.x + 1.25, state.position.z + 1.1) < .06,
+  assert.ok(Math.hypot(state.position.x - STANDING_POSE.position.x, state.position.z - STANDING_POSE.position.z) < .06,
     'the opening must release the player at the standing position');
-  assert.ok(Math.abs(state.position.y - 4.65) < .06);
+  assert.ok(Math.abs(state.position.y - STANDING_POSE.position.y) < .06);
 }
 export async function capture(page, label, { black = false, uiOnly = false } = {}) {
   const path = `/tmp/o-intercambio-${label}.png`;
@@ -183,8 +185,10 @@ export async function benchmark(page, profile, seconds = 10) {
   const measuredSeconds = (performance.now() - started) / 1000;
   const after = Number(await page.locator('#game').getAttribute('data-frames')), state = await snapshot(page);
   const dimensions = await page.locator('#game').evaluate(canvas => ({ width: canvas.width, height: canvas.height }));
+  const viewport = page.viewportSize();
   assert.ok(after > before && state.perf.meanFrameMs > 0 && state.perf.p95FrameMs > 0);
-  return { profile, renderer: state.renderer, webgl: state.webgl, environment: 'Chromium/SwiftShader, Linux, stationary camera, 1280×800 viewport',
+  return { profile, renderer: state.renderer, webgl: state.webgl, viewport,
+    environment: `Chromium/SwiftShader, Linux, stationary camera, ${viewport.width}×${viewport.height} viewport`,
     internal: dimensions, seconds: measuredSeconds, frames: after - before,
     measuredFps: Math.round((after - before) / measuredSeconds * 10) / 10, reported: state.perf };
 }
