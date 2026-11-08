@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import './register-typescript.mjs';
-import { DOOR, STANDING_POSE } from '../src/game/layout.ts';
+import { DOOR, STANDING_POSE, STAIRS, EYE_HEIGHT } from '../src/game/layout.ts';
 import { snapshot, waitFrames, waitIntro, startScene, finishOpening, walkTo, aimInteraction, faceYaw } from './browser-helpers.mjs';
 
 const distance = (a, b) => Math.hypot(a.x - b.x, a.z - b.z);
@@ -57,14 +57,17 @@ export async function leaveBedroomForKitchen(page, { checkDoor = true } = {}) {
   }
   await walkTo(page, { x: doorX, z: 4.6 }, { tolerance: .08 });
   console.log('STAGE preserved physical staircase');
-  await walkTo(page, { x: doorX, z: 7.8 });
+  const stairX = (STAIRS.minX + STAIRS.maxX) / 2;
+  const tread = (STAIRS.endZ - STAIRS.startZ) / STAIRS.steps;
+  await walkTo(page, { x: stairX, z: STAIRS.startZ + (STAIRS.endZ - STAIRS.startZ) * .45 });
   const middle = await snapshot(page);
   assert.equal(middle.chapterMission, 'breakfast');
-  assert.ok(middle.position.y > 2.5 && middle.position.y < 4.4, 'eye height follows actual stair treads');
-  await walkTo(page, { x: doorX, z: 10.7 });
+  assert.ok(middle.position.y > STAIRS.bottomY + EYE_HEIGHT + .4 && middle.position.y < STAIRS.topY + EYE_HEIGHT - .25,
+    'eye height follows the real stair treads while the mission remains active');
+  await walkTo(page, { x: stairX, z: STAIRS.endZ - tread * 1.5 }, { tolerance: .08 });
   assert.equal((await snapshot(page)).chapterMission, 'breakfast');
-  await walkTo(page, { x: doorX, z: 11.35 });
-  assert.ok((await snapshot(page)).position.z >= 11.05, 'the capsule must cross the actual last-tread trigger');
+  await walkTo(page, { x: stairX, z: STAIRS.endZ + .15 }, { tolerance: .08 });
+  assert.ok((await snapshot(page)).position.z >= STAIRS.endZ - tread / 2, 'the capsule must cross the actual last-tread trigger');
   await page.waitForFunction(() => window.__INTERCAMBIO__.chapterMission === 'talk-parents');
   await walkTo(page, { x: doorX, z: 14.3 });
   assert.equal((await page.locator('#objectiveText').textContent()).trim(), 'Converse com seus pais');

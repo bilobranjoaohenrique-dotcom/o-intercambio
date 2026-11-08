@@ -6,6 +6,7 @@ registerHooks({ resolve(specifier, context, next) {
   return next(specifier, context);
 } });
 const { ROOM, HALL, STAIRS, DOOR, FURNITURE, STANDING_POSE } = await import('../src/game/layout.ts');
+const { HALLWAY } = await import('../src/game/hallwayLayout.ts');
 const { PLAYER_RADIUS, floorHeight, staticObstacles, isWalkable, moveWithCollisions,
   circleOverlapsObstacle, reachedBreakfast } = await import('../src/game/collision.ts');
 const { movementVector, approachVelocity, WALK_SPEED, RUN_SPEED } = await import('../src/game/player.ts');
@@ -67,11 +68,11 @@ test('física: círculo e OBB seguem o giro Babylon e a porta aberta libera a pa
 });
 
 test('física: desliza junto à parede sem atravessar quinas ou sair da união dos pisos', () => {
-  let point = { x: 2.75, z: 4.5 };
+  let point = { x: 1.40, z: 4.1 };
   for (let i = 0; i < 90; i++) {
-    const next = moveWithCollisions(point, .035, .035);
+    const next = moveWithCollisions(point, -.035, .035);
     assert.ok(isWalkable(next));
-    assert.ok(next.x <= HALL.maxX - PLAYER_RADIUS + 1e-7);
+    assert.ok(next.x >= HALLWAY.minX + PLAYER_RADIUS - 1e-7);
     assert.ok(next.z >= point.z);
     point = next;
   }
@@ -81,7 +82,7 @@ test('física: desliza junto à parede sem atravessar quinas ou sair da união d
   assert.ok(point.z < HALL.startZ, 'the hall cannot be entered through the wall beside the door');
 });
 
-test('física: dezesseis pisos da escada coincidem com os degraus e último degrau conclui', () => {
+test('física: dezoito pisos da escada coincidem com os degraus e último degrau conclui', () => {
   const tread = (STAIRS.endZ - STAIRS.startZ) / STAIRS.steps;
   const rise = (STAIRS.topY - STAIRS.bottomY) / STAIRS.steps;
   near(floorHeight({ x: 2, z: STAIRS.startZ - .01 }), STAIRS.topY);
@@ -96,16 +97,17 @@ test('física: dezesseis pisos da escada coincidem com os degraus e último degr
   assert.equal(reachedBreakfast({ x: 2, z: STAIRS.endZ - tread - .01 }), false);
   assert.equal(reachedBreakfast({ x: 2, z: STAIRS.endZ + .05 }), true);
   assert.equal(reachedBreakfast({ x: -2, z: STAIRS.endZ + .05 }), false);
-  const down = moveWithCollisions({ x: 2, z: 6.1 }, 0, 5.4);
+  const start = STAIRS.startZ - .3, travel = STAIRS.endZ + .15 - start;
+  const down = moveWithCollisions({ x: 2, z: start }, 0, travel);
   assert.ok(reachedBreakfast(down)); near(floorHeight(down), 0);
-  const up = moveWithCollisions(down, 0, -5.4);
-  near(up.z, 6.1); near(floorHeight(up), 3);
+  const up = moveWithCollisions(down, 0, -travel);
+  near(up.z, start); near(floorHeight(up), 3);
 });
 
 test('física: rota cama–porta–corredor–último degrau é contínua com abertura real', () => {
   let point = { x: STANDING_POSE.position.x, z: STANDING_POSE.position.z };
   for (const target of [{ x: 1.68, z: 1.4 }, { x: doorCenter, z: 1.8 }, { x: doorCenter, z: 2.8 },
-    { x: doorCenter, z: 4.6 }, { x: doorCenter, z: 11.4 }]) {
+    { x: doorCenter, z: 4.6 }, { x: doorCenter, z: STAIRS.endZ + .1 }]) {
     const from = { ...point }, length = Math.hypot(target.x - from.x, target.z - from.z);
     const steps = Math.ceil(length / .04);
     for (let i = 0; i < steps; i++) {

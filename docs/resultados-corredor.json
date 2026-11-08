@@ -1,0 +1,2016 @@
+{
+  "build": "chapter1-hallway-reference-1",
+  "verification": {
+    "command": "CHROMIUM_PATH=/usr/bin/chromium npm run verify",
+    "status": "passed",
+    "typecheck": "passed",
+    "unitTests": {
+      "passed": 46,
+      "failed": 0
+    },
+    "productionBuild": {
+      "status": "passed",
+      "mainAsset": "dist/assets/index-CdDPWExy.js",
+      "sizeKB": 1456.43,
+      "gzipKB": 378.25,
+      "warning": "Vite main chunk exceeds 500 kB"
+    },
+    "hallwayFocused": "passed",
+    "bedroomRegression": "passed",
+    "fullChapterRegression": "passed",
+    "exitCode": 0,
+    "supplementaryKitchenConnection": "passed"
+  },
+  "environment": {
+    "node": "24.19.0",
+    "chromium": "154.0.8037.57",
+    "os": "Debian 13/Linux",
+    "renderer": "SwiftShader software rendering",
+    "webgl": 2,
+    "limits": [
+      "No physical GPU or Windows performance measurements.",
+      "The walking interval includes keyboard-control and sampling overhead.",
+      "Reference art was visually compared, not numerically certified as identical."
+    ]
+  },
+  "hallwayFocused": {
+    "status": "passed",
+    "profile": "balanced",
+    "build": "chapter1-hallway-reference-1",
+    "pictures": [
+      {
+        "label": "corredor-entrada",
+        "path": "/tmp/o-intercambio-corredor-entrada.png",
+        "native": {
+          "width": 1280,
+          "height": 720
+        },
+        "blackRatio": 0.023111979166666668,
+        "raw": {
+          "width": 914,
+          "height": 514,
+          "colours": 206,
+          "visible": 26936,
+          "warm": 32060,
+          "samples": 33672,
+          "path": "/tmp/o-intercambio-corredor-entrada-interno.png"
+        }
+      },
+      {
+        "label": "corredor-inversa",
+        "path": "/tmp/o-intercambio-corredor-inversa.png",
+        "native": {
+          "width": 1280,
+          "height": 720
+        },
+        "blackRatio": 0.019921875,
+        "raw": {
+          "width": 914,
+          "height": 514,
+          "colours": 337,
+          "visible": 27542,
+          "warm": 31621,
+          "samples": 33672,
+          "path": "/tmp/o-intercambio-corredor-inversa-interno.png"
+        }
+      },
+      {
+        "label": "corredor-detalhes",
+        "path": "/tmp/o-intercambio-corredor-detalhes.png",
+        "native": {
+          "width": 1280,
+          "height": 720
+        },
+        "blackRatio": 0.012727864583333333,
+        "raw": {
+          "width": 914,
+          "height": 514,
+          "colours": 291,
+          "visible": 26228,
+          "warm": 32402,
+          "samples": 33672,
+          "path": "/tmp/o-intercambio-corredor-detalhes-interno.png"
+        }
+      },
+      {
+        "label": "corredor-aparador",
+        "path": "/tmp/o-intercambio-corredor-aparador.png",
+        "native": {
+          "width": 1280,
+          "height": 720
+        },
+        "blackRatio": 0.029947916666666668,
+        "raw": {
+          "width": 914,
+          "height": 514,
+          "colours": 202,
+          "visible": 31228,
+          "warm": 31689,
+          "samples": 33672,
+          "path": "/tmp/o-intercambio-corredor-aparador-interno.png"
+        }
+      },
+      {
+        "label": "corredor-luz-alternada",
+        "path": "/tmp/o-intercambio-corredor-luz-alternada.png",
+        "native": {
+          "width": 1280,
+          "height": 720
+        },
+        "blackRatio": 0.34182942708333336,
+        "raw": {
+          "width": 914,
+          "height": 514,
+          "colours": 140,
+          "visible": 16980,
+          "warm": 18609,
+          "samples": 33672,
+          "path": "/tmp/o-intercambio-corredor-luz-alternada-interno.png"
+        }
+      },
+      {
+        "label": "corredor-corrimao-escada",
+        "path": "/tmp/o-intercambio-corredor-corrimao-escada.png",
+        "native": {
+          "width": 1280,
+          "height": 720
+        },
+        "blackRatio": 0.022298177083333332,
+        "raw": {
+          "width": 914,
+          "height": 514,
+          "colours": 97,
+          "visible": 30507,
+          "warm": 31841,
+          "samples": 33672,
+          "path": "/tmp/o-intercambio-corredor-corrimao-escada-interno.png"
+        }
+      },
+      {
+        "label": "corredor-descida",
+        "path": "/tmp/o-intercambio-corredor-descida.png",
+        "native": {
+          "width": 1280,
+          "height": 720
+        },
+        "blackRatio": 0.00013020833333333333,
+        "raw": {
+          "width": 914,
+          "height": 514,
+          "colours": 99,
+          "visible": 32176,
+          "warm": 32892,
+          "samples": 33672,
+          "path": "/tmp/o-intercambio-corredor-descida-interno.png"
+        }
+      }
+    ],
+    "views": [
+      {
+        "label": "corredor-entrada",
+        "position": {
+          "x": 1.850392850299407,
+          "y": 4.6499999999306905,
+          "z": 3.7545075476159204
+        },
+        "rotation": {
+          "yaw": -0.0023926535897932366,
+          "pitch": 0.08720000000000006,
+          "roll": 0
+        },
+        "horizonTilt": -1.064794086236276e-12
+      },
+      {
+        "label": "corredor-inversa",
+        "position": {
+          "x": 1.8419228646730343,
+          "y": 4.6500000231429475,
+          "z": 7.294497414740322
+        },
+        "rotation": {
+          "yaw": -3.143992653589793,
+          "pitch": 0.1136000000000001,
+          "roll": 0
+        },
+        "horizonTilt": -1.706586781613506e-11
+      },
+      {
+        "label": "corredor-detalhes",
+        "position": {
+          "x": 1.849578425745641,
+          "y": 4.64999971472763,
+          "z": 6.879568289495096
+        },
+        "rotation": {
+          "yaw": -2.851192653589793,
+          "pitch": 0.08480000000000015,
+          "roll": 0
+        },
+        "horizonTilt": -4.25544044446724e-11
+      },
+      {
+        "label": "corredor-aparador",
+        "position": {
+          "x": 1.8502024251466007,
+          "y": 4.649999999991504,
+          "z": 5.094333327123311
+        },
+        "rotation": {
+          "yaw": -5.579992653589793,
+          "pitch": 0.6632000000000001,
+          "roll": 0
+        },
+        "horizonTilt": -1.064401988770669e-08
+      },
+      {
+        "label": "corredor-luz-alternada",
+        "position": {
+          "x": 1.8502024251466007,
+          "y": 4.650000000030312,
+          "z": 4.704333327123309
+        },
+        "rotation": {
+          "yaw": -2.162392653589793,
+          "pitch": 0.4760000000000001,
+          "roll": 0
+        },
+        "horizonTilt": -9.103789722075817e-09
+      },
+      {
+        "label": "corredor-corrimao-escada",
+        "position": {
+          "x": 1.8533332798778142,
+          "y": 4.650000000015076,
+          "z": 7.321017965155691
+        },
+        "rotation": {
+          "yaw": 0.2928073464102067,
+          "pitch": 0.6608000000000002,
+          "roll": 0
+        },
+        "horizonTilt": 4.387026741881073e-09
+      },
+      {
+        "label": "corredor-descida",
+        "position": {
+          "x": 1.832700903181502,
+          "y": 3.149999999918079,
+          "z": 9.763475818672543
+        },
+        "rotation": {
+          "yaw": 0.004807346410206775,
+          "pitch": 0.5168000000000003,
+          "roll": 0
+        },
+        "horizonTilt": -2.369508755872829e-10
+      }
+    ],
+    "performance": {
+      "profile": "hallway-balanced",
+      "renderer": "Babylon.js",
+      "webgl": 2,
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "environment": "Chromium/SwiftShader, Linux, stationary camera, 1280×720 viewport",
+      "internal": {
+        "width": 914,
+        "height": 514
+      },
+      "seconds": 10.003707398,
+      "frames": 73,
+      "measuredFps": 7.3,
+      "reported": {
+        "frames": 673,
+        "meanFrameMs": 154.8,
+        "p95FrameMs": 303.1,
+        "fps": 6.5
+      }
+    },
+    "explorationPerformance": {
+      "profile": "hallway-balanced",
+      "environment": "Chromium/SwiftShader, Linux, real held-W input with frame/position sampling",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "internal": {
+        "width": 914,
+        "height": 514
+      },
+      "from": {
+        "x": 1.850392850299407,
+        "y": 4.65,
+        "z": 3.7545075476159204
+      },
+      "to": {
+        "x": 1.8421023135210508,
+        "y": 4.6517663734161285,
+        "z": 7.21949762941989
+      },
+      "distanceMetres": 3.4649999999999936,
+      "frames": 34,
+      "seconds": 4.873890196000008,
+      "measuredFps": 7
+    },
+    "physics": {
+      "closedDoorStop": {
+        "x": 1.8497984940602088,
+        "y": 4.650052198896723,
+        "z": 3.5821798615074885
+      },
+      "consoleBefore": {
+        "x": 1.7499610019396494,
+        "y": 4.65000023052963,
+        "z": 5.749334198385719
+      },
+      "consoleStop": {
+        "x": 2.047460814094961,
+        "y": 4.648099015458879,
+        "z": 5.747952441267207
+      },
+      "rightRailStop": {
+        "x": 2.059778543141443,
+        "y": 3.9910722583307834,
+        "z": 8.599869754763143
+      },
+      "leftRailStop": {
+        "x": 1.6269588528919559,
+        "y": 3.975435862461892,
+        "z": 8.598598275022306
+      }
+    },
+    "light": {
+      "toggles": 2,
+      "changedPixels": 297076,
+      "totalPixels": 469796,
+      "bedroomLightUnchanged": true
+    },
+    "decorative": [
+      {
+        "name": "closed side door z=4.85",
+        "point": {
+          "x": 1.1749999999999998,
+          "y": 4.15,
+          "z": 4.85
+        },
+        "interaction": null
+      },
+      {
+        "name": "closed side door z=6.25",
+        "point": {
+          "x": 1.1749999999999998,
+          "y": 4.15,
+          "z": 6.25
+        },
+        "interaction": null
+      },
+      {
+        "name": "residential telephone",
+        "point": {
+          "x": 2.405,
+          "y": 3.97,
+          "z": 5.75
+        },
+        "interaction": null
+      },
+      {
+        "name": "landscape frame",
+        "point": {
+          "x": 1.1749999999999998,
+          "y": 4.52,
+          "z": 5.55
+        },
+        "interaction": null
+      }
+    ],
+    "traversal": [
+      {
+        "position": {
+          "x": 1.8383139195882559,
+          "y": 4.650000001355871,
+          "z": 7.417542533727744
+        },
+        "frames": 1471
+      },
+      {
+        "position": {
+          "x": 1.8382301767925149,
+          "y": 4.65420302088375,
+          "z": 7.452542433543946
+        },
+        "frames": 1472,
+        "eyeDeltaPerFrame": 0.004203019527878382
+      },
+      {
+        "position": {
+          "x": 1.838062691201033,
+          "y": 4.656187017484495,
+          "z": 7.52254223317635
+        },
+        "frames": 1473,
+        "eyeDeltaPerFrame": 0.001983996600745108
+      },
+      {
+        "position": {
+          "x": 1.83781146281381,
+          "y": 4.6551296238421545,
+          "z": 7.627541932624955
+        },
+        "frames": 1474,
+        "eyeDeltaPerFrame": 0.0010573936423403651
+      },
+      {
+        "position": {
+          "x": 1.8375602344265871,
+          "y": 4.651322279853133,
+          "z": 7.73254163207356
+        },
+        "frames": 1475,
+        "eyeDeltaPerFrame": 0.0038073439890213834
+      },
+      {
+        "position": {
+          "x": 1.8373788475311918,
+          "y": 4.556897184284799,
+          "z": 7.8083514150003515
+        },
+        "frames": 1476,
+        "eyeDeltaPerFrame": 0.0944250955683339
+      },
+      {
+        "position": {
+          "x": 1.837127619143969,
+          "y": 4.503210516922059,
+          "z": 7.913351114448957
+        },
+        "frames": 1477,
+        "eyeDeltaPerFrame": 0.05368666736274008
+      },
+      {
+        "position": {
+          "x": 1.836876390756746,
+          "y": 4.486268316187508,
+          "z": 8.018350813897563
+        },
+        "frames": 1478,
+        "eyeDeltaPerFrame": 0.016942200734550994
+      },
+      {
+        "position": {
+          "x": 1.8366487778378622,
+          "y": 4.378402587056507,
+          "z": 8.113480541623034
+        },
+        "frames": 1479,
+        "eyeDeltaPerFrame": 0.10786572913100123
+      },
+      {
+        "position": {
+          "x": 1.8363975494506393,
+          "y": 4.339813787197726,
+          "z": 8.218480241071639
+        },
+        "frames": 1480,
+        "eyeDeltaPerFrame": 0.03858879985878083
+      },
+      {
+        "position": {
+          "x": 1.8361463210634164,
+          "y": 4.217773435136071,
+          "z": 8.323479940520244
+        },
+        "frames": 1481,
+        "eyeDeltaPerFrame": 0.12204035206165464
+      },
+      {
+        "position": {
+          "x": 1.8358950926761934,
+          "y": 4.17643461567817,
+          "z": 8.428479639968849
+        },
+        "frames": 1482,
+        "eyeDeltaPerFrame": 0.04133881945790119
+      },
+      {
+        "position": {
+          "x": 1.8356438642889705,
+          "y": 4.048486979535495,
+          "z": 8.533479339417454
+        },
+        "frames": 1483,
+        "eyeDeltaPerFrame": 0.12794763614267524
+      },
+      {
+        "position": {
+          "x": 1.8353926359017476,
+          "y": 4.0023811403751655,
+          "z": 8.638479038866059
+        },
+        "frames": 1484,
+        "eyeDeltaPerFrame": 0.04610583916032951
+      },
+      {
+        "position": {
+          "x": 1.8351414075145247,
+          "y": 3.8738837109299062,
+          "z": 8.743478738314664
+        },
+        "frames": 1485,
+        "eyeDeltaPerFrame": 0.12849742944525921
+      },
+      {
+        "position": {
+          "x": 1.8348901791273018,
+          "y": 3.831857869980478,
+          "z": 8.84847843776327
+        },
+        "frames": 1486,
+        "eyeDeltaPerFrame": 0.04202584094942807
+      },
+      {
+        "position": {
+          "x": 1.8346389507400789,
+          "y": 3.709697162976754,
+          "z": 8.953478137211874
+        },
+        "frames": 1487,
+        "eyeDeltaPerFrame": 0.12216070700372406
+      },
+      {
+        "position": {
+          "x": 1.834387722352856,
+          "y": 3.6725434023506223,
+          "z": 9.05847783666048
+        },
+        "frames": 1488,
+        "eyeDeltaPerFrame": 0.03715376062613185
+      },
+      {
+        "position": {
+          "x": 1.834136493965633,
+          "y": 3.5509246839695714,
+          "z": 9.163477536109085
+        },
+        "frames": 1489,
+        "eyeDeltaPerFrame": 0.12161871838105087
+      },
+      {
+        "position": {
+          "x": 1.8338852655784101,
+          "y": 3.5096646865127177,
+          "z": 9.26847723555769
+        },
+        "frames": 1490,
+        "eyeDeltaPerFrame": 0.041259997456853714
+      },
+      {
+        "position": {
+          "x": 1.8336340371911872,
+          "y": 3.381709404065813,
+          "z": 9.373476935006295
+        },
+        "frames": 1491,
+        "eyeDeltaPerFrame": 0.12795528244690457
+      },
+      {
+        "position": {
+          "x": 1.8333828088039643,
+          "y": 3.3356133348225536,
+          "z": 9.4784766344549
+        },
+        "frames": 1492,
+        "eyeDeltaPerFrame": 0.046096069243259485
+      },
+      {
+        "position": {
+          "x": 1.8331315804167414,
+          "y": 3.2071697944762168,
+          "z": 9.583476333903505
+        },
+        "frames": 1493,
+        "eyeDeltaPerFrame": 0.12844354034633687
+      },
+      {
+        "position": {
+          "x": 1.8328803520295185,
+          "y": 3.165220755818124,
+          "z": 9.68847603335211
+        },
+        "frames": 1494,
+        "eyeDeltaPerFrame": 0.04194903865809296
+      }
+    ],
+    "renderer": "Babylon.js",
+    "webgl": 2,
+    "meshes": 299,
+    "vertices": 130933,
+    "coverage": [
+      "fresh waking",
+      "bedroom door from both sides",
+      "real closed-door collision",
+      "five reference perspectives and console detail",
+      "independent corridor switch with canvas pixel proof",
+      "closed side doors and decorations without fake prompts",
+      "console and both handrail collisions",
+      "physical descent and ascent with measured camera progression",
+      "pause",
+      "real final stair tread",
+      "unchanged breakfast mission and kitchen connection"
+    ],
+    "limits": [
+      "The reference images are compared by human inspection; this does not assert exact visual fidelity.",
+      "Camera step sampling uses actual rendered frames; it is not a hardware input-latency benchmark.",
+      "SwiftShader/Linux measurements do not establish physical-GPU or Windows performance."
+    ]
+  },
+  "bedroomRegression": {
+    "status": "passed",
+    "profile": "balanced",
+    "pictures": [
+      {
+        "label": "quarto-entrada",
+        "path": "/tmp/o-intercambio-quarto-entrada.png",
+        "native": {
+          "width": 1280,
+          "height": 720
+        },
+        "blackRatio": 0.021354166666666667,
+        "raw": {
+          "width": 914,
+          "height": 514,
+          "colours": 388,
+          "visible": 31180,
+          "warm": 30204,
+          "samples": 33672,
+          "path": "/tmp/o-intercambio-quarto-entrada-interno.png"
+        }
+      },
+      {
+        "label": "quarto-inversa",
+        "path": "/tmp/o-intercambio-quarto-inversa.png",
+        "native": {
+          "width": 1280,
+          "height": 720
+        },
+        "blackRatio": 3.255208333333333e-05,
+        "raw": {
+          "width": 914,
+          "height": 514,
+          "colours": 377,
+          "visible": 32563,
+          "warm": 33019,
+          "samples": 33672,
+          "path": "/tmp/o-intercambio-quarto-inversa-interno.png"
+        }
+      },
+      {
+        "label": "quarto-cama",
+        "path": "/tmp/o-intercambio-quarto-cama.png",
+        "native": {
+          "width": 1280,
+          "height": 720
+        },
+        "blackRatio": 0.004850260416666667,
+        "raw": {
+          "width": 914,
+          "height": 514,
+          "colours": 503,
+          "visible": 31459,
+          "warm": 30703,
+          "samples": 33672,
+          "path": "/tmp/o-intercambio-quarto-cama-interno.png"
+        }
+      },
+      {
+        "label": "quarto-escrivaninha",
+        "path": "/tmp/o-intercambio-quarto-escrivaninha.png",
+        "native": {
+          "width": 1280,
+          "height": 720
+        },
+        "blackRatio": 0.045149739583333334,
+        "raw": {
+          "width": 914,
+          "height": 514,
+          "colours": 229,
+          "visible": 30219,
+          "warm": 29700,
+          "samples": 33672,
+          "path": "/tmp/o-intercambio-quarto-escrivaninha-interno.png"
+        }
+      },
+      {
+        "label": "quarto-guarda-roupa",
+        "path": "/tmp/o-intercambio-quarto-guarda-roupa.png",
+        "native": {
+          "width": 1280,
+          "height": 720
+        },
+        "blackRatio": 0.029947916666666668,
+        "raw": {
+          "width": 914,
+          "height": 514,
+          "colours": 244,
+          "visible": 31578,
+          "warm": 31642,
+          "samples": 33672,
+          "path": "/tmp/o-intercambio-quarto-guarda-roupa-interno.png"
+        }
+      },
+      {
+        "label": "quarto-prateleiras",
+        "path": "/tmp/o-intercambio-quarto-prateleiras.png",
+        "native": {
+          "width": 1280,
+          "height": 720
+        },
+        "blackRatio": 0.0029622395833333332,
+        "raw": {
+          "width": 914,
+          "height": 514,
+          "colours": 244,
+          "visible": 31627,
+          "warm": 31532,
+          "samples": 33672,
+          "path": "/tmp/o-intercambio-quarto-prateleiras-interno.png"
+        }
+      },
+      {
+        "label": "quarto-luz-alternada",
+        "path": "/tmp/o-intercambio-quarto-luz-alternada.png",
+        "native": {
+          "width": 1280,
+          "height": 720
+        },
+        "blackRatio": 0,
+        "raw": {
+          "width": 914,
+          "height": 514,
+          "colours": 169,
+          "visible": 33572,
+          "warm": 33597,
+          "samples": 33672,
+          "path": "/tmp/o-intercambio-quarto-luz-alternada-interno.png"
+        }
+      }
+    ],
+    "views": [
+      {
+        "label": "quarto-entrada",
+        "position": {
+          "x": 1.848091358690973,
+          "y": 4.6499999993705625,
+          "z": 3.0166875965432842
+        },
+        "rotation": {
+          "yaw": -2.990392653589793,
+          "pitch": 0.20720000000000008,
+          "roll": 0
+        },
+        "horizonTilt": -1.6329415597482466e-09
+      },
+      {
+        "label": "quarto-inversa",
+        "position": {
+          "x": 1.6500225472008516,
+          "y": 4.64999999999353,
+          "z": 0.42585424742611655
+        },
+        "rotation": {
+          "yaw": 0.08640734641020675,
+          "pitch": 0.2432000000000002,
+          "roll": 0
+        },
+        "horizonTilt": -1.823021733571295e-09
+      },
+      {
+        "label": "quarto-cama",
+        "position": {
+          "x": 1.755362043934232,
+          "y": 4.649999993963207,
+          "z": 3.0022039768634863
+        },
+        "rotation": {
+          "yaw": -3.470392653589793,
+          "pitch": 0.30560000000000026,
+          "roll": 0
+        },
+        "horizonTilt": 9.429959035855973e-10
+      },
+      {
+        "label": "quarto-escrivaninha",
+        "position": {
+          "x": 1.63323368385869,
+          "y": 4.649999916968451,
+          "z": 1.291560545974346
+        },
+        "rotation": {
+          "yaw": -2.6375926535897927,
+          "pitch": 0.3896000000000003,
+          "roll": 0
+        },
+        "horizonTilt": -6.848329903164085e-09
+      },
+      {
+        "label": "quarto-guarda-roupa",
+        "position": {
+          "x": 1.6494550082675128,
+          "y": 4.650000015849133,
+          "z": 2.6164609097069738
+        },
+        "rotation": {
+          "yaw": -2.2295926535897928,
+          "pitch": 0.3248000000000004,
+          "roll": 0
+        },
+        "horizonTilt": 1.4221569699657266e-08
+      },
+      {
+        "label": "quarto-prateleiras",
+        "position": {
+          "x": 1.5229307638849454,
+          "y": 4.650000005477368,
+          "z": 1.7183303882163592
+        },
+        "rotation": {
+          "yaw": -3.568792653589793,
+          "pitch": -0.09519999999999947,
+          "roll": 0
+        },
+        "horizonTilt": 1.9047372568081755e-09
+      },
+      {
+        "label": "quarto-luz-alternada",
+        "position": {
+          "x": 1.8124763602324663,
+          "y": 4.65,
+          "z": 2.778021275285994
+        },
+        "rotation": {
+          "yaw": -5.366392653589793,
+          "pitch": 0.5024000000000005,
+          "roll": 0
+        },
+        "horizonTilt": -1.8932281520278593e-08
+      }
+    ],
+    "interactions": [
+      {
+        "id": "photo",
+        "text": "Nós três, antes de tudo mudar. Vou sentir falta de casa."
+      },
+      {
+        "id": "calendar",
+        "text": "13 de junho. Hoje é o dia da viagem."
+      },
+      {
+        "id": "suitcase",
+        "text": "Minha mochila. Quase tudo pronto para a viagem."
+      },
+      {
+        "id": "switch",
+        "toggles": 2,
+        "changedPixels": 439525,
+        "totalPixels": 469796
+      },
+      {
+        "id": "door",
+        "animatedOpenAndClose": true
+      }
+    ],
+    "physics": {
+      "beforeBed": {
+        "x": 1.5978931780868788,
+        "y": 4.649999522771938,
+        "z": 1.3338809994522292
+      },
+      "bedStop": {
+        "x": 1.8078930278111278,
+        "y": 4.649485696904887,
+        "z": 1.3327504709007194
+      }
+    },
+    "performance": {
+      "profile": "bedroom-balanced",
+      "renderer": "Babylon.js",
+      "webgl": 2,
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "environment": "Chromium/SwiftShader, Linux, stationary camera, 1280×720 viewport",
+      "internal": {
+        "width": 914,
+        "height": 514
+      },
+      "seconds": 10.001090877999996,
+      "frames": 66,
+      "measuredFps": 6.6,
+      "reported": {
+        "frames": 402,
+        "meanFrameMs": 141.7,
+        "p95FrameMs": 185.7,
+        "fps": 7.1
+      }
+    },
+    "renderer": "Babylon.js",
+    "webgl": 2,
+    "meshes": 299,
+    "vertices": 130933,
+    "coverage": [
+      "fresh waking",
+      "six views in one real room",
+      "photo memory",
+      "travel calendar",
+      "backpack examination",
+      "light switch twice",
+      "animated door open and close",
+      "bed and closed-door collision",
+      "pause",
+      "physical exit and stairs",
+      "preserved breakfast mission"
+    ],
+    "limits": [
+      "The six reference images are compared by human inspection, not a numerical claim of identical fidelity.",
+      "SwiftShader software-renderer measurement does not establish physical-GPU or Windows performance."
+    ]
+  },
+  "fullChapterRegression": {
+    "status": "passed",
+    "pictures": [
+      {
+        "label": "chapter-bedroom",
+        "path": "/tmp/o-intercambio-chapter-bedroom.png",
+        "native": {
+          "width": 1280,
+          "height": 800
+        },
+        "blackRatio": 0.014837919776119403,
+        "raw": {
+          "width": 914,
+          "height": 571,
+          "colours": 257,
+          "visible": 32445,
+          "warm": 32056,
+          "samples": 37332,
+          "path": "/tmp/o-intercambio-chapter-bedroom-interno.png"
+        }
+      },
+      {
+        "label": "balanced-cozinha-geral",
+        "path": "/tmp/o-intercambio-balanced-cozinha-geral.png",
+        "native": {
+          "width": 1280,
+          "height": 800
+        },
+        "blackRatio": 0.001195195895522388,
+        "raw": {
+          "width": 914,
+          "height": 571,
+          "colours": 502,
+          "visible": 32236,
+          "warm": 35836,
+          "samples": 37332,
+          "path": "/tmp/o-intercambio-balanced-cozinha-geral-interno.png"
+        }
+      },
+      {
+        "label": "cozinha-pais-a-mesa",
+        "path": "/tmp/o-intercambio-cozinha-pais-a-mesa.png",
+        "native": {
+          "width": 1280,
+          "height": 800
+        },
+        "blackRatio": 0.0009911380597014926,
+        "raw": {
+          "width": 914,
+          "height": 571,
+          "colours": 547,
+          "visible": 34799,
+          "warm": 35616,
+          "samples": 37332,
+          "path": "/tmp/o-intercambio-cozinha-pais-a-mesa-interno.png"
+        }
+      },
+      {
+        "label": "cozinha-aproximacao-mesa",
+        "path": "/tmp/o-intercambio-cozinha-aproximacao-mesa.png",
+        "native": {
+          "width": 1280,
+          "height": 800
+        },
+        "blackRatio": 0.0003498134328358209,
+        "raw": {
+          "width": 914,
+          "height": 571,
+          "colours": 578,
+          "visible": 37006,
+          "warm": 36171,
+          "samples": 37332,
+          "path": "/tmp/o-intercambio-cozinha-aproximacao-mesa-interno.png"
+        }
+      },
+      {
+        "label": "cozinha-mae",
+        "path": "/tmp/o-intercambio-cozinha-mae.png",
+        "native": {
+          "width": 1280,
+          "height": 800
+        },
+        "blackRatio": 0.0018656716417910447,
+        "raw": {
+          "width": 914,
+          "height": 571,
+          "colours": 462,
+          "visible": 31594,
+          "warm": 35993,
+          "samples": 37332,
+          "path": "/tmp/o-intercambio-cozinha-mae-interno.png"
+        }
+      },
+      {
+        "label": "cozinha-pai",
+        "path": "/tmp/o-intercambio-cozinha-pai.png",
+        "native": {
+          "width": 1280,
+          "height": 800
+        },
+        "blackRatio": 0.0015450093283582089,
+        "raw": {
+          "width": 914,
+          "height": 571,
+          "colours": 306,
+          "visible": 35739,
+          "warm": 35130,
+          "samples": 37332,
+          "path": "/tmp/o-intercambio-cozinha-pai-interno.png"
+        }
+      },
+      {
+        "label": "cozinha-dialogo",
+        "path": "/tmp/o-intercambio-cozinha-dialogo.png",
+        "native": {
+          "width": 1280,
+          "height": 800
+        },
+        "blackRatio": 0.001953125,
+        "raw": {
+          "width": 914,
+          "height": 571,
+          "colours": 466,
+          "visible": 31563,
+          "warm": 35988,
+          "samples": 37332,
+          "path": "/tmp/o-intercambio-cozinha-dialogo-interno.png"
+        }
+      },
+      {
+        "label": "chapter-ending",
+        "path": "/tmp/o-intercambio-chapter-ending.png",
+        "native": {
+          "width": 1280,
+          "height": 800
+        },
+        "blackRatio": 0.9595673973880597,
+        "raw": null
+      }
+    ],
+    "kitchen": {
+      "lighting": {
+        "whiteClipFraction": 0,
+        "samples": 58255
+      },
+      "performance": {
+        "profile": "kitchen-balanced",
+        "renderer": "Babylon.js",
+        "webgl": 2,
+        "viewport": {
+          "width": 1280,
+          "height": 800
+        },
+        "environment": "Chromium/SwiftShader, Linux, stationary camera, 1280×800 viewport",
+        "internal": {
+          "width": 914,
+          "height": 571
+        },
+        "seconds": 9.999918525999995,
+        "frames": 81,
+        "measuredFps": 8.1,
+        "reported": {
+          "frames": 1235,
+          "meanFrameMs": 108.7,
+          "p95FrameMs": 156.9,
+          "fps": 9.2
+        }
+      },
+      "idle": {
+        "changedPixels": 866,
+        "totalPixels": 521894,
+        "observedFrames": 7
+      },
+      "horizon": [
+        {
+          "view": "balanced kitchen overview",
+          "basisRightY": -3.3618642591992653e-11,
+          "rotation": {
+            "yaw": -0.014392653589793247,
+            "pitch": 0.11360000000000024,
+            "roll": 0
+          }
+        },
+        {
+          "view": "both parents across the table",
+          "basisRightY": 1.5043504220102477e-09,
+          "rotation": {
+            "yaw": -0.1991926535897932,
+            "pitch": 0.17360000000000025,
+            "roll": 0
+          }
+        },
+        {
+          "view": "looking downward while approaching the table",
+          "basisRightY": -5.990428986191176e-11,
+          "rotation": {
+            "yaw": 0.009607346410206774,
+            "pitch": 0.3896000000000002,
+            "roll": 0
+          }
+        },
+        {
+          "view": "mother close-up after turning left",
+          "basisRightY": -2.8228877013702913e-09,
+          "rotation": {
+            "yaw": 0.5232073464102067,
+            "pitch": 0.06800000000000035,
+            "roll": 0
+          }
+        },
+        {
+          "view": "father close-up after turning right",
+          "basisRightY": -1.5236472084012576e-09,
+          "rotation": {
+            "yaw": -0.21599265358979275,
+            "pitch": 0.15200000000000047,
+            "roll": 0
+          }
+        }
+      ],
+      "collisions": {
+        "before": {
+          "x": -0.017514273277775334,
+          "y": 1.6499999999999997,
+          "z": 17.01705873403542
+        },
+        "tableStop": {
+          "x": -0.020780242311675905,
+          "y": 1.6567685030650765,
+          "z": 17.647056930727054
+        },
+        "parentStop": {
+          "x": -1.5600624864290518,
+          "y": 1.6499886680861469,
+          "z": 18.470319563520498
+        },
+        "separation": 0.4797859676713148
+      }
+    },
+    "renderer": "Babylon.js",
+    "webgl": 2,
+    "meshes": 299,
+    "vertices": 130933,
+    "coverage": [
+      "fresh opening",
+      "physical door and stairs",
+      "six kitchen perspectives",
+      "table and parent collisions",
+      "pause",
+      "real checkpoint reload",
+      "text-only parent dialogue and choice",
+      "suitcase",
+      "existing car trip",
+      "airport gate",
+      "plane",
+      "host-family ending"
+    ]
+  },
+  "geometrySummary": {
+    "status": "passed",
+    "method": "Geometry-only NullEngine audit of the real hallway meshes, with neutral substituted materials. This does not validate final lighting, texture art or on-screen appearance.",
+    "piecesBeforeMaterialMerge": 446,
+    "allFinite": true,
+    "lamp": [
+      {
+        "name": "corredor · cúpula opalina facetada",
+        "material": "vidro opalino das luminárias",
+        "min": [
+          1.680000023841858,
+          5.209999904632569,
+          5.380000190734863
+        ],
+        "max": [
+          2.020000023841858,
+          5.419999904632569,
+          5.720000190734863
+        ],
+        "vertices": 91,
+        "triangles": 144,
+        "finite": true,
+        "convexDot": {
+          "positive": 91,
+          "negative": 0,
+          "minDot": 0.09857142857142831
+        },
+        "radialNormals": {
+          "positive": 78,
+          "negative": 0
+        },
+        "interaction": null
+      }
+    ],
+    "switch": {
+      "origin": [
+        1.85,
+        4.65,
+        4.25
+      ],
+      "walkable": true,
+      "hit": true,
+      "mesh": "corredor · hall-switch · telephone",
+      "distance": 0.7631027097666258,
+      "point": [
+        1.2020825928132617,
+        4.246851411136788,
+        4.25
+      ],
+      "interaction": "hall-switch"
+    },
+    "sideDoor": {
+      "hit": true,
+      "mesh": "corredor · casa · darkWood",
+      "distance": 0.6519999942779542,
+      "point": [
+        1.198000005722046,
+        4.65,
+        4.85
+      ],
+      "interaction": null
+    },
+    "window": {
+      "opening": {
+        "hit": false,
+        "mesh": null,
+        "distance": null,
+        "point": null,
+        "interaction": null
+      },
+      "solid": {
+        "hit": true,
+        "mesh": "corredor · casa · wallpaper",
+        "distance": 0.699999895095825,
+        "point": [
+          2.549999895095825,
+          4.85,
+          5.1
+        ],
+        "interaction": null
+      }
+    },
+    "steps": [
+      {
+        "step": 1,
+        "z": 7.9111111111111105,
+        "expectedTop": 2.8333333333333335,
+        "renderedTop": 2.833333215713501,
+        "error": -1.1761983254032771e-07,
+        "walkable": true
+      },
+      {
+        "step": 2,
+        "z": 8.133333333333333,
+        "expectedTop": 2.6666666666666665,
+        "renderedTop": 2.6666667079925537,
+        "error": 4.132588715677343e-08,
+        "walkable": true
+      },
+      {
+        "step": 3,
+        "z": 8.355555555555556,
+        "expectedTop": 2.5,
+        "renderedTop": 2.4999999618530273,
+        "error": -3.814697269177714e-08,
+        "walkable": true
+      },
+      {
+        "step": 4,
+        "z": 8.577777777777778,
+        "expectedTop": 2.3333333333333335,
+        "renderedTop": 2.333333215713501,
+        "error": -1.1761983254032771e-07,
+        "walkable": true
+      },
+      {
+        "step": 5,
+        "z": 8.8,
+        "expectedTop": 2.1666666666666665,
+        "renderedTop": 2.1666667079925537,
+        "error": 4.132588715677343e-08,
+        "walkable": true
+      },
+      {
+        "step": 6,
+        "z": 9.022222222222222,
+        "expectedTop": 2,
+        "renderedTop": 1.9999999618530273,
+        "error": -3.814697269177714e-08,
+        "walkable": true
+      },
+      {
+        "step": 7,
+        "z": 9.244444444444445,
+        "expectedTop": 1.8333333333333333,
+        "renderedTop": 1.8333333349227905,
+        "error": 1.5894572324981482e-09,
+        "walkable": true
+      },
+      {
+        "step": 8,
+        "z": 9.466666666666667,
+        "expectedTop": 1.6666666666666667,
+        "renderedTop": 1.6666667079925537,
+        "error": 4.132588693472883e-08,
+        "walkable": true
+      },
+      {
+        "step": 9,
+        "z": 9.68888888888889,
+        "expectedTop": 1.5,
+        "renderedTop": 1.4999999618530273,
+        "error": -3.814697269177714e-08,
+        "walkable": true
+      },
+      {
+        "step": 10,
+        "z": 9.911111111111111,
+        "expectedTop": 1.3333333333333333,
+        "renderedTop": 1.3333333349227905,
+        "error": 1.5894572324981482e-09,
+        "walkable": true
+      },
+      {
+        "step": 11,
+        "z": 10.133333333333333,
+        "expectedTop": 1.1666666666666667,
+        "renderedTop": 1.1666667079925537,
+        "error": 4.132588693472883e-08,
+        "walkable": true
+      },
+      {
+        "step": 12,
+        "z": 10.355555555555556,
+        "expectedTop": 1,
+        "renderedTop": 1.000000021457672,
+        "error": 2.1457672083613488e-08,
+        "walkable": true
+      },
+      {
+        "step": 13,
+        "z": 10.57777777777778,
+        "expectedTop": 0.8333333333333335,
+        "renderedTop": 0.8333333349227906,
+        "error": 1.5894571214758457e-09,
+        "walkable": true
+      },
+      {
+        "step": 14,
+        "z": 10.8,
+        "expectedTop": 0.6666666666666665,
+        "renderedTop": 0.6666666483879089,
+        "error": -1.8278757618617192e-08,
+        "walkable": true
+      },
+      {
+        "step": 15,
+        "z": 11.022222222222222,
+        "expectedTop": 0.5,
+        "renderedTop": 0.4999999916553497,
+        "error": -8.344650304081824e-09,
+        "walkable": true
+      },
+      {
+        "step": 16,
+        "z": 11.244444444444445,
+        "expectedTop": 0.3333333333333335,
+        "renderedTop": 0.3333333349227906,
+        "error": 1.5894571214758457e-09,
+        "walkable": true
+      },
+      {
+        "step": 17,
+        "z": 11.466666666666667,
+        "expectedTop": 0.16666666666666652,
+        "renderedTop": 0.1666666632890701,
+        "error": -3.3775964247695356e-09,
+        "walkable": true
+      },
+      {
+        "step": 18,
+        "z": 11.68888888888889,
+        "expectedTop": 0,
+        "renderedTop": -8.940697071579962e-10,
+        "error": -8.940697071579962e-10,
+        "walkable": true
+      }
+    ],
+    "header": {
+      "wall": {
+        "hit": true,
+        "mesh": "corredor · casa · wallpaper",
+        "distance": 2.849999847412109,
+        "point": [
+          1.85,
+          4.5,
+          11.849999847412109
+        ],
+        "interaction": null
+      },
+      "landscape": {
+        "hit": true,
+        "mesh": "corredor · casa · landscape1",
+        "distance": 2.812999725341797,
+        "point": [
+          1.85,
+          4.2,
+          11.812999725341797
+        ],
+        "interaction": null
+      }
+    },
+    "foundation": [
+      {
+        "name": "escada · contrapiso interno sob o lance",
+        "material": "darkWood",
+        "min": [
+          1.150000023841858,
+          -0.09499999970197678,
+          7.800000190734863
+        ],
+        "max": [
+          2.550000023841858,
+          -0.014999999701976775,
+          11.800000190734863
+        ],
+        "vertices": 24,
+        "triangles": 12,
+        "finite": true,
+        "convexDot": {
+          "positive": 24,
+          "negative": 0,
+          "minDot": 0.04
+        },
+        "radialNormals": {
+          "positive": 16,
+          "negative": 0
+        },
+        "interaction": null
+      }
+    ],
+    "returns": [
+      {
+        "min": [
+          0.8299999856948852,
+          -4.7683715642676816e-08,
+          11.80000008392334
+        ],
+        "max": [
+          0.9499999856948853,
+          5.599999952316284,
+          11.84900008392334
+        ],
+        "overlapWithKitchenWallZ": 0
+      },
+      {
+        "min": [
+          3.049999895095825,
+          -4.7683715642676816e-08,
+          11.80000008392334
+        ],
+        "max": [
+          3.1699998950958252,
+          5.599999952316284,
+          11.84900008392334
+        ],
+        "overlapWithKitchenWallZ": 0
+      }
+    ]
+  },
+  "preservation": {
+    "baselineCommit": "073b90754666d6986da842a8ca659864c5525e1a",
+    "method": "Byte comparison of protected files and value comparison of protected layout exports; not a visual or gameplay assertion.",
+    "files": [
+      {
+        "path": "src/scene/bedroom.ts",
+        "baselineSha256": "d745b533ec98c4d9ae9eb1185e41fe94ade7f34c8fd97163f68f6ae6a565064b",
+        "currentSha256": "d745b533ec98c4d9ae9eb1185e41fe94ade7f34c8fd97163f68f6ae6a565064b",
+        "unchanged": true
+      },
+      {
+        "path": "src/scene/bedroomMaterials.ts",
+        "baselineSha256": "49179c92447c7f0e58c7e6312e5b3a44882ffb7b50a73d390cb3cafff3693cd4",
+        "currentSha256": "49179c92447c7f0e58c7e6312e5b3a44882ffb7b50a73d390cb3cafff3693cd4",
+        "unchanged": true
+      },
+      {
+        "path": "src/scene/kitchen.ts",
+        "baselineSha256": "e784f3e5163b79f805ca828bb8e347f37b8ce46fe125b3c3553a78dc2ab0f332",
+        "currentSha256": "e784f3e5163b79f805ca828bb8e347f37b8ce46fe125b3c3553a78dc2ab0f332",
+        "unchanged": true
+      },
+      {
+        "path": "src/scene/kitchenMaterials.ts",
+        "baselineSha256": "b5674382dc22e025178f6bb1950ff701c909c90b0069c5e1f1a59aca457f5dcd",
+        "currentSha256": "b5674382dc22e025178f6bb1950ff701c909c90b0069c5e1f1a59aca457f5dcd",
+        "unchanged": true
+      },
+      {
+        "path": "src/scene/parents.ts",
+        "baselineSha256": "5a4b78ca8747428300d993d2e4fb9e2f872c702c5910c6811db2d0f8dfc9995f",
+        "currentSha256": "5a4b78ca8747428300d993d2e4fb9e2f872c702c5910c6811db2d0f8dfc9995f",
+        "unchanged": true
+      },
+      {
+        "path": "src/scene/parentsGeometry.ts",
+        "baselineSha256": "68e2f447da7bece05a486fb920eafbf74bc6776abbd6bc58a9a0e525af6a1e18",
+        "currentSha256": "68e2f447da7bece05a486fb920eafbf74bc6776abbd6bc58a9a0e525af6a1e18",
+        "unchanged": true
+      },
+      {
+        "path": "src/scene/parentsMaterials.ts",
+        "baselineSha256": "ee780ceb2c92cbd48b210d76d8e5f95084cfed2e0685b09ad5137f36068d44a4",
+        "currentSha256": "ee780ceb2c92cbd48b210d76d8e5f95084cfed2e0685b09ad5137f36068d44a4",
+        "unchanged": true
+      },
+      {
+        "path": "src/scene/chapterWorld.ts",
+        "baselineSha256": "1a4f149ef18b16524fefebde774c10bcd12e0f234ea0e637e5323614950f665b",
+        "currentSha256": "1a4f149ef18b16524fefebde774c10bcd12e0f234ea0e637e5323614950f665b",
+        "unchanged": true
+      },
+      {
+        "path": "src/game/kitchenLayout.ts",
+        "baselineSha256": "133ab56cec95a8572197b0d0b8eb0a72cba0b31f5664655029581a21948b4390",
+        "currentSha256": "133ab56cec95a8572197b0d0b8eb0a72cba0b31f5664655029581a21948b4390",
+        "unchanged": true
+      },
+      {
+        "path": "src/game/player.ts",
+        "baselineSha256": "9ec36fae7437cb8a346d03a9d0d1e6be83b1f23a31a0bb1ffa27f417e2ad4841",
+        "currentSha256": "9ec36fae7437cb8a346d03a9d0d1e6be83b1f23a31a0bb1ffa27f417e2ad4841",
+        "unchanged": true
+      },
+      {
+        "path": "src/game/narrative.ts",
+        "baselineSha256": "6d93377087f0f167b7598425b850d9245c687c9ee5c3941509c75e6842cd3ef3",
+        "currentSha256": "6d93377087f0f167b7598425b850d9245c687c9ee5c3941509c75e6842cd3ef3",
+        "unchanged": true
+      },
+      {
+        "path": "src/game/opening.ts",
+        "baselineSha256": "ef3a22c106dfd46f6ce0bc3dafde4052d903519688d3953a107d024c081564e0",
+        "currentSha256": "ef3a22c106dfd46f6ce0bc3dafde4052d903519688d3953a107d024c081564e0",
+        "unchanged": true
+      },
+      {
+        "path": "src/game/audio.ts",
+        "baselineSha256": "eed5a4f515997f7bf3bad6925c447f00315561d79f688e6b40ae379b19da037b",
+        "currentSha256": "eed5a4f515997f7bf3bad6925c447f00315561d79f688e6b40ae379b19da037b",
+        "unchanged": true
+      },
+      {
+        "path": "src/game/settings.ts",
+        "baselineSha256": "1b0a9b1707fe993f5bc093ae8744e3b6904d09148b168d1fc80ae9a79f8cbaba",
+        "currentSha256": "1b0a9b1707fe993f5bc093ae8744e3b6904d09148b168d1fc80ae9a79f8cbaba",
+        "unchanged": true
+      },
+      {
+        "path": "src/game/door.ts",
+        "baselineSha256": "20bc44ace30b289662bed6794374ce925a09532d9b0989579a07e5a6ffd0198f",
+        "currentSha256": "20bc44ace30b289662bed6794374ce925a09532d9b0989579a07e5a6ffd0198f",
+        "unchanged": true
+      },
+      {
+        "path": "src/game/interactions.ts",
+        "baselineSha256": "ee41621fad1e98a9df36ac5501d262990c5bbccea4c4199e64ff38777e3f211f",
+        "currentSha256": "ee41621fad1e98a9df36ac5501d262990c5bbccea4c4199e64ff38777e3f211f",
+        "unchanged": true
+      },
+      {
+        "path": "src/game/objective.ts",
+        "baselineSha256": "bc6033065639fe826bee26f939425594d2840e0b9ac640217bfb867f3fba1616",
+        "currentSha256": "bc6033065639fe826bee26f939425594d2840e0b9ac640217bfb867f3fba1616",
+        "unchanged": true
+      },
+      {
+        "path": "src/ui.ts",
+        "baselineSha256": "4a6bc1205f04d677a2829278be37bf149681a8ad0ac0218ae8ab9023513fd6c3",
+        "currentSha256": "4a6bc1205f04d677a2829278be37bf149681a8ad0ac0218ae8ab9023513fd6c3",
+        "unchanged": true
+      },
+      {
+        "path": "src/style.css",
+        "baselineSha256": "08bdba727d33b328d517e111ac5b7dd1b9b05d906343565f8420455a8532b1a0",
+        "currentSha256": "08bdba727d33b328d517e111ac5b7dd1b9b05d906343565f8420455a8532b1a0",
+        "unchanged": true
+      }
+    ],
+    "layout": [
+      {
+        "field": "ROOM",
+        "unchanged": true,
+        "before": {
+          "minX": -0.15,
+          "maxX": 3.05,
+          "minZ": -0.5,
+          "maxZ": 3.3,
+          "floor": 3,
+          "ceiling": 5.6
+        },
+        "after": {
+          "minX": -0.15,
+          "maxX": 3.05,
+          "minZ": -0.5,
+          "maxZ": 3.3,
+          "floor": 3,
+          "ceiling": 5.6
+        }
+      },
+      {
+        "field": "DOOR",
+        "unchanged": true,
+        "before": {
+          "hingeX": 1.45,
+          "z": 3.3,
+          "width": 0.8,
+          "height": 2.1,
+          "thickness": 0.07,
+          "openAngle": -1.5707963267948966
+        },
+        "after": {
+          "hingeX": 1.45,
+          "z": 3.3,
+          "width": 0.8,
+          "height": 2.1,
+          "thickness": 0.07,
+          "openAngle": -1.5707963267948966
+        }
+      },
+      {
+        "field": "FURNITURE",
+        "unchanged": true,
+        "before": {
+          "bed": {
+            "x": 2.51,
+            "z": 0.65,
+            "width": 0.9,
+            "depth": 2,
+            "height": 0.56
+          },
+          "desk": {
+            "x": 0.85,
+            "z": -0.15,
+            "width": 1.4,
+            "depth": 0.6,
+            "height": 0.77
+          },
+          "wardrobe": {
+            "x": 0.17,
+            "z": 1.7,
+            "width": 0.6,
+            "depth": 1.8,
+            "height": 2.22
+          },
+          "chair": {
+            "x": 0.85,
+            "z": 0.65,
+            "width": 0.52,
+            "depth": 0.56,
+            "height": 0.97
+          },
+          "bedside": {
+            "x": 2.7,
+            "z": 2.02,
+            "width": 0.46,
+            "depth": 0.42,
+            "height": 0.59
+          },
+          "backpack": {
+            "x": 2.42,
+            "z": 2.65,
+            "width": 0.34,
+            "depth": 0.27,
+            "height": 0.46
+          }
+        },
+        "after": {
+          "bed": {
+            "x": 2.51,
+            "z": 0.65,
+            "width": 0.9,
+            "depth": 2,
+            "height": 0.56
+          },
+          "desk": {
+            "x": 0.85,
+            "z": -0.15,
+            "width": 1.4,
+            "depth": 0.6,
+            "height": 0.77
+          },
+          "wardrobe": {
+            "x": 0.17,
+            "z": 1.7,
+            "width": 0.6,
+            "depth": 1.8,
+            "height": 2.22
+          },
+          "chair": {
+            "x": 0.85,
+            "z": 0.65,
+            "width": 0.52,
+            "depth": 0.56,
+            "height": 0.97
+          },
+          "bedside": {
+            "x": 2.7,
+            "z": 2.02,
+            "width": 0.46,
+            "depth": 0.42,
+            "height": 0.59
+          },
+          "backpack": {
+            "x": 2.42,
+            "z": 2.65,
+            "width": 0.34,
+            "depth": 0.27,
+            "height": 0.46
+          }
+        }
+      },
+      {
+        "field": "OBJECTS",
+        "unchanged": true,
+        "before": {
+          "calendar": {
+            "x": 0.75,
+            "y": 4.45,
+            "z": 3.245
+          },
+          "photo": {
+            "x": 0.53,
+            "y": 4.42,
+            "z": 1.55
+          },
+          "switch": {
+            "x": 2.42,
+            "y": 4.23,
+            "z": 3.245
+          },
+          "mother": {
+            "x": -1.2,
+            "y": 1.25,
+            "z": 17.3
+          }
+        },
+        "after": {
+          "calendar": {
+            "x": 0.75,
+            "y": 4.45,
+            "z": 3.245
+          },
+          "photo": {
+            "x": 0.53,
+            "y": 4.42,
+            "z": 1.55
+          },
+          "switch": {
+            "x": 2.42,
+            "y": 4.23,
+            "z": 3.245
+          },
+          "mother": {
+            "x": -1.2,
+            "y": 1.25,
+            "z": 17.3
+          }
+        }
+      },
+      {
+        "field": "BED_POSE",
+        "unchanged": true,
+        "before": {
+          "position": {
+            "x": 2.51,
+            "y": 3.82,
+            "z": -0.1
+          },
+          "yaw": 0.05,
+          "pitch": -1.36,
+          "roll": 0.015
+        },
+        "after": {
+          "position": {
+            "x": 2.51,
+            "y": 3.82,
+            "z": -0.1
+          },
+          "yaw": 0.05,
+          "pitch": -1.36,
+          "roll": 0.015
+        }
+      },
+      {
+        "field": "STANDING_POSE",
+        "unchanged": true,
+        "before": {
+          "position": {
+            "x": 1.68,
+            "y": 4.65,
+            "z": 0.9
+          },
+          "yaw": -3.141592653589793,
+          "pitch": 0.08,
+          "roll": 0
+        },
+        "after": {
+          "position": {
+            "x": 1.68,
+            "y": 4.65,
+            "z": 0.9
+          },
+          "yaw": -3.141592653589793,
+          "pitch": 0.08,
+          "roll": 0
+        }
+      },
+      {
+        "field": "EYE_HEIGHT",
+        "unchanged": true,
+        "before": 1.65,
+        "after": 1.65
+      },
+      {
+        "field": "CHAPTER_ZONES",
+        "unchanged": true,
+        "before": {
+          "airport": {
+            "minX": 24,
+            "maxX": 36,
+            "minZ": -6,
+            "maxZ": 6
+          },
+          "plane": {
+            "minX": 52,
+            "maxX": 64,
+            "minZ": -6,
+            "maxZ": 6
+          },
+          "car": {
+            "minX": 40,
+            "maxX": 52,
+            "minZ": -6,
+            "maxZ": 6
+          },
+          "town": {
+            "minX": 80,
+            "maxX": 92,
+            "minZ": -6,
+            "maxZ": 6
+          }
+        },
+        "after": {
+          "airport": {
+            "minX": 24,
+            "maxX": 36,
+            "minZ": -6,
+            "maxZ": 6
+          },
+          "plane": {
+            "minX": 52,
+            "maxX": 64,
+            "minZ": -6,
+            "maxZ": 6
+          },
+          "car": {
+            "minX": 40,
+            "maxX": 52,
+            "minZ": -6,
+            "maxZ": 6
+          },
+          "town": {
+            "minX": 80,
+            "maxX": 92,
+            "minZ": -6,
+            "maxZ": 6
+          }
+        }
+      },
+      {
+        "field": "KITCHEN",
+        "unchanged": true,
+        "before": {
+          "minX": -4.8,
+          "maxX": 4.8,
+          "startZ": 12,
+          "endZ": 22.8,
+          "floor": 0
+        },
+        "after": {
+          "minX": -4.8,
+          "maxX": 4.8,
+          "startZ": 12,
+          "endZ": 22.8,
+          "floor": 0
+        }
+      }
+    ],
+    "legacyKitchenAperture": {
+      "fields": [
+        "minX",
+        "maxX",
+        "startZ",
+        "endZ"
+      ],
+      "before": {
+        "minX": 0.95,
+        "maxX": 3.05,
+        "startZ": 3.3,
+        "endZ": 12.1
+      },
+      "after": {
+        "minX": 0.95,
+        "maxX": 3.05,
+        "startZ": 3.3,
+        "endZ": 12.1
+      },
+      "unchanged": true
+    }
+  },
+  "captureFiles": [
+    "capturas/corredor-entrada.png",
+    "capturas/corredor-inversa.png",
+    "capturas/corredor-corrimao-escada.png",
+    "capturas/corredor-descida.png",
+    "capturas/corredor-detalhes.png",
+    "capturas/corredor-aparador.png",
+    "capturas/corredor-luz-alternada.png",
+    "capturas/corredor-ligacao-cozinha.png"
+  ],
+  "supplementaryKitchenConnection": {
+    "status": "passed",
+    "scope": "One supplementary actual production screenshot. Fresh waking, real animated door and keyboard/mouse descent to the lower flight; no production edits or new performance benchmark.",
+    "picture": {
+      "label": "corredor-ligacao-cozinha",
+      "path": "/tmp/o-intercambio-corredor-ligacao-cozinha.png",
+      "native": {
+        "width": 1280,
+        "height": 720
+      },
+      "blackRatio": 0.00026041666666666666,
+      "raw": {
+        "width": 914,
+        "height": 514,
+        "colours": 267,
+        "visible": 33240,
+        "warm": 33472,
+        "samples": 33672,
+        "path": "/tmp/o-intercambio-corredor-ligacao-cozinha-interno.png"
+      }
+    },
+    "view": {
+      "position": {
+        "x": 1.8496808106588059,
+        "y": 2.4833333326281344,
+        "z": 10.534715914566679
+      },
+      "rotation": {
+        "yaw": -0.22319265358979323,
+        "pitch": 0.16400000000000017,
+        "roll": 0
+      },
+      "horizonTilt": -1.4007601745191778e-09
+    },
+    "build": "chapter1-hallway-reference-1",
+    "renderer": "Babylon.js",
+    "webgl": 2,
+    "settings": {
+      "sensitivity": 1,
+      "headBob": true,
+      "volume": 0.65,
+      "subtitles": true,
+      "quality": "balanced",
+      "grain": true,
+      "performance": false
+    }
+  }
+}

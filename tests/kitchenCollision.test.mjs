@@ -6,7 +6,7 @@ registerHooks({ resolve(specifier, context, next) {
   return next(specifier, context);
 } });
 const { KITCHEN_FURNITURE, PARENT_ANCHORS, KITCHEN_SOLIDS } = await import('../src/game/kitchenLayout.ts');
-const { KITCHEN, HALL, STANDING_POSE, CHAPTER_ZONES } = await import('../src/game/layout.ts');
+const { KITCHEN, HALL, STAIRS, STANDING_POSE, CHAPTER_ZONES } = await import('../src/game/layout.ts');
 const { PLAYER_RADIUS, isWalkable, moveWithCollisions, floorHeight, reachedBreakfast } = await import('../src/game/collision.ts');
 const near = (value, target) => assert.ok(Math.abs(value - target) < 1e-7, `${value} ≈ ${target}`);
 function follow(from, targets) {
@@ -55,7 +55,7 @@ test('cozinha: deslocamentos longos não atravessam mesa, eletrodomésticos, arm
 });
 
 test('cozinha: descida liga o patamar à mãe e permite circular nos dois lados da mesa', () => {
-  const approach = follow({ x: 1.975, z: 11.4 }, [
+  const approach = follow({ x: 1.975, z: STAIRS.endZ + .1 }, [
     { x: 1.975, z: 14.2 }, { x: 0, z: 16 }, { x: -1.6, z: 16 }, { x: -1.6, z: 17.9 },
   ]);
   near(floorHeight(approach), 0);
@@ -64,7 +64,7 @@ test('cozinha: descida liga o patamar à mãe e permite circular nos dois lados 
   follow({ x: -2.3, z: 16.1 }, [{ x: -2.3, z: 20.8 }, { x: 2.4, z: 20.8 }, { x: 2.4, z: 16.1 }]);
   assert.ok(isWalkable({ x: 0, z: 14.2 }), 'the existing home checkpoint remains safe');
   assert.ok(isWalkable(STANDING_POSE.position), 'bedroom gameplay is preserved');
-  assert.ok(reachedBreakfast({ x: 1.975, z: 11.15 }), 'the existing stair mission still triggers on its last tread');
+  assert.ok(reachedBreakfast({ x: 1.975, z: STAIRS.endZ - .05 }), 'the existing stair mission still triggers on its last tread');
   for (const zone of Object.values(CHAPTER_ZONES))
     assert.ok(isWalkable({ x: (zone.minX + zone.maxX) / 2, z: (zone.minZ + zone.maxZ) / 2 }), 'later chapter floor bounds remain unchanged');
 });

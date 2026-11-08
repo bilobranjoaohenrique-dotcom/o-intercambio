@@ -125,7 +125,7 @@ try {
     freshStartRequested=false;
     const resumed=chapter.mission!=='breakfast';
     phase = resumed?'playing':'opening'; beforePause = phase; introTime = worldTime = endingTime = transitionTime = 0;
-    subtitleUntil = examineUntil = 0; examined.clear(); objective.reset(); door.reset(); environment.refreshShadows(); environment.setRoomLight(true);
+    subtitleUntil = examineUntil = 0; examined.clear(); objective.reset(); door.reset(); environment.refreshShadows(); environment.setRoomLight(true); environment.setHallLight(true);
     chapterStage=chapter.mission==='airport-gate'?'airport':chapter.mission==='plane-seat'?'plane':chapter.mission==='find-host'?'town':'home';
     chapterWorld.activate(chapterStage);dialogue.close();
     interactions.clear(); player.reset(); player.setActive(false); audio.reset(); audio.pause(false); audio.unlock();
@@ -258,7 +258,7 @@ try {
   });
 
   Object.defineProperty(window, '__INTERCAMBIO__', { configurable: true, get: () => ({
-    build:'chapter1-bedroom-reference-1',phase, introTime, duration: OPENING_DURATION, mission: objective.state, chapterMission: chapter.mission, chapterStage, dialogue: dialogue.active,
+    build:'chapter1-hallway-reference-1',phase, introTime, duration: OPENING_DURATION, mission: objective.state, chapterMission: chapter.mission, chapterStage, dialogue: dialogue.active,
     position: { x: camera.position.x, y: camera.position.y, z: camera.position.z },
     rotation: { yaw: camera.rotation.y, pitch: camera.rotation.x, roll: camera.rotation.z },
     horizonTilt: camera.getDirection(Vector3.Right()).y,
@@ -268,7 +268,7 @@ try {
     perf: { ...perf, frames: frameCount }, renderer: 'Babylon.js', webgl: engine.webGLVersion, gpu: engine.getGlInfo(), settings: { ...settings },
     input: { pointerLocked: document.pointerLockElement === canvas, mouseScale: LOOK_RADIANS_PER_PIXEL * settings.sensitivity },
     meshes: scene.meshes.length, vertices: scene.getTotalVertices(), errors: [...errors], dialogueAudio: false,
-    bedroom: environment.bedroomDiagnostics, kitchen: chapterWorld.kitchenDiagnostics, dialogueSpeaker: dialogue.current?.speaker ?? null,
+    hallway: environment.hallwayDiagnostics, bedroom: environment.bedroomDiagnostics, kitchen: chapterWorld.kitchenDiagnostics, dialogueSpeaker: dialogue.current?.speaker ?? null,
     audio: audio.diagnostics,
   }) });
 

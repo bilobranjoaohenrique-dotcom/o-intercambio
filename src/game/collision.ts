@@ -1,5 +1,6 @@
 import { CHAPTER_ZONES, DOOR, FURNITURE, HALL, KITCHEN, ROOM, STAIRS, type Point2 } from './layout';
 import { KITCHEN_SOLIDS } from './kitchenLayout';
+import { HALLWAY, BOTTOM_LANDING, HALLWAY_SOLIDS } from './hallwayLayout';
 import type { Obstacle } from './types';
 
 export const PLAYER_RADIUS = .22;
@@ -19,14 +20,17 @@ export const staticObstacles: readonly Obstacle[] = [
   box(ROOM.minX, ROOM.maxX, ROOM.minZ - WALL_THICKNESS, ROOM.minZ),
   box(ROOM.minX, DOOR.hingeX, ROOM.maxZ, ROOM.maxZ + WALL_THICKNESS),
   box(DOOR.hingeX + DOOR.width, ROOM.maxX, ROOM.maxZ, ROOM.maxZ + WALL_THICKNESS),
-  box(HALL.minX - WALL_THICKNESS, HALL.minX, HALL.startZ, HALL.endZ),
-  box(HALL.maxX, HALL.maxX + WALL_THICKNESS, HALL.startZ, HALL.endZ),
+  box(HALLWAY.minX - WALL_THICKNESS, HALLWAY.minX, HALLWAY.startZ, STAIRS.endZ),
+  box(HALLWAY.maxX, HALLWAY.maxX + WALL_THICKNESS, HALLWAY.startZ, STAIRS.endZ),
+  box(BOTTOM_LANDING.minX - WALL_THICKNESS, BOTTOM_LANDING.minX, BOTTOM_LANDING.startZ, KITCHEN.startZ),
+  box(BOTTOM_LANDING.maxX, BOTTOM_LANDING.maxX + WALL_THICKNESS, BOTTOM_LANDING.startZ, KITCHEN.startZ),
   box(KITCHEN.minX, HALL.minX, KITCHEN.startZ - WALL_THICKNESS, KITCHEN.startZ),
   box(HALL.maxX, KITCHEN.maxX, KITCHEN.startZ - WALL_THICKNESS, KITCHEN.startZ),
   box(KITCHEN.minX, KITCHEN.minX + WALL_THICKNESS, KITCHEN.startZ, KITCHEN.endZ),
   box(KITCHEN.maxX - WALL_THICKNESS, KITCHEN.maxX, KITCHEN.startZ, KITCHEN.endZ),
   box(KITCHEN.minX, KITCHEN.maxX, KITCHEN.endZ, KITCHEN.endZ + WALL_THICKNESS),
   ...Object.values(FURNITURE).map(item => ({ x: item.x, z: item.z, halfWidth: item.width / 2, halfDepth: item.depth / 2 })),
+  ...HALLWAY_SOLIDS,
   ...KITCHEN_SOLIDS,
 ];
 
@@ -41,26 +45,38 @@ export function floorHeight(point: Point2): number {
   return STAIRS.topY - (STAIRS.topY - STAIRS.bottomY) * step / STAIRS.steps;
 }
 
-const insideFloor = (point: Point2) => (
-  point.x >= ROOM.minX && point.x <= ROOM.maxX && point.z >= ROOM.minZ && point.z <= ROOM.maxZ
-) || (
-  point.x >= HALL.minX && point.x <= HALL.maxX && point.z >= HALL.startZ && point.z <= HALL.endZ
-) || (
-  point.x >= KITCHEN.minX && point.x <= KITCHEN.maxX && point.z >= KITCHEN.startZ && point.z <= KITCHEN.endZ
-) || Object.values(CHAPTER_ZONES).some(zone =>
-  point.x >= zone.minX && point.x <= zone.maxX && point.z >= zone.minZ && point.z <= zone.maxZ
-);
+type FloorRect = { minX: number; maxX: number; minZ: number; maxZ: number };
+const floorRects: readonly FloorRect[] = [
+  ROOM,
+  { minX: HALLWAY.minX, maxX: HALLWAY.maxX, minZ: HALLWAY.startZ, maxZ: HALLWAY.endZ },
+  { minX: STAIRS.minX, maxX: STAIRS.maxX, minZ: STAIRS.startZ, maxZ: STAIRS.endZ },
+  { minX: BOTTOM_LANDING.minX, maxX: BOTTOM_LANDING.maxX, minZ: BOTTOM_LANDING.startZ, maxZ: BOTTOM_LANDING.endZ },
+  { minX: KITCHEN.minX, maxX: KITCHEN.maxX, minZ: KITCHEN.startZ, maxZ: KITCHEN.endZ },
+  ...Object.values(CHAPTER_ZONES),
+];
+const insideFloor = (point: Point2) => floorRects.some(rect =>
+  point.x >= rect.minX && point.x <= rect.maxX && point.z >= rect.minZ && point.z <= rect.maxZ);
 type Edge = readonly [number, number, number, number];
+// Only the exposed perimeter of the union is solid. Connection apertures have
+// no crosswise edge, so the full capsule can pass through each real joint.
 const floorEdges: readonly Edge[] = [
   [ROOM.minX, ROOM.minZ, ROOM.minX, ROOM.maxZ],
   [ROOM.maxX, ROOM.minZ, ROOM.maxX, ROOM.maxZ],
   [ROOM.minX, ROOM.minZ, ROOM.maxX, ROOM.minZ],
-  [ROOM.minX, ROOM.maxZ, HALL.minX, ROOM.maxZ],
-  [HALL.maxX, ROOM.maxZ, ROOM.maxX, ROOM.maxZ],
-  [HALL.minX, HALL.startZ, HALL.minX, HALL.endZ],
-  [HALL.maxX, HALL.startZ, HALL.maxX, HALL.endZ],
-  [KITCHEN.minX, KITCHEN.startZ, HALL.minX, KITCHEN.startZ],
-  [HALL.maxX, KITCHEN.startZ, KITCHEN.maxX, KITCHEN.startZ],
+  [ROOM.minX, ROOM.maxZ, HALLWAY.minX, ROOM.maxZ],
+  [HALLWAY.maxX, ROOM.maxZ, ROOM.maxX, ROOM.maxZ],
+  [HALLWAY.minX, HALLWAY.startZ, HALLWAY.minX, HALLWAY.endZ],
+  [HALLWAY.maxX, HALLWAY.startZ, HALLWAY.maxX, HALLWAY.endZ],
+  [HALLWAY.minX, HALLWAY.endZ, STAIRS.minX, HALLWAY.endZ],
+  [STAIRS.maxX, HALLWAY.endZ, HALLWAY.maxX, HALLWAY.endZ],
+  [STAIRS.minX, STAIRS.startZ, STAIRS.minX, STAIRS.endZ],
+  [STAIRS.maxX, STAIRS.startZ, STAIRS.maxX, STAIRS.endZ],
+  [BOTTOM_LANDING.minX, BOTTOM_LANDING.startZ, STAIRS.minX, BOTTOM_LANDING.startZ],
+  [STAIRS.maxX, BOTTOM_LANDING.startZ, BOTTOM_LANDING.maxX, BOTTOM_LANDING.startZ],
+  [BOTTOM_LANDING.minX, BOTTOM_LANDING.startZ, BOTTOM_LANDING.minX, KITCHEN.startZ],
+  [BOTTOM_LANDING.maxX, BOTTOM_LANDING.startZ, BOTTOM_LANDING.maxX, KITCHEN.startZ],
+  [KITCHEN.minX, KITCHEN.startZ, BOTTOM_LANDING.minX, KITCHEN.startZ],
+  [BOTTOM_LANDING.maxX, KITCHEN.startZ, KITCHEN.maxX, KITCHEN.startZ],
   [KITCHEN.minX, KITCHEN.endZ, KITCHEN.maxX, KITCHEN.endZ],
   [KITCHEN.minX, KITCHEN.startZ, KITCHEN.minX, KITCHEN.endZ],
   [KITCHEN.maxX, KITCHEN.startZ, KITCHEN.maxX, KITCHEN.endZ],

@@ -41,3 +41,16 @@ A imagem original do quarto e a prancha multivista enviadas pelo usuário servem
 | Bandeira brasileira e céu distante | Representação gráfica procedural; sem pacote de imagem externo | `src/scene/bedroomMaterials.ts` |
 
 A banda fictícia “Horizonte” e o cartaz “Lado de Dentro” são ilustrações autorais, sem uso de capas ou fotografias de bandas comerciais. O céu é um material de fundo externo; os móveis, a casa vizinha e a vegetação são objetos 3D. Nenhum pacote externo de quarto ou textura foi incorporado nesta reconstrução. O [relatório do quarto](docs/RECONSTRUCAO-QUARTO.md) registra a implementação e os limites da comparação visual.
+
+## Reconstrução do corredor superior e da escada
+
+A prancha e a vista do corredor fornecidas pelo usuário orientam composição, materiais e iluminação. A imagem conceitual gerada anteriormente na conversa não é uma captura do jogo nem é incorporada como cenário plano. A imagem da menina é substituída por paisagens neutras ou uma fotografia familiar.
+
+| Recurso | Origem | Arquivos |
+| --- | --- | --- |
+| Corredor, portas decorativas, janela, escada, corrimãos, aparador, telefone, plantas e luminárias | Malhas originais construídas por código para o projeto | `src/scene/hallway.ts`, `src/scene/hallwayGeometry.ts` |
+| Papel de parede, madeira, parquet, tinta branca e tecidos | Desenhos procedurais originais gerados localmente em Canvas | `src/scene/hallwayMaterials.ts` |
+| Tapete ornamental, renda vazada, cerâmica, folhas e plástico envelhecido do telefone | Texturas procedurais originais do projeto | `src/scene/hallwayMaterials.ts` |
+| Fotografia dos pais com o filho e três paisagens campestres | Ilustrações autorais, sem fotografias ou pinturas externas importadas | `src/scene/hallwayMaterials.ts` |
+
+Não foi importado pacote externo de modelos ou materiais para esta reconstrução. O material do vidro não depende de uma imagem externa. A origem das malhas e os resultados de execução são descritos no [relatório do corredor](docs/RECONSTRUCAO-CORREDOR.md). As licenças das dependências gerais continuam listadas acima.

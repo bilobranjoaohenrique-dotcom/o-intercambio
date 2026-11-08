@@ -43,6 +43,10 @@ A reconstrução do quarto segue a imagem original e a prancha multivista fornec
 
 **Se o checkpoint já estiver avançado, pressione Esc → Reiniciar cena para ver o despertar no quarto reconstruído.**
 
+## Corredor superior e escada
+
+A reconstrução do corredor e da escada usa as duas referências fornecidas pelo usuário e preserva o quarto e a cozinha existentes. O [guia desta etapa](docs/PROMPT-RECONSTRUCAO-CORREDOR.md) delimita o escopo; o [relatório do corredor](docs/RECONSTRUCAO-CORREDOR.md) separa implementação, testes e capturas reais. O interruptor do corredor controla sua iluminação, enquanto telefone, quadros e plantas permanecem decorativos. O quadro individual da menina foi substituído por paisagem.
+
 ## Cozinha e pais
 
 A cozinha usa móveis modelados, azulejos florais, cortinas de renda, cerâmica, armários, eletrodomésticos e uma mesa de café com objetos domésticos. Mãe e pai têm modelos próprios com rosto, cabelo, mãos, roupas texturizadas, postura e pequenos gestos que acompanham os diálogos escritos.
@@ -62,11 +66,13 @@ Veja o [relatório da reconstrução com seis capturas reais](docs/RECONSTRUCAO-
 
 `npm run typecheck`, `npm test` e `npm run build` verificam tipos, regras de movimento e build de produção. A validação de navegador cobre a sequência jogável em Chromium. Desempenho depende da GPU e do navegador; não se promete 60 FPS em todos os computadores.
 
-Nesta reconstrução do quarto passaram **42 testes unitários**, TypeScript, o build de produção, a suíte focada de navegador com seis vistas e cinco interações e uma nova partida completa até o fim do capítulo. A regressão também verificou pausa, restauração real do checkpoint e diálogos somente por texto. A medição no servidor com SwiftShader foi de **6,6 FPS** no perfil Equilibrado (janela 1280 × 720, resolução interna 914 × 514). O desempenho é baixo; a medição não comprova fluidez em GPU física ou no Windows. Consulte as [capturas e os resultados do quarto](docs/RECONSTRUCAO-QUARTO.md).
+Na etapa do corredor passaram **46 testes unitários**, TypeScript, build e a suíte focada em Chromium com as cinco vistas solicitadas, interruptor, portas, colisões, descida/subida e missão existente. Também passaram a regressão do quarto e o percurso completo até o fim do capítulo, incluindo recarga real do checkpoint e diálogos somente por texto. No servidor com renderização por software SwiftShader, foram medidos **7,3 FPS** com a câmera parada e **7,0 FPS** durante uma caminhada real; esses resultados baixos não representam uma medição de GPU física ou Windows. Veja as [capturas e os resultados do corredor](docs/RECONSTRUCAO-CORREDOR.md).
+
+Na reconstrução anterior do quarto passaram **42 testes unitários**, TypeScript, o build de produção, a suíte focada de navegador com seis vistas e cinco interações e uma nova partida completa até o fim do capítulo. A regressão também verificou pausa, restauração real do checkpoint e diálogos somente por texto. A medição no servidor com SwiftShader foi de **6,6 FPS** no perfil Equilibrado (janela 1280 × 720, resolução interna 914 × 514). O desempenho é baixo; a medição não comprova fluidez em GPU física ou no Windows. Consulte as [capturas e os resultados do quarto](docs/RECONSTRUCAO-QUARTO.md).
 
 A atualização anterior da cozinha aprovou **41 testes**, o build, o percurso completo do capítulo e as verificações específicas daquele ambiente. Esse registro histórico está em [validação do capítulo](docs/VALIDACAO-CAPITULO-01.md). As medições da cozinha naquele servidor com renderização por software ficaram em **8,1 a 12,2 FPS**; elas não representam o desempenho do quarto reconstruído. O [relatório do quarto](docs/RECONSTRUCAO-QUARTO.md) registra separadamente a validação desta etapa. GPU física e Windows ainda precisam de verificação própria.
 
-Com Chromium instalado, `CHROMIUM_PATH=/usr/bin/chromium npm run verify` inicia uma prévia de produção temporária e verifica o percurso completo do capítulo. A suíte focada em quarto é `npm run test:bedroom`; a de cozinha está em `tests/kitchen-browser.mjs`. Execute essas suítes com o jogo servido por HTTP e `INTERCAMBIO_URL` apontando para o servidor. O comando `verify` também executa a validação focada do quarto antes do percurso completo.
+Com Chromium instalado, `CHROMIUM_PATH=/usr/bin/chromium npm run verify` inicia uma prévia de produção temporária e verifica o percurso completo do capítulo. A suíte focada em corredor é `npm run test:hallway`; a de quarto é `npm run test:bedroom`; a de cozinha está em `tests/kitchen-browser.mjs`. Execute essas suítes com o jogo servido por HTTP e `INTERCAMBIO_URL` apontando para o servidor. O comando `verify` executa as validações focadas do corredor e do quarto antes do percurso completo.
 
 ## Publicação
 

@@ -2,8 +2,8 @@
 export type Point2 = { x: number; z: number };
 export type Point3 = Point2 & { y: number };
 export const ROOM = { minX: -.15, maxX: 3.05, minZ: -.5, maxZ: 3.3, floor: 3, ceiling: 5.6 } as const;
-export const HALL = { minX: .95, maxX: 3.05, startZ: 3.3, stairZ: 6.4, endZ: 12.1 } as const;
-export const STAIRS = { startZ: 6.4, endZ: 11.2, topY: 3, bottomY: 0, steps: 16 } as const;
+export const HALL = { minX: .95, maxX: 3.05, startZ: 3.3, stairZ: 7.8, endZ: 12.1 } as const;
+export const STAIRS = { minX: 1.4, maxX: 2.3, startZ: 7.8, endZ: 11.8, topY: 3, bottomY: 0, steps: 18 } as const;
 export const KITCHEN = { minX: -4.8, maxX: 4.8, startZ: 12, endZ: 22.8, floor: 0 } as const;
 export const CHAPTER_ZONES = {
   airport: { minX: 24, maxX: 36, minZ: -6, maxZ: 6 },
