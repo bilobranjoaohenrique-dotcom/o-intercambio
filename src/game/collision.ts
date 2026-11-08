@@ -1,6 +1,8 @@
 import { CHAPTER_ZONES, DOOR, FURNITURE, HALL, KITCHEN, ROOM, STAIRS, type Point2 } from './layout';
 import { KITCHEN_SOLIDS } from './kitchenLayout';
 import { HALLWAY, BOTTOM_LANDING, HALLWAY_SOLIDS } from './hallwayLayout';
+import { LIVING_ROOM, LIVING_ROOM_ALCOVE, LIVING_ROOM_PORTAL, LIVING_ROOM_SOLIDS, LIVING_ROOM_PROP_SOLIDS,
+  PRESERVED_STAIR_RETURN } from './livingRoomLayout';
 import type { Obstacle } from './types';
 
 export const PLAYER_RADIUS = .22;
@@ -21,23 +23,32 @@ export const staticObstacles: readonly Obstacle[] = [
   box(ROOM.minX, DOOR.hingeX, ROOM.maxZ, ROOM.maxZ + WALL_THICKNESS),
   box(DOOR.hingeX + DOOR.width, ROOM.maxX, ROOM.maxZ, ROOM.maxZ + WALL_THICKNESS),
   box(HALLWAY.minX - WALL_THICKNESS, HALLWAY.minX, HALLWAY.startZ, STAIRS.endZ),
-  box(HALLWAY.maxX, HALLWAY.maxX + WALL_THICKNESS, HALLWAY.startZ, STAIRS.endZ),
+  box(HALLWAY.maxX, HALLWAY.maxX + WALL_THICKNESS, HALLWAY.startZ, LIVING_ROOM_ALCOVE.minZ),
+  box(HALLWAY.maxX, HALLWAY.maxX + WALL_THICKNESS, LIVING_ROOM_ALCOVE.maxZ, STAIRS.endZ),
   box(BOTTOM_LANDING.minX - WALL_THICKNESS, BOTTOM_LANDING.minX, BOTTOM_LANDING.startZ, KITCHEN.startZ),
-  box(BOTTOM_LANDING.maxX, BOTTOM_LANDING.maxX + WALL_THICKNESS, BOTTOM_LANDING.startZ, KITCHEN.startZ),
+  box(BOTTOM_LANDING.maxX, BOTTOM_LANDING.maxX + WALL_THICKNESS, BOTTOM_LANDING.startZ, LIVING_ROOM_PORTAL.minZ),
   box(KITCHEN.minX, HALL.minX, KITCHEN.startZ - WALL_THICKNESS, KITCHEN.startZ),
-  box(HALL.maxX, KITCHEN.maxX, KITCHEN.startZ - WALL_THICKNESS, KITCHEN.startZ),
+  box(HALL.maxX, LIVING_ROOM_PORTAL.minX, LIVING_ROOM_PORTAL.minZ, KITCHEN.startZ),
+  box(LIVING_ROOM_PORTAL.maxX, KITCHEN.maxX, LIVING_ROOM_PORTAL.minZ, KITCHEN.startZ),
   box(KITCHEN.minX, KITCHEN.minX + WALL_THICKNESS, KITCHEN.startZ, KITCHEN.endZ),
   box(KITCHEN.maxX - WALL_THICKNESS, KITCHEN.maxX, KITCHEN.startZ, KITCHEN.endZ),
   box(KITCHEN.minX, KITCHEN.maxX, KITCHEN.endZ, KITCHEN.endZ + WALL_THICKNESS),
+  box(LIVING_ROOM.minX, LIVING_ROOM.maxX, LIVING_ROOM.minZ - WALL_THICKNESS, LIVING_ROOM.minZ),
+  box(LIVING_ROOM.maxX, LIVING_ROOM.maxX + WALL_THICKNESS, LIVING_ROOM.minZ, LIVING_ROOM.maxZ),
+  box(KITCHEN.maxX, LIVING_ROOM.maxX, LIVING_ROOM.maxZ, LIVING_ROOM.maxZ + WALL_THICKNESS),
   ...Object.values(FURNITURE).map(item => ({ x: item.x, z: item.z, halfWidth: item.width / 2, halfDepth: item.depth / 2 })),
   ...HALLWAY_SOLIDS,
   ...KITCHEN_SOLIDS,
+  ...LIVING_ROOM_SOLIDS,
+  ...LIVING_ROOM_PROP_SOLIDS,
+  PRESERVED_STAIR_RETURN,
 ];
 
 /** Height of the physical tread below the player's feet, never a camera offset. */
 export function floorHeight(point: Point2): number {
   if (Object.values(CHAPTER_ZONES).some(zone => point.x >= zone.minX && point.x <= zone.maxX && point.z >= zone.minZ && point.z <= zone.maxZ)) return 0;
   if (point.x >= KITCHEN.minX && point.x <= KITCHEN.maxX && point.z >= KITCHEN.startZ && point.z <= KITCHEN.endZ) return KITCHEN.floor;
+  if (livingFloorRects.some(rect => containsPoint(rect, point))) return LIVING_ROOM.floor;
   if (!Number.isFinite(point.z) || point.z < STAIRS.startZ) return ROOM.floor;
   if (point.z >= STAIRS.endZ) return STAIRS.bottomY;
   const tread = (STAIRS.endZ - STAIRS.startZ) / STAIRS.steps;
@@ -46,47 +57,54 @@ export function floorHeight(point: Point2): number {
 }
 
 type FloorRect = { minX: number; maxX: number; minZ: number; maxZ: number };
+const livingFloorRects: readonly FloorRect[] = [LIVING_ROOM, LIVING_ROOM_ALCOVE, LIVING_ROOM_PORTAL];
+const containsPoint = (rect: FloorRect, point: Point2) =>
+  point.x >= rect.minX && point.x <= rect.maxX && point.z >= rect.minZ && point.z <= rect.maxZ;
 const floorRects: readonly FloorRect[] = [
   ROOM,
   { minX: HALLWAY.minX, maxX: HALLWAY.maxX, minZ: HALLWAY.startZ, maxZ: HALLWAY.endZ },
   { minX: STAIRS.minX, maxX: STAIRS.maxX, minZ: STAIRS.startZ, maxZ: STAIRS.endZ },
   { minX: BOTTOM_LANDING.minX, maxX: BOTTOM_LANDING.maxX, minZ: BOTTOM_LANDING.startZ, maxZ: BOTTOM_LANDING.endZ },
   { minX: KITCHEN.minX, maxX: KITCHEN.maxX, minZ: KITCHEN.startZ, maxZ: KITCHEN.endZ },
+  ...livingFloorRects,
   ...Object.values(CHAPTER_ZONES),
 ];
-const insideFloor = (point: Point2) => floorRects.some(rect =>
-  point.x >= rect.minX && point.x <= rect.maxX && point.z >= rect.minZ && point.z <= rect.maxZ);
+const insideFloor = (point: Point2) => floorRects.some(rect => containsPoint(rect, point));
 type Edge = readonly [number, number, number, number];
 // Only the exposed perimeter of the union is solid. Connection apertures have
 // no crosswise edge, so the full capsule can pass through each real joint.
-const floorEdges: readonly Edge[] = [
-  [ROOM.minX, ROOM.minZ, ROOM.minX, ROOM.maxZ],
-  [ROOM.maxX, ROOM.minZ, ROOM.maxX, ROOM.maxZ],
-  [ROOM.minX, ROOM.minZ, ROOM.maxX, ROOM.minZ],
-  [ROOM.minX, ROOM.maxZ, HALLWAY.minX, ROOM.maxZ],
-  [HALLWAY.maxX, ROOM.maxZ, ROOM.maxX, ROOM.maxZ],
-  [HALLWAY.minX, HALLWAY.startZ, HALLWAY.minX, HALLWAY.endZ],
-  [HALLWAY.maxX, HALLWAY.startZ, HALLWAY.maxX, HALLWAY.endZ],
-  [HALLWAY.minX, HALLWAY.endZ, STAIRS.minX, HALLWAY.endZ],
-  [STAIRS.maxX, HALLWAY.endZ, HALLWAY.maxX, HALLWAY.endZ],
-  [STAIRS.minX, STAIRS.startZ, STAIRS.minX, STAIRS.endZ],
-  [STAIRS.maxX, STAIRS.startZ, STAIRS.maxX, STAIRS.endZ],
-  [BOTTOM_LANDING.minX, BOTTOM_LANDING.startZ, STAIRS.minX, BOTTOM_LANDING.startZ],
-  [STAIRS.maxX, BOTTOM_LANDING.startZ, BOTTOM_LANDING.maxX, BOTTOM_LANDING.startZ],
-  [BOTTOM_LANDING.minX, BOTTOM_LANDING.startZ, BOTTOM_LANDING.minX, KITCHEN.startZ],
-  [BOTTOM_LANDING.maxX, BOTTOM_LANDING.startZ, BOTTOM_LANDING.maxX, KITCHEN.startZ],
-  [KITCHEN.minX, KITCHEN.startZ, BOTTOM_LANDING.minX, KITCHEN.startZ],
-  [BOTTOM_LANDING.maxX, KITCHEN.startZ, KITCHEN.maxX, KITCHEN.startZ],
-  [KITCHEN.minX, KITCHEN.endZ, KITCHEN.maxX, KITCHEN.endZ],
-  [KITCHEN.minX, KITCHEN.startZ, KITCHEN.minX, KITCHEN.endZ],
-  [KITCHEN.maxX, KITCHEN.startZ, KITCHEN.maxX, KITCHEN.endZ],
-  ...Object.values(CHAPTER_ZONES).flatMap(zone => [
-    [zone.minX, zone.minZ, zone.maxX, zone.minZ] as const,
-    [zone.minX, zone.maxZ, zone.maxX, zone.maxZ] as const,
-    [zone.minX, zone.minZ, zone.minX, zone.maxZ] as const,
-    [zone.maxX, zone.minZ, zone.maxX, zone.maxZ] as const,
-  ]),
-];
+// Subtract covered intervals once at startup. Overlapping corner/threshold
+// rectangles must not leave invisible edges across the new physical doorway.
+const floorEdges: readonly Edge[] = floorRects.flatMap(rect => {
+  const result: Edge[] = [];
+  for (const [vertical, fixed, low, high, outward] of [
+    [true, rect.minX, rect.minZ, rect.maxZ, -1],
+    [true, rect.maxX, rect.minZ, rect.maxZ, 1],
+    [false, rect.minZ, rect.minX, rect.maxX, -1],
+    [false, rect.maxZ, rect.minX, rect.maxX, 1],
+  ] as const) {
+    let exposed: [number, number][] = [[low, high]];
+    for (const other of floorRects) {
+      if (other === rect) continue;
+      const min = vertical ? other.minX : other.minZ;
+      const max = vertical ? other.maxX : other.maxZ;
+      const coversOutside = outward < 0 ? min < fixed - EPSILON && max >= fixed - EPSILON :
+        max > fixed + EPSILON && min <= fixed + EPSILON;
+      if (!coversOutside) continue;
+      const from = vertical ? other.minZ : other.minX, to = vertical ? other.maxZ : other.maxX;
+      exposed = exposed.flatMap(([a, b]) => {
+        if (to <= a || from >= b) return [[a, b]];
+        const parts: [number, number][] = [];
+        if (from > a) parts.push([a, from]);
+        if (to < b) parts.push([to, b]);
+        return parts;
+      });
+    }
+    for (const [a, b] of exposed) if (b - a > EPSILON)
+      result.push(vertical ? [fixed, a, fixed, b] : [a, fixed, b, fixed]);
+  }
+  return result;
+});
 function edgeDistanceSquared(point: Point2, [ax, az, bx, bz]: Edge) {
   const dx = bx - ax, dz = bz - az;
   // Matching room/hall extents can produce a zero-length boundary segment.
@@ -144,5 +162,6 @@ export function moveWithCollisions(position: Point2, dx: number, dz: number,
 /** Complete on the last tread, with enough room for a natural final step. */
 export function reachedBreakfast(point: Point2): boolean {
   const halfTread = (STAIRS.endZ - STAIRS.startZ) / STAIRS.steps / 2;
-  return isWalkable(point) && point.z >= STAIRS.endZ - halfTread && floorHeight(point) === STAIRS.bottomY;
+  return !livingFloorRects.some(rect => containsPoint(rect, point)) &&
+    isWalkable(point) && point.z >= STAIRS.endZ - halfTread && floorHeight(point) === STAIRS.bottomY;
 }

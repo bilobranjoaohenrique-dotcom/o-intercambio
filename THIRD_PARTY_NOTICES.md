@@ -54,3 +54,17 @@ A prancha e a vista do corredor fornecidas pelo usuário orientam composição, 
 | Fotografia dos pais com o filho e três paisagens campestres | Ilustrações autorais, sem fotografias ou pinturas externas importadas | `src/scene/hallwayMaterials.ts` |
 
 Não foi importado pacote externo de modelos ou materiais para esta reconstrução. O material do vidro não depende de uma imagem externa. A origem das malhas e os resultados de execução são descritos no [relatório do corredor](docs/RECONSTRUCAO-CORREDOR.md). As licenças das dependências gerais continuam listadas acima.
+
+## Reconstrução da sala de estar
+
+A imagem principal e a prancha multivista fornecidas pelo usuário são referências de composição, mobiliário e materiais. Não são incorporadas como cenário plano, texturas dos móveis ou vídeo da televisão. A disposição da sala é adaptada à escada existente, sem duplicá-la.
+
+| Recurso | Origem | Arquivos |
+| --- | --- | --- |
+| Sala, sofá, poltrona, mesa, estante, CRT, telefone, janela, porta e objetos domésticos | Malhas originais construídas por código; superfícies curvas, perfis torneados e tecidos com pregas | `src/scene/livingRoom.ts`, `src/scene/livingRoomGeometry.ts` |
+| Cerâmica marrom, paredes envelhecidas, nogueira, estofado, almofadas, renda vazada e tapete ornamental | Desenhos procedurais determinísticos originais, gerados localmente em Canvas | `src/scene/livingRoomMaterials.ts` |
+| Família fictícia com os pais e o filho, paisagens, capas de livros e revista “Lar & Quintal” | Ilustrações autorais; sem fotografias reais ou pinturas externas importadas | `src/scene/livingRoomMaterials.ts` |
+| Programa estático “TV Lar / Bom Dia” e superfície do CRT desligado | Imagens procedurais originais; sem vídeos, transmissões ou marcas de emissoras | `src/scene/livingRoomMaterials.ts` |
+| Clique de chave e ruído eletrônico da televisão | Síntese local no sistema Web Audio já usado pelo jogo; sem gravações externas | `src/game/audio.ts` |
+
+As texturas desta sala têm entre 64 e 256 pixels por dimensão, com reutilização de materiais e sem carregamento de pacotes externos. O ruído da TV é não verbal; nenhum diálogo, voz, TTS, narração ou música licenciada foi adicionado. O [relatório da sala](docs/RECONSTRUCAO-SALA.md) separa o estado da implementação, as verificações e as capturas reais de execução.

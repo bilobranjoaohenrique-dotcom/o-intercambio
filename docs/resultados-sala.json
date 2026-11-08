@@ -1,0 +1,1941 @@
+{
+  "recordedAtUtc": "2026-11-08T03:34:08.963Z",
+  "recordedAtLocal": "8 de novembro de 2026 às 00:34:08 BRT",
+  "timeZone": "America/Sao_Paulo",
+  "status": "passed",
+  "scope": "Living-room addition only, with two documented local architectural connection exceptions",
+  "finalBuild": {
+    "runtimeBuild": "chapter1-living-room-reference-1",
+    "bundle": "dist/assets/index-u8prfp0f.js",
+    "bytes": 1500603,
+    "sha256": "d69ea1920e61ac3c33cc96b9fa1ce47e28cc42fafe22f1ce7c5971abb3a0af1d",
+    "modifiedAtUtc": "2026-11-08T03:24:50.520Z",
+    "servedBy": "Vite preview, local HTTP on 127.0.0.1:4181",
+    "sourceManifest": [
+      {
+        "path": "src/game/livingRoomLayout.ts",
+        "bytes": 3131,
+        "sha256": "1d78d7450155f9285a89668d5bee1cf0f283b8f27555318df477b4150ed92d00",
+        "modifiedAtUtc": "2026-11-08T02:48:51.642Z"
+      },
+      {
+        "path": "src/game/collision.ts",
+        "bytes": 10040,
+        "sha256": "51dc97b6e81d055b8ea6e173548294bc0f25621a16c922d8e101965f70fac8ce",
+        "modifiedAtUtc": "2026-11-08T02:48:52.350Z"
+      },
+      {
+        "path": "src/game/audio.ts",
+        "bytes": 9949,
+        "sha256": "06473471647a7b85d5df1e98498e71f3333adf47e35f140096ebdc6e403bab39",
+        "modifiedAtUtc": "2026-11-08T02:49:14.719Z"
+      },
+      {
+        "path": "src/main.ts",
+        "bytes": 22826,
+        "sha256": "476eade6c5833ade62f464ced231d74ba1bcba63ff320c813c8f7bda23746257",
+        "modifiedAtUtc": "2026-11-08T02:37:51.739Z"
+      },
+      {
+        "path": "src/scene/environment.ts",
+        "bytes": 7873,
+        "sha256": "b596f18067281f2cdfdfbba0d029448cd02db872d4122b37daf47fbbb1971e28",
+        "modifiedAtUtc": "2026-11-08T02:49:51.831Z"
+      },
+      {
+        "path": "src/scene/hallway.ts",
+        "bytes": 25699,
+        "sha256": "a391b6cb35464243bb9b8eaa6850d90441644561d2e1334bcff86e3ee7f66787",
+        "modifiedAtUtc": "2026-11-08T02:38:19.035Z"
+      },
+      {
+        "path": "src/scene/kitchen.ts",
+        "bytes": 39275,
+        "sha256": "6d26241cd539d20a4e13fc28245ca26667776e68bb3c88f2d32f7e5fee3ffd89",
+        "modifiedAtUtc": "2026-11-08T02:38:19.739Z"
+      },
+      {
+        "path": "src/scene/livingRoom.ts",
+        "bytes": 31945,
+        "sha256": "c97a5ab570eb97a695289296b22a395cbcd4a9bb192e4d5f38402ac8d828c254",
+        "modifiedAtUtc": "2026-11-08T03:18:14.625Z"
+      },
+      {
+        "path": "src/scene/livingRoomGeometry.ts",
+        "bytes": 4926,
+        "sha256": "edeeadb2eb944abc33d3a943863ad3952ae8d6d1138eb84a47f0654d87b81059",
+        "modifiedAtUtc": "2026-11-08T03:18:13.861Z"
+      },
+      {
+        "path": "src/scene/livingRoomMaterials.ts",
+        "bytes": 28606,
+        "sha256": "e6f32f308f77c0e9c3c1108b59e59d5014118fa476b9a5ad66fb382aa293c825",
+        "modifiedAtUtc": "2026-11-08T02:37:44.655Z"
+      },
+      {
+        "path": "tests/livingAudio.test.mjs",
+        "bytes": 11844,
+        "sha256": "4c9a468ee95ae2b9c35eb9df8ea433edcf9c15918cdbc143f563f834ad5729b3",
+        "modifiedAtUtc": "2026-11-08T02:48:49.358Z"
+      },
+      {
+        "path": "tests/livingRoomCollision.test.mjs",
+        "bytes": 7304,
+        "sha256": "7c6cac1ab9692d86d8a87f84f7155c368d2e0a99d89ed3c3e7a34432b6ac418d",
+        "modifiedAtUtc": "2026-11-08T02:48:52.914Z"
+      },
+      {
+        "path": "tests/living-room-route.mjs",
+        "bytes": 5743,
+        "sha256": "8ebc75667e0e69b6739c229f384ce56e25b65f580d36746a02287efba5cfae97",
+        "modifiedAtUtc": "2026-11-08T02:55:49.186Z"
+      },
+      {
+        "path": "tests/living-room-browser.mjs",
+        "bytes": 18563,
+        "sha256": "0bd7fa878dacfde206008ee5bb0388b0a71c35230aae73cc9abbb11204cba36b",
+        "modifiedAtUtc": "2026-11-08T03:04:26.566Z"
+      },
+      {
+        "path": "scripts/verify.mjs",
+        "bytes": 2516,
+        "sha256": "e521b246e2d17f5e0b5d6a2feb0f503ebec68f94275cbe4b7de1bfb955466a2f",
+        "modifiedAtUtc": "2026-11-08T02:37:50.483Z"
+      },
+      {
+        "path": "package.json",
+        "bytes": 821,
+        "sha256": "c3f7bf0d9477568a5b3fb62864ec2bb764f16ab019fbcbea17a7bd13cb948e9c",
+        "modifiedAtUtc": "2026-11-08T02:37:49.935Z"
+      },
+      {
+        "path": "AGENTS.md",
+        "bytes": 1960,
+        "sha256": "e9ccaf68a23abbfd8cd3a44679230e7b0d998d2653921ef86b63e5d635553f13",
+        "modifiedAtUtc": "2026-11-08T02:37:49.367Z"
+      }
+    ]
+  },
+  "checks": [
+    {
+      "command": "npm run typecheck",
+      "status": "passed"
+    },
+    {
+      "command": "npm test",
+      "status": "passed",
+      "tests": 58,
+      "passed": 58,
+      "failed": 0
+    },
+    {
+      "command": "npm run build",
+      "status": "passed",
+      "advisory": "Vite reports a minified chunk above 500 kB."
+    },
+    {
+      "command": "CHROMIUM_PATH=/usr/bin/chromium npm run verify",
+      "status": "passed",
+      "includes": "living room, preserved hallway, preserved bedroom, complete chapter",
+      "regressionBundle": "dist/assets/index-CWJ6cYep.js",
+      "provenance": "The preserved-scene regressions completed before two local living-room-only changes: CRT horizontal UV and flower-part mesh simplification. Their protected sources remain identical. The complete living-room suite was then rerun on the final bundle."
+    },
+    {
+      "entryPoint": "tests/living-room-browser.mjs",
+      "environment": "production preview, Chromium",
+      "status": "passed",
+      "bundle": "dist/assets/index-u8prfp0f.js"
+    }
+  ],
+  "logs": [
+    {
+      "temporaryArtifactName": "intercambio-sala-capturas-finais.log",
+      "versioned": false,
+      "bytes": 15520,
+      "sha256": "0b2f00c207689e4b4c8e8213f9118905bdafbc6f53432934183b97c1919ace6a",
+      "modifiedAtUtc": "2026-11-08T03:33:13.688Z"
+    },
+    {
+      "temporaryArtifactName": "intercambio-sala-regressoes/intercambio-sala-verify-final.log",
+      "versioned": false,
+      "bytes": 18287,
+      "sha256": "8ffbaf194d7c6bf3563beef46e507bb6dfad287dbfa2cdefd1af47211bf64f9e",
+      "modifiedAtUtc": "2026-11-08T03:23:05.146Z"
+    }
+  ],
+  "captures": [
+    {
+      "label": "sala-base-escada",
+      "path": "docs/capturas/sala-base-escada.png",
+      "width": 1280,
+      "height": 720,
+      "capturedAtUtc": "2026-11-08T03:27:01.634Z",
+      "bytes": 1087249,
+      "sha256": "375e01afa196fa3811a8015b6b178f8d8139e5371ab4e0064aefeeb71ba976cb",
+      "unchangedCopy": true,
+      "blackRatio": 0.034830729166666664,
+      "internal": {
+        "temporaryArtifactName": "o-intercambio-sala-base-escada-interno.png",
+        "versioned": false,
+        "width": 914,
+        "height": 514,
+        "colours": 269,
+        "visible": 28127,
+        "warm": 30205,
+        "samples": 33672,
+        "bytes": 488259,
+        "sha256": "51bdc1038b7b66d4caee7789af8c0e5c4ce39a8aac287dc6f06e48e018736c73",
+        "modifiedAtUtc": "2026-11-08T03:27:02.154Z"
+      },
+      "view": {
+        "label": "sala-base-escada",
+        "position": {
+          "x": 1.850003725795319,
+          "y": 1.6500000009635196,
+          "z": 12.020534936114702
+        },
+        "rotation": {
+          "yaw": -4.1231926535897925,
+          "pitch": 0.1712000000000003,
+          "roll": 0
+        },
+        "horizonTilt": 1.8393047085396574e-9
+      },
+      "visuallyInspected": true
+    },
+    {
+      "label": "sala-entrada-cozinha",
+      "path": "docs/capturas/sala-entrada-cozinha.png",
+      "width": 1280,
+      "height": 720,
+      "capturedAtUtc": "2026-11-08T03:27:17.342Z",
+      "bytes": 1136693,
+      "sha256": "862782f58358395bbcd65a474cf2d7ab2421660c7f409a36fa860671c962176f",
+      "unchangedCopy": true,
+      "blackRatio": 0.008463541666666666,
+      "internal": {
+        "temporaryArtifactName": "o-intercambio-sala-entrada-cozinha-interno.png",
+        "versioned": false,
+        "width": 914,
+        "height": 514,
+        "colours": 314,
+        "visible": 31063,
+        "warm": 32668,
+        "samples": 33672,
+        "bytes": 507098,
+        "sha256": "eca2d0110f13dfeccab9e7b28c9f86df21970bfd46b1a6f735b6bef2c68ac241",
+        "modifiedAtUtc": "2026-11-08T03:27:17.694Z"
+      },
+      "view": {
+        "label": "sala-entrada-cozinha",
+        "position": {
+          "x": 3.610718430692874,
+          "y": 1.6500000191402677,
+          "z": 12.527418884862806
+        },
+        "rotation": {
+          "yaw": -3.487192653589791,
+          "pitch": 0.14000000000000035,
+          "roll": 0
+        },
+        "horizonTilt": -5.811120473708797e-10
+      },
+      "visuallyInspected": true
+    },
+    {
+      "label": "sala-visao-geral",
+      "path": "docs/capturas/sala-visao-geral.png",
+      "width": 1280,
+      "height": 720,
+      "capturedAtUtc": "2026-11-08T03:27:34.038Z",
+      "bytes": 1149973,
+      "sha256": "fbac6fcb7b5d2f8b478ea97928e4ddbb8794b877a97a6b3c5b1e9ad535e7cc15",
+      "unchangedCopy": true,
+      "blackRatio": 0.012662760416666667,
+      "internal": {
+        "temporaryArtifactName": "o-intercambio-sala-visao-geral-interno.png",
+        "versioned": false,
+        "width": 914,
+        "height": 514,
+        "colours": 317,
+        "visible": 29712,
+        "warm": 31877,
+        "samples": 33672,
+        "bytes": 683324,
+        "sha256": "dbbed1e5436d4a1f667d78a38f597937fcb63a61f6b024c49017bdf672dd8f13",
+        "modifiedAtUtc": "2026-11-08T03:27:34.434Z"
+      },
+      "view": {
+        "label": "sala-visao-geral",
+        "position": {
+          "x": 4.298375467744642,
+          "y": 1.6500000116717666,
+          "z": 11.40120423839288
+        },
+        "rotation": {
+          "yaw": -3.292792653589791,
+          "pitch": 0.18320000000000042,
+          "roll": 0
+        },
+        "horizonTilt": -6.356798420981136e-10
+      },
+      "visuallyInspected": true
+    },
+    {
+      "label": "sala-sofa-poltrona",
+      "path": "docs/capturas/sala-sofa-poltrona.png",
+      "width": 1280,
+      "height": 720,
+      "capturedAtUtc": "2026-11-08T03:28:14.079Z",
+      "bytes": 1226877,
+      "sha256": "1dad3b8cbbd2c002281593b1515f7e8806e8626e5270fa2a12bff8d1cbe8ad95",
+      "unchangedCopy": true,
+      "blackRatio": 0.004524739583333334,
+      "internal": {
+        "temporaryArtifactName": "o-intercambio-sala-sofa-poltrona-interno.png",
+        "versioned": false,
+        "width": 914,
+        "height": 514,
+        "colours": 294,
+        "visible": 32967,
+        "warm": 33110,
+        "samples": 33672,
+        "bytes": 741763,
+        "sha256": "6859b0eaf3beeb9b87406899c01df8674065695bb9bf54e353dead5d18be4cb0",
+        "modifiedAtUtc": "2026-11-08T03:28:14.423Z"
+      },
+      "view": {
+        "label": "sala-sofa-poltrona",
+        "position": {
+          "x": 4.889725122228052,
+          "y": 1.6499999995252626,
+          "z": 8.995793711878687
+        },
+        "rotation": {
+          "yaw": -0.11519265358979189,
+          "pitch": 0.3608000000000005,
+          "roll": 0
+        },
+        "horizonTilt": -1.1130276700299646e-9
+      },
+      "visuallyInspected": true
+    },
+    {
+      "label": "sala-mesa-tapete",
+      "path": "docs/capturas/sala-mesa-tapete.png",
+      "width": 1280,
+      "height": 720,
+      "capturedAtUtc": "2026-11-08T03:28:32.480Z",
+      "bytes": 1252971,
+      "sha256": "c1b92bd380b3555cc7985251219bf439f2b7f91f72afaea7e0e6c06396fa3d00",
+      "unchangedCopy": true,
+      "blackRatio": 0.00026041666666666666,
+      "internal": {
+        "temporaryArtifactName": "o-intercambio-sala-mesa-tapete-interno.png",
+        "versioned": false,
+        "width": 914,
+        "height": 514,
+        "colours": 324,
+        "visible": 31848,
+        "warm": 33200,
+        "samples": 33672,
+        "bytes": 794856,
+        "sha256": "a40f76f6045790acba6d3229f66e9b46c5b4a401c6c5bc7f0abd93e5870b31fa",
+        "modifiedAtUtc": "2026-11-08T03:28:32.880Z"
+      },
+      "view": {
+        "label": "sala-mesa-tapete",
+        "position": {
+          "x": 5.895520248385273,
+          "y": 1.6500000385076448,
+          "z": 9.522369148181415
+        },
+        "rotation": {
+          "yaw": -1.2527926535897917,
+          "pitch": 0.8096000000000005,
+          "roll": 0
+        },
+        "horizonTilt": -8.548658669838005e-9
+      },
+      "visuallyInspected": true
+    },
+    {
+      "label": "sala-estante-tv",
+      "path": "docs/capturas/sala-estante-tv.png",
+      "width": 1280,
+      "height": 720,
+      "capturedAtUtc": "2026-11-08T03:28:51.120Z",
+      "bytes": 1147314,
+      "sha256": "cdb35dbfb0d57005e012778d9f2d550ce058e2a8d912adcda46cb87c6dbe732c",
+      "unchangedCopy": true,
+      "blackRatio": 0.013346354166666666,
+      "internal": {
+        "temporaryArtifactName": "o-intercambio-sala-estante-tv-interno.png",
+        "versioned": false,
+        "width": 914,
+        "height": 514,
+        "colours": 194,
+        "visible": 27816,
+        "warm": 30608,
+        "samples": 33672,
+        "bytes": 634436,
+        "sha256": "395931d9d0eb61748af069ea5c666e0813d1b32f0afae483f338b24f052a0626",
+        "modifiedAtUtc": "2026-11-08T03:28:51.508Z"
+      },
+      "view": {
+        "label": "sala-estante-tv",
+        "position": {
+          "x": 4.117139368819469,
+          "y": 1.6499999951805804,
+          "z": 10.098643429378646
+        },
+        "rotation": {
+          "yaw": -3.506392653589792,
+          "pitch": 0.30320000000000064,
+          "roll": 0
+        },
+        "horizonTilt": 3.126219061400093e-9
+      },
+      "visuallyInspected": true
+    },
+    {
+      "label": "sala-janela-manha",
+      "path": "docs/capturas/sala-janela-manha.png",
+      "width": 1280,
+      "height": 720,
+      "capturedAtUtc": "2026-11-08T03:29:21.876Z",
+      "bytes": 1104182,
+      "sha256": "ed3f434cb7ebaca21555dc4e31473a874dea2739a88932764747f692cdf075cc",
+      "unchangedCopy": true,
+      "blackRatio": 0.000390625,
+      "internal": {
+        "temporaryArtifactName": "o-intercambio-sala-janela-manha-interno.png",
+        "versioned": false,
+        "width": 914,
+        "height": 514,
+        "colours": 170,
+        "visible": 32394,
+        "warm": 27847,
+        "samples": 33672,
+        "bytes": 555284,
+        "sha256": "40af9d52cdd7ad10d25f744d2efb0ccbc20b8cb62a67efa5191630092fd37f35",
+        "modifiedAtUtc": "2026-11-08T03:29:22.188Z"
+      },
+      "view": {
+        "label": "sala-janela-manha",
+        "position": {
+          "x": 5.945085552941541,
+          "y": 1.6500000005614879,
+          "z": 8.95035341312368
+        },
+        "rotation": {
+          "yaw": -5.0759926535897915,
+          "pitch": 0.24800000000000036,
+          "roll": 0
+        },
+        "horizonTilt": -5.419004800444327e-9
+      },
+      "visuallyInspected": true
+    },
+    {
+      "label": "sala-tv-ligada",
+      "path": "docs/capturas/sala-tv-ligada.png",
+      "width": 1280,
+      "height": 720,
+      "capturedAtUtc": "2026-11-08T03:28:55.744Z",
+      "bytes": 1165242,
+      "sha256": "bc3b3a39828e7a593c85ce56177eb7b935e066d19df85b31ee70a3a091ed6013",
+      "unchangedCopy": true,
+      "blackRatio": 0.0062825520833333336,
+      "internal": {
+        "temporaryArtifactName": "o-intercambio-sala-tv-ligada-interno.png",
+        "versioned": false,
+        "width": 914,
+        "height": 514,
+        "colours": 277,
+        "visible": 29930,
+        "warm": 30411,
+        "samples": 33672,
+        "bytes": 649862,
+        "sha256": "29309ec0d047e0c2d85e55a90dfe0211f0ac651dc532de01845ee6e359e7ea7c",
+        "modifiedAtUtc": "2026-11-08T03:28:56.244Z"
+      },
+      "view": {
+        "label": "sala-tv-ligada",
+        "position": {
+          "x": 4.117139368819469,
+          "y": 1.65,
+          "z": 10.098643429378646
+        },
+        "rotation": {
+          "yaw": -3.563992653589792,
+          "pitch": 0.3176000000000006,
+          "roll": 0
+        },
+        "horizonTilt": 1.097136514971453e-8
+      },
+      "visuallyInspected": true
+    },
+    {
+      "label": "sala-porta-principal",
+      "path": "docs/capturas/sala-porta-principal.png",
+      "width": 1280,
+      "height": 720,
+      "capturedAtUtc": "2026-11-08T03:29:32.856Z",
+      "bytes": 1089201,
+      "sha256": "59b270ae6355adcff5367242bd76bfc662caf75665f6a749bf5f8fad24fd613a",
+      "unchangedCopy": true,
+      "blackRatio": 0.0755859375,
+      "internal": {
+        "temporaryArtifactName": "o-intercambio-sala-porta-principal-interno.png",
+        "versioned": false,
+        "width": 914,
+        "height": 514,
+        "colours": 189,
+        "visible": 24692,
+        "warm": 26901,
+        "samples": 33672,
+        "bytes": 515286,
+        "sha256": "40fccd6e3d7038f68fcd357f8257672a764926e5acc091e93fbd0120a7f85d92",
+        "modifiedAtUtc": "2026-11-08T03:29:33.280Z"
+      },
+      "view": {
+        "label": "sala-porta-principal",
+        "position": {
+          "x": 6.202277048316125,
+          "y": 1.649999991896192,
+          "z": 9.958048177571813
+        },
+        "rotation": {
+          "yaw": -3.141592653589785,
+          "pitch": 0.31040000000000023,
+          "roll": 0
+        },
+        "horizonTilt": 8.10604376298608e-17
+      },
+      "visuallyInspected": true
+    },
+    {
+      "label": "sala-conexao-escada",
+      "path": "docs/capturas/sala-conexao-escada.png",
+      "width": 1280,
+      "height": 720,
+      "capturedAtUtc": "2026-11-08T03:30:00.057Z",
+      "bytes": 1176007,
+      "sha256": "4bc6ce3e40c8c5df7cb3aff2cff31c969cdc7ca21da1794b7ef51a13596322d0",
+      "unchangedCopy": true,
+      "blackRatio": 0.07096354166666667,
+      "internal": {
+        "temporaryArtifactName": "o-intercambio-sala-conexao-escada-interno.png",
+        "versioned": false,
+        "width": 914,
+        "height": 514,
+        "colours": 215,
+        "visible": 27572,
+        "warm": 30176,
+        "samples": 33672,
+        "bytes": 628046,
+        "sha256": "17b4a54b8c856be67ef148158c8ce24f29eb79c864f37f5ccc6d3acfc5f5822e",
+        "modifiedAtUtc": "2026-11-08T03:30:00.421Z"
+      },
+      "view": {
+        "label": "sala-conexao-escada",
+        "position": {
+          "x": 3.7003387175707574,
+          "y": 1.6499999999901989,
+          "z": 11.439524505206732
+        },
+        "rotation": {
+          "yaw": -2.085592653589785,
+          "pitch": 0.3032,
+          "roll": 0
+        },
+        "horizonTilt": 2.383077735146344e-9
+      },
+      "visuallyInspected": true
+    }
+  ],
+  "visualInspection": {
+    "allTenInspected": true,
+    "nativePixelsAltered": false,
+    "referenceImagesUsedAsRuntimeEvidence": false,
+    "observations": [
+      "The same room, furniture, real kitchen passage and existing stair flight remain consistent between views.",
+      "The CRT program is visible with readable TV LAR / BOM DIA text.",
+      "Upholstery faces, textile patterns, lace holes and supported props are visible.",
+      "The new opaque finish closes the exterior leak beneath the stair landing."
+    ],
+    "exactFidelityClaimed": false,
+    "artisticApproval": "pending user review"
+  },
+  "preservationAudit": {
+    "baseline": "d660f0a1d26fd0c77e9f35a9eff5bd9e0d4a000f",
+    "capturedAtUtc": "2026-11-08T03:34:08.963Z",
+    "purpose": "Source preservation audit; runtime regression is reported separately",
+    "files": [
+      {
+        "path": "src/scene/bedroom.ts",
+        "baselineSha256": "d745b533ec98c4d9ae9eb1185e41fe94ade7f34c8fd97163f68f6ae6a565064b",
+        "currentSha256": "d745b533ec98c4d9ae9eb1185e41fe94ade7f34c8fd97163f68f6ae6a565064b",
+        "identical": true
+      },
+      {
+        "path": "src/scene/bedroomMaterials.ts",
+        "baselineSha256": "49179c92447c7f0e58c7e6312e5b3a44882ffb7b50a73d390cb3cafff3693cd4",
+        "currentSha256": "49179c92447c7f0e58c7e6312e5b3a44882ffb7b50a73d390cb3cafff3693cd4",
+        "identical": true
+      },
+      {
+        "path": "src/scene/hallwayGeometry.ts",
+        "baselineSha256": "93841d852dae70faa20543536ae6fb4b5e28d9be4fcfb9483eddeda187238bac",
+        "currentSha256": "93841d852dae70faa20543536ae6fb4b5e28d9be4fcfb9483eddeda187238bac",
+        "identical": true
+      },
+      {
+        "path": "src/scene/hallwayMaterials.ts",
+        "baselineSha256": "a311aae132803e2fa77d71034f9cc4ca104f7f9622d1e5563092a19e9b4f7549",
+        "currentSha256": "a311aae132803e2fa77d71034f9cc4ca104f7f9622d1e5563092a19e9b4f7549",
+        "identical": true
+      },
+      {
+        "path": "src/scene/kitchenMaterials.ts",
+        "baselineSha256": "b5674382dc22e025178f6bb1950ff701c909c90b0069c5e1f1a59aca457f5dcd",
+        "currentSha256": "b5674382dc22e025178f6bb1950ff701c909c90b0069c5e1f1a59aca457f5dcd",
+        "identical": true
+      },
+      {
+        "path": "src/scene/parents.ts",
+        "baselineSha256": "5a4b78ca8747428300d993d2e4fb9e2f872c702c5910c6811db2d0f8dfc9995f",
+        "currentSha256": "5a4b78ca8747428300d993d2e4fb9e2f872c702c5910c6811db2d0f8dfc9995f",
+        "identical": true
+      },
+      {
+        "path": "src/scene/parentsGeometry.ts",
+        "baselineSha256": "68e2f447da7bece05a486fb920eafbf74bc6776abbd6bc58a9a0e525af6a1e18",
+        "currentSha256": "68e2f447da7bece05a486fb920eafbf74bc6776abbd6bc58a9a0e525af6a1e18",
+        "identical": true
+      },
+      {
+        "path": "src/scene/parentsMaterials.ts",
+        "baselineSha256": "ee780ceb2c92cbd48b210d76d8e5f95084cfed2e0685b09ad5137f36068d44a4",
+        "currentSha256": "ee780ceb2c92cbd48b210d76d8e5f95084cfed2e0685b09ad5137f36068d44a4",
+        "identical": true
+      },
+      {
+        "path": "src/scene/props.ts",
+        "baselineSha256": "3364345c1bb57d79fe1399516843212a9a92a8bc30125824b96de1dd6aea938a",
+        "currentSha256": "3364345c1bb57d79fe1399516843212a9a92a8bc30125824b96de1dd6aea938a",
+        "identical": true
+      },
+      {
+        "path": "src/game/player.ts",
+        "baselineSha256": "9ec36fae7437cb8a346d03a9d0d1e6be83b1f23a31a0bb1ffa27f417e2ad4841",
+        "currentSha256": "9ec36fae7437cb8a346d03a9d0d1e6be83b1f23a31a0bb1ffa27f417e2ad4841",
+        "identical": true
+      },
+      {
+        "path": "src/game/opening.ts",
+        "baselineSha256": "ef3a22c106dfd46f6ce0bc3dafde4052d903519688d3953a107d024c081564e0",
+        "currentSha256": "ef3a22c106dfd46f6ce0bc3dafde4052d903519688d3953a107d024c081564e0",
+        "identical": true
+      },
+      {
+        "path": "src/game/door.ts",
+        "baselineSha256": "20bc44ace30b289662bed6794374ce925a09532d9b0989579a07e5a6ffd0198f",
+        "currentSha256": "20bc44ace30b289662bed6794374ce925a09532d9b0989579a07e5a6ffd0198f",
+        "identical": true
+      },
+      {
+        "path": "src/game/hallwayLayout.ts",
+        "baselineSha256": "2b1ddeec0ba5de16b41d34ac2ce5f5a2d5dd6e22951289384311432aa128775e",
+        "currentSha256": "2b1ddeec0ba5de16b41d34ac2ce5f5a2d5dd6e22951289384311432aa128775e",
+        "identical": true
+      },
+      {
+        "path": "src/game/layout.ts",
+        "baselineSha256": "a3b3fb9f82ad1c1f759bc8ebf5baafd5dfc9d79e61fc097f7988714c9a2218e8",
+        "currentSha256": "a3b3fb9f82ad1c1f759bc8ebf5baafd5dfc9d79e61fc097f7988714c9a2218e8",
+        "identical": true
+      },
+      {
+        "path": "src/game/kitchenLayout.ts",
+        "baselineSha256": "133ab56cec95a8572197b0d0b8eb0a72cba0b31f5664655029581a21948b4390",
+        "currentSha256": "133ab56cec95a8572197b0d0b8eb0a72cba0b31f5664655029581a21948b4390",
+        "identical": true
+      },
+      {
+        "path": "src/game/settings.ts",
+        "baselineSha256": "1b0a9b1707fe993f5bc093ae8744e3b6904d09148b168d1fc80ae9a79f8cbaba",
+        "currentSha256": "1b0a9b1707fe993f5bc093ae8744e3b6904d09148b168d1fc80ae9a79f8cbaba",
+        "identical": true
+      },
+      {
+        "path": "src/game/objective.ts",
+        "baselineSha256": "bc6033065639fe826bee26f939425594d2840e0b9ac640217bfb867f3fba1616",
+        "currentSha256": "bc6033065639fe826bee26f939425594d2840e0b9ac640217bfb867f3fba1616",
+        "identical": true
+      },
+      {
+        "path": "src/game/interactions.ts",
+        "baselineSha256": "ee41621fad1e98a9df36ac5501d262990c5bbccea4c4199e64ff38777e3f211f",
+        "currentSha256": "ee41621fad1e98a9df36ac5501d262990c5bbccea4c4199e64ff38777e3f211f",
+        "identical": true
+      },
+      {
+        "path": "src/game/types.ts",
+        "baselineSha256": "f718b3c8123f25c4d0bc6fb3affe1509beebe5b1d22f41cf24620e85bb1daf76",
+        "currentSha256": "f718b3c8123f25c4d0bc6fb3affe1509beebe5b1d22f41cf24620e85bb1daf76",
+        "identical": true
+      },
+      {
+        "path": "src/game/narrative.ts",
+        "baselineSha256": "6d93377087f0f167b7598425b850d9245c687c9ee5c3941509c75e6842cd3ef3",
+        "currentSha256": "6d93377087f0f167b7598425b850d9245c687c9ee5c3941509c75e6842cd3ef3",
+        "identical": true
+      },
+      {
+        "path": "src/ui.ts",
+        "baselineSha256": "4a6bc1205f04d677a2829278be37bf149681a8ad0ac0218ae8ab9023513fd6c3",
+        "currentSha256": "4a6bc1205f04d677a2829278be37bf149681a8ad0ac0218ae8ab9023513fd6c3",
+        "identical": true
+      },
+      {
+        "path": "src/style.css",
+        "baselineSha256": "08bdba727d33b328d517e111ac5b7dd1b9b05d906343565f8420455a8532b1a0",
+        "currentSha256": "08bdba727d33b328d517e111ac5b7dd1b9b05d906343565f8420455a8532b1a0",
+        "identical": true
+      },
+      {
+        "path": "src/scene/chapterWorld.ts",
+        "baselineSha256": "1a4f149ef18b16524fefebde774c10bcd12e0f234ea0e637e5323614950f665b",
+        "currentSha256": "1a4f149ef18b16524fefebde774c10bcd12e0f234ea0e637e5323614950f665b",
+        "identical": true
+      }
+    ],
+    "sourceBlocks": [
+      {
+        "name": "lance, degraus, espelhos, longarinas, corrimãos, balaústres e postes da escada",
+        "path": "src/scene/hallway.ts",
+        "start": "  // The original staircase reaches",
+        "end": "  // A shallow console",
+        "baselineSha256": "561cacaa7994a8db4d2e4a7778e492ea83c23eb42a79ccc98d2a92de211e460a",
+        "currentSha256": "561cacaa7994a8db4d2e4a7778e492ea83c23eb42a79ccc98d2a92de211e460a",
+        "identical": true
+      },
+      {
+        "name": "luminárias e iluminação aprovada do corredor/escada",
+        "path": "src/scene/hallway.ts",
+        "start": "  const upperFixtureZ =",
+        "end": "  void Promise.allSettled",
+        "baselineSha256": "c32f7d88025527612fbc4a0ecb8dfec67b6689b410cf3d318b6d4978296c5e45",
+        "currentSha256": "c32f7d88025527612fbc4a0ecb8dfec67b6689b410cf3d318b6d4978296c5e45",
+        "identical": true
+      },
+      {
+        "name": "janela, mobiliário, objetos e iluminação da cozinha após o casco de conexão",
+        "path": "src/scene/kitchen.ts",
+        "start": "  // Window, slim security bars",
+        "end": null,
+        "baselineSha256": "7c6b7a8cb93fa7ee7536a92f9c39c11cb0abc49f6f1207f553f70407ea387b3b",
+        "currentSha256": "7c6b7a8cb93fa7ee7536a92f9c39c11cb0abc49f6f1207f553f70407ea387b3b",
+        "identical": true
+      }
+    ],
+    "allowedConnectionExceptions": [
+      {
+        "path": "src/scene/hallway.ts",
+        "surface": "right stairwell enclosure only",
+        "bounds": {
+          "x": [
+            2.55,
+            2.67
+          ],
+          "z": [
+            9.7,
+            11.65
+          ],
+          "y": [
+            0,
+            2.6
+          ]
+        },
+        "retained": "upper enclosure y2.6..5.6, all treads/rails/posts, floor and existing lighting"
+      },
+      {
+        "path": "src/scene/kitchen.ts",
+        "surface": "north-wall added aperture only",
+        "bounds": {
+          "x": [
+            3.25,
+            4.15
+          ],
+          "z": [
+            11.85,
+            12
+          ],
+          "y": [
+            0,
+            2.1
+          ]
+        },
+        "retained": "original stair entry and all furnishings/NPCs/lighting"
+      }
+    ]
+  },
+  "regressions": [
+    {
+      "name": "hallway",
+      "status": "passed",
+      "coverage": [
+        "fresh waking",
+        "bedroom door from both sides",
+        "real closed-door collision",
+        "five reference perspectives and console detail",
+        "independent corridor switch with canvas pixel proof",
+        "closed side doors and decorations without fake prompts",
+        "console and both handrail collisions",
+        "physical descent and ascent with measured camera progression",
+        "pause",
+        "real final stair tread",
+        "unchanged breakfast mission and kitchen connection"
+      ],
+      "evidenceRecord": {
+        "temporaryArtifactName": "o-intercambio-hallway-results.json",
+        "versioned": false,
+        "bytes": 14132,
+        "sha256": "27f73aae6100e891fffee2aa517bb27a094ee272c5f3ed2a353f015ef272b4f3",
+        "modifiedAtUtc": "2026-11-08T03:12:11.339Z"
+      }
+    },
+    {
+      "name": "bedroom",
+      "status": "passed",
+      "coverage": [
+        "fresh waking",
+        "six views in one real room",
+        "photo memory",
+        "travel calendar",
+        "backpack examination",
+        "light switch twice",
+        "animated door open and close",
+        "bed and closed-door collision",
+        "pause",
+        "physical exit and stairs",
+        "preserved breakfast mission"
+      ],
+      "evidenceRecord": {
+        "temporaryArtifactName": "o-intercambio-bedroom-results.json",
+        "versioned": false,
+        "bytes": 7477,
+        "sha256": "eae6352d5e17bbadb1a38014d07137d40cf51f702c9bf2f5953b9eefdfb3fe6c",
+        "modifiedAtUtc": "2026-11-08T03:17:08.332Z"
+      }
+    },
+    {
+      "name": "browser",
+      "status": "passed",
+      "coverage": [
+        "fresh opening",
+        "physical door and stairs",
+        "six kitchen perspectives",
+        "table and parent collisions",
+        "pause",
+        "real checkpoint reload",
+        "text-only parent dialogue and choice",
+        "suitcase",
+        "existing car trip",
+        "airport gate",
+        "plane",
+        "host-family ending"
+      ],
+      "evidenceRecord": {
+        "temporaryArtifactName": "o-intercambio-browser-results.json",
+        "versioned": false,
+        "bytes": 6337,
+        "sha256": "77583c35faa3d2c63d77ef59cc2462f412c970e5b5fe777e96b2fbb1e7422b4a",
+        "modifiedAtUtc": "2026-11-08T03:23:04.954Z"
+      }
+    }
+  ],
+  "runtime": {
+    "status": "passed",
+    "profile": "balanced",
+    "build": "chapter1-living-room-reference-1",
+    "pictures": [
+      {
+        "label": "sala-base-escada",
+        "path": "docs/capturas/sala-base-escada.png",
+        "native": {
+          "width": 1280,
+          "height": 720
+        },
+        "blackRatio": 0.034830729166666664,
+        "raw": {
+          "width": 914,
+          "height": 514,
+          "colours": 269,
+          "visible": 28127,
+          "warm": 30205,
+          "samples": 33672,
+          "temporaryArtifactName": "o-intercambio-sala-base-escada-interno.png",
+          "versioned": false
+        }
+      },
+      {
+        "label": "sala-entrada-cozinha",
+        "path": "docs/capturas/sala-entrada-cozinha.png",
+        "native": {
+          "width": 1280,
+          "height": 720
+        },
+        "blackRatio": 0.008463541666666666,
+        "raw": {
+          "width": 914,
+          "height": 514,
+          "colours": 314,
+          "visible": 31063,
+          "warm": 32668,
+          "samples": 33672,
+          "temporaryArtifactName": "o-intercambio-sala-entrada-cozinha-interno.png",
+          "versioned": false
+        }
+      },
+      {
+        "label": "sala-visao-geral",
+        "path": "docs/capturas/sala-visao-geral.png",
+        "native": {
+          "width": 1280,
+          "height": 720
+        },
+        "blackRatio": 0.012662760416666667,
+        "raw": {
+          "width": 914,
+          "height": 514,
+          "colours": 317,
+          "visible": 29712,
+          "warm": 31877,
+          "samples": 33672,
+          "temporaryArtifactName": "o-intercambio-sala-visao-geral-interno.png",
+          "versioned": false
+        }
+      },
+      {
+        "label": "sala-sofa-poltrona",
+        "path": "docs/capturas/sala-sofa-poltrona.png",
+        "native": {
+          "width": 1280,
+          "height": 720
+        },
+        "blackRatio": 0.004524739583333334,
+        "raw": {
+          "width": 914,
+          "height": 514,
+          "colours": 294,
+          "visible": 32967,
+          "warm": 33110,
+          "samples": 33672,
+          "temporaryArtifactName": "o-intercambio-sala-sofa-poltrona-interno.png",
+          "versioned": false
+        }
+      },
+      {
+        "label": "sala-mesa-tapete",
+        "path": "docs/capturas/sala-mesa-tapete.png",
+        "native": {
+          "width": 1280,
+          "height": 720
+        },
+        "blackRatio": 0.00026041666666666666,
+        "raw": {
+          "width": 914,
+          "height": 514,
+          "colours": 324,
+          "visible": 31848,
+          "warm": 33200,
+          "samples": 33672,
+          "temporaryArtifactName": "o-intercambio-sala-mesa-tapete-interno.png",
+          "versioned": false
+        }
+      },
+      {
+        "label": "sala-estante-tv",
+        "path": "docs/capturas/sala-estante-tv.png",
+        "native": {
+          "width": 1280,
+          "height": 720
+        },
+        "blackRatio": 0.013346354166666666,
+        "raw": {
+          "width": 914,
+          "height": 514,
+          "colours": 194,
+          "visible": 27816,
+          "warm": 30608,
+          "samples": 33672,
+          "temporaryArtifactName": "o-intercambio-sala-estante-tv-interno.png",
+          "versioned": false
+        }
+      },
+      {
+        "label": "sala-tv-ligada",
+        "path": "docs/capturas/sala-tv-ligada.png",
+        "native": {
+          "width": 1280,
+          "height": 720
+        },
+        "blackRatio": 0.0062825520833333336,
+        "raw": {
+          "width": 914,
+          "height": 514,
+          "colours": 277,
+          "visible": 29930,
+          "warm": 30411,
+          "samples": 33672,
+          "temporaryArtifactName": "o-intercambio-sala-tv-ligada-interno.png",
+          "versioned": false
+        }
+      },
+      {
+        "label": "sala-janela-manha",
+        "path": "docs/capturas/sala-janela-manha.png",
+        "native": {
+          "width": 1280,
+          "height": 720
+        },
+        "blackRatio": 0.000390625,
+        "raw": {
+          "width": 914,
+          "height": 514,
+          "colours": 170,
+          "visible": 32394,
+          "warm": 27847,
+          "samples": 33672,
+          "temporaryArtifactName": "o-intercambio-sala-janela-manha-interno.png",
+          "versioned": false
+        }
+      },
+      {
+        "label": "sala-porta-principal",
+        "path": "docs/capturas/sala-porta-principal.png",
+        "native": {
+          "width": 1280,
+          "height": 720
+        },
+        "blackRatio": 0.0755859375,
+        "raw": {
+          "width": 914,
+          "height": 514,
+          "colours": 189,
+          "visible": 24692,
+          "warm": 26901,
+          "samples": 33672,
+          "temporaryArtifactName": "o-intercambio-sala-porta-principal-interno.png",
+          "versioned": false
+        }
+      },
+      {
+        "label": "sala-conexao-escada",
+        "path": "docs/capturas/sala-conexao-escada.png",
+        "native": {
+          "width": 1280,
+          "height": 720
+        },
+        "blackRatio": 0.07096354166666667,
+        "raw": {
+          "width": 914,
+          "height": 514,
+          "colours": 215,
+          "visible": 27572,
+          "warm": 30176,
+          "samples": 33672,
+          "temporaryArtifactName": "o-intercambio-sala-conexao-escada-interno.png",
+          "versioned": false
+        }
+      }
+    ],
+    "views": [
+      {
+        "label": "sala-base-escada",
+        "position": {
+          "x": 1.850003725795319,
+          "y": 1.6500000009635196,
+          "z": 12.020534936114702
+        },
+        "rotation": {
+          "yaw": -4.1231926535897925,
+          "pitch": 0.1712000000000003,
+          "roll": 0
+        },
+        "horizonTilt": 1.8393047085396574e-9
+      },
+      {
+        "label": "sala-entrada-cozinha",
+        "position": {
+          "x": 3.610718430692874,
+          "y": 1.6500000191402677,
+          "z": 12.527418884862806
+        },
+        "rotation": {
+          "yaw": -3.487192653589791,
+          "pitch": 0.14000000000000035,
+          "roll": 0
+        },
+        "horizonTilt": -5.811120473708797e-10
+      },
+      {
+        "label": "sala-visao-geral",
+        "position": {
+          "x": 4.298375467744642,
+          "y": 1.6500000116717666,
+          "z": 11.40120423839288
+        },
+        "rotation": {
+          "yaw": -3.292792653589791,
+          "pitch": 0.18320000000000042,
+          "roll": 0
+        },
+        "horizonTilt": -6.356798420981136e-10
+      },
+      {
+        "label": "sala-sofa-poltrona",
+        "position": {
+          "x": 4.889725122228052,
+          "y": 1.6499999995252626,
+          "z": 8.995793711878687
+        },
+        "rotation": {
+          "yaw": -0.11519265358979189,
+          "pitch": 0.3608000000000005,
+          "roll": 0
+        },
+        "horizonTilt": -1.1130276700299646e-9
+      },
+      {
+        "label": "sala-mesa-tapete",
+        "position": {
+          "x": 5.895520248385273,
+          "y": 1.6500000385076448,
+          "z": 9.522369148181415
+        },
+        "rotation": {
+          "yaw": -1.2527926535897917,
+          "pitch": 0.8096000000000005,
+          "roll": 0
+        },
+        "horizonTilt": -8.548658669838005e-9
+      },
+      {
+        "label": "sala-estante-tv",
+        "position": {
+          "x": 4.117139368819469,
+          "y": 1.6499999951805804,
+          "z": 10.098643429378646
+        },
+        "rotation": {
+          "yaw": -3.506392653589792,
+          "pitch": 0.30320000000000064,
+          "roll": 0
+        },
+        "horizonTilt": 3.126219061400093e-9
+      },
+      {
+        "label": "sala-tv-ligada",
+        "position": {
+          "x": 4.117139368819469,
+          "y": 1.65,
+          "z": 10.098643429378646
+        },
+        "rotation": {
+          "yaw": -3.563992653589792,
+          "pitch": 0.3176000000000006,
+          "roll": 0
+        },
+        "horizonTilt": 1.097136514971453e-8
+      },
+      {
+        "label": "sala-janela-manha",
+        "position": {
+          "x": 5.945085552941541,
+          "y": 1.6500000005614879,
+          "z": 8.95035341312368
+        },
+        "rotation": {
+          "yaw": -5.0759926535897915,
+          "pitch": 0.24800000000000036,
+          "roll": 0
+        },
+        "horizonTilt": -5.419004800444327e-9
+      },
+      {
+        "label": "sala-porta-principal",
+        "position": {
+          "x": 6.202277048316125,
+          "y": 1.649999991896192,
+          "z": 9.958048177571813
+        },
+        "rotation": {
+          "yaw": -3.141592653589785,
+          "pitch": 0.31040000000000023,
+          "roll": 0
+        },
+        "horizonTilt": 8.10604376298608e-17
+      },
+      {
+        "label": "sala-conexao-escada",
+        "position": {
+          "x": 3.7003387175707574,
+          "y": 1.6499999999901989,
+          "z": 11.439524505206732
+        },
+        "rotation": {
+          "yaw": -2.085592653589785,
+          "pitch": 0.3032,
+          "roll": 0
+        },
+        "horizonTilt": 2.383077735146344e-9
+      }
+    ],
+    "traversal": {
+      "middle": {
+        "x": 1.849985029193405,
+        "y": 3.3218973148369906,
+        "z": 9.475536577782613
+      },
+      "landing": {
+        "x": 1.850003725795319,
+        "y": 1.6571343929178204,
+        "z": 12.020534936114702
+      },
+      "steps": 18
+    },
+    "performance": {
+      "profile": "living-balanced",
+      "renderer": "Babylon.js",
+      "webgl": 2,
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "environment": "Chromium/SwiftShader, Linux, stationary camera, 1280×720 viewport",
+      "internal": {
+        "width": 914,
+        "height": 514
+      },
+      "seconds": 10.00399953999999,
+      "frames": 65,
+      "measuredFps": 6.5,
+      "reported": {
+        "frames": 1184,
+        "meanFrameMs": 126.5,
+        "p95FrameMs": 187.2,
+        "fps": 7.9
+      }
+    },
+    "explorationPerformance": {
+      "profile": "living-balanced",
+      "environment": "Chromium/SwiftShader, Linux, real alternating W/S input with frame/position sampling",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "internal": {
+        "width": 914,
+        "height": 514
+      },
+      "seconds": 10.094625509999984,
+      "frames": 96,
+      "measuredFps": 9.5,
+      "sampledDistanceMetres": 2.9990904136744123,
+      "samples": [
+        {
+          "position": {
+            "x": 4.0491886724267525,
+            "y": 1.6500831607620232,
+            "z": 10.21525284623104
+          },
+          "frames": 3176,
+          "key": "KeyW"
+        },
+        {
+          "position": {
+            "x": 4.049272415222495,
+            "y": 1.649228042556697,
+            "z": 10.250252746047241
+          },
+          "frames": 3178,
+          "key": "KeyS"
+        },
+        {
+          "position": {
+            "x": 4.049523643609722,
+            "y": 1.6445095741702653,
+            "z": 10.355252445495845
+          },
+          "frames": 3180,
+          "key": "KeyW"
+        },
+        {
+          "position": {
+            "x": 4.049607386405464,
+            "y": 1.6469242141311253,
+            "z": 10.390252345312046
+          },
+          "frames": 3182,
+          "key": "KeyS"
+        },
+        {
+          "position": {
+            "x": 4.049858614792691,
+            "y": 1.6439871995115405,
+            "z": 10.49525204476065
+          },
+          "frames": 3184,
+          "key": "KeyW"
+        },
+        {
+          "position": {
+            "x": 4.049942357588433,
+            "y": 1.6476170527147556,
+            "z": 10.53025194457685
+          },
+          "frames": 3186,
+          "key": "KeyS"
+        },
+        {
+          "position": {
+            "x": 4.05019358597566,
+            "y": 1.6494878444156855,
+            "z": 10.635251644025454
+          },
+          "frames": 3188,
+          "key": "KeyW"
+        },
+        {
+          "position": {
+            "x": 4.0502773287714025,
+            "y": 1.6507005805905175,
+            "z": 10.670251543841655
+          },
+          "frames": 3190,
+          "key": "KeyS"
+        },
+        {
+          "position": {
+            "x": 4.050528557158629,
+            "y": 1.6555023588108793,
+            "z": 10.775251243290258
+          },
+          "frames": 3192,
+          "key": "KeyW"
+        },
+        {
+          "position": {
+            "x": 4.050612299954372,
+            "y": 1.6530799682350625,
+            "z": 10.81025114310646
+          },
+          "frames": 3194,
+          "key": "KeyS"
+        },
+        {
+          "position": {
+            "x": 4.050863528341599,
+            "y": 1.655987752909265,
+            "z": 10.915250842555063
+          },
+          "frames": 3196,
+          "key": "KeyW"
+        },
+        {
+          "position": {
+            "x": 4.050947271137341,
+            "y": 1.6523644190832547,
+            "z": 10.950250742371264
+          },
+          "frames": 3198,
+          "key": "KeyS"
+        },
+        {
+          "position": {
+            "x": 4.051198499524568,
+            "y": 1.650456304882076,
+            "z": 11.055250441819867
+          },
+          "frames": 3200,
+          "key": "KeyW"
+        },
+        {
+          "position": {
+            "x": 4.05128224232031,
+            "y": 1.6492729644670778,
+            "z": 11.090250341636068
+          },
+          "frames": 3202,
+          "key": "KeyS"
+        },
+        {
+          "position": {
+            "x": 4.051533470707537,
+            "y": 1.6444663352349715,
+            "z": 11.195250041084671
+          },
+          "frames": 3204,
+          "key": "KeyW"
+        },
+        {
+          "position": {
+            "x": 4.051617213503279,
+            "y": 1.6469120772422188,
+            "z": 11.230249940900872
+          },
+          "frames": 3206,
+          "key": "KeyS"
+        },
+        {
+          "position": {
+            "x": 4.051868441890506,
+            "y": 1.644036912364153,
+            "z": 11.335249640349476
+          },
+          "frames": 3208,
+          "key": "KeyW"
+        },
+        {
+          "position": {
+            "x": 4.0519521846862485,
+            "y": 1.6476541136076945,
+            "z": 11.370249540165677
+          },
+          "frames": 3210,
+          "key": "KeyS"
+        },
+        {
+          "position": {
+            "x": 4.052131595251847,
+            "y": 1.648329243706376,
+            "z": 11.445233325531907
+          },
+          "frames": 3212,
+          "key": "KeyW"
+        },
+        {
+          "position": {
+            "x": 4.0521849558263545,
+            "y": 1.650378464059091,
+            "z": 11.467535121708476
+          },
+          "frames": 3214,
+          "key": "KeyS"
+        },
+        {
+          "position": {
+            "x": 4.0524264700493555,
+            "y": 1.6542538085085172,
+            "z": 11.56847483281178
+          },
+          "frames": 3216,
+          "key": "KeyW"
+        },
+        {
+          "position": {
+            "x": 4.052500498680871,
+            "y": 1.6566917601326752,
+            "z": 11.599414744282681
+          },
+          "frames": 3218,
+          "key": "KeyS"
+        },
+        {
+          "position": {
+            "x": 4.052742012903872,
+            "y": 1.6576481564895762,
+            "z": 11.632384649926232
+          },
+          "frames": 3220,
+          "key": "KeyW"
+        },
+        {
+          "position": {
+            "x": 4.052653415056093,
+            "y": 1.6570948052056682,
+            "z": 11.527385465528686
+          },
+          "frames": 3222,
+          "key": "KeyS"
+        },
+        {
+          "position": {
+            "x": 4.052645568040184,
+            "y": 1.652686873460515,
+            "z": 11.492386325232841
+          },
+          "frames": 3224,
+          "key": "KeyW"
+        },
+        {
+          "position": {
+            "x": 4.0524707555319655,
+            "y": 1.6516382086861738,
+            "z": 11.405890311143247
+          },
+          "frames": 3226,
+          "key": "KeyS"
+        },
+        {
+          "position": {
+            "x": 4.052436232749465,
+            "y": 1.6490014171168916,
+            "z": 11.38405127640848
+          },
+          "frames": 3228,
+          "key": "KeyW"
+        },
+        {
+          "position": {
+            "x": 4.052224464688505,
+            "y": 1.6454698894522337,
+            "z": 11.292212465529447
+          },
+          "frames": 3230,
+          "key": "KeyS"
+        },
+        {
+          "position": {
+            "x": 4.052176072537247,
+            "y": 1.6432305207471023,
+            "z": 11.270373464180954
+          },
+          "frames": 3232,
+          "key": "KeyW"
+        },
+        {
+          "position": {
+            "x": 4.051958069466535,
+            "y": 1.642470378279793,
+            "z": 11.178534668291716
+          },
+          "frames": 3234,
+          "key": "KeyS"
+        },
+        {
+          "position": {
+            "x": 4.051906657038352,
+            "y": 1.6430100949560273,
+            "z": 11.156695674179275
+          },
+          "frames": 3236,
+          "key": "KeyW"
+        },
+        {
+          "position": {
+            "x": 4.051687296194531,
+            "y": 1.645760536532068,
+            "z": 11.064856881542116
+          },
+          "frames": 3238,
+          "key": "KeyS"
+        },
+        {
+          "position": {
+            "x": 4.051635226052748,
+            "y": 1.6486471780523129,
+            "z": 11.043017889003812
+          },
+          "frames": 3240,
+          "key": "KeyW"
+        },
+        {
+          "position": {
+            "x": 4.05141556953212,
+            "y": 1.6526054464244726,
+            "z": 10.951179097074268
+          },
+          "frames": 3242,
+          "key": "KeyS"
+        },
+        {
+          "position": {
+            "x": 4.051363356162682,
+            "y": 1.6554187129113938,
+            "z": 10.92934010487868
+          },
+          "frames": 3244,
+          "key": "KeyW"
+        },
+        {
+          "position": {
+            "x": 4.0511436352537,
+            "y": 1.6572650263123687,
+            "z": 10.837501313103203
+          },
+          "frames": 3246,
+          "key": "KeyS"
+        },
+        {
+          "position": {
+            "x": 4.05109139069415,
+            "y": 1.6576453579661912,
+            "z": 10.815662320982243
+          },
+          "frames": 3248,
+          "key": "KeyW"
+        },
+        {
+          "position": {
+            "x": 4.050871655763576,
+            "y": 1.655831149815265,
+            "z": 10.723823529240315
+          },
+          "frames": 3250,
+          "key": "KeyS"
+        },
+        {
+          "position": {
+            "x": 4.050819404411881,
+            "y": 1.6534595493625692,
+            "z": 10.701984537135607
+          },
+          "frames": 3252,
+          "key": "KeyW"
+        },
+        {
+          "position": {
+            "x": 4.050599666427879,
+            "y": 1.6495064655072529,
+            "z": 10.610145745400985
+          },
+          "frames": 3254,
+          "key": "KeyS"
+        },
+        {
+          "position": {
+            "x": 4.050547413597085,
+            "y": 1.6463720847530632,
+            "z": 10.588306753299815
+          },
+          "frames": 3256,
+          "key": "KeyW"
+        },
+        {
+          "position": {
+            "x": 4.050327674948151,
+            "y": 1.6435957273979571,
+            "z": 10.496467961566784
+          },
+          "frames": 3258,
+          "key": "KeyS"
+        },
+        {
+          "position": {
+            "x": 4.05027542179526,
+            "y": 1.642327491022925,
+            "z": 10.474628969466385
+          },
+          "frames": 3260,
+          "key": "KeyW"
+        },
+        {
+          "position": {
+            "x": 4.050055683001527,
+            "y": 1.64305649696764,
+            "z": 10.3827901777337
+          },
+          "frames": 3262,
+          "key": "KeyS"
+        },
+        {
+          "position": {
+            "x": 4.050003429778494,
+            "y": 1.6447181231879175,
+            "z": 10.36095118563347
+          },
+          "frames": 3264,
+          "key": "KeyW"
+        },
+        {
+          "position": {
+            "x": 4.049783690953228,
+            "y": 1.6483410473436273,
+            "z": 10.26911239390086
+          },
+          "frames": 3266,
+          "key": "KeyS"
+        },
+        {
+          "position": {
+            "x": 4.049731437714921,
+            "y": 1.6515388668767519,
+            "z": 10.247273401800665
+          },
+          "frames": 3268,
+          "key": "KeyW"
+        },
+        {
+          "position": {
+            "x": 4.049511698882788,
+            "y": 1.655017024582069,
+            "z": 10.155434610068072
+          },
+          "frames": 3270,
+          "key": "KeyS"
+        }
+      ]
+    },
+    "television": {
+      "toggles": 2,
+      "fullDifference": {
+        "changed": 18827,
+        "samples": 469796
+      },
+      "centralDifference": {
+        "changed": 18115,
+        "samples": 94428
+      },
+      "offDifference": {
+        "changed": 56068,
+        "samples": 469796
+      },
+      "screenProof": {
+        "off": {
+          "meanLuminance": 26.48854443979912,
+          "brightFraction": 0,
+          "colours": 3,
+          "samples": 4784,
+          "region": "centre ±5% of internal canvas width/height, inside the aimed CRT face"
+        },
+        "on": {
+          "meanLuminance": 135.6778343227457,
+          "brightFraction": 1,
+          "colours": 29,
+          "samples": 4784,
+          "region": "centre ±5% of internal canvas width/height, inside the aimed CRT face"
+        },
+        "backOff": {
+          "meanLuminance": 26.599147073578468,
+          "brightFraction": 0,
+          "colours": 3,
+          "samples": 4784,
+          "region": "centre ±5% of internal canvas width/height, inside the aimed CRT face"
+        }
+      },
+      "off": {
+        "requested": false,
+        "playing": false,
+        "supported": true,
+        "gain": 0,
+        "effectiveGain": 0,
+        "rmsBeforeMaster": 0,
+        "position": {
+          "x": 4.8,
+          "y": 1.1,
+          "z": 8.57
+        }
+      },
+      "on": {
+        "requested": true,
+        "playing": true,
+        "supported": true,
+        "gain": 0.020782895629799975,
+        "effectiveGain": 0.010807105727495988,
+        "rmsBeforeMaster": 0.004635522243721119,
+        "position": {
+          "x": 4.8,
+          "y": 1.1,
+          "z": 8.57
+        }
+      },
+      "paused": {
+        "requested": true,
+        "playing": false,
+        "supported": true,
+        "gain": 0,
+        "effectiveGain": 0,
+        "rmsBeforeMaster": 0,
+        "position": {
+          "x": 4.8,
+          "y": 1.1,
+          "z": 8.57
+        }
+      },
+      "backOff": {
+        "requested": false,
+        "playing": false,
+        "supported": true,
+        "gain": 0,
+        "effectiveGain": 0,
+        "rmsBeforeMaster": 0,
+        "position": {
+          "x": 4.8,
+          "y": 1.1,
+          "z": 8.57
+        }
+      },
+      "evidence": "Actual TV-only AnalyserNode signal before master gain; no human listening assessment."
+    },
+    "examinations": [
+      {
+        "id": "living-phone",
+        "text": "Esse telefone está aqui desde que eu era pequeno.",
+        "position": {
+          "x": 3.6356368347276424,
+          "y": 1.6499999123191862,
+          "z": 9.157795219610442
+        },
+        "mission": "talk-parents"
+      },
+      {
+        "id": "living-photo",
+        "text": "Essa foto foi tirada nas nossas últimas férias.",
+        "position": {
+          "x": 3.6356368347276424,
+          "y": 1.6499999999940613,
+          "z": 9.157795219610442
+        },
+        "mission": "talk-parents"
+      },
+      {
+        "id": "living-exit",
+        "text": "Ainda tenho algumas coisas para resolver antes de sair.",
+        "position": {
+          "x": 6.1642510587407635,
+          "y": 1.6499567799758916,
+          "z": 8.844492525344398
+        },
+        "mission": "talk-parents"
+      }
+    ],
+    "decorative": [
+      {
+        "name": "coffee-table magazines",
+        "point": {
+          "x": 4.95,
+          "y": 0.49,
+          "z": 9.65
+        },
+        "interaction": null
+      },
+      {
+        "name": "cabinet books",
+        "point": {
+          "x": 3.99,
+          "y": 1.48,
+          "z": 8.57
+        },
+        "interaction": null
+      },
+      {
+        "name": "lace window",
+        "point": {
+          "x": 6.87,
+          "y": 1.55,
+          "z": 9.3
+        },
+        "interaction": null
+      }
+    ],
+    "physics": {
+      "tableBefore": {
+        "x": 5.944875441600334,
+        "y": 1.6499998169243308,
+        "z": 9.619024215208833
+      },
+      "tableStop": {
+        "x": 5.6298756670139625,
+        "y": 1.6579510824218442,
+        "z": 9.617893686657336
+      },
+      "wallBefore": {
+        "x": 5.989317444140281,
+        "y": 1.6499954327855184,
+        "z": 9.503684930723836
+      },
+      "wallStop": {
+        "x": 6.634287047748228,
+        "y": 1.6520864136583622,
+        "z": 9.505536986127066
+      },
+      "doorBefore": {
+        "x": 6.110100552514323,
+        "y": 1.6500115210297521,
+        "z": 8.862010240320407
+      },
+      "doorStop": {
+        "x": 6.110100552514299,
+        "y": 1.6500127071429194,
+        "z": 8.284510240320405
+      }
+    },
+    "final": {
+      "position": {
+        "x": 1.8344454144439855,
+        "y": 1.6536623433232902,
+        "z": 14.315354462770339
+      },
+      "mission": "talk-parents",
+      "stage": "home",
+      "kitchen": {
+        "active": true,
+        "version": "cozinha-visual-1",
+        "meshes": 80
+      }
+    },
+    "renderer": "Babylon.js",
+    "webgl": 2,
+    "meshes": 346,
+    "vertices": 169689,
+    "coverage": [
+      "fresh waking",
+      "physical bedroom door, upper hallway and preserved 18-step flight",
+      "ten real living-room views",
+      "centre-ray/E TV on/off with internal-canvas pixel proof",
+      "nonzero actual TV DSP signal and stopped source when off",
+      "TV pause/resume and inactive movement",
+      "telephone and original family photograph captions",
+      "story-locked entrance without new travel",
+      "coffee table, window perimeter and closed entrance collisions",
+      "decorations without inert prompts",
+      "real sampled exploration performance",
+      "physical kitchen connection and unchanged parent mission"
+    ],
+    "limits": [
+      "The reference images require visual inspection; this suite does not assert exact visual fidelity.",
+      "Audio evidence is a TV-only AnalyserNode measurement before master gain, not a human listening test.",
+      "Software-rendered Chromium/SwiftShader/Linux performance does not establish physical GPU or Windows performance.",
+      "Exploration includes real input and diagnostic sampling overhead; sampled movement is a lower bound on travel distance.",
+      "Mesh/vertex counts describe the complete loaded scene, not the living room alone."
+    ]
+  },
+  "performanceInterpretation": {
+    "method": "Rendered frame count divided by measured wall-clock seconds; stationary and sampled real-input exploration are separate intervals.",
+    "physicalGpuMeasured": false,
+    "windowsMeasured": false,
+    "humanAudioListening": false,
+    "sixtyFpsClaimed": false,
+    "wholeLoadedSceneCounts": {
+      "meshes": 346,
+      "vertices": 169689
+    },
+    "limits": [
+      "The reference images require visual inspection; this suite does not assert exact visual fidelity.",
+      "Audio evidence is a TV-only AnalyserNode measurement before master gain, not a human listening test.",
+      "Software-rendered Chromium/SwiftShader/Linux performance does not establish physical GPU or Windows performance.",
+      "Exploration includes real input and diagnostic sampling overhead; sampled movement is a lower bound on travel distance.",
+      "Mesh/vertex counts describe the complete loaded scene, not the living room alone."
+    ]
+  },
+  "assets": {
+    "models": "original procedural geometry",
+    "textures": "original deterministic Canvas paintings",
+    "photographs": "fictional parents and son; no real-person photographs imported",
+    "television": "original static TV LAR / BOM DIA artwork",
+    "audio": "local nonverbal synthesis in the existing single audio context",
+    "externalAssetPacks": 0,
+    "notices": "THIRD_PARTY_NOTICES.md"
+  },
+  "pending": [
+    "Physical GPU and Windows performance verification",
+    "Human listening assessment of TV volume and timbre",
+    "User artistic approval; original assets and preserved architecture prevent an exact copy of the reference",
+    "Public Vercel deployment verification"
+  ]
+}

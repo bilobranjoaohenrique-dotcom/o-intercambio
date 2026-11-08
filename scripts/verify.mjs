@@ -28,6 +28,7 @@ try {
     if (!ready) await new Promise(resolve => setTimeout(resolve, 200));
   }
   if (!ready) throw Error('A prévia do build não iniciou na porta 4181.');
+  await command([fileURLToPath(new URL('../tests/living-room-browser.mjs', import.meta.url))], { INTERCAMBIO_URL: 'http://127.0.0.1:4181' });
   await command([fileURLToPath(new URL('../tests/hallway-browser.mjs', import.meta.url))], { INTERCAMBIO_URL: 'http://127.0.0.1:4181' });
   await command([fileURLToPath(new URL('../tests/bedroom-browser.mjs', import.meta.url))], { INTERCAMBIO_URL: 'http://127.0.0.1:4181' });
   await command([fileURLToPath(new URL('../tests/browser.mjs', import.meta.url))], { INTERCAMBIO_URL: 'http://127.0.0.1:4181' });

@@ -16,6 +16,7 @@ import { RenderTargetTexture } from '@babylonjs/core/Materials/Textures/renderTa
 import '@babylonjs/core/Lights/Shadows/shadowGeneratorSceneComponent';
 import { KITCHEN, HALL } from '../game/layout';
 import { KITCHEN_FURNITURE, PARENT_ANCHORS } from '../game/kitchenLayout';
+import { LIVING_ROOM_PORTAL } from '../game/livingRoomLayout';
 import type { InteractionTarget } from '../game/types';
 import { HomeGeometry } from './props';
 import { createKitchenMaterials } from './kitchenMaterials';
@@ -121,8 +122,13 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
   rear('azulejos à direita da janela', wx1, KITCHEN.maxX, 0, ceilingY);
   rear('azulejos sob a janela', wx0, wx1, 0, wy0);
   rear('verga acima da janela', wx0, wx1, wy1, ceilingY);
-  for (const [x0, x1] of [[KITCHEN.minX, HALL.minX], [HALL.maxX, KITCHEN.maxX]])
+  // Preserve the existing staircase aperture. Only this extra local doorway
+  // connects the new room beside it; kitchen props and finishes keep position.
+  for (const [x0, x1] of [[KITCHEN.minX, HALL.minX], [HALL.maxX, LIVING_ROOM_PORTAL.minX], [LIVING_ROOM_PORTAL.maxX, KITCHEN.maxX]])
     b('parede junto à passagem da escada', x1 - x0, ceilingY, .15, (x0 + x1) / 2, ceilingY / 2, KITCHEN.startZ - .075, m.plaster);
+  b('verga da passagem para a sala', LIVING_ROOM_PORTAL.maxX - LIVING_ROOM_PORTAL.minX,
+    ceilingY - LIVING_ROOM_PORTAL.height, .15, (LIVING_ROOM_PORTAL.minX + LIVING_ROOM_PORTAL.maxX) / 2,
+    (ceilingY + LIVING_ROOM_PORTAL.height) / 2, KITCHEN.startZ - .075, m.plaster);
   b('verga da entrada da cozinha', HALL.maxX - HALL.minX, .88, .15, (HALL.maxX + HALL.minX) / 2, ceilingY - .44, KITCHEN.startZ - .075, m.plaster);
   for (const x of [KITCHEN.minX + .015, KITCHEN.maxX - .015]) b('rodapé de cerâmica lateral', .035, .09, length, x, .045, middle, m.darkWood);
   b('rodapé cerâmico do fundo', width, .09, .035, 0, .045, KITCHEN.endZ - .015, m.darkWood);

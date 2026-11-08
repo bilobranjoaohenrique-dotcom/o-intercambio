@@ -64,9 +64,12 @@ try {
   camera.minZ = .045; camera.maxZ = 95; camera.fov = 1.13;
   camera.rotation.set(BED_POSE.pitch, BED_POSE.yaw, BED_POSE.roll);
   scene.activeCamera = camera;
-  const environment = buildEnvironment(scene);
-  const chapterWorld = buildChapterWorld(scene);
   const audio = createAudio(() => settings);
+  const environment = buildEnvironment(scene, {
+    onTelevisionChange: (on, position) => audio.setTelevision(on, position),
+    onTelevisionClick: () => audio.play('tv'),
+  });
+  const chapterWorld = buildChapterWorld(scene);
   const door = createDoor(scene, cue => audio.play(cue));
   for (const mesh of door.target.meshes) environment.shadowGenerator.addShadowCaster(mesh);
   environment.addDoorMeshes(door.target.meshes);
@@ -125,7 +128,7 @@ try {
     freshStartRequested=false;
     const resumed=chapter.mission!=='breakfast';
     phase = resumed?'playing':'opening'; beforePause = phase; introTime = worldTime = endingTime = transitionTime = 0;
-    subtitleUntil = examineUntil = 0; examined.clear(); objective.reset(); door.reset(); environment.refreshShadows(); environment.setRoomLight(true); environment.setHallLight(true);
+    subtitleUntil = examineUntil = 0; examined.clear(); objective.reset(); door.reset(); environment.setTelevision(false); environment.refreshShadows(); environment.setRoomLight(true); environment.setHallLight(true);
     chapterStage=chapter.mission==='airport-gate'?'airport':chapter.mission==='plane-seat'?'plane':chapter.mission==='find-host'?'town':'home';
     chapterWorld.activate(chapterStage);dialogue.close();
     interactions.clear(); player.reset(); player.setActive(false); audio.reset(); audio.pause(false); audio.unlock();
@@ -153,6 +156,7 @@ try {
     audio.play('objective');
   }
   function finishScene() {
+    environment.setTelevision(false);
     phase = 'ending'; endingTime = 0; player.setActive(false); interactions.clear();
     el('interaction').hidden = true; el('examine').hidden = true; el('controlsHint').hidden = true;
     el('objectiveState').textContent = 'OBJETIVO CONCLUÍDO'; el('objective').classList.remove('compact');
@@ -190,12 +194,14 @@ try {
     player.setActive(true);el('reticle').hidden=false;player.requestPointerLock();
   }
   function travelTo(zone:'airport'|'plane'|'town', mission:'airport-gate'|'plane-seat'|'find-host') {
+    environment.setTelevision(false);
     phase='transition';transitionKind='arrival';transitionTime=0;player.setActive(false);interactions.clear();el('interaction').hidden=true;el('dialogueBox').hidden=true;
     el('sceneFade').style.opacity='1';chapterStage=zone;chapterWorld.activate(zone);player.teleport(chapterWorld.teleportPoint(zone));
     chapter.advance(mission);el('objectiveText').textContent=chapter.label;el('objectiveState').textContent='NOVA MISSÃO';el('objective').classList.remove('compact');
     pendingAirportDialogue=zone==='airport';
   }
   function travelByCar() {
+    environment.setTelevision(false);
     phase='transition';transitionKind='drive';transitionTime=0;player.setActive(false);player.clearInput();interactions.clear();
     el('interaction').hidden=true;el('dialogueBox').hidden=true;el('sceneFade').style.opacity='0';
     chapterStage='car';chapterWorld.activate('car');player.teleport(chapterWorld.teleportPoint('car'));
@@ -258,7 +264,7 @@ try {
   });
 
   Object.defineProperty(window, '__INTERCAMBIO__', { configurable: true, get: () => ({
-    build:'chapter1-hallway-reference-1',phase, introTime, duration: OPENING_DURATION, mission: objective.state, chapterMission: chapter.mission, chapterStage, dialogue: dialogue.active,
+    build:'chapter1-living-room-reference-1',phase, introTime, duration: OPENING_DURATION, mission: objective.state, chapterMission: chapter.mission, chapterStage, dialogue: dialogue.active,
     position: { x: camera.position.x, y: camera.position.y, z: camera.position.z },
     rotation: { yaw: camera.rotation.y, pitch: camera.rotation.x, roll: camera.rotation.z },
     horizonTilt: camera.getDirection(Vector3.Right()).y,
@@ -268,7 +274,7 @@ try {
     perf: { ...perf, frames: frameCount }, renderer: 'Babylon.js', webgl: engine.webGLVersion, gpu: engine.getGlInfo(), settings: { ...settings },
     input: { pointerLocked: document.pointerLockElement === canvas, mouseScale: LOOK_RADIANS_PER_PIXEL * settings.sensitivity },
     meshes: scene.meshes.length, vertices: scene.getTotalVertices(), errors: [...errors], dialogueAudio: false,
-    hallway: environment.hallwayDiagnostics, bedroom: environment.bedroomDiagnostics, kitchen: chapterWorld.kitchenDiagnostics, dialogueSpeaker: dialogue.current?.speaker ?? null,
+    livingRoom: environment.livingRoomDiagnostics, hallway: environment.hallwayDiagnostics, bedroom: environment.bedroomDiagnostics, kitchen: chapterWorld.kitchenDiagnostics, dialogueSpeaker: dialogue.current?.speaker ?? null,
     audio: audio.diagnostics,
   }) });
 

@@ -16,14 +16,23 @@ import {HomeGeometry} from './props';
 import {buildBedroom} from './bedroom';
 import {buildHallway} from './hallway';
 import {HALLWAY} from '../game/hallwayLayout';
+import {buildLivingRoom} from './livingRoom';
+import {LIVING_ROOM_OBJECTS} from '../game/livingRoomLayout';
+
+type LivingRoomCallbacks = {
+ onTelevisionChange?:(on:boolean,position:{x:number;y:number;z:number})=>void;
+ onTelevisionClick?:()=>void;
+};
 
 /** Independently lit bedroom and hallway sets share one connected home.
  * Their geometry stays separate from chapter progression and interaction rules. */
-export function buildEnvironment(scene:Scene){
+export function buildEnvironment(scene:Scene,callbacks:LivingRoomCallbacks={}){
  const m=homeMaterials(scene),g=new HomeGeometry(scene);
  const b=g.box.bind(g),c=g.cylinder.bind(g);
  const bedroom=buildBedroom(scene);
  const hallway=buildHallway(scene);
+ const living=buildLivingRoom(scene);
+ const setTelevision=(on:boolean)=>{living.setTV(on);callbacks.onTelevisionChange?.(on,LIVING_ROOM_OBJECTS.tv);};
  // The exterior is deliberately modest: gardens, low houses and real foliage
  // at a distance beyond the window, never an additional playable district.
  b('jardins do bairro',55,.15,65,-15,-.13,-4,m.grass);
@@ -56,18 +65,25 @@ export function buildEnvironment(scene:Scene){
  const shadowMap=shadowGenerator.getShadowMap()!;shadowMap.refreshRate=RenderTargetTexture.REFRESHRATE_RENDER_ONCE;
  const refreshShadows=()=>shadowMap.resetRefreshCounter();
  // Local bedroom lighting never changes the preserved corridor or kitchen.
- for(const light of[ambient,sun])light.excludedMeshes.push(...bedroom.meshes,...hallway.meshes);
+ for(const light of[ambient,sun])light.excludedMeshes.push(...bedroom.meshes,...hallway.meshes,...living.meshes);
  const targets:InteractionTarget[]=[
   {id:'suitcase',meshes:bedroom.targets.get('suitcase')??[],label:()=> 'Examinar mochila',execute:()=> 'Minha mochila. Quase tudo pronto para a viagem.'},
   {id:'calendar',meshes:bedroom.targets.get('calendar')??[],label:()=> 'Consultar calendário',execute:()=> '13 de junho. Hoje é o dia da viagem.'},
   {id:'photo',meshes:bedroom.targets.get('photo')??[],label:()=> 'Examinar fotografia',execute:()=> 'Nós três, antes de tudo mudar. Vou sentir falta de casa.'},
   {id:'hall-switch',meshes:hallway.targets.get('hall-switch')??[],label:()=>hallway.lightOn?'Apagar luz do corredor':'Acender luz do corredor',execute:()=>{hallway.setLight(!hallway.lightOn);return hallway.lightOn?'Luz do corredor acesa.':'Luz do corredor apagada.'}},
   {id:'switch',meshes:bedroom.targets.get('switch')??[],label:()=>bedroom.roomLightOn?'Apagar luz':'Acender luz',execute:()=>{bedroom.setRoomLight(!bedroom.roomLightOn);return bedroom.roomLightOn?'Luz acesa.':'Luz apagada.'}},
+  {id:'living-tv',meshes:living.targets.get('living-tv')??[],label:()=>living.tvOn?'Desligar TV':'Ligar TV',execute:()=>{callbacks.onTelevisionClick?.();setTelevision(!living.tvOn);}},
+  {id:'living-phone',meshes:living.targets.get('living-phone')??[],label:()=> 'Examinar telefone',execute:()=> 'Esse telefone está aqui desde que eu era pequeno.'},
+  {id:'living-photo',meshes:living.targets.get('living-photo')??[],label:()=> 'Examinar fotografia',execute:()=> 'Essa foto foi tirada nas nossas últimas férias.'},
+  {id:'living-exit',meshes:living.targets.get('living-exit')??[],label:()=> 'Tentar abrir a porta',execute:()=> 'Ainda tenho algumas coisas para resolver antes de sair.'},
  ];
- return{targets,setHallLight:hallway.setLight,setRoomLight:bedroom.setRoomLight,get roomLightOn(){return bedroom.roomLightOn;},shadowGenerator,
+ return{targets,setTelevision,setHallLight:hallway.setLight,setRoomLight:bedroom.setRoomLight,get roomLightOn(){return bedroom.roomLightOn;},shadowGenerator,
+  // Only the preserved moving bedroom door invalidates these maps. Living-room
+  // geometry is static and owns its one-time shadow refresh independently.
   refreshShadows(){refreshShadows();bedroom.refreshShadows();hallway.refreshShadows();},
   addDoorMeshes(meshes:readonly AbstractMesh[]){bedroom.addShadowMeshes(meshes);hallway.addDoorCasters(meshes);for(const light of[ambient,sun])light.excludedMeshes.push(...meshes);},
   get hallwayDiagnostics(){return{version:'corredor-referencia-1',lightOn:hallway.lightOn,meshes:hallway.meshes.length,width:HALLWAY.maxX-HALLWAY.minX,length:HALLWAY.endZ-HALLWAY.startZ};},
   get bedroomDiagnostics(){return{version:'quarto-referencia-1',meshes:bedroom.meshes.length,width:ROOM.maxX-ROOM.minX,depth:ROOM.maxZ-ROOM.minZ,height:ROOM.ceiling-ROOM.floor};},
-  dispose(){bedroom.dispose();hallway.dispose();shadowGenerator.dispose();ambient.dispose();sun.dispose();for(const mesh of [...staticMeshes,...[...g.targets.values()].flat()])if(!mesh.isDisposed())mesh.dispose();m.dispose();}};
+  get livingRoomDiagnostics(){return{...living.diagnostics,tvOn:living.tvOn};},
+  dispose(){setTelevision(false);living.dispose();bedroom.dispose();hallway.dispose();shadowGenerator.dispose();ambient.dispose();sun.dispose();for(const mesh of [...staticMeshes,...[...g.targets.values()].flat()])if(!mesh.isDisposed())mesh.dispose();m.dispose();}};
 }

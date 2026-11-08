@@ -69,8 +69,10 @@ test('cozinha: descida liga o patamar à mãe e permite circular nos dois lados 
     assert.ok(isWalkable({ x: (zone.minX + zone.maxX) / 2, z: (zone.minZ + zone.maxZ) / 2 }), 'later chapter floor bounds remain unchanged');
 });
 
-test('cozinha: limite sul segura a cápsula inteira e deixa aberta somente a passagem do corredor', () => {
-  for (const x of [KITCHEN.minX + .8, 0, KITCHEN.maxX - .8]) {
+test('cozinha: parede da entrada segura a cápsula fora das duas passagens físicas', () => {
+  // The new living-room aperture occupies x[3.25,4.15]. Keep these samples
+  // on the preserved masonry rather than requiring that doorway to be solid.
+  for (const x of [KITCHEN.minX + .8, 0, KITCHEN.maxX - .4]) {
     assert.equal(isWalkable({ x, z: KITCHEN.startZ + .02 }), false);
     assert.ok(isWalkable({ x, z: KITCHEN.startZ + PLAYER_RADIUS + .02 }));
     const end = moveWithCollisions({ x, z: 13.5 }, 0, -4);

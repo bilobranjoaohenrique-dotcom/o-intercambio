@@ -14,6 +14,7 @@ import { RenderTargetTexture } from '@babylonjs/core/Materials/Textures/renderTa
 import '@babylonjs/core/Lights/Shadows/shadowGeneratorSceneComponent';
 import { ROOM, STAIRS, KITCHEN } from '../game/layout';
 import { HALLWAY, BOTTOM_LANDING, HALLWAY_FURNITURE, HALLWAY_OBJECTS, STAIR_POSTS, STAIR_RAILS } from '../game/hallwayLayout';
+import { LIVING_ROOM_ALCOVE } from '../game/livingRoomLayout';
 import { HallwayGeometry } from './hallwayGeometry';
 import { createHallwayMaterials } from './hallwayMaterials';
 
@@ -41,8 +42,12 @@ export function buildHallway(scene: Scene) {
   wall('corredor · parede direita depois da janela', HALLWAY.maxX + .06, wz1, STAIRS.startZ, f, ceiling);
   wall('corredor · parede sob a janela', HALLWAY.maxX + .06, wz0, wz1, f, wy0);
   wall('corredor · parede sobre a janela', HALLWAY.maxX + .06, wz0, wz1, wy1, ceiling);
-  for (const x of [HALLWAY.minX - .06, HALLWAY.maxX + .06])
-    wall('escada · parede lateral contínua', x, STAIRS.startZ, STAIRS.endZ, STAIRS.bottomY, ceiling);
+  wall('escada · parede lateral contínua', HALLWAY.minX - .06, STAIRS.startZ, STAIRS.endZ, STAIRS.bottomY, ceiling);
+  // Only the ground-floor side of the original enclosure opens onto the new
+  // living room. The actual flight, railing and upper wall remain in place.
+  wall('escada · parede direita antes da sala', HALLWAY.maxX + .06, STAIRS.startZ, LIVING_ROOM_ALCOVE.minZ, STAIRS.bottomY, ceiling);
+  wall('escada · parede direita depois da sala', HALLWAY.maxX + .06, LIVING_ROOM_ALCOVE.maxZ, STAIRS.endZ, STAIRS.bottomY, ceiling);
+  wall('escada · parede direita acima da sala', HALLWAY.maxX + .06, LIVING_ROOM_ALCOVE.minZ, LIVING_ROOM_ALCOVE.maxZ, LIVING_ROOM_ALCOVE.openingHeight, ceiling);
   // The enclosed stairwell has an opaque interior foundation. It hides the
   // pre-existing exterior garden beneath the lateral rail gaps; its top is
   // below the last real tread, with no coincident horizontal surfaces.
