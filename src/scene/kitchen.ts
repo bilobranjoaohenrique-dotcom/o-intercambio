@@ -610,6 +610,9 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
   return {
     targets, meshes: allMeshes, parentMeshes: parents.meshes, parentShadowCasters: parents.shadowCasters,
     setParentsLocation,
+    setParentsParent(parent: TransformNode) { parents.setParent(parent); },
+    setParentsFarewell(amount: number) { parents.farewell(amount); },
+    animateParents(time: number, speaker?: string, observer?: Point, text?: string) { parents.animate(time, speaker, observer, text); },
     setActive(value: boolean) { active = value; root.setEnabled(value); for (const light of [ambient, sun, bounce]) light.setEnabled(value); if (value) refreshShadows(); },
     refreshShadows,
     get diagnostics() { return { version: 'cafe-porta-principal-1', bounds: COMPACT_KITCHEN, entryDoor: { ...entry, closed: true }, width: COMPACT_KITCHEN.maxX - COMPACT_KITCHEN.minX, depth: COMPACT_KITCHEN.endZ - COMPACT_KITCHEN.coreStartZ, seat: BREAKFAST_SEAT, parents: parents.diagnostics }; },

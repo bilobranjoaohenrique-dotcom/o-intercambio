@@ -8,6 +8,7 @@ import { LIVING_ROOM_WORLD, LIVING_ROOM_ENTRY, LIVING_ROOM_KITCHEN_PORTAL,
 import type { Obstacle } from './types';
 import { GARAGE, GARAGE_DOOR, GARAGE_WEST_FACE, GARAGE_SOLIDS } from './garageLayout';
 import { isTravelBagTaken } from './garageProgress';
+import { AIRPORT_SOLIDS } from './airportLayout';
 import { LAUNDRY, LAUNDRY_KITCHEN_DOOR, LAUNDRY_GARAGE_DOOR, LAUNDRY_THRESHOLD,
   LAUNDRY_WEST_FACE, LAUNDRY_SOLIDS } from './laundryLayout';
 
@@ -23,6 +24,7 @@ const box = (minX: number, maxX: number, minZ: number, maxZ: number): Obstacle =
 /** Inner wall faces coincide with layout bounds. The bedroom's doorway wall has
  * a real opening; the moving leaf is supplied separately as an oriented box. */
 export const staticObstacles: readonly Obstacle[] = [
+  ...AIRPORT_SOLIDS,
   box(ROOM.minX - WALL_THICKNESS, ROOM.minX, ROOM.minZ, ROOM.maxZ),
   box(ROOM.maxX, ROOM.maxX + WALL_THICKNESS, ROOM.minZ, ROOM.maxZ),
   box(ROOM.minX, ROOM.maxX, ROOM.minZ - WALL_THICKNESS, ROOM.minZ),

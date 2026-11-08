@@ -11,8 +11,10 @@ test('despedida: missão salva determina uma única localização dos pais', () 
   assert.equal(parentsLocationForProgress('breakfast', []), 'kitchen');
   assert.equal(parentsLocationForProgress('talk-parents', ['breakfast']), 'kitchen');
   assert.equal(parentsLocationForProgress('pack-suitcase', ['breakfast', 'talk-parents']), 'kitchen');
-  for (const mission of ['enter-car', 'car-ready', 'airport-gate', 'plane-seat', 'find-host'])
+  for (const mission of ['enter-car', 'car-ready'])
     assert.equal(parentsLocationForProgress(mission, ['breakfast', 'talk-parents']), 'car');
+  for (const mission of ['airport-farewell', 'airport-gate', 'plane-seat', 'find-host'])
+    assert.equal(parentsLocationForProgress(mission, ['breakfast', 'talk-parents', 'pack-suitcase']), 'airport');
   assert.equal(parentsLocationForProgress('talk-parents', ['breakfast', 'talk-parents']), 'kitchen');
   assert.equal(parentsLocationForProgress('pack-suitcase', ['breakfast', 'talk-parents', 'pack-suitcase']), 'car');
   assert.ok(CAR_PARENT_ANCHORS.father.position.z > CAR_PARENT_ANCHORS.mother.position.z,

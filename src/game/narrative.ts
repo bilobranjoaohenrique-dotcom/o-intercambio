@@ -17,12 +17,19 @@ export const schoolClue: StoryBeat[] = [
   { speaker: 'PAI', text: 'E vê se não esquece o passaporte!' },
 ];
 export const airportGoodbye: StoryBeat[] = [
-  { speaker: 'MÃE', text: 'Me manda mensagem assim que chegar, tá?' },
-  { speaker: 'PAI', text: 'Qualquer coisa, liga pra gente. Estamos orgulhosos de você.' },
+  { speaker: 'MÃE', text: 'Meu filho... parece que foi ontem que você era pequeno.' },
+  { speaker: 'VOCÊ', text: 'Mãe, não começa...' },
+  { speaker: 'MÃE', text: 'Eu sei, eu sei. É que vou sentir muita saudade.' },
+  { speaker: 'PAI', text: 'Você vai viver uma experiência incrível. Aproveita cada momento.' },
+  { speaker: 'VOCÊ', text: 'Vou tentar.' },
+  { speaker: 'PAI', text: 'E lembra de uma coisa: não importa o que acontecer, você sempre pode contar com a gente.' },
+  { speaker: 'MÃE', text: 'Me liga assim que chegar, tá? Não esquece.' },
+  { speaker: 'VOCÊ', text: 'Pode deixar. Amo vocês.' },
+  { speaker: 'MÃE', text: 'A gente também te ama.' },
 ];
 
 export type ChapterMission =
-  | 'breakfast' | 'talk-parents' | 'pack-suitcase' | 'enter-car' | 'car-ready' | 'airport-gate'
+  | 'breakfast' | 'talk-parents' | 'pack-suitcase' | 'enter-car' | 'car-ready' | 'airport-farewell' | 'airport-gate'
   | 'plane-seat' | 'find-host' | 'complete';
 export const missionLabels: Record<ChapterMission, string> = {
   breakfast: 'Desça para tomar café',
@@ -30,7 +37,8 @@ export const missionLabels: Record<ChapterMission, string> = {
   'pack-suitcase': 'Suba e pegue sua mala',
   'enter-car': 'Vá até a garagem. Seus pais estão esperando.',
   'car-ready': 'Siga viagem com seus pais',
-  'airport-gate': 'Encontre seu portão de embarque',
+  'airport-farewell': 'Despeça-se dos seus pais',
+  'airport-gate': 'Dirija-se ao portão de embarque.',
   'plane-seat': 'Prepare-se para a chegada',
   'find-host': 'Encontre sua família anfitriã',
   complete: 'Capítulo 1 concluído',
@@ -43,10 +51,12 @@ export function createChapterProgress() {
   let completed: ChapterMission[] = [];
   try {
     const saved = JSON.parse(localStorage.getItem(SAVE_KEY) ?? 'null');
-    if (saved && ['breakfast','talk-parents','pack-suitcase','enter-car','car-ready','airport-gate','plane-seat','find-host'].includes(saved.mission)) {
+    if (saved && ['breakfast','talk-parents','pack-suitcase','enter-car','car-ready','airport-farewell','airport-gate','plane-seat','find-host'].includes(saved.mission)) {
       mission = saved.mission; choice = typeof saved.choice === 'string' ? saved.choice : null;
       completed = Array.isArray(saved.completed) ? saved.completed.filter((x: unknown): x is ChapterMission =>
         typeof x === 'string' && x in missionLabels) : [];
+      // Older saves did not distinguish arriving from completing the goodbye.
+      if (mission === 'airport-gate' && !completed.includes('airport-farewell')) mission = 'airport-farewell';
     }
   } catch { /* A blocked or malformed save starts a new chapter. */ }
   function save() {

@@ -67,7 +67,7 @@ try {
   await page.waitForFunction(() => window.__INTERCAMBIO__ && document.getElementById('game')?.dataset.ready === 'true', null, { timeout: 90000 });
   await page.locator('#startSettings').click(); await page.locator('#quality').selectOption('balanced');
   await page.locator('#resume').click(); await page.locator('#startGame').click(); await waitPhase(page, 'playing');
-  assert.equal((await snapshot(page)).build, 'chapter1-parents-after-luggage-1');
+  assert.equal((await snapshot(page)).build, 'chapter1-airport-gate24-1');
   familyAt(await snapshot(page), 'kitchen');
   kitchenIdentity = actors(await snapshot(page)).map(actor => ({ speaker: actor.speaker, actorId: actor.actorId, headId: actor.headId }));
 
@@ -135,18 +135,17 @@ try {
   assert.equal((await page.locator('#objectiveText').textContent()).trim(), 'Vá até a garagem. Seus pais estão esperando.');
   await descendToKitchen(page);
 
-  console.log('PARENTS: arrive at the garage and board the rear seat with both parents present');
+  console.log('PARENTS: arrive at the garage and depart automatically with both parents');
   await enterGarage(page);
   await aimInteraction(page, 'family-car', FAMILY_CAR_INTERACTION);
   assert.match(await page.locator('#interactionText').textContent(), /Entrar no carro/i);
   await page.keyboard.press('KeyE');
-  await page.waitForFunction(() => window.__INTERCAMBIO__.chapterStage === 'parked-car' && window.__INTERCAMBIO__.phase === 'playing', null, { timeout: 90000 });
-  ending = await snapshot(page); familyAt(ending, 'car');
-  assert.equal(ending.chapterMission, 'car-ready'); assert.equal(ending.carSeat.occupied, true);
-  assert.equal(ending.dialogueAudio, false); assert.equal(ending.dialogue, false);
-  await lookAt(page, { x: 7.9, y: 1.05, z: 13.75 });
-  await page.waitForFunction(() => window.__INTERCAMBIO__.family.parents.every(actor => actor.blink < .05));
-  pictures.push(await capture(page, 'pais-no-carro-depois-da-mala')); console.log('CAPTURE', pictures.at(-1).path);
+  await page.waitForFunction(() => window.__INTERCAMBIO__.chapterStage === 'airport'
+    && window.__INTERCAMBIO__.phase === 'playing' && window.__INTERCAMBIO__.dialogue, null, { timeout: 90000 });
+  ending = await snapshot(page); familyAt(ending, 'airport');
+  assert.equal(ending.chapterMission, 'airport-farewell'); assert.equal(ending.carSeat.occupied, false);
+  assert.equal(ending.family.airportVisibleCount, 2);
+  assert.equal(ending.dialogueAudio, false); assert.equal(ending.dialogue, true);
   ending = await snapshot(page); assert.deepEqual(ending.errors, []); assertHealthy(session);
   writeFileSync('/tmp/o-intercambio-parents-departure-results.json', JSON.stringify({ status: 'passed', build: ending.build, pictures, route,
     dialogueLines, kitchenIdentity, afterBreakfast: { mission: afterBreakfast.chapterMission, family: afterBreakfast.family, breakfast: afterBreakfast.breakfast },
@@ -156,10 +155,10 @@ try {
     final: { phase: ending.phase, stage: ending.chapterStage, mission: ending.chapterMission, carSeat: ending.carSeat, family: ending.family },
     coverage: ['completed breakfast leaves both parents in the kitchen', 'pack-suitcase reload keeps parents in the kitchen',
       'parents remain in the kitchen during the physical upstairs walk', 'actual suitcase pickup relocates the same actors out of view',
-      'physical descent and garage arrival', 'both parents remain visible while boarding the rear bench'],
-    limits: ['Captures need visual inspection.', 'One focused Chromium/Linux SwiftShader flow; no airport continuation or performance benchmark.'],
+      'physical descent and garage arrival', 'automatic departure arrives at the airport with the same parents'],
+    limits: ['Captures need visual inspection.', 'This historical route stops at the airport dialogue; the focused airport test covers the gate.'],
   }, null, 2));
-  console.log('PASS PARENTS TIMING: parents stay for breakfast, move only at suitcase pickup and wait during rear-seat boarding.');
+  console.log('PASS PARENTS TIMING: parents stay for breakfast, move at suitcase pickup and arrive together at the airport.');
 } catch (error) {
   if (session) await session.page.screenshot({ path: '/tmp/o-intercambio-parents-departure-failure.png' }).catch(() => {});
   writeFileSync('/tmp/o-intercambio-parents-departure-results.json', JSON.stringify({ status: 'failed', error: String(error),

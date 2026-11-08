@@ -9,6 +9,8 @@ import type { InteractionTarget } from '../game/types';
 import { buildKitchen } from './kitchen';
 import { buildGarage } from './garage';
 import { buildLaundry } from './laundry';
+import { buildAirport } from './airport';
+import { AIRPORT_ARRIVAL } from '../game/airportLayout';
 import type { Point3 } from '../game/layout';
 import { getParentsLocation, setParentsLocationState, type ParentsLocation } from '../game/parentsDeparture';
 
@@ -107,16 +109,11 @@ export function buildChapterWorld(scene: Scene) {
     sphere('car','copa junto à estrada',1.8,x+(x<CAR_ORIGIN?-1:1),3.5,z+2,green);
   }
 
-  makeZone('airport',ZONE_ORIGIN.airport,0,tile);
-  box('airport','balcão do aeroporto',3,1.1,.9,ZONE_ORIGIN.airport-3.8,.55,-3,metal);
-  box('airport','painel de voos',3,1.35,.1,ZONE_ORIGIN.airport,3.15,-5.7,screen,'flightBoard');
-  sign('airport','VOOS  •  DESTINO: VILA NOVA  •  EMBARQUE',ZONE_ORIGIN.airport,3.15,-5.62,2.85,1.15);
-  box('airport','letreiro do portão',2,.4,.1,ZONE_ORIGIN.airport+3.3,3,-5.7,blue);
-  for(const z of[-2,1.2,3.2])box('airport','banco do terminal',2.2,.35,.65,ZONE_ORIGIN.airport-1.4,.62,z,blue);
-  box('airport','faixa até embarque',1.1,.015,8,ZONE_ORIGIN.airport+2,.01,0,mat('airport-path','#d7c886'));
-  box('airport','totem do portão',.7,2,.45,ZONE_ORIGIN.airport,1,-1.8,green,'gate');
-  sign('airport','PORTÃO 13',ZONE_ORIGIN.airport,2.15,-1.55,.85,.42);
-  character('airport',ZONE_ORIGIN.airport-4,1,red); character('airport',ZONE_ORIGIN.airport-3,1,blue);
+  const airportRoot=new TransformNode('aeroporto brasileiro · portão 24',scene);
+  roots.set('airport',airportRoot);
+  const airport=buildAirport(scene,airportRoot);
+  meshes.set('airport',airport.meshes);targets.push(...airport.targets);
+  airport.setParentMeshes(kitchen.parentMeshes);
 
   makeZone('plane',ZONE_ORIGIN.plane,0,dark);
   for(let row=0;row<4;row++) for(const side of[-1,1]) {
@@ -156,10 +153,12 @@ export function buildChapterWorld(scene: Scene) {
     kitchen.setActive(zone==='home');
     garage.setActive(zone==='home');
     laundry.setActive(zone==='home');
+    airport.setActive(zone==='airport');
   }
   activate('home');
   function setParentsLocation(location: ParentsLocation) {
     setParentsLocationState(location);
+    kitchen.setParentsParent(roots.get(location==='airport'?'airport':'home')!);
     kitchen.setParentsLocation(location);
     garage.setParentOccupants(kitchen.parentMeshes, kitchen.parentShadowCasters, location === 'car');
   }
@@ -167,11 +166,16 @@ export function buildChapterWorld(scene: Scene) {
     targets,
     activate,
     setParentsLocation,
+    setParentsFarewell(amount:number){kitchen.setParentsFarewell(amount);},
+    beginGarageDeparture(){garage.beginDeparture();},
+    resetGarageDeparture(){garage.resetDeparture();},
+    updateGarageDeparture(seconds:number){garage.updateDeparture(seconds);},
     teleportPoint(zone:Exclude<Zone,'home'>) {
-      return zone==='car'?{x:CAR_ORIGIN,y:1.65,z:-3}:zone==='airport'?{x:ZONE_ORIGIN.airport,y:1.65,z:4.5}:zone==='plane'?{x:ZONE_ORIGIN.plane-1.5,y:1.65,z:-3.4}:{x:ZONE_ORIGIN.town,y:1.65,z:-2};
+      return zone==='car'?{x:CAR_ORIGIN,y:1.65,z:-3}:zone==='airport'?AIRPORT_ARRIVAL.position:zone==='plane'?{x:ZONE_ORIGIN.plane-1.5,y:1.65,z:-3.4}:{x:ZONE_ORIGIN.town,y:1.65,z:-2};
     },
     animate(time:number,speaker?:string,observer?:Point3,text?:string) {
       if(activeZone==='home') kitchen.animate(time,speaker,observer,text);
+      if(activeZone==='airport'){airport.animate(time);kitchen.animateParents(time,speaker,observer,text);}
       // Existing host body language is preserved, without rebuilding an arm
       // list on each frame while the other chapter sets are active.
       if(activeZone==='town') for(let i=0;i<hostArms.length;i++)
@@ -180,12 +184,14 @@ export function buildChapterWorld(scene: Scene) {
     get kitchenDiagnostics(){return {active:activeZone==='home',meshes:kitchen.meshes.length,...kitchen.diagnostics};},
     get garageDiagnostics(){return garage.diagnostics;},
     get laundryDiagnostics(){return laundry.diagnostics;},
+    get airportDiagnostics(){return airport.diagnostics;},
     get familyDiagnostics(){
       const parents = kitchen.diagnostics.parents;
       return { location: getParentsLocation(), parents, actorCount: parents.length,
         kitchenVisibleCount: parents.filter(actor => actor.visible && actor.location === 'kitchen').length,
-        carVisibleCount: parents.filter(actor => actor.visible && actor.location === 'car').length };
+        carVisibleCount: parents.filter(actor => actor.visible && actor.location === 'car').length,
+        airportVisibleCount: parents.filter(actor => actor.visible && actor.location === 'airport').length };
     },
-    dispose(){laundry.dispose();garage.dispose();kitchen.dispose();for(const root of roots.values())root.dispose(false,false);for(const material of materials.values())material.dispose();for(const texture of textures)texture.dispose();}
+    dispose(){laundry.dispose();garage.dispose();kitchen.dispose();airport.dispose();for(const root of roots.values())root.dispose(false,false);for(const material of materials.values())material.dispose();for(const texture of textures)texture.dispose();}
   };
 }

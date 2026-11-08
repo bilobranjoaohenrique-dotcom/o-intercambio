@@ -84,25 +84,37 @@ export function buildGarage(scene: Scene, parent: TransformNode) {
   rod('porta · base da maçaneta', { x: 4.65, y: 1.03, z: 13.49 }, { x: 4.69, y: 1.03, z: 13.49 }, .008, m.tool);
   g.sphere('porta · maçaneta redonda', .055, .055, .055, 4.70, 1.03, 13.49, m.tool);
 
-  // Opaque lower gate and real open grille: the morning sun passes between bars.
+  // Keep the existing two-leaf gate: only the leaves move, while its side
+  // posts stay fixed. Each leaf keeps its worn panels, grille and diagonal.
   for (const z of [GARAGE.minZ + .055, GARAGE.maxZ - .055])
     b('portão · montante lateral', .08, 2.68, .07, GARAGE.maxX + .03, 1.34, z, m.iron);
-  for (const y of [.06, 2.10, 2.66]) b('portão · travessa de metal', .08, .07, depth - .08, GARAGE.maxX + .03, y, cz, m.iron);
+  const gateLeaves: TransformNode[] = [], gateMeshes: AbstractMesh[] = [];
   const panels = 12, panelW = (depth - .16) / panels;
-  for (let i = 0; i < panels; i++) {
-    const z = GARAGE.minZ + .08 + panelW * (i + .5);
-    board('portão · chapa vertical com desgaste', .045, 2.01, panelW - .007, GARAGE.maxX + .035, 1.08, z, m.gate, .8);
-    b('portão · nervura prensada', .018, 1.91, .012, GARAGE.maxX - .002, 1.08, z, m.iron);
+  for (const side of [-1, 1]) {
+    const geometry = new HomeGeometry(scene), leaf = new TransformNode(side < 0 ? 'portão · folha esquerda' : 'portão · folha direita', scene);
+    leaf.parent = root; leaf.position.set(GARAGE.maxX + .03, 0, side < 0 ? GARAGE.minZ + .055 : GARAGE.maxZ - .055);
+    const z0 = side < 0 ? GARAGE.minZ + .04 : cz, z1 = side < 0 ? cz : GARAGE.maxZ - .04;
+    for (const y of [.06, 2.10, 2.66])
+      geometry.box('portão · travessa de metal', .08, .07, z1 - z0, GARAGE.maxX + .03, y, (z0 + z1) / 2, m.iron);
+    for (let i = side < 0 ? 0 : 6; i < (side < 0 ? 6 : panels); i++) {
+      const z = GARAGE.minZ + .08 + panelW * (i + .5);
+      mapped(geometry.box('portão · chapa vertical com desgaste', .045, 2.01, panelW - .007, GARAGE.maxX + .035, 1.08, z, m.gate), .8);
+      geometry.box('portão · nervura prensada', .018, 1.91, .012, GARAGE.maxX - .002, 1.08, z, m.iron);
+    }
+    for (let i = side < 0 ? 0 : 10; i <= (side < 0 ? 9 : 19); i++) {
+      const z = GARAGE.minZ + .085 + (depth - .17) * i / 19;
+      geometry.box('portão · grade superior aberta', .032, .49, .025, GARAGE.maxX + .02, 2.38, z, m.gate);
+    }
+    const diagonalStart = side < 0 ? GARAGE.minZ + .12 : cz + .025;
+    geometry.rod('portão · reforço diagonal', { x: GARAGE.maxX - .018, y: .17, z: diagonalStart },
+      { x: GARAGE.maxX - .018, y: 1.99, z: diagonalStart + depth / 2 - .15 }, .018, m.iron);
+    if (side < 0) geometry.box('portão · fecho central', .045, .09, .27, GARAGE.maxX - .04, 1.12, cz, m.iron);
+    for (const mesh of geometry.merge()) {
+      mesh.name = (side < 0 ? 'portão · folha esquerda · ' : 'portão · folha direita · ') + mesh.material?.name;
+      mesh.setParent(leaf); mesh.computeWorldMatrix(true); gateMeshes.push(mesh);
+    }
+    gateLeaves.push(leaf);
   }
-  for (let i = 0; i <= 19; i++) {
-    const z = GARAGE.minZ + .085 + (depth - .17) * i / 19;
-    b('portão · grade superior aberta', .032, .49, .025, GARAGE.maxX + .02, 2.38, z, m.gate);
-  }
-  for (const z0 of [GARAGE.minZ + .12, cz + .025]) {
-    const z1 = z0 + depth / 2 - .15;
-    rod('portão · reforço diagonal', { x: GARAGE.maxX - .018, y: .17, z: z0 }, { x: GARAGE.maxX - .018, y: 1.99, z: z1 }, .018, m.iron);
-  }
-  b('portão · fecho central', .045, .09, .27, GARAGE.maxX - .04, 1.12, cz, m.iron);
 
   const shelf = GARAGE_SHELF;
   for (const dx of [-shelf.width / 2 + .018, shelf.width / 2 - .018]) for (const dz of [-shelf.depth / 2 + .018, shelf.depth / 2 - .018])
@@ -148,7 +160,7 @@ export function buildGarage(scene: Scene, parent: TransformNode) {
   const roomMeshes = g.merge();
   for (const mesh of roomMeshes) { mesh.name = 'garagem · ' + mesh.name; mesh.parent = root; mesh.computeWorldMatrix(true); }
   const car = buildFamilyCar(scene, root);
-  const meshes: AbstractMesh[] = [...roomMeshes, ...car.meshes];
+  const meshes: AbstractMesh[] = [...roomMeshes, ...gateMeshes, ...car.meshes];
   for (const light of oldLights) light.excludedMeshes.push(...meshes);
   const ambient = new HemisphericLight('garagem · luz ambiente da manhã', Vector3.Up(), scene);
   ambient.intensity = .57; ambient.diffuse = new Color3(.98, .93, .82); ambient.groundColor = new Color3(.40, .35, .29);
@@ -161,12 +173,28 @@ export function buildGarage(scene: Scene, parent: TransformNode) {
   for (const light of lights) light.includedOnlyMeshes = [...meshes];
   const shadows = new ShadowGenerator(1024, sun); shadows.bias = .0012; shadows.normalBias = .015;
   shadows.useBlurExponentialShadowMap = true; shadows.blurScale = 1; shadows.blurKernel = 4;
-  for (const mesh of [...roomMeshes, ...car.shadowCasters])
+  for (const mesh of [...roomMeshes, ...gateMeshes, ...car.shadowCasters])
     if (mesh.metadata?.castShadow && (mesh.material as StandardMaterial).alpha >= 1 && mesh.material !== m.bulb && mesh.material !== m.sky)
       shadows.addShadowCaster(mesh as Mesh);
   const map = shadows.getShadowMap()!; map.refreshRate = RenderTargetTexture.REFRESHRATE_RENDER_ONCE;
   let active = true, disposed = false;
   const refreshShadows = () => map.resetRefreshCounter();
+  let gateProgress = 0, gateMoving = false, gateAngle = 0;
+  function applyGatePose() {
+    const smooth = gateProgress * gateProgress * (3 - 2 * gateProgress);
+    gateAngle = smooth * Math.PI * .4;
+    // Local +Z on the left and -Z on the right both swing towards the street.
+    gateLeaves[0].rotation.y = gateAngle; gateLeaves[1].rotation.y = -gateAngle;
+    refreshShadows();
+  }
+  function beginDeparture() { if (!disposed && gateProgress < 1) gateMoving = true; }
+  function resetDeparture() { gateProgress = 0; gateMoving = false; applyGatePose(); }
+  function updateDeparture(seconds: number) {
+    if (disposed || !gateMoving || !Number.isFinite(seconds) || seconds <= 0) return;
+    gateProgress = Math.min(1, gateProgress + Math.min(.1, seconds) / 1.85);
+    applyGatePose();
+    if (gateProgress >= 1) gateMoving = false;
+  }
   let occupantMeshes: readonly AbstractMesh[] = [], occupantsActive = false;
   function setParentOccupants(parentMeshes: readonly AbstractMesh[], parentShadowCasters: readonly AbstractMesh[], value: boolean) {
     if (occupantMeshes === parentMeshes && occupantsActive === value) return;
@@ -183,9 +211,11 @@ export function buildGarage(scene: Scene, parent: TransformNode) {
   void shadows.forceCompilationAsync().then(() => { if (!disposed) refreshShadows(); })
     .catch(error => console.error('Não foi possível preparar as sombras da garagem.', error));
   return {
-    meshes, targets: [car.target], refreshShadows, setParentOccupants,
+    meshes, targets: [car.target], refreshShadows, setParentOccupants, beginDeparture, resetDeparture, updateDeparture,
     setActive(value: boolean) { active = value; root.setEnabled(value); for (const light of lights) light.setEnabled(value); if (value) refreshShadows(); },
-    get diagnostics() { return { version: 'garagem-familia-1', active, bounds: GARAGE, door: GARAGE_DOOR, meshes: meshes.length, parentOccupants: occupantsActive ? 2 : 0, car: car.diagnostics, materials: m.diagnostics }; },
+    get diagnostics() { return { version: 'garagem-familia-1', active, bounds: GARAGE, door: GARAGE_DOOR, meshes: meshes.length, parentOccupants: occupantsActive ? 2 : 0,
+      gate: { mechanism: 'double-leaf', progress: gateProgress, angle: gateAngle, moving: gateMoving, duration: 1.85, leafIds: gateLeaves.map(leaf => leaf.uniqueId) },
+      car: car.diagnostics, materials: m.diagnostics }; },
     dispose() {
       if (disposed) return; disposed = true;
       for (const light of oldLights) light.excludedMeshes = light.excludedMeshes.filter(mesh => !meshes.includes(mesh));

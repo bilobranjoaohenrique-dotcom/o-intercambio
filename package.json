@@ -18,6 +18,7 @@
     "test:laundry": "node tests/laundry-browser.mjs",
     "test:parents": "node tests/parents-departure-browser.mjs",
     "test:car-boarding": "node tests/car-boarding-browser.mjs",
+    "test:airport": "node tests/airport-browser.mjs",
     "verify": "node scripts/verify.mjs"
   },
   "dependencies": { "@babylonjs/core": "^8.0.0" },

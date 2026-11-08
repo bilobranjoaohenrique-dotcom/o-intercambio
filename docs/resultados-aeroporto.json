@@ -1,0 +1,89 @@
+{
+  "status": "passed",
+  "build": "chapter1-airport-gate24-1",
+  "checks": {
+    "typescriptAndProductionBuild": "passed",
+    "focusedUnitTests": 18,
+    "browserFlow": "passed, exit 0; one garage route with a paused visual review",
+    "runtimeErrors": 0,
+    "consoleErrors": 0,
+    "failedAssets": 0,
+    "visibleGateFrames": 20,
+    "maximumVisibleGateAngle": 1.2566370614359172,
+    "gradualBoardingFadeFrames": 5,
+    "airportFirstFrameOpacity": 1,
+    "planeFirstFrameOpacity": 1,
+    "visualInspection": "final real capture inspected: shared parents, legible AA980/JFK board and Gate 24, airport scenery, dialogue UI and no protagonist body"
+  },
+  "coverage": [
+    "one luggage-gated car interaction",
+    "same parents in rear-seat departure",
+    "existing gate opens before the fade",
+    "opaque airport activation",
+    "actual farewell checkpoint reload",
+    "nine exact text-only lines and exclusive parent mouth animation",
+    "brief emotional pause",
+    "walkable gate24 route and guarded boarding into the existing plane"
+  ],
+  "dialogue": [
+    {
+      "speaker": "MÃE",
+      "text": "Meu filho... parece que foi ontem que você era pequeno."
+    },
+    {
+      "speaker": "VOCÊ",
+      "text": "Mãe, não começa..."
+    },
+    {
+      "speaker": "MÃE",
+      "text": "Eu sei, eu sei. É que vou sentir muita saudade."
+    },
+    {
+      "speaker": "PAI",
+      "text": "Você vai viver uma experiência incrível. Aproveita cada momento."
+    },
+    {
+      "speaker": "VOCÊ",
+      "text": "Vou tentar."
+    },
+    {
+      "speaker": "PAI",
+      "text": "E lembra de uma coisa: não importa o que acontecer, você sempre pode contar com a gente."
+    },
+    {
+      "speaker": "MÃE",
+      "text": "Me liga assim que chegar, tá? Não esquece."
+    },
+    {
+      "speaker": "VOCÊ",
+      "text": "Pode deixar. Amo vocês."
+    },
+    {
+      "speaker": "MÃE",
+      "text": "A gente também te ama."
+    }
+  ],
+  "physicalWaypoints": 11,
+  "finalCamera": {
+    "x": 30,
+    "y": 1.65,
+    "z": -2.8
+  },
+  "finalStage": {
+    "phase": "playing",
+    "stage": "plane",
+    "mission": "plane-seat"
+  },
+  "capture": "capturas/aeroporto-despedida-portao-24.png",
+  "visualReview": [
+    "The first real view placed the parents too far away and left their faces dark. Only the airport camera, family spacing, front light and floor grain were adjusted.",
+    "The same browser reloaded the saved farewell after the final build; two actual reloads in total, with no repeated garage route. The nine lines, emotional pause, gate route and gradual plane boarding then passed.",
+    "The added intermediate boarding-fade assertion was applied to the actual final observation samples as well as saved in the browser script."
+  ],
+  "environment": "Chromium 154 / Linux / SwiftShader software renderer / Balanced quality",
+  "limits": [
+    "No performance benchmark or physical-GPU/Windows test.",
+    "Earlier bedroom, hallway, living-room and kitchen browser suites were not repeated; their geometry was preserved.",
+    "The procedural scene follows the supplied composition and reuses the approved parent identities; pixel-identical reproduction of the reference is not claimed."
+  ]
+}

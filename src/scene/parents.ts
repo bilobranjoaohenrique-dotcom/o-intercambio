@@ -6,7 +6,9 @@ import { PARENT_ANCHORS } from '../game/kitchenLayout';
 import { ParentPart, type V3, type BodyRing } from './parentsGeometry';
 import { parentMaterials, type ParentMaterials } from './parentsMaterials';
 import { createCarParentPose } from './parentsCarPose';
+import { createAirportParentPose } from './parentAirportPose';
 import { CAR_PARENT_ANCHORS, type ParentsLocation } from '../game/parentsDeparture';
+import { AIRPORT_PARENTS } from '../game/airportLayout';
 
 type Actor = {
   root: TransformNode; posture: TransformNode; head: TransformNode;
@@ -14,8 +16,10 @@ type Actor = {
   jaw: TransformNode; mouth: TransformNode; brows: TransformNode[]; corners: TransformNode[];
   pot?: TransformNode; stream?: TransformNode; mouthOpen: number; smile: number; gesture: number; serving: number;
   speaking: boolean; expression: 'neutral' | 'attention' | 'warm' | 'concern';
-  kitchenPose: TransformNode; carPose: TransformNode; kitchenArms: TransformNode[]; carArms: TransformNode[];
-  kitchenHeadY: number; carHeadY: number; blinkLids: TransformNode[]; blink: number;
+  kitchenPose: TransformNode; carPose: TransformNode; airportPose: TransformNode;
+  kitchenArms: TransformNode[]; carArms: TransformNode[]; airportArms: TransformNode[];
+  kitchenHeadY: number; carHeadY: number; airportHeadY: number; blinkLids: TransformNode[]; blink: number;
+  disposeAirport(): void;
 };
 const mixPoint = (a: V3, b: V3, t: number): V3 => ({
   x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t, z: a.z + (b.z - a.z) * t,
@@ -477,7 +481,7 @@ function body(parent: TransformNode, mother: boolean, m: ParentMaterials): Mesh[
  * Speech remains entirely in the existing text dialogue system. */
 export function createParents(scene: Scene, parent: TransformNode) {
   const m = parentMaterials(scene), actors: Actor[] = [], meshes: Mesh[] = [];
-  let location: ParentsLocation = 'kitchen';
+  let location: ParentsLocation = 'kitchen', farewellAmount = 0;
   for (const [key, mother] of [['mother', true], ['father', false]] as const) {
     const anchor = PARENT_ANCHORS[key], root = new TransformNode(mother ? 'MÃE · personagem humano' : 'PAI · personagem humano', scene);
     root.parent = parent; root.position.set(anchor.position.x, anchor.position.y, anchor.position.z); root.rotation.y = anchor.yaw;
@@ -486,12 +490,15 @@ export function createParents(scene: Scene, parent: TransformNode) {
     const torsoMeshes = body(kitchenPose, mother, m), face = head(posture, mother, m);
     const left = arm(kitchenPose, mother, -1, m), right = arm(kitchenPose, mother, 1, m);
     const car = createCarParentPose(posture, mother, m); car.node.setEnabled(false);
-    const actorMeshes = [...torsoMeshes, ...face.meshes, ...left.meshes, ...right.meshes, ...car.meshes];
+    const airport = createAirportParentPose(posture, mother, m); airport.node.setEnabled(false);
+    const actorMeshes = [...torsoMeshes, ...face.meshes, ...left.meshes, ...right.meshes, ...car.meshes, ...airport.meshes];
     for (const mesh of actorMeshes) mesh.metadata = { ...mesh.metadata, role: key, anatomicalModel: true };
     actors.push({ root, posture, head: face.node, jaw: face.jaw, mouth: face.mouth, brows: face.brows, corners: face.corners,
       arms: [left.node, right.node], pot: left.pot, stream: left.stream, meshes: actorMeshes,
-      kitchenPose, carPose: car.node, kitchenArms: [left.node, right.node], carArms: car.arms,
-      kitchenHeadY: face.node.position.y, carHeadY: car.headY, blinkLids: face.blinkLids, blink: 0,
+      kitchenPose, carPose: car.node, airportPose: airport.node,
+      kitchenArms: [left.node, right.node], carArms: car.arms, airportArms: airport.arms,
+      kitchenHeadY: face.node.position.y, carHeadY: car.headY, airportHeadY: airport.headY,
+      disposeAirport: airport.dispose, blinkLids: face.blinkLids, blink: 0,
       speaker: mother ? 'MÃE' : 'PAI', phase: mother ? .7 : 2.2, lookYaw: 0, lookPitch: 0,
       mouthOpen: 0, smile: 0, gesture: 0, serving: 0, speaking: false, expression: 'neutral' });
     meshes.push(...actorMeshes);
@@ -502,15 +509,15 @@ export function createParents(scene: Scene, parent: TransformNode) {
   let disposed = false, lastTime = 0;
   function setLocation(next: ParentsLocation) {
     if (disposed || next === location) return;
-    location = next;
+    location = next; farewellAmount = 0;
     for (const actor of actors) {
       const key = actor.speaker === 'MÃE' ? 'mother' : 'father';
-      const anchor = next === 'car' ? CAR_PARENT_ANCHORS[key] : PARENT_ANCHORS[key];
+      const anchor = next === 'airport' ? AIRPORT_PARENTS[key] : next === 'car' ? CAR_PARENT_ANCHORS[key] : PARENT_ANCHORS[key];
       actor.root.position.set(anchor.position.x, anchor.position.y, anchor.position.z);
       actor.root.rotation.set(0, anchor.yaw, 0);
-      actor.kitchenPose.setEnabled(next === 'kitchen'); actor.carPose.setEnabled(next === 'car');
-      actor.arms = next === 'car' ? actor.carArms : actor.kitchenArms;
-      actor.head.position.y = next === 'car' ? actor.carHeadY : actor.kitchenHeadY;
+      actor.kitchenPose.setEnabled(next === 'kitchen'); actor.carPose.setEnabled(next === 'car'); actor.airportPose.setEnabled(next === 'airport');
+      actor.arms = next === 'airport' ? actor.airportArms : next === 'car' ? actor.carArms : actor.kitchenArms;
+      actor.head.position.y = next === 'airport' ? actor.airportHeadY : next === 'car' ? actor.carHeadY : actor.kitchenHeadY;
       actor.posture.rotation.set(0, 0, 0); actor.posture.scaling.setAll(1); actor.head.rotation.set(0, 0, 0);
       actor.lookYaw = actor.lookPitch = actor.mouthOpen = actor.gesture = actor.serving = 0;
       actor.speaking = false; actor.jaw.rotation.x = 0; actor.mouth.scaling.y = .025;
@@ -520,19 +527,24 @@ export function createParents(scene: Scene, parent: TransformNode) {
   }
   return {
     meshes, shadowCasters, target, setLocation,
+    // The two character roots keep their identities and world transforms when
+    // the home set is disabled and the airport set becomes active.
+    setParent(next: TransformNode) { if (!disposed) for (const actor of actors) actor.root.setParent(next); },
+    farewell(amount: number) { farewellAmount = Number.isFinite(amount) ? Math.max(0, Math.min(1, amount)) : 0; },
     get location() { return location; },
     animate(time: number, speaker?: string, observer?: V3, text = '') {
       if (disposed || !Number.isFinite(time)) return;
       const dt = Math.max(0, Math.min(.1, time - lastTime)); lastTime = time;
       const smoothing = 1 - Math.exp(-4 * dt);
       for (const actor of actors) {
-        const inCar = location === 'car', talking = !inCar && speaker === actor.speaker, t = time + actor.phase;
+        const inCar = location === 'car', inAirport = location === 'airport';
+        const talking = !inCar && speaker === actor.speaker, t = time + actor.phase;
         actor.speaking = talking;
         const mother = actor.speaker === 'MÃE';
-        const concern = mother && talking && /viag|cuidado|mala|longe|escola/i.test(text);
+        const concern = mother && talking && (/viag|cuidado|mala|longe|escola/i.test(text) || inAirport && /saudade|chegar/i.test(text));
         const affection = talking && /filh|am[oa]|orgulh|saudad|bom dia|querid|café/i.test(text);
         actor.expression = concern ? 'concern' : affection ? 'warm' : speaker ? 'attention' : 'neutral';
-        const desiredSmile = inCar ? .20 : affection && !concern ? .75 : speaker ? .22 : .08;
+        const desiredSmile = inCar ? .20 : affection && !concern ? .75 : speaker ? .22 : inAirport ? .24 : .08;
         actor.smile += (desiredSmile - actor.smile) * smoothing;
         // A bounded, irregular syllable rhythm follows only the active text
         // speaker. Closing is immediate on a hand-off, with no shared lip sync.
@@ -543,7 +555,7 @@ export function createParents(scene: Scene, parent: TransformNode) {
         actor.gesture += ((talking ? .5 + Math.sin(t * .73) * .28 + Math.sin(t * .31) * .15 : 0) - actor.gesture) * smoothing;
         const cycle = ((time % 14) + 14) % 14;
         const ease = (v: number) => { const a = Math.max(0, Math.min(1, v)); return a * a * (3 - 2 * a); };
-        const pour = inCar || !mother || talking ? 0 : cycle < 3.5 ? ease((cycle - 2) / 1.5) : cycle < 5.2 ? 1 : 1 - ease((cycle - 5.2) / 1.5);
+        const pour = location !== 'kitchen' || !mother || talking ? 0 : cycle < 3.5 ? ease((cycle - 2) / 1.5) : cycle < 5.2 ? 1 : 1 - ease((cycle - 5.2) / 1.5);
         actor.serving += (pour - actor.serving) * smoothing;
         let targetYaw = 0, targetPitch = 0;
         if ((!inCar || mother && Math.sin(t * .27) > -.15) && observer && [observer.x, observer.y, observer.z].every(Number.isFinite)) {
@@ -560,8 +572,14 @@ export function createParents(scene: Scene, parent: TransformNode) {
         actor.lookYaw += (targetYaw - actor.lookYaw) * smoothing;
         actor.lookPitch += (targetPitch - actor.lookPitch) * smoothing;
         actor.posture.scaling.y = 1 + Math.sin(t * .89) * .0014;
-        actor.posture.rotation.z = Math.sin(t * .55) * .0025;
-        actor.posture.rotation.x = Math.sin(t * .43) * .0018;
+        actor.posture.rotation.z = Math.sin(t * .55) * .0025 + (inAirport ? mother ? -.018 : .006 : 0);
+        actor.posture.rotation.x = Math.sin(t * .43) * .0018 - (inAirport ? farewellAmount * .025 : 0);
+        if (inAirport) {
+          const anchor = AIRPORT_PARENTS[mother ? 'mother' : 'father'];
+          const approach = farewellAmount * (mother ? .14 : .015);
+          actor.root.position.set(anchor.position.x + Math.sin(anchor.yaw) * approach, anchor.position.y,
+            anchor.position.z + Math.cos(anchor.yaw) * approach);
+        }
         actor.head.rotation.y = actor.lookYaw + Math.sin(t * .39) * .018 + (speaker && !talking ? actor.speaker === 'MÃE' ? -.035 : .035 : 0);
         actor.head.rotation.x = actor.lookPitch + Math.sin(t * (talking ? 1.9 : .64)) * (talking ? .017 : .006);
         actor.head.rotation.z = Math.sin(t * .49) * .008 + (concern ? -.012 : 0);
@@ -576,11 +594,17 @@ export function createParents(scene: Scene, parent: TransformNode) {
         for (const corner of actor.corners) corner.position.y = .053 + actor.smile * .0022;
         for (let i = 0; i < actor.arms.length; i++) {
           const sign = i === 0 ? -1 : 1;
+          if (inAirport) {
+            const lift = mother ? .035 : i === 0 ? .10 : .025;
+            actor.arms[i].rotation.x = -.012 - actor.gesture * lift - farewellAmount * (mother ? .07 : i === 0 ? .22 : .08);
+            actor.arms[i].rotation.z = sign * (Math.sin(t * .63 + i) * .003 + actor.gesture * .020);
+            continue;
+          }
           actor.arms[i].rotation.z = sign * (Math.sin(t * .63 + i) * (inCar ? .001 : .003) + actor.gesture * .024);
           // Forearms lift away from the tabletop. Positive downward swings
           // would push the resting wrist through the existing80cm table.
           actor.arms[i].rotation.x = (inCar ? Math.sin(t * .44 + i) * .001 : -.008) - actor.gesture * (.025 + .012 * Math.sin(t * .91 + i));
-          if (!inCar && mother && i === 0) actor.arms[i].rotation.x -= actor.serving * .192;
+          if (location === 'kitchen' && mother && i === 0) actor.arms[i].rotation.x -= actor.serving * .192;
         }
         if (actor.pot) actor.pot.rotation.x = actor.serving * .45;
         if (actor.stream) {
@@ -595,8 +619,10 @@ export function createParents(scene: Scene, parent: TransformNode) {
         vertices: actor.meshes.reduce((n, mesh) => n + mesh.getTotalVertices(), 0),
         triangles: actor.meshes.reduce((n, mesh) => n + mesh.getTotalIndices() / 3, 0),
         position: { x: actor.root.position.x, y: actor.root.position.y, z: actor.root.position.z },
-        yaw: actor.root.rotation.y, seated: location === 'car' || actor.speaker === 'PAI', speaking: actor.speaking,
+        yaw: actor.root.rotation.y, seated: location === 'car' || location === 'kitchen' && actor.speaker === 'PAI', speaking: actor.speaking,
         location, visible: actor.root.isEnabled(), apron: actor.speaker === 'MÃE' && location === 'kitchen', blink: actor.blink,
+        cardigan: actor.speaker === 'MÃE' && location === 'airport', parentSet: actor.root.parent?.name,
+        farewell: location === 'airport' ? farewellAmount : 0,
         mouthOpen: actor.mouthOpen, jawAngle: actor.jaw.rotation.x, expression: actor.expression,
         smile: actor.smile, gesture: actor.gesture, serving: actor.serving, hasCoffeePot: Boolean(actor.pot) && location === 'kitchen',
         posture: { x: actor.posture.rotation.x, z: actor.posture.rotation.z },
@@ -605,6 +631,6 @@ export function createParents(scene: Scene, parent: TransformNode) {
         jawPosition: { x: actor.jaw.position.x, y: actor.jaw.position.y, z: actor.jaw.position.z },
         coffeeFlow: actor.stream?.isEnabled() ?? false }));
     },
-    dispose() { if (disposed) return; disposed = true; for (const actor of actors) actor.root.dispose(false, false); m.dispose(); },
+    dispose() { if (disposed) return; disposed = true; for (const actor of actors) { actor.root.dispose(false, false); actor.disposeAirport(); } m.dispose(); },
   };
 }
