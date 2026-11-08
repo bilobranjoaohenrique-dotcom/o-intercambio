@@ -93,7 +93,7 @@ Verificação focal: `node --test --test-isolation=none tests/garage.test.mjs`; 
 
 ## Porta principal da cozinha
 
-Porta de madeira escura de **84 × 210 cm**, fechada, instalada num vão verdadeiro na parede à direita na vista da referência. A faixa escolhida fica fora da sala e permite aproximação sem mover os móveis. Use **E — Examinar porta**; não abre nem altera a missão. A passagem existente para a sala continua livre. [Captura real da posição](docs/capturas/porta-principal-contexto.png).
+Porta de madeira escura de **84 × 210 cm**, fechada, instalada num vão verdadeiro na parede à direita na vista da referência. A faixa escolhida fica fora da sala e permite aproximação sem mover os móveis. Use **E — Examinar porta**; não abre nem altera a missão. A passagem existente para a sala continua livre. Deslocada **10 cm para a esquerda** para aumentar o afastamento visual da geladeira. [Captura real da posição atual](docs/capturas/porta-principal-esquerda.png).
 
 ## Lavanderia
 

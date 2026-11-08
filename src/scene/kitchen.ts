@@ -200,11 +200,18 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
     b('porta principal · batente lateral', .07, entry.apertureHeight + .07, .19, x, (entry.apertureHeight + .07) / 2, entry.z, m.darkWood, entryTarget);
   b('porta principal · batente superior', entry.apertureWidth + .14, .07, .19,
     entry.x, entry.apertureHeight + .035, entry.z, m.darkWood, entryTarget);
-  for (const x of [entryMin + .02, entryMax - .02])
-    b('porta principal · rebaixo de vedação do batente', .04, entry.apertureHeight, .025, x,
-      entry.apertureHeight / 2, entry.z - .05, m.darkWood, entryTarget);
+  // Line the complete cut-wall reveals, so the tiled edge cannot show as a
+  // pale strip when the closed door is viewed obliquely from the kitchen.
+  for (const x of [entryMin + .009, entryMax - .009])
+    b('porta principal · revestimento interno do batente', .018, entry.apertureHeight, .19, x,
+      entry.apertureHeight / 2, entry.z, m.darkWood, entryTarget);
+  b('porta principal · revestimento superior do batente', entry.apertureWidth, .018, .19, entry.x,
+    entry.apertureHeight - .009, entry.z, m.darkWood, entryTarget);
+  for (const x of [entryMin + .03, entryMax - .03])
+    b('porta principal · rebaixo de vedação do batente', .06, entry.apertureHeight, .025, x,
+      entry.apertureHeight / 2, entry.z + .005, m.darkWood, entryTarget);
   b('porta principal · vedação superior', entry.apertureWidth, .05, .025, entry.x,
-    entry.apertureHeight - .02, entry.z - .05, m.darkWood, entryTarget);
+    entry.apertureHeight - .02, entry.z + .005, m.darkWood, entryTarget);
   for (const dx of [-.19, .19]) for (const [y, h] of [[.54, .68], [1.58, .72]]) {
     bevel('porta principal · painel em relevo', .29, h, .018, entry.x + dx, y, entry.z + .038, m.wood, .009, entryTarget);
     b('porta principal · centro rebaixado', .235, h - .065, .009, entry.x + dx, y, entry.z + .051, m.darkWood, entryTarget);
