@@ -58,16 +58,15 @@ export const LIVING_ROOM_ENTRY = {
   floor: 0, height: 2.1,
 } as const;
 /** A new architectural joint in the formerly open stair-facing room side.
- * All approved furnishings remain in place; the 90cm opening lies between
- * the armchair and phone table rather than crossing either solid footprint. */
+ * The wider opening and small furniture offsets leave a proper walking aisle. */
 export const LIVING_ROOM_KITCHEN_PORTAL = {
   minX: LIVING_ROOM_WORLD.maxX, maxX: LIVING_ROOM_WORLD.maxX + .15,
-  minZ: 13.75, maxZ: 14.65, floor: 0, height: 2.1,
+  minZ: 13.45, maxZ: 14.95, floor: 0, height: 2.1,
 } as const;
 /** The kitchen's formerly empty front is partitioned around the living room.
  * Parents, cabinetry, table, TV and suitcase retain their original positions. */
 export const KITCHEN_FRONT_PASSAGE = {
-  minX: LIVING_ROOM_WORLD.maxX, maxX: KITCHEN.maxX,
+  minX: LIVING_ROOM_WORLD.maxX, maxX: 4.40,
   minZ: KITCHEN.startZ, maxZ: LIVING_ROOM_WORLD.maxZ,
 } as const;
 export const LIVING_ROOM_ROUTE: readonly Point2[] = [

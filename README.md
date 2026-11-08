@@ -57,6 +57,12 @@ O [Prompt Master 05](docs/PROMPT-MASTER-05-SALA.md) contém o pedido integral. O
 
 A [correção da posição da sala](docs/CORRECAO-POSICAO-SALA.md) mantém esse visual aprovado e ajusta sua ligação com a base da escada. Ela ocupa o espaço livre anterior à área do café; os móveis e personagens da cozinha continuam nos mesmos lugares. O relatório separa a verificação desta correção dos resultados da entrega visual anterior.
 
+### Ajustes pontuais de circulação
+
+A sala passou de **4,20 para 4,80 m de largura**, com os mesmos móveis e materiais. O vão para a cozinha tem **1,50 m**, e a passagem lateral tem **1,52 m**. A face antes cinza usa os azulejos da cozinha até o teto. Pequenos deslocamentos do sofá, poltrona e mesa lateral liberam os caminhos; cozinha mobiliada, pais, história e demais cômodos permanecem iguais.
+
+Build aprovado e uma única caminhada real pela sala e passagem, nos dois sentidos, sem repetir as suítes anteriores. [Acabamento e passagem](docs/capturas/casa-cozinha-azulejos.png), [cozinha preservada](docs/capturas/casa-cozinha-preservada.png) e [registro breve](docs/resultados-ajustes-casa.json).
+
 ## Cozinha e pais
 
 A cozinha usa móveis modelados, azulejos florais, cortinas de renda, cerâmica, armários, eletrodomésticos e uma mesa de café com objetos domésticos. Mãe e pai têm modelos próprios com rosto, cabelo, mãos, roupas texturizadas, postura e pequenos gestos que acompanham os diálogos escritos.

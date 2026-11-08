@@ -30,9 +30,9 @@ function follow(from, targets) {
 }
 
 test('sala: posição rígida conserva planta aprovada, dimensões e distâncias entre os móveis', () => {
-  assert.deepEqual(local.LIVING_ROOM, { minX: 2.67, maxX: 6.87, minZ: 8.05, maxZ: 11.85, floor: 0, ceiling: 2.6 });
-  near(room.minX, -1.32); near(room.maxX, 2.88); near(room.minZ, 12); near(room.maxZ, 15.8);
-  near(room.maxX - room.minX, 4.2); near(room.maxZ - room.minZ, 3.8);
+  assert.deepEqual(local.LIVING_ROOM, { minX: 2.67, maxX: 7.47, minZ: 8.05, maxZ: 11.85, floor: 0, ceiling: 2.6 });
+  near(room.minX, -1.92); near(room.maxX, 2.88); near(room.minZ, 12); near(room.maxZ, 15.8);
+  near(room.maxX - room.minX, 4.8); near(room.maxZ - room.minZ, 3.8);
   near(room.ceiling - room.floor, 2.6);
   assert.equal(STAIRS.steps, 18); near(STAIRS.endZ, 11.8); near(ROOM.floor, 3);
   assert.ok(isWalkable(STANDING_POSE.position));
@@ -52,7 +52,7 @@ test('sala: posição rígida conserva planta aprovada, dimensões e distâncias
 test('sala: último degrau desemboca diretamente no portal e a travessia chega à cozinha nos dois sentidos', () => {
   near(entry.minX, STAIRS.minX); near(entry.maxX, STAIRS.maxX);
   near(entry.minZ, 11.85); near(entry.maxZ, room.minZ);
-  near(exit.maxZ - exit.minZ, .9); near(exit.minX, room.maxX);
+  near(exit.maxZ - exit.minZ, 1.5); near(exit.minX, room.maxX);
   const bottom = route[0], end = follow(bottom, route.slice(1));
   const returned = follow(end, [...route.slice(0, -1).reverse()]);
   near(returned.x, bottom.x); near(returned.z, bottom.z);

@@ -1,0 +1,50 @@
+{
+  "status": "passed",
+  "checks": "Um build TypeScript/Vite e uma caminhada curta no navegador, sem suítes de outros cenários.",
+  "geometry": {
+    "livingRoom": {
+      "minX": -1.92,
+      "maxX": 2.88,
+      "minZ": 12.000000000000002,
+      "maxZ": 15.8,
+      "floor": 0,
+      "ceiling": 2.6
+    },
+    "portal": {
+      "minX": 2.88,
+      "maxX": 3.03,
+      "minZ": 13.45,
+      "maxZ": 14.95,
+      "floor": 0,
+      "height": 2.1
+    },
+    "passage": {
+      "minX": 2.88,
+      "maxX": 4.4,
+      "minZ": 12,
+      "maxZ": 15.8
+    }
+  },
+  "walkSamples": 13,
+  "westmostWalkedX": -1.6726840229255573,
+  "final": {
+    "position": {
+      "x": 0.050258357682310954,
+      "y": 1.64999999699536,
+      "z": 16.299536422722884
+    },
+    "mission": "talk-parents",
+    "dialogue": false
+  },
+  "images": [
+    {
+      "path": "docs/capturas/casa-cozinha-azulejos.png",
+      "sha256": "20407583d386587e1cb9130ab3bfa4472f3f4a50fab595958046329491fe7958"
+    },
+    {
+      "path": "docs/capturas/casa-cozinha-preservada.png",
+      "sha256": "cd656e523e462bb5743ab90a9ad0ad7c7c5b0f00ee4c92022d9350d2118915a3"
+    }
+  ],
+  "scope": "Somente casco, acabamento e circulação; móveis preservados com pequenos deslocamentos para liberar o vão. História, diálogos, pais e demais ambientes inalterados."
+}

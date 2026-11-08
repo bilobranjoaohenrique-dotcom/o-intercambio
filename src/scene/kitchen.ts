@@ -17,7 +17,7 @@ import '@babylonjs/core/Lights/Shadows/shadowGeneratorSceneComponent';
 import { KITCHEN } from '../game/layout';
 import { KITCHEN_AUTHORED_FURNITURE as KITCHEN_FURNITURE, COMPACT_KITCHEN, BREAKFAST_SEAT,
   KITCHEN_PLACEMENTS, placeKitchenPoint, type KitchenPlacement, PARENT_ANCHORS } from '../game/kitchenLayout';
-import { LIVING_ROOM_WORLD, KITCHEN_FRONT_PASSAGE } from '../game/livingRoomPlacement';
+import { LIVING_ROOM_WORLD, LIVING_ROOM_KITCHEN_PORTAL, KITCHEN_FRONT_PASSAGE } from '../game/livingRoomPlacement';
 import type { InteractionTarget } from '../game/types';
 import { HomeGeometry } from './props';
 import { createKitchenMaterials } from './kitchenMaterials';
@@ -127,7 +127,7 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
 
   // Ceramic room shell. The rear window and the connection to the stairs are
   // physical openings; the room is not an enclosing box behind a window decal.
-  const width = COMPACT_KITCHEN.maxX - COMPACT_KITCHEN.minX, length = COMPACT_KITCHEN.endZ - COMPACT_KITCHEN.startZ, middle = (COMPACT_KITCHEN.endZ + COMPACT_KITCHEN.startZ) / 2;
+  const width = COMPACT_KITCHEN.maxX - COMPACT_KITCHEN.minX;
   // Compact only this room's shell; the approved living-room portal is unchanged.
   // The existing tile grid retains its scale rather than stretching to the new floor.
   function horizontalPiece(name: string, x0: number, x1: number, z0: number, z1: number,
@@ -145,14 +145,19 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
   }
   const floorBounds = { minX: KITCHEN.minX, maxX: KITCHEN.maxX, minZ: KITCHEN.startZ, maxZ: KITCHEN.endZ };
   horizontalPiece('cerâmica original junto à área do café', COMPACT_KITCHEN.minX, COMPACT_KITCHEN.maxX, LIVING_ROOM_WORLD.maxZ, COMPACT_KITCHEN.endZ, .14, -.07, m.tile, floorBounds);
-  horizontalPiece('cerâmica da ligação lateral com a sala', KITCHEN_FRONT_PASSAGE.minX, COMPACT_KITCHEN.maxX, COMPACT_KITCHEN.startZ, LIVING_ROOM_WORLD.maxZ, .14, -.07, m.tile, floorBounds);
+  horizontalPiece('cerâmica da ligação lateral com a sala', KITCHEN_FRONT_PASSAGE.minX, KITCHEN_FRONT_PASSAGE.maxX, COMPACT_KITCHEN.startZ, LIVING_ROOM_WORLD.maxZ, .14, -.07, m.tile, floorBounds);
   const ceilingBounds = { minX: COMPACT_KITCHEN.minX - .1, maxX: COMPACT_KITCHEN.maxX + .1, minZ: COMPACT_KITCHEN.startZ - .1, maxZ: COMPACT_KITCHEN.endZ + .1 };
   const originalCeiling = { minX: KITCHEN.minX - .1, maxX: KITCHEN.maxX + .1, minZ: KITCHEN.startZ - .1, maxZ: KITCHEN.endZ + .1 };
   horizontalPiece('teto original sobre a área do café', ceilingBounds.minX, ceilingBounds.maxX, LIVING_ROOM_WORLD.maxZ, ceilingBounds.maxZ, .13, ceilingY + .065, m.ceiling, originalCeiling);
-  horizontalPiece('teto da ligação lateral com a sala', KITCHEN_FRONT_PASSAGE.minX, ceilingBounds.maxX, ceilingBounds.minZ, LIVING_ROOM_WORLD.maxZ, .13, ceilingY + .065, m.ceiling, originalCeiling);
+  horizontalPiece('teto da ligação lateral com a sala', KITCHEN_FRONT_PASSAGE.minX, KITCHEN_FRONT_PASSAGE.maxX + .1, ceilingBounds.minZ, LIVING_ROOM_WORLD.maxZ, .13, ceilingY + .065, m.ceiling, originalCeiling);
   b('parede lateral esquerda azulejada', .15, ceilingY, COMPACT_KITCHEN.endZ - LIVING_ROOM_WORLD.maxZ,
     COMPACT_KITCHEN.minX - .075, ceilingY / 2, (COMPACT_KITCHEN.endZ + LIVING_ROOM_WORLD.maxZ) / 2, m.wallTile);
-  b('parede lateral direita azulejada', .15, ceilingY, length, COMPACT_KITCHEN.maxX + .075, ceilingY / 2, middle, m.wallTile);
+  b('parede lateral direita da área do café', .15, ceilingY, COMPACT_KITCHEN.endZ - LIVING_ROOM_WORLD.maxZ,
+    COMPACT_KITCHEN.maxX + .075, ceilingY / 2, (COMPACT_KITCHEN.endZ + LIVING_ROOM_WORLD.maxZ) / 2, m.wallTile);
+  b('parede lateral da passagem ampliada', .15, ceilingY, LIVING_ROOM_WORLD.maxZ - COMPACT_KITCHEN.startZ,
+    KITCHEN_FRONT_PASSAGE.maxX + .075, ceilingY / 2, (LIVING_ROOM_WORLD.maxZ + COMPACT_KITCHEN.startZ) / 2, m.wallTile);
+  b('arremate azulejado entre passagem e cozinha', KITCHEN_FRONT_PASSAGE.maxX - COMPACT_KITCHEN.maxX, ceilingY, .15,
+    (KITCHEN_FRONT_PASSAGE.maxX + COMPACT_KITCHEN.maxX) / 2, ceilingY / 2, LIVING_ROOM_WORLD.maxZ + .075, m.wallTile);
   const rear = (name: string, x0: number, x1: number, y0: number, y1: number) =>
     b(name, x1 - x0, y1 - y0, .15, (x0 + x1) / 2, (y0 + y1) / 2, COMPACT_KITCHEN.endZ + .075, m.wallTile);
   const wx0 = window.x - window.width / 2, wx1 = window.x + window.width / 2, wy0 = window.y - window.height / 2, wy1 = window.y + window.height / 2;
@@ -162,13 +167,26 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
   rear('verga acima da janela', wx0, wx1, wy1, ceilingY);
   // The stair aperture belongs to the living-room entry now. Close the old
   // kitchen detour, and place the exterior edge behind the vacated front area.
-  b('fechamento frontal da ligação lateral', COMPACT_KITCHEN.maxX - LIVING_ROOM_WORLD.maxX, ceilingY, .15,
-    (COMPACT_KITCHEN.maxX + LIVING_ROOM_WORLD.maxX) / 2, ceilingY / 2, COMPACT_KITCHEN.startZ - .075, m.plaster);
+  b('fechamento frontal azulejado da ligação lateral', KITCHEN_FRONT_PASSAGE.maxX - LIVING_ROOM_WORLD.maxX, ceilingY, .15,
+    (KITCHEN_FRONT_PASSAGE.maxX + LIVING_ROOM_WORLD.maxX) / 2, ceilingY / 2, COMPACT_KITCHEN.startZ - .075, m.wallTile);
   b('fechamento da área do café junto à sala', LIVING_ROOM_WORLD.minX - COMPACT_KITCHEN.minX, ceilingY, .15,
-    (COMPACT_KITCHEN.minX + LIVING_ROOM_WORLD.minX) / 2, ceilingY / 2, LIVING_ROOM_WORLD.maxZ - .075, m.plaster);
+    (COMPACT_KITCHEN.minX + LIVING_ROOM_WORLD.minX) / 2, ceilingY / 2, LIVING_ROOM_WORLD.maxZ - .075, m.wallTile);
+  // Cover only the kitchen-facing surface of the existing shared wall. The
+  // tile face sits beyond the old plaster face, avoiding coincident surfaces,
+  // and continues to the kitchen ceiling around the real widened aperture.
+  const portal = LIVING_ROOM_KITCHEN_PORTAL;
+  const tileFaceX = portal.maxX - .0125;
+  for (const [z0, z1] of [[LIVING_ROOM_WORLD.minZ, portal.minZ], [portal.maxZ, LIVING_ROOM_WORLD.maxZ]])
+    b('azulejos até o teto junto à passagem da sala', .025, ceilingY, z1 - z0,
+      tileFaceX, ceilingY / 2, (z0 + z1) / 2, m.wallTile);
+  b('verga azulejada da passagem ampliada', .025, ceilingY - portal.height, portal.maxZ - portal.minZ,
+    tileFaceX, (ceilingY + portal.height) / 2, (portal.minZ + portal.maxZ) / 2, m.wallTile);
   b('rodapé de cerâmica lateral esquerdo', .035, .09, COMPACT_KITCHEN.endZ - LIVING_ROOM_WORLD.maxZ,
     COMPACT_KITCHEN.minX + .015, .045, (COMPACT_KITCHEN.endZ + LIVING_ROOM_WORLD.maxZ) / 2, m.darkWood);
-  b('rodapé de cerâmica lateral direito', .035, .09, length, COMPACT_KITCHEN.maxX - .015, .045, middle, m.darkWood);
+  b('rodapé de cerâmica lateral direito', .035, .09, COMPACT_KITCHEN.endZ - LIVING_ROOM_WORLD.maxZ,
+    COMPACT_KITCHEN.maxX - .015, .045, (COMPACT_KITCHEN.endZ + LIVING_ROOM_WORLD.maxZ) / 2, m.darkWood);
+  b('rodapé da passagem ampliada', .035, .09, LIVING_ROOM_WORLD.maxZ - COMPACT_KITCHEN.startZ,
+    KITCHEN_FRONT_PASSAGE.maxX - .015, .045, (LIVING_ROOM_WORLD.maxZ + COMPACT_KITCHEN.startZ) / 2, m.darkWood);
   b('rodapé cerâmico do fundo', width, .09, .035, (COMPACT_KITCHEN.minX + COMPACT_KITCHEN.maxX) / 2, .045, COMPACT_KITCHEN.endZ - .015, m.darkWood);
 
   // Window, slim security bars and cotton lace. Morning shadows are generated

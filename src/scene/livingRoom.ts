@@ -34,17 +34,25 @@ export function buildLivingRoom(scene: Scene) {
   m.sky.emissiveTexture = m.sky.diffuseTexture; m.sky.diffuseColor.set(0, 0, 0); m.sky.emissiveColor.set(.88, .90, .89);
   function textileUV(mesh: Mesh, uTiles: number, vTiles: number) { const uv = mesh.getVerticesData('uv')!; mesh.setVerticesData('uv', uv.map((value, i) => value * (i % 2 ? vTiles : uTiles))); }
   const boardWall = (name: string, w: number, h: number, d: number, x: number, y: number, z: number) => board(name, w, h, d, x, y, z, m.wall, undefined, 1.25);
+  // Move complete existing details without changing their geometry or UVs.
+  function offsetDetails(dx: number, dz: number, build: () => void) {
+    const firstMesh = g.meshes.length, firstGroup = g.groups.length;
+    build();
+    for (const node of [...g.groups.slice(firstGroup), ...g.meshes.slice(firstMesh)]) {
+      if (!node.parent) { node.position.x += dx; node.position.z += dz; }
+    }
+  }
 
   // Ceramic floor and independent ceiling stop exactly at the shared seams.
-  board('sala · piso de cerâmica marrom', 4.20, .10, 3.80, 4.77, -.05, 9.95, m.floor, undefined, 1);
+  board('sala · piso de cerâmica marrom', 4.80, .10, 3.80, 5.07, -.05, 9.95, m.floor, undefined, 1);
   // The original wooden landing and the kitchen floor now meet this main
   // floor at its two apertures; no coincident threshold or old side alcove.
-  board('sala · teto', 4.20, .12, 3.80, 4.77, 2.66, 9.95, m.ceiling, undefined, 1.15);
+  board('sala · teto', 4.80, .12, 3.80, 5.07, 2.66, 9.95, m.ceiling, undefined, 1.15);
   // Real north-wall door aperture; its closed leaf supplies the final face.
   boardWall('sala · parede norte esquerda', 3.13, 2.60, .12, 4.235, 1.30, 7.99);
-  boardWall('sala · parede norte direita', .27, 2.60, .12, 6.735, 1.30, 7.99);
+  boardWall('sala · parede norte direita', .87, 2.60, .12, 7.035, 1.30, 7.99);
   boardWall('sala · verga da porta principal', .80, .50, .12, 6.20, 2.35, 7.99);
-  boardWall('sala · parede sul complementar', 2.07, 2.60, .12, 5.835, 1.30, 11.91);
+  boardWall('sala · parede sul complementar', 2.67, 2.60, .12, 6.135, 1.30, 11.91);
   // Complete the former kitchen-facing joint around its approved doorway.
   // After the half turn this is the north entry, aligned with the last tread.
   boardWall('sala · ligação à esquerda da entrada', .58, 2.60, .12, 2.96, 1.30, 11.91);
@@ -53,26 +61,26 @@ export function buildLivingRoom(scene: Scene) {
   board('sala · encaixe alto do patamar', 2.10, .65, .12, 3.70, 2.925, 11.94, m.wall);
   // The formerly stair-facing side now leads to the kitchen. A single real
   // doorway fits between the unchanged chair and phone table.
-  boardWall('sala · lateral antes da passagem da cozinha', .12, 2.60, 1.15, 2.61, 1.30, 8.625);
-  boardWall('sala · lateral depois da passagem da cozinha', .12, 2.60, 1.75, 2.61, 1.30, 10.975);
-  boardWall('sala · verga lateral da cozinha', .12, .50, .90, 2.61, 2.35, 9.65);
-  boardWall('sala · parede antes da janela', .12, 2.60, .55, 6.93, 1.30, 8.325);
-  boardWall('sala · parede depois da janela', .12, 2.60, 1.85, 6.93, 1.30, 10.925);
-  boardWall('sala · parede sob janela', .12, .95, 1.40, 6.93, .475, 9.30);
-  boardWall('sala · parede sobre janela', .12, .45, 1.40, 6.93, 2.375, 9.30);
+  boardWall('sala · lateral antes da passagem da cozinha', .12, 2.60, .85, 2.61, 1.30, 8.475);
+  boardWall('sala · lateral depois da passagem da cozinha', .12, 2.60, 1.45, 2.61, 1.30, 11.125);
+  boardWall('sala · verga lateral da cozinha', .12, .50, 1.50, 2.61, 2.35, 9.65);
+  boardWall('sala · parede antes da janela', .12, 2.60, .55, 7.53, 1.30, 8.325);
+  boardWall('sala · parede depois da janela', .12, 2.60, 1.85, 7.53, 1.30, 10.925);
+  boardWall('sala · parede sob janela', .12, .95, 1.40, 7.53, .475, 9.30);
+  boardWall('sala · parede sobre janela', .12, .45, 1.40, 7.53, 2.375, 9.30);
   // Layered painted mouldings, intentionally separated from large surfaces.
-  for (const [x, z, w, d] of [[4.235, 8.065, 3.13, .028], [6.735, 8.065, .27, .028], [5.835, 11.835, 2.07, .028], [6.855, 9.95, .028, 3.80]]) {
+  for (const [x, z, w, d] of [[4.235, 8.065, 3.13, .028], [7.035, 8.065, .87, .028], [6.135, 11.835, 2.67, .028], [7.455, 9.95, .028, 3.80]]) {
     board('sala · rodapé pintado', w, .105, d, x, .0525, z, trim);
     board('sala · perfil superior do rodapé', w + .002, .014, d + .007, x, .109, z, trim);
   }
-  for (const [x, z, w, d] of [[4.77, 8.075, 4.20, .055], [4.77, 11.825, 4.20, .055], [6.845, 9.95, .055, 3.80], [2.695, 9.95, .055, 3.80]]) {
+  for (const [x, z, w, d] of [[5.07, 8.075, 4.80, .055], [5.07, 11.825, 4.80, .055], [7.445, 9.95, .055, 3.80], [2.695, 9.95, .055, 3.80]]) {
     board('sala · sanca simples', w, .042, d, x, 2.565, z, trim);
     board('sala · filete da sanca', w, .021, d + .012, x, 2.532, z, trim);
   }
   for (const x of [3.215, 4.185]) board('sala · batente da passagem', .065, 2.16, .15, x, 1.08, 11.91, m.wood);
   board('sala · verga aparente da passagem', 1.035, .07, .15, 3.70, 2.135, 11.91, m.wood);
-  for (const z of [9.165, 10.135]) board('sala · batente lateral da cozinha', .15, 2.16, .065, 2.61, 1.08, z, m.wood);
-  board('sala · travessa lateral da cozinha', .15, .07, 1.035, 2.61, 2.135, 9.65, m.wood);
+  for (const z of [8.865, 10.435]) board('sala · batente lateral da cozinha', .19, 2.16, .065, 2.61, 1.08, z, m.wood);
+  board('sala · travessa lateral da cozinha', .19, .07, 1.635, 2.61, 2.135, 9.65, m.wood);
 
   function picture(name: string, x: number, y: number, z: number, w: number, h: number, image: StandardMaterial, yaw = 0, target?: string) {
     g.group(name, x, y, z, yaw, () => {
@@ -110,6 +118,7 @@ export function buildLivingRoom(scene: Scene) {
   }
 
   // Window: an actual aperture, four individual panes and translucent lace.
+  offsetDetails(.60, 0, () => {
   for (const z of [8.57, 10.03]) bevel('janela · marco vertical', .10, 1.31, .070, 6.84, 1.55, z, m.wood, .008);
   for (const y of [.92, 2.18]) bevel('janela · marco horizontal', .10, .070, 1.56, 6.84, y, 9.30, m.wood, .008);
   board('janela · peitoril de madeira', .23, .045, 1.60, 6.795, .89, 9.30, m.wood);
@@ -137,6 +146,7 @@ export function buildLivingRoom(scene: Scene) {
     for (const side of [-1, 1]) { const roof = board('janela · telhado cerâmico vizinho', 1.6, .09, 3.8, neighbour.x + side * .73, 2.92, neighbour.z, m.terracotta); roof.rotation.z = side * -.45; }
   }
   pot(10.2, 1.15, 10.9, false, 1.9);
+  });
 
   // Paneled front door: a closed physical object, never a travel trigger.
   board('porta principal · folha de madeira fechada', .80, 2.10, .045, 6.20, 1.05, 8.048, m.wood, 'living-exit');
@@ -269,6 +279,7 @@ export function buildLivingRoom(scene: Scene) {
   g.lathe('mesa de centro · cinzeiro de vidro âmbar', [[.040, 0], [.058, .012], [.060, .030], [.050, .032], [.046, .014], [.015, .012]], 4.95, .468, 9.78, m.metal, 12);
 
   // The side table, tactile old telephone and lamp are at fixed shared anchors.
+  offsetDetails(0, -.40, () => {
   bevel('mesa lateral · tampo', .42, .038, .40, 3.10, .661, 9.20, m.wood, .008);
   for (const x of [2.93, 3.27]) for (const z of [9.04, 9.36]) g.lathe('mesa lateral · perna', [[.018, 0], [.025, .03], [.016, .12], [.022, .52], [.029, .64]], x, 0, z, m.darkWood, 8);
   board('mesa lateral · prateleira', .35, .022, .33, 3.10, .18, 9.20, m.wood);
@@ -297,11 +308,14 @@ export function buildLivingRoom(scene: Scene) {
   for (const y of [1.023, 1.263]) { const ring = MeshBuilder.CreateTorus('abajur · borda da cúpula', { diameter: y < 1.1 ? .312 : .185, thickness: .007, tessellation: 16 }, scene); ring.position.set(3.16, y, 8.76); g.add(ring, trim); }
   g.sphere('abajur · lâmpada', .045, .07, .045, 3.16, 1.12, 8.76, m.bulb);
   for (const x of [3.06, 3.26]) for (const z of [8.67, 8.85]) board('apoio do abajur · perna', .025, .70, .025, x, .35, z, m.darkWood);
+  });
+  offsetDetails(.60, 0, () => {
   pot(6.52, 0, 8.58, false, 1.25);
   bevel('planta · prateleira fixada na parede', .30, .040, .29, 6.70, 1.82, 8.39, m.wood, .006);
   for (const z of [8.29, 8.49]) rod('planta · suporte da prateleira', { x: 6.84, y: 1.67, z }, { x: 6.58, y: 1.80, z }, .009, m.metal);
   pot(6.60, 1.84, 8.39, true, .80);
-  pot(3.17, .195, 9.20, false, .65);
+  });
+  offsetDetails(0, -.40, () => pot(3.17, .195, 9.20, false, .65));
   picture('parede sul · fotografia da família', 4.96, 1.64, 11.815, .46, .33, m.family, Math.PI);
 
   // Opaline ceiling fixture: ascending outer profile gives outward normals.
@@ -317,9 +331,9 @@ export function buildLivingRoom(scene: Scene) {
   for (const mesh of meshes) { mesh.name = 'sala · ' + mesh.name; mesh.metadata = { ...mesh.metadata, livingRoom: true }; if (mesh.material) (mesh.material as StandardMaterial).maxSimultaneousLights = 5; }
   for (const light of existingLights) if (!light.includedOnlyMeshes.length) light.excludedMeshes.push(...meshes);
   const ambient = new HemisphericLight('sala · ambiente difuso', Vector3.Up(), scene); ambient.intensity = .44; ambient.diffuse = new Color3(.92, .87, .79); ambient.groundColor = new Color3(.29, .24, .20);
-  const sun = new DirectionalLight('sala · manhã pela janela', new Vector3(-1, -.60, .19).normalize(), scene); sun.position.set(10, 4.1, 8.5); sun.diffuse = new Color3(1, .87, .68); sun.intensity = .89; sun.shadowMinZ = .1; sun.shadowMaxZ = 22; sun.shadowFrustumSize = 12;
+  const sun = new DirectionalLight('sala · manhã pela janela', new Vector3(-1, -.60, .19).normalize(), scene); sun.position.set(10.6, 4.1, 8.5); sun.diffuse = new Color3(1, .87, .68); sun.intensity = .89; sun.shadowMinZ = .1; sun.shadowMaxZ = 22; sun.shadowFrustumSize = 12;
   const ceilingLight = new PointLight('sala · luz da luminária', new Vector3(4.77, 2.22, 10.02), scene); ceilingLight.diffuse = new Color3(1, .79, .53); ceilingLight.intensity = .70; ceilingLight.range = 5.8;
-  const lampLight = new PointLight('sala · luz do abajur', new Vector3(3.16, 1.14, 8.76), scene); lampLight.diffuse = new Color3(1, .73, .41); lampLight.intensity = .27; lampLight.range = 2.5;
+  const lampLight = new PointLight('sala · luz do abajur', new Vector3(3.16, 1.14, 8.36), scene); lampLight.diffuse = new Color3(1, .73, .41); lampLight.intensity = .27; lampLight.range = 2.5;
   const tvLight = new PointLight('sala · luz suave da tela', new Vector3(4.80, 1.10, 8.91), scene); tvLight.diffuse = new Color3(.60, .73, .90); tvLight.intensity = .20; tvLight.range = 1.65;
   const lights = [ambient, sun, ceilingLight, lampLight, tvLight];
   for (const light of lights) light.includedOnlyMeshes = [...meshes];
