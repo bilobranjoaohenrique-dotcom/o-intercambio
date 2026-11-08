@@ -9,6 +9,9 @@ import { parentMaterials, type ParentMaterials } from './parentsMaterials';
 type Actor = {
   root: TransformNode; posture: TransformNode; head: TransformNode;
   arms: TransformNode[]; meshes: Mesh[]; speaker: string; phase: number; lookYaw: number; lookPitch: number;
+  jaw: TransformNode; mouth: TransformNode; brows: TransformNode[]; corners: TransformNode[];
+  pot?: TransformNode; stream?: TransformNode; mouthOpen: number; smile: number; gesture: number; serving: number;
+  speaking: boolean; expression: 'neutral' | 'attention' | 'warm' | 'concern';
 };
 const mixPoint = (a: V3, b: V3, t: number): V3 => ({
   x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t, z: a.z + (b.z - a.z) * t,
@@ -53,7 +56,7 @@ function hands(part: ParentPart, wrist: V3, side: number, m: ParentMaterials, cu
   ], m.skin, 7);
 }
 
-function arm(parent: TransformNode, mother: boolean, side: number, m: ParentMaterials): { node: TransformNode; meshes: Mesh[] } {
+function arm(parent: TransformNode, mother: boolean, side: number, m: ParentMaterials) {
   const shoulder = { x: side * (mother ? .19 : .205), y: mother ? 1.30 : 1.145, z: .012 };
   const inner = mother && side < 0, grip = !mother && side > 0;
   const elbow: V3 = mother
@@ -99,10 +102,42 @@ function arm(parent: TransformNode, mother: boolean, side: number, m: ParentMate
       { x: watch.x - .015, y: watch.y + .034, z: watch.z + .015 },
     ], [[0, 1, 2, 3], [4, 7, 6, 5], [0, 4, 5, 1], [1, 5, 6, 2], [2, 6, 7, 3], [3, 7, 4, 0]], m.steel);
   }
-  return { node, meshes: part.build() };
+  const meshes = part.build();
+  let pot: TransformNode | undefined, stream: TransformNode | undefined;
+  if (mother && side < 0) {
+    // The handle meets the existing left palm. The pot rises with the forearm
+    // and tips toward the cup positioned on the table by the kitchen layout.
+    pot = new TransformNode('mãe · bule de café na mão', parent.getScene());
+    pot.parent = node; pot.position.set(w.x - .06, w.y, w.z + .10);
+    const jug = new ParentPart(pot);
+    jug.loft('bule de alumínio com base e bojo', [
+      { y: -.035, width: .032, front: .032 }, { y: -.025, width: .050, front: .050 },
+      { y: .045, width: .052, front: .052 }, { y: .068, width: .034, front: .034 },
+      { y: .075, width: .035, front: .035 },
+    ], m.steel, 12);
+    jug.loft('tampa do bule', [{ y: .075, width: .039, front: .039 }, { y: .084, width: .028, front: .028 }], m.steel, 12);
+    jug.loft('puxador da tampa', [{ y: .083, width: .012, front: .012 }, { y: .098, width: .009, front: .009 }], m.sole, 8);
+    jug.tube('alça vazada segurada pela mãe', [
+      { x: .04, y: .055, z: 0, width: .009 }, { x: .083, y: .045, z: 0, width: .009 },
+      { x: .088, y: -.005, z: 0, width: .009 }, { x: .045, y: -.025, z: 0, width: .009 },
+    ], m.sole, 7);
+    jug.tube('bico do bule', [
+      { x: 0, y: .02, z: .04, width: .017 }, { x: 0, y: .05, z: .081, width: .012 },
+      { x: 0, y: .078, z: .105, width: .008 },
+    ], m.steel, 9);
+    meshes.push(...jug.build());
+    stream = new TransformNode('mãe · fio de café sobre a xícara', parent.getScene());
+    stream.parent = pot; stream.position.set(0, .078, .105);
+    const coffee = new ParentPart(stream);
+    coffee.tube('fio fino de café', [{ x: 0, y: 0, z: 0, width: .0025 }, { x: 0, y: -.13, z: 0, width: .002 }], m.coffee, 6);
+    const streamMeshes = coffee.build(); stream.setEnabled(false);
+    meshes.push(...streamMeshes);
+  }
+  return { node, meshes, pot, stream };
 }
 
 function hair(part: ParentPart, mother: boolean, m: ParentMaterials) {
+  const hairMaterial = mother ? m.hair : m.fatherHair;
   const positions: number[] = [], indices: number[] = [], uvs: number[] = [], sides = 20, rows = 6;
   for (let row = 0; row <= rows; row++) {
     const t = row / rows;
@@ -127,7 +162,7 @@ function hair(part: ParentPart, mother: boolean, m: ParentMaterials) {
   }
   const top = positions.length / 3; positions.push(0, .300, -.002); uvs.push(.5, 1);
   for (let i = 0; i < sides; i++) indices.push(top, rows * (sides + 1) + i + 1, rows * (sides + 1) + i);
-  part.geometry(mother ? 'cabelo ondulado com silhueta e nuca' : 'cabelo curto penteado com entradas', positions, indices, m.hair, uvs);
+  part.geometry(mother ? 'cabelo ondulado com silhueta e nuca' : 'cabelo curto penteado com entradas', positions, indices, hairMaterial, uvs);
   if (mother) {
     for (const side of [-1, 1]) for (let j = 0; j < 5; j++) {
       const y = .025 + j * .039;
@@ -172,7 +207,7 @@ function hair(part: ParentPart, mother: boolean, m: ParentMaterials) {
   }
 }
 
-function head(parent: TransformNode, mother: boolean, m: ParentMaterials): { node: TransformNode; meshes: Mesh[] } {
+function head(parent: TransformNode, mother: boolean, m: ParentMaterials) {
   const node = new TransformNode((mother ? 'mãe' : 'pai') + ' · cabeça e expressão', parent.getScene());
   node.parent = parent; node.position.set(0, mother ? 1.372 : 1.183, mother ? .018 : .014);
   const p = new ParentPart(node);
@@ -187,7 +222,26 @@ function head(parent: TransformNode, mother: boolean, m: ParentMaterials): { nod
     { y: .274, width: .034, front: .030, back: .038 },
     { y: .279, width: .003, front: .004, back: .004 },
   ];
-  p.loft('rosto com mandíbula maçãs têmporas e crânio', shape, mother ? m.motherFace : m.fatherFace, 20, .5);
+  const faceMaterial = mother ? m.motherFace : m.fatherFace;
+  p.loft('rosto com maçãs têmporas e crânio', shape.slice(2), faceMaterial, 20, .5,
+    { min: 0, max: .279 }, { bottom: false, top: true });
+  // Split the existing anatomical chin at its own hinge. Its original atlas
+  // coordinates remain continuous with the cranium, including at closed rest.
+  const jaw = new TransformNode((mother ? 'mãe' : 'pai') + ' · mandíbula articulada', parent.getScene());
+  jaw.parent = node; jaw.position.set(0, .066, -.015);
+  const lower = new ParentPart(jaw);
+  lower.loft('queixo e mandíbula móveis', shape.slice(0, 3).map(r => ({ ...r, y: r.y - .066, z: (r.z ?? 0) + .015 })),
+    faceMaterial, 20, .5, { min: -.066, max: .213 }, { bottom: true, top: false });
+  lower.polygon('lábio inferior móvel', [
+    { x: -.029, y: -.013, z: .089 }, { x: 0, y: -.0147, z: .100 }, { x: .029, y: -.013, z: .089 },
+    { x: .012, y: -.0194, z: .097 }, { x: -.012, y: -.0194, z: .097 },
+  ], m.lowerLip);
+  const mouth = new TransformNode((mother ? 'mãe' : 'pai') + ' · abertura da boca', parent.getScene());
+  mouth.parent = node; mouth.position.set(0, .0515, .087);
+  const interior = new ParentPart(mouth);
+  interior.oval('cavidade da boca', { x: 0, y: 0, z: 0 }, .0235, .007, m.mouthInside, .0005, 12);
+  mouth.scaling.y = .025;
+  const brows: TransformNode[] = [], corners: TransformNode[] = [], facialMeshes: Mesh[] = [];
   for (const side of [-1, 1]) {
     p.loft('orelha com lóbulo', [
       { y: .074, x: side * .103, z: -.003, width: .006, front: .012, back: .009 },
@@ -213,12 +267,16 @@ function head(parent: TransformNode, mother: boolean, m: ParentMaterials): { nod
       { x: x + .008, y: .151, z: .083 }, { x: x + .016, y: .1465, z: .082 },
       { x: x + .007, y: .1497, z: .0832 }, { x: x - .007, y: .1499, z: .0832 },
     ], m.pupil);
-    p.polygon('sobrancelha com arco discreto', [
+    const brow = new TransformNode((mother ? 'mãe' : 'pai') + ' · sobrancelha ' + side, parent.getScene());
+    brow.parent = node; brow.position.set(x, .176, .074); brows.push(brow);
+    const eyebrow = new ParentPart(brow);
+    eyebrow.polygon('sobrancelha expressiva com arco discreto', [
       { x: x - .021, y: .176, z: .074 }, { x: x - .005, y: .183, z: .082 },
       { x: x + .015, y: .180, z: .077 }, { x: x + .021, y: .176, z: .073 },
       { x: x + .013, y: .175, z: .078 }, { x: x - .006, y: .178, z: .084 },
       { x: x - .021, y: .173, z: .075 },
-    ], m.hair);
+    ].map(point => ({ x: point.x - x, y: point.y - .176, z: point.z - .074 })), m.hair);
+    facialMeshes.push(...eyebrow.build());
     p.polygon('dobra sutil abaixo do olho', [
       { x: x - .017, y: .132, z: .077 }, { x: x + .013, y: .132, z: .076 },
       { x: x + .014, y: .1308, z: .076 }, { x: x - .015, y: .1305, z: .077 },
@@ -239,10 +297,13 @@ function head(parent: TransformNode, mother: boolean, m: ParentMaterials): { nod
     { x: -.030, y: .054, z: .073 }, { x: -.011, y: .057, z: .082 }, { x: 0, y: .0555, z: .084 },
     { x: .011, y: .057, z: .082 }, { x: .030, y: .054, z: .073 }, { x: 0, y: .0515, z: .085 },
   ], m.upperLip);
-  p.polygon('lábio inferior', [
-    { x: -.029, y: .053, z: .074 }, { x: 0, y: .0513, z: .085 }, { x: .029, y: .053, z: .074 },
-    { x: .012, y: .0466, z: .082 }, { x: -.012, y: .0466, z: .082 },
-  ], m.lowerLip);
+  for (const side of [-1, 1]) {
+    const corner = new TransformNode((mother ? 'mãe' : 'pai') + ' · canto do sorriso ' + side, parent.getScene());
+    corner.parent = node; corner.position.set(side * .0265, .053, .0755); corners.push(corner);
+    const lip = new ParentPart(corner);
+    lip.oval('canto discreto do sorriso', { x: 0, y: 0, z: 0 }, .0035, .0016, m.upperLip, .0003, 8);
+    facialMeshes.push(...lip.build());
+  }
   if (!mother) p.polygon('bigode aparado com divisão central', [
     { x: -.034, y: .070, z: .079 }, { x: -.027, y: .082, z: .088 }, { x: -.009, y: .085, z: .095 },
     { x: 0, y: .079, z: .098 }, { x: .010, y: .085, z: .095 }, { x: .028, y: .080, z: .088 },
@@ -250,7 +311,7 @@ function head(parent: TransformNode, mother: boolean, m: ParentMaterials): { nod
     { x: -.017, y: .068, z: .090 },
   ], m.hair);
   hair(p, mother, m);
-  return { node, meshes: p.build() };
+  return { node, jaw, mouth, brows, corners, meshes: [...p.build(), ...lower.build(), ...interior.build(), ...facialMeshes] };
 }
 
 function body(parent: TransformNode, mother: boolean, m: ParentMaterials): Mesh[] {
@@ -279,6 +340,47 @@ function body(parent: TransformNode, mother: boolean, m: ParentMaterials): Mesh[
       { y: 1.265, width: .194, front: .115, back: .10, z: .024 },
       { y: 1.315, width: .171, front: .087, back: .09, z: .017 },
     ], m.floral, 16);
+    const apronRows = [{ y: 1.026, width: .15, front: .126 }, { y: .87, width: .175, front: .139 },
+      { y: .65, width: .20, front: .151 }, { y: .405, width: .216, front: .164 }];
+    const cloth: number[] = [], clothUV: number[] = [], clothIndices: number[] = [];
+    for (const [row, band] of apronRows.entries()) for (let i = 0; i <= 8; i++) {
+      const u = i / 4 - 1;
+      cloth.push(band.width * u, band.y, band.front * Math.sqrt(1 - (u * .85) ** 2) + .008);
+      clothUV.push(i / 8, 1 - row / 3);
+    }
+    for (let row = 0; row < 3; row++) for (let i = 0; i < 8; i++) {
+      const a = row * 9 + i; clothIndices.push(a, a + 1, a + 9, a + 1, a + 10, a + 9);
+    }
+    p.geometry('avental claro de tecido curvo e barra bordada', cloth, clothIndices, m.apron, clothUV);
+    // Follow the existing blouse's elliptical rings. A flat bib cut through
+    // the centre of the chest; this cloth stays 6mm in front of that surface.
+    const bibBands = [
+      { y: 1.255, width: .115, bodyWidth: .19267, front: .11662, z: .02305 },
+      { y: 1.16, width: .13, bodyWidth: .18, front: .132, z: .014 },
+      { y: 1.025, width: .15, bodyWidth: .16414, front: .11743, z: 0 },
+    ];
+    const bib: number[] = [], bibUV: number[] = [], bibIndices: number[] = [];
+    for (const [row, band] of bibBands.entries()) for (let i = 0; i <= 8; i++) {
+      const x = band.width * (i / 4 - 1);
+      bib.push(x, band.y, band.z + band.front * Math.sqrt(1 - (x / band.bodyWidth) ** 2) + .006);
+      bibUV.push(i / 8, 1 - row / 2);
+    }
+    for (let row = 0; row < 2; row++) for (let i = 0; i < 8; i++) {
+      const a = row * 9 + i; bibIndices.push(a, a + 1, a + 9, a + 1, a + 10, a + 9);
+    }
+    p.geometry('peitilho curvo do avental sobre a blusa', bib, bibIndices, m.apron, bibUV);
+    for (const side of [-1, 1]) p.polygon('alça do avental sobre o ombro', [
+      { x: side * .085, y: 1.318, z: .087 }, { x: side * .112, y: 1.318, z: .087 },
+      { x: side * .111, y: 1.20, z: .14 }, { x: side * .085, y: 1.20, z: .14 },
+    ], m.apron);
+    p.loft('faixa do avental amarrada à cintura', [
+      { y: .998, width: .169, front: .122, back: .123 },
+      { y: 1.025, width: .169, front: .122, back: .123 },
+    ], m.apron, 16);
+    p.polygon('bolso aplicado no avental', [
+      { x: -.068, y: .76, z: .171 }, { x: .068, y: .76, z: .171 },
+      { x: .059, y: .64, z: .172 }, { x: -.059, y: .64, z: .172 },
+    ], m.apron);
   } else {
     for (const side of [-1, 1]) {
       p.tube('perna da calça sentada com joelho', [
@@ -303,6 +405,10 @@ function body(parent: TransformNode, mother: boolean, m: ParentMaterials): Mesh[
       { y: 1.075, width: .218, front: .125, back: .116, z: .010 },
       { y: 1.15, width: .195, front: .088, back: .101 },
     ], m.shirt, 16);
+    p.loft('cinto simples na cintura', [{ y: .69, width: .173, front: .130, back: .128 },
+      { y: .718, width: .173, front: .130, back: .128 }], m.sole, 16);
+    p.polygon('fivela discreta do cinto', [{ x: -.026, y: .691, z: .132 }, { x: .026, y: .691, z: .132 },
+      { x: .026, y: .718, z: .132 }, { x: -.026, y: .718, z: .132 }], m.steel);
   }
   const neckY = mother ? 1.30 : 1.14, neckTop = mother ? 1.418 : 1.223;
   p.loft('pescoço com base e tendões', [
@@ -345,21 +451,42 @@ export function createParents(scene: Scene, parent: TransformNode) {
     const left = arm(posture, mother, -1, m), right = arm(posture, mother, 1, m);
     const actorMeshes = [...torsoMeshes, ...face.meshes, ...left.meshes, ...right.meshes];
     for (const mesh of actorMeshes) mesh.metadata = { ...mesh.metadata, role: key, anatomicalModel: true };
-    actors.push({ root, posture, head: face.node, arms: [left.node, right.node], meshes: actorMeshes, speaker: mother ? 'MÃE' : 'PAI', phase: mother ? .7 : 2.2, lookYaw: 0, lookPitch: 0 });
+    actors.push({ root, posture, head: face.node, jaw: face.jaw, mouth: face.mouth, brows: face.brows, corners: face.corners,
+      arms: [left.node, right.node], pot: left.pot, stream: left.stream, meshes: actorMeshes,
+      speaker: mother ? 'MÃE' : 'PAI', phase: mother ? .7 : 2.2, lookYaw: 0, lookPitch: 0,
+      mouthOpen: 0, smile: 0, gesture: 0, serving: 0, speaking: false, expression: 'neutral' });
     meshes.push(...actorMeshes);
   }
   const target: InteractionTarget = { id: 'parents', meshes, label: () => 'Conversar com seus pais', execute: () => undefined };
-  const tiny = new Set([m.eyeWhite, m.iris, m.pupil, m.upperLip, m.lowerLip, m.skinLight, m.seam, m.steel]);
+  const tiny = new Set([m.eyeWhite, m.iris, m.pupil, m.upperLip, m.lowerLip, m.mouthInside, m.coffee, m.skinLight, m.seam, m.steel]);
   const shadowCasters = meshes.filter(mesh => !tiny.has(mesh.material as typeof m.skin));
   let disposed = false, lastTime = 0;
   return {
     meshes, shadowCasters, target,
-    animate(time: number, speaker?: string, observer?: V3) {
+    animate(time: number, speaker?: string, observer?: V3, text = '') {
       if (disposed || !Number.isFinite(time)) return;
       const dt = Math.max(0, Math.min(.1, time - lastTime)); lastTime = time;
       const smoothing = 1 - Math.exp(-4 * dt);
       for (const actor of actors) {
         const talking = speaker === actor.speaker, t = time + actor.phase;
+        actor.speaking = talking;
+        const mother = actor.speaker === 'MÃE';
+        const concern = mother && talking && /viag|cuidado|mala|longe|escola/i.test(text);
+        const affection = talking && /filh|am[oa]|orgulh|saudad|bom dia|querid|café/i.test(text);
+        actor.expression = concern ? 'concern' : affection ? 'warm' : speaker ? 'attention' : 'neutral';
+        const desiredSmile = affection && !concern ? .75 : speaker ? .22 : .08;
+        actor.smile += (desiredSmile - actor.smile) * smoothing;
+        // A bounded, irregular syllable rhythm follows only the active text
+        // speaker. Closing is immediate on a hand-off, with no shared lip sync.
+        actor.mouthOpen = talking ? Math.max(0, Math.sin(t * 12.4) * .50 + Math.sin(t * 19.1 + .6) * .24 + .17) : 0;
+        actor.jaw.rotation.x = actor.mouthOpen * .105;
+        actor.mouth.scaling.y = .025 + actor.mouthOpen * .82;
+        actor.mouth.position.y = .0515 - actor.mouthOpen * .0028;
+        actor.gesture += ((talking ? .5 + Math.sin(t * .73) * .28 + Math.sin(t * .31) * .15 : 0) - actor.gesture) * smoothing;
+        const cycle = ((time % 14) + 14) % 14;
+        const ease = (v: number) => { const a = Math.max(0, Math.min(1, v)); return a * a * (3 - 2 * a); };
+        const pour = !mother || talking ? 0 : cycle < 3.5 ? ease((cycle - 2) / 1.5) : cycle < 5.2 ? 1 : 1 - ease((cycle - 5.2) / 1.5);
+        actor.serving += (pour - actor.serving) * smoothing;
         let targetYaw = 0, targetPitch = 0;
         if (observer && [observer.x, observer.y, observer.z].every(Number.isFinite)) {
           const dx = observer.x - actor.root.position.x, dz = observer.z - actor.root.position.z;
@@ -373,15 +500,31 @@ export function createParents(scene: Scene, parent: TransformNode) {
         }
         actor.lookYaw += (targetYaw - actor.lookYaw) * smoothing;
         actor.lookPitch += (targetPitch - actor.lookPitch) * smoothing;
+        actor.posture.scaling.y = 1 + Math.sin(t * .89) * .0014;
         actor.posture.rotation.z = Math.sin(t * .55) * .0025;
         actor.posture.rotation.x = Math.sin(t * .43) * .0018;
         actor.head.rotation.y = actor.lookYaw + Math.sin(t * .39) * .018 + (speaker && !talking ? actor.speaker === 'MÃE' ? -.035 : .035 : 0);
         actor.head.rotation.x = actor.lookPitch + Math.sin(t * (talking ? 1.9 : .64)) * (talking ? .017 : .006);
-        actor.head.rotation.z = Math.sin(t * .49) * .008;
+        actor.head.rotation.z = Math.sin(t * .49) * .008 + (concern ? -.012 : 0);
+        for (const [i, brow] of actor.brows.entries()) {
+          const side = i === 0 ? -1 : 1;
+          brow.position.y = .176 + (speaker ? .0015 : 0) + (concern ? .002 : 0);
+          brow.rotation.z = concern ? -side * .065 : side * actor.smile * .018;
+        }
+        for (const corner of actor.corners) corner.position.y = .053 + actor.smile * .0022;
         for (let i = 0; i < actor.arms.length; i++) {
-          const sign = i === 0 ? -1 : 1, gesture = talking ? Math.sin(t * 1.5 + i * .7) * .010 : Math.sin(t * .7 + i) * .003;
-          actor.arms[i].rotation.z = sign * gesture;
-          actor.arms[i].rotation.x = talking ? Math.sin(t * 1.2 + i) * .006 : 0;
+          const sign = i === 0 ? -1 : 1;
+          actor.arms[i].rotation.z = sign * (Math.sin(t * .63 + i) * .003 + actor.gesture * .024);
+          // Forearms lift away from the tabletop. Positive downward swings
+          // would push the resting wrist through the existing80cm table.
+          actor.arms[i].rotation.x = -.008 - actor.gesture * (.025 + .012 * Math.sin(t * .91 + i));
+          if (mother && i === 0) actor.arms[i].rotation.x -= actor.serving * .192;
+        }
+        if (actor.pot) actor.pot.rotation.x = actor.serving * .45;
+        if (actor.stream) {
+          actor.stream.setEnabled(actor.serving > .94 && !talking);
+          actor.stream.rotation.x = -(actor.arms[0].rotation.x + (actor.pot?.rotation.x ?? 0) + actor.posture.rotation.x);
+          actor.stream.rotation.z = -(actor.arms[0].rotation.z + actor.posture.rotation.z);
         }
       }
     },
@@ -390,7 +533,14 @@ export function createParents(scene: Scene, parent: TransformNode) {
         vertices: actor.meshes.reduce((n, mesh) => n + mesh.getTotalVertices(), 0),
         triangles: actor.meshes.reduce((n, mesh) => n + mesh.getTotalIndices() / 3, 0),
         position: { x: actor.root.position.x, y: actor.root.position.y, z: actor.root.position.z },
-        yaw: actor.root.rotation.y }));
+        yaw: actor.root.rotation.y, seated: actor.speaker === 'PAI', speaking: actor.speaking,
+        mouthOpen: actor.mouthOpen, jawAngle: actor.jaw.rotation.x, expression: actor.expression,
+        smile: actor.smile, gesture: actor.gesture, serving: actor.serving, hasCoffeePot: Boolean(actor.pot),
+        posture: { x: actor.posture.rotation.x, z: actor.posture.rotation.z },
+        head: { x: actor.head.rotation.x, y: actor.head.rotation.y, z: actor.head.rotation.z },
+        arms: actor.arms.map(arm => ({ x: arm.rotation.x, z: arm.rotation.z })),
+        jawPosition: { x: actor.jaw.position.x, y: actor.jaw.position.y, z: actor.jaw.position.z },
+        coffeeFlow: actor.stream?.isEnabled() ?? false }));
     },
     dispose() { if (disposed) return; disposed = true; for (const actor of actors) actor.root.dispose(false, false); m.dispose(); },
   };

@@ -1,0 +1,102 @@
+{
+  "status": "passed",
+  "build": "chapter1-breakfast-compact-1",
+  "scope": "Cozinha compacta e café em primeira pessoa; término no objetivo de buscar a mala no quarto.",
+  "checks": {
+    "focusedUnitTests": 15,
+    "typescript": "passed in production build",
+    "productionBuilds": 2,
+    "secondBuildReason": "Correção de sobreposição do peitilho do avental identificada nas capturas reais.",
+    "functionalBrowserRuns": 1,
+    "functionalFlow": "passed",
+    "visualRecheck": "passed; somente abordagem curta e duas capturas após o ajuste da roupa"
+  },
+  "coverage": [
+    "physical living-room doorway and compact kitchen passage",
+    "both parents in actual kitchen capture",
+    "smooth seated and standing first-person camera",
+    "movement blocked and look allowed while seated",
+    "speaker-exclusive articulated jaws, quiet choice and dialogue end",
+    "pause freezes actual parent poses",
+    "text-only conversation and response choice",
+    "mother requests upstairs suitcase, mission updated",
+    "father seated and mother standing, free walking restored"
+  ],
+  "camera": {
+    "seatingSamples": 14,
+    "standingSamples": 13
+  },
+  "speech": [
+    {
+      "speaker": "MÃE",
+      "sampledFrames": 7,
+      "maximumMouthOpen": 0.5191832205944422
+    },
+    {
+      "speaker": "PAI",
+      "sampledFrames": 7,
+      "maximumMouthOpen": 0.7000935458931632
+    }
+  ],
+  "final": {
+    "position": {
+      "x": 0.2214226297026692,
+      "y": 1.6534386284150777,
+      "z": 16.20027970493886
+    },
+    "mission": "pack-suitcase",
+    "stage": "home",
+    "breakfast": {
+      "state": "standing",
+      "progress": 0,
+      "speechRemaining": 0,
+      "movementEnabled": true
+    }
+  },
+  "images": [
+    {
+      "path": "docs/capturas/cafe-cozinha-final.png",
+      "sha256": "16181b22beb862c2e59e2b3c74dc307bc8822247a38aed49029a7dd657b72d2c",
+      "nativeSource": "/tmp/o-intercambio-cafe-cozinha-revisada.png"
+    },
+    {
+      "path": "docs/capturas/cafe-sentado-pais.png",
+      "sha256": "fb9df01a92959bd07ed922f1cbd656fc9e940960bb42e041dd8d0f5479db7b4d",
+      "nativeSource": "/tmp/o-intercambio-cafe-sentado-revisado.png"
+    }
+  ],
+  "visualPoses": [
+    {
+      "label": "standing",
+      "position": {
+        "x": -0.6646804330871353,
+        "y": 1.6499880575207686,
+        "z": 16.20536751902891
+      },
+      "rotation": {
+        "yaw": 0.06960000000000013,
+        "pitch": 0.12480000000000001,
+        "roll": 0
+      }
+    },
+    {
+      "label": "seated",
+      "position": {
+        "x": -0.7,
+        "y": 1.22,
+        "z": 16.85
+      },
+      "rotation": {
+        "yaw": 0.11710874456686432,
+        "pitch": -0.11631385998703281,
+        "roll": 0
+      }
+    }
+  ],
+  "finalParentsSourceSha256": "3522f037b0b1737e1be5a6e7db83dcb0351f92d6a91ef4c784fa9e81c964cbfb",
+  "limits": [
+    "Chromium/Linux com SwiftShader; sem nova medição de FPS ou teste em GPU física/Windows.",
+    "Rostos procedurais continuam estilizados e menos detalhados que a prancha; não são réplicas exatas.",
+    "Esta etapa prepara o objetivo da mala; não acrescenta coleta nem novos cenários ou viagem."
+  ]
+}

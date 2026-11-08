@@ -72,8 +72,8 @@ export const KITCHEN_FRONT_PASSAGE = {
 } as const;
 export const LIVING_ROOM_ROUTE: readonly Point2[] = [
   { x: 1.85, z: 11.94 }, { x: 1.60, z: 12.60 }, { x: 1.60, z: 14.15 },
-  { x: 3.30, z: 14.15 }, { x: 4.10, z: 14.50 }, { x: 4.10, z: 16.30 },
-  { x: 2.10, z: 16.50 },
+  { x: 3.30, z: 14.15 }, { x: 3.50, z: 15.50 }, { x: 3.50, z: 16.25 },
+  { x: 2.10, z: 16.25 },
 ];
 /** Advanced home checkpoints already skipped the wake sequence. Keep their
  * mission/save intact and resume on clear kitchen floor beyond the new room. */

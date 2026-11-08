@@ -7,15 +7,16 @@ import { VertexBuffer } from '@babylonjs/core/Buffers/buffer';
 import type { AbstractMesh } from '@babylonjs/core/Meshes/abstractMesh';
 import type { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial';
 import { Color3 } from '@babylonjs/core/Maths/math.color';
-import { Vector3 } from '@babylonjs/core/Maths/math.vector';
+import { Vector3, Matrix, Quaternion } from '@babylonjs/core/Maths/math.vector';
 import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight';
 import { DirectionalLight } from '@babylonjs/core/Lights/directionalLight';
 import { PointLight } from '@babylonjs/core/Lights/pointLight';
 import { ShadowGenerator } from '@babylonjs/core/Lights/Shadows/shadowGenerator';
 import { RenderTargetTexture } from '@babylonjs/core/Materials/Textures/renderTargetTexture';
 import '@babylonjs/core/Lights/Shadows/shadowGeneratorSceneComponent';
-import { KITCHEN, HALL } from '../game/layout';
-import { KITCHEN_FURNITURE, PARENT_ANCHORS } from '../game/kitchenLayout';
+import { KITCHEN } from '../game/layout';
+import { KITCHEN_AUTHORED_FURNITURE as KITCHEN_FURNITURE, COMPACT_KITCHEN, BREAKFAST_SEAT,
+  KITCHEN_PLACEMENTS, placeKitchenPoint, type KitchenPlacement, PARENT_ANCHORS } from '../game/kitchenLayout';
 import { LIVING_ROOM_WORLD, KITCHEN_FRONT_PASSAGE } from '../game/livingRoomPlacement';
 import type { InteractionTarget } from '../game/types';
 import { HomeGeometry } from './props';
@@ -32,7 +33,7 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
   const root = new TransformNode('cozinha · ambiente doméstico', scene); root.parent = parent;
   const m = createKitchenMaterials(scene), g = new HomeGeometry(scene);
   const b = g.box.bind(g), c = g.cylinder.bind(g), rod = g.rod.bind(g);
-  const window = { x: 1.4, z: KITCHEN.endZ, y: 2.0, width: 2.3, height: 1.3 };
+  const window = { x: .25, z: COMPACT_KITCHEN.endZ, y: 2.0, width: 2.3, height: 1.3 };
   const sinkOpening = { x: 1.45, z: 22.16, width: .8, depth: .48 };
   const ceilingY = 3.25;
 
@@ -109,12 +110,26 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
     }
   }
 
+
+  /** Bake only a rigid world transform before material batching. Every authored
+   * mesh, detail, material, UV and scale stays intact in the rearranged kitchen. */
+  function furnish(placement: KitchenPlacement, build: () => void) {
+    const first = g.meshes.length; build();
+    const origin = placeKitchenPoint({ x: 0, z: 0 }, placement);
+    const rigid = Matrix.Compose(Vector3.One(), Quaternion.RotationAxis(Vector3.Up(), placement.yaw), new Vector3(origin.x, 0, origin.z));
+    for (const mesh of g.meshes.slice(first)) {
+      mesh.computeWorldMatrix(true);
+      mesh.bakeTransformIntoVertices(mesh.getWorldMatrix().multiply(rigid));
+      mesh.position.set(0, 0, 0); mesh.rotationQuaternion = null; mesh.rotation.set(0, 0, 0); mesh.scaling.set(1, 1, 1);
+      mesh.computeWorldMatrix(true);
+    }
+  }
+
   // Ceramic room shell. The rear window and the connection to the stairs are
   // physical openings; the room is not an enclosing box behind a window decal.
-  const width = KITCHEN.maxX - KITCHEN.minX, length = KITCHEN.endZ - KITCHEN.startZ, middle = (KITCHEN.endZ + KITCHEN.startZ) / 2;
-  // Reuse only the empty front of the former kitchen footprint for the room.
-  // Every breakfast prop, parent, window and light below stays at its original
-  // world coordinates. The remaining floor/ceiling retain their old UVs.
+  const width = COMPACT_KITCHEN.maxX - COMPACT_KITCHEN.minX, length = COMPACT_KITCHEN.endZ - COMPACT_KITCHEN.startZ, middle = (COMPACT_KITCHEN.endZ + COMPACT_KITCHEN.startZ) / 2;
+  // Compact only this room's shell; the approved living-room portal is unchanged.
+  // The existing tile grid retains its scale rather than stretching to the new floor.
   function horizontalPiece(name: string, x0: number, x1: number, z0: number, z1: number,
     h: number, y: number, material: StandardMaterial, original: { minX: number; maxX: number; minZ: number; maxZ: number }) {
     const mesh = b(name, x1 - x0, h, z1 - z0, (x0 + x1) / 2, y, (z0 + z1) / 2, material);
@@ -129,31 +144,32 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
     mesh.setVerticesData(VertexBuffer.UVKind, uv);
   }
   const floorBounds = { minX: KITCHEN.minX, maxX: KITCHEN.maxX, minZ: KITCHEN.startZ, maxZ: KITCHEN.endZ };
-  horizontalPiece('cerâmica original junto à área do café', KITCHEN.minX, KITCHEN.maxX, LIVING_ROOM_WORLD.maxZ, KITCHEN.endZ, .14, -.07, m.tile, floorBounds);
-  horizontalPiece('cerâmica da ligação lateral com a sala', KITCHEN_FRONT_PASSAGE.minX, KITCHEN.maxX, KITCHEN.startZ, LIVING_ROOM_WORLD.maxZ, .14, -.07, m.tile, floorBounds);
-  const ceilingBounds = { minX: KITCHEN.minX - .1, maxX: KITCHEN.maxX + .1, minZ: KITCHEN.startZ - .1, maxZ: KITCHEN.endZ + .1 };
-  horizontalPiece('teto original sobre a área do café', ceilingBounds.minX, ceilingBounds.maxX, LIVING_ROOM_WORLD.maxZ, ceilingBounds.maxZ, .13, ceilingY + .065, m.ceiling, ceilingBounds);
-  horizontalPiece('teto da ligação lateral com a sala', KITCHEN_FRONT_PASSAGE.minX, ceilingBounds.maxX, ceilingBounds.minZ, LIVING_ROOM_WORLD.maxZ, .13, ceilingY + .065, m.ceiling, ceilingBounds);
-  b('parede lateral esquerda azulejada', .15, ceilingY, KITCHEN.endZ - LIVING_ROOM_WORLD.maxZ,
-    KITCHEN.minX - .075, ceilingY / 2, (KITCHEN.endZ + LIVING_ROOM_WORLD.maxZ) / 2, m.wallTile);
-  b('parede lateral direita azulejada', .15, ceilingY, length, KITCHEN.maxX + .075, ceilingY / 2, middle, m.wallTile);
+  horizontalPiece('cerâmica original junto à área do café', COMPACT_KITCHEN.minX, COMPACT_KITCHEN.maxX, LIVING_ROOM_WORLD.maxZ, COMPACT_KITCHEN.endZ, .14, -.07, m.tile, floorBounds);
+  horizontalPiece('cerâmica da ligação lateral com a sala', KITCHEN_FRONT_PASSAGE.minX, COMPACT_KITCHEN.maxX, COMPACT_KITCHEN.startZ, LIVING_ROOM_WORLD.maxZ, .14, -.07, m.tile, floorBounds);
+  const ceilingBounds = { minX: COMPACT_KITCHEN.minX - .1, maxX: COMPACT_KITCHEN.maxX + .1, minZ: COMPACT_KITCHEN.startZ - .1, maxZ: COMPACT_KITCHEN.endZ + .1 };
+  const originalCeiling = { minX: KITCHEN.minX - .1, maxX: KITCHEN.maxX + .1, minZ: KITCHEN.startZ - .1, maxZ: KITCHEN.endZ + .1 };
+  horizontalPiece('teto original sobre a área do café', ceilingBounds.minX, ceilingBounds.maxX, LIVING_ROOM_WORLD.maxZ, ceilingBounds.maxZ, .13, ceilingY + .065, m.ceiling, originalCeiling);
+  horizontalPiece('teto da ligação lateral com a sala', KITCHEN_FRONT_PASSAGE.minX, ceilingBounds.maxX, ceilingBounds.minZ, LIVING_ROOM_WORLD.maxZ, .13, ceilingY + .065, m.ceiling, originalCeiling);
+  b('parede lateral esquerda azulejada', .15, ceilingY, COMPACT_KITCHEN.endZ - LIVING_ROOM_WORLD.maxZ,
+    COMPACT_KITCHEN.minX - .075, ceilingY / 2, (COMPACT_KITCHEN.endZ + LIVING_ROOM_WORLD.maxZ) / 2, m.wallTile);
+  b('parede lateral direita azulejada', .15, ceilingY, length, COMPACT_KITCHEN.maxX + .075, ceilingY / 2, middle, m.wallTile);
   const rear = (name: string, x0: number, x1: number, y0: number, y1: number) =>
-    b(name, x1 - x0, y1 - y0, .15, (x0 + x1) / 2, (y0 + y1) / 2, KITCHEN.endZ + .075, m.wallTile);
+    b(name, x1 - x0, y1 - y0, .15, (x0 + x1) / 2, (y0 + y1) / 2, COMPACT_KITCHEN.endZ + .075, m.wallTile);
   const wx0 = window.x - window.width / 2, wx1 = window.x + window.width / 2, wy0 = window.y - window.height / 2, wy1 = window.y + window.height / 2;
-  rear('azulejos à esquerda da janela', KITCHEN.minX, wx0, 0, ceilingY);
-  rear('azulejos à direita da janela', wx1, KITCHEN.maxX, 0, ceilingY);
+  rear('azulejos à esquerda da janela', COMPACT_KITCHEN.minX, wx0, 0, ceilingY);
+  rear('azulejos à direita da janela', wx1, COMPACT_KITCHEN.maxX, 0, ceilingY);
   rear('azulejos sob a janela', wx0, wx1, 0, wy0);
   rear('verga acima da janela', wx0, wx1, wy1, ceilingY);
   // The stair aperture belongs to the living-room entry now. Close the old
   // kitchen detour, and place the exterior edge behind the vacated front area.
-  b('fechamento frontal da ligação lateral', KITCHEN.maxX - LIVING_ROOM_WORLD.maxX, ceilingY, .15,
-    (KITCHEN.maxX + LIVING_ROOM_WORLD.maxX) / 2, ceilingY / 2, KITCHEN.startZ - .075, m.plaster);
-  b('fechamento da área do café junto à sala', LIVING_ROOM_WORLD.minX - KITCHEN.minX, ceilingY, .15,
-    (KITCHEN.minX + LIVING_ROOM_WORLD.minX) / 2, ceilingY / 2, LIVING_ROOM_WORLD.maxZ - .075, m.plaster);
-  b('rodapé de cerâmica lateral esquerdo', .035, .09, KITCHEN.endZ - LIVING_ROOM_WORLD.maxZ,
-    KITCHEN.minX + .015, .045, (KITCHEN.endZ + LIVING_ROOM_WORLD.maxZ) / 2, m.darkWood);
-  b('rodapé de cerâmica lateral direito', .035, .09, length, KITCHEN.maxX - .015, .045, middle, m.darkWood);
-  b('rodapé cerâmico do fundo', width, .09, .035, 0, .045, KITCHEN.endZ - .015, m.darkWood);
+  b('fechamento frontal da ligação lateral', COMPACT_KITCHEN.maxX - LIVING_ROOM_WORLD.maxX, ceilingY, .15,
+    (COMPACT_KITCHEN.maxX + LIVING_ROOM_WORLD.maxX) / 2, ceilingY / 2, COMPACT_KITCHEN.startZ - .075, m.plaster);
+  b('fechamento da área do café junto à sala', LIVING_ROOM_WORLD.minX - COMPACT_KITCHEN.minX, ceilingY, .15,
+    (COMPACT_KITCHEN.minX + LIVING_ROOM_WORLD.minX) / 2, ceilingY / 2, LIVING_ROOM_WORLD.maxZ - .075, m.plaster);
+  b('rodapé de cerâmica lateral esquerdo', .035, .09, COMPACT_KITCHEN.endZ - LIVING_ROOM_WORLD.maxZ,
+    COMPACT_KITCHEN.minX + .015, .045, (COMPACT_KITCHEN.endZ + LIVING_ROOM_WORLD.maxZ) / 2, m.darkWood);
+  b('rodapé de cerâmica lateral direito', .035, .09, length, COMPACT_KITCHEN.maxX - .015, .045, middle, m.darkWood);
+  b('rodapé cerâmico do fundo', width, .09, .035, (COMPACT_KITCHEN.minX + COMPACT_KITCHEN.maxX) / 2, .045, COMPACT_KITCHEN.endZ - .015, m.darkWood);
 
   // Window, slim security bars and cotton lace. Morning shadows are generated
   // by these actual pieces rather than painted on top of the reference image.
@@ -208,12 +224,14 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
     }
   }
   for (const key of ['backCabinetLeft', 'backCabinetRight'] as const) {
-    const f = KITCHEN_FURNITURE[key]; cabinet(f.x, f.z, f.width, f.depth, key === 'backCabinetRight', key === 'backCabinetRight');
+    const f = KITCHEN_FURNITURE[key];
+    furnish(key === 'backCabinetRight' ? KITCHEN_PLACEMENTS.back : KITCHEN_PLACEMENTS.left,
+      () => cabinet(f.x, f.z, f.width, f.depth, key === 'backCabinetRight', key === 'backCabinetRight'));
   }
-  cabinet(-1.07, 22.2, .2, .7);
+  furnish(KITCHEN_PLACEMENTS.left, () => cabinet(-1.07, 22.2, .2, .7));
   // A short return makes the work surface read as an L instead of an isolated cube.
   const returnCabinet = KITCHEN_FURNITURE.returnCabinet;
-  cabinet(returnCabinet.x, returnCabinet.z, returnCabinet.width, returnCabinet.depth, true);
+  furnish(KITCHEN_PLACEMENTS.return, () => cabinet(returnCabinet.x, returnCabinet.z, returnCabinet.width, returnCabinet.depth, true));
   // Wall-mounted wooden cupboards: shelves and dishes really sit behind glazing.
   function upperCabinet(upperX: number, upperW: number, doors: number) {
   const upperZ = 22.44, upperBottom = 1.75, upperH = 1.12;
@@ -235,10 +253,10 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
     }
   }
   }
-  upperCabinet(-2.70, .90, 2);
-  upperCabinet(-.48, .66, 1);
-  upperCabinet(3.67, 1.20, 2);
+  furnish(KITCHEN_PLACEMENTS.left, () => upperCabinet(-2.70, .90, 2));
+  furnish(KITCHEN_PLACEMENTS.back, () => { upperCabinet(-.48, .66, 1); upperCabinet(3.67, 1.20, 2); });
 
+  furnish(KITCHEN_PLACEMENTS.left, () => {
   const fridge = KITCHEN_FURNITURE.fridge, fridgeFront = fridge.z - fridge.depth / 2;
   bevel('geladeira doméstica esmaltada', fridge.width, fridge.height, fridge.depth, fridge.x, fridge.height / 2, fridge.z, m.enamel, .045);
   bevel('porta inferior da geladeira', fridge.width - .035, 1.28, .06, fridge.x, .70, fridgeFront - .03, m.enamel, .024);
@@ -258,6 +276,9 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
     leaf('folha da planta sobre a geladeira', x - .025, y, z - .015, Math.PI + Math.sin(i) * .4, .1, .16);
   }
 
+  });
+
+  furnish(KITCHEN_PLACEMENTS.left, () => {
   const stove = KITCHEN_FURNITURE.stove, stoveFront = stove.z - stove.depth / 2;
   bevel('fogão a gás de quatro bocas', stove.width, stove.height, stove.depth, stove.x, stove.height / 2, stove.z, m.enamel, .02);
   b('mesa escura do fogão', stove.width - .025, .035, stove.depth - .02, stove.x, .91, stove.z, m.iron);
@@ -279,6 +300,9 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
   b('coifa simples sobre o fogão', 1.04, .23, .56, stove.x, 1.89, stove.z + .08, m.steel);
   b('duto da coifa', .33, 1.1, .27, stove.x, 2.54, stove.z + .19, m.steel);
 
+  });
+
+  furnish(KITCHEN_PLACEMENTS.back, () => {
   // Sink with a cavity and a curved tap, plus the ordinary objects left to dry.
   const sx = sinkOpening.x, sz = sinkOpening.z, sy = .918;
   b('fundo da cuba da pia', .75, .012, .43, sx, sy - .13, sz, m.steel);
@@ -301,8 +325,24 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
   c('frasco de detergente', .17, .08, .09, .82, 1.0, 22.42, m.red, undefined, 10);
   c('tampa do detergente', .03, .036, .045, .82, 1.10, 22.42, m.enamel, undefined, 8);
   bevel('esponja ao lado da pia', .12, .025, .07, .80, .94, 22.12, m.fruitYellow, .008);
-  smallPlant(3.98, .92, 21.4);
+  });
 
+  furnish(KITCHEN_PLACEMENTS.return, () => smallPlant(3.98, .92, 21.4));
+
+  function chair(x: number, z: number, yaw: number, target?: string) {
+    const point = (xx: number, yy: number, zz: number) => ({ x: x + Math.cos(yaw) * xx + Math.sin(yaw) * zz, y: yy, z: z - Math.sin(yaw) * xx + Math.cos(yaw) * zz });
+    const part = (name: string, w: number, h: number, d: number, xx: number, yy: number, zz: number, material: StandardMaterial) => { const p = point(xx, yy, zz); const mesh = b(name, w, h, d, p.x, p.y, p.z, material, target); mesh.rotation.y = yaw; return mesh; };
+    part('assento de cadeira de madeira', .47, .06, .46, 0, .46, 0, m.wood);
+    part('almofada tecida da cadeira', .40, .025, .39, 0, .50, 0, m.rug);
+    for (const xx of [-.19, .19]) for (const zz of [-.18, .18]) rod('perna inclinada da cadeira', point(xx * 1.08, .015, zz * 1.08), point(xx, .46, zz), .025, m.darkWood, target);
+    for (const xx of [-.20, .20]) rod('montante do encosto', point(xx, .42, -.20), point(xx, 1.03, -.24), .023, m.wood, target);
+    part('travessa alta do encosto', .46, .075, .055, 0, 1.02, -.24, m.wood);
+    part('travessa baixa do encosto', .43, .055, .045, 0, .66, -.22, m.darkWood);
+    for (const xx of [-.12, 0, .12]) rod('ripa vertical do encosto', point(xx, .68, -.22), point(xx, .985, -.24), .014, m.wood, target);
+    for (const side of [-1, 1]) rod('travamento sob a cadeira', point(-.19, .18, side * .18), point(.19, .18, side * .18), .012, m.darkWood, target);
+  }
+
+  furnish(KITCHEN_PLACEMENTS.table, () => {
   // Breakfast table, chamfered wood and a single draped cloth with real folds.
   const table = KITCHEN_FURNITURE.table, top = table.tabletopY;
   bevel('tampo de madeira da mesa', table.width, .065, table.depth, table.x, top - .0325, table.z, m.wood, .018);
@@ -323,21 +363,8 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
       z: table.z + Math.sign(fz) * Math.min(Math.abs(fz), table.depth / 2 + .018) + (ez > 0 ? Math.cos(u * 49) * .018 : 0) };
   }, m.tablecloth, undefined, true);
 
-  function chair(x: number, z: number, yaw: number) {
-    const point = (xx: number, yy: number, zz: number) => ({ x: x + Math.cos(yaw) * xx + Math.sin(yaw) * zz, y: yy, z: z - Math.sin(yaw) * xx + Math.cos(yaw) * zz });
-    const part = (name: string, w: number, h: number, d: number, xx: number, yy: number, zz: number, material: StandardMaterial) => { const p = point(xx, yy, zz); const mesh = b(name, w, h, d, p.x, p.y, p.z, material); mesh.rotation.y = yaw; return mesh; };
-    part('assento de cadeira de madeira', .47, .06, .46, 0, .46, 0, m.wood);
-    part('almofada tecida da cadeira', .40, .025, .39, 0, .50, 0, m.rug);
-    for (const xx of [-.19, .19]) for (const zz of [-.18, .18]) rod('perna inclinada da cadeira', point(xx * 1.08, .015, zz * 1.08), point(xx, .46, zz), .025, m.darkWood);
-    for (const xx of [-.20, .20]) rod('montante do encosto', point(xx, .42, -.20), point(xx, 1.03, -.24), .023, m.wood);
-    part('travessa alta do encosto', .46, .075, .055, 0, 1.02, -.24, m.wood);
-    part('travessa baixa do encosto', .43, .055, .045, 0, .66, -.22, m.darkWood);
-    for (const xx of [-.12, 0, .12]) rod('ripa vertical do encosto', point(xx, .68, -.22), point(xx, .985, -.24), .014, m.wood);
-    for (const side of [-1, 1]) rod('travamento sob a cadeira', point(-.19, .18, side * .18), point(.19, .18, side * .18), .012, m.darkWood);
-  }
-  chair(KITCHEN_FURNITURE.frontChair.x, KITCHEN_FURNITURE.frontChair.z, 0);
+  chair(KITCHEN_FURNITURE.frontChair.x, KITCHEN_FURNITURE.frontChair.z, 0, 'breakfast-chair');
   chair(KITCHEN_FURNITURE.rightChair.x, KITCHEN_FURNITURE.rightChair.z, -Math.PI / 2);
-  chair(PARENT_ANCHORS.father.position.x, PARENT_ANCHORS.father.position.z, PARENT_ANCHORS.father.yaw);
 
   function plate(x: number, z: number, diameter = .31) {
     return lathe('prato de louça do café', [[.04, 0], [diameter * .36, .005], [diameter / 2, .019], [diameter / 2, .029], [diameter * .36, .017], [.04, .014]], x, top + .018, z, m.ceramic, 20);
@@ -348,10 +375,10 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
     c('café dentro da xícara', .004, .084, .084, x, top + .137, z, m.darkWood, undefined, 16);
   }
   plate(.92, 19.21); mug(.92, 19.30);
-  plate(-.95, 18.91, .27); mug(-1.03, 18.93);
+  plate(-1.11, 18.56, .27); mug(-1.11, 18.56);
   lathe('copo de água de vidro sobre a mesa', [[.031, 0], [.038, .01], [.043, .15], [.038, .15], [.033, .02]], .32, top + .025, 19.23, m.glass, 16);
   c('superfície da água no copo', .002, .067, .067, .32, top + .135, 19.23, m.glass, undefined, 16);
-  plate(.65, 18.18, .34);
+  plate(-.7, 18.05, .34);
   torus('borda trançada da cesta de pão', .52, .035, -.63, .94, 18.55, m.wood, false, .66);
   for (let i = 0; i < 16; i++) {
     const a = i / 16 * Math.PI * 2;
@@ -385,10 +412,15 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
   bevel('pedaço de manteiga', .13, .075, .10, .27, .887, 18.20, m.fruitYellow, .008);
   bevel('pote de geleia', .12, .15, .12, .71, .91, 18.84, m.red, .015);
   c('tampa xadrez do pote de geleia', .018, .13, .13, .71, .995, 18.84, m.tablecloth, undefined, 16);
-  for (let i = 0; i < 3; i++) { const toast = bevel('fatia de pão no prato', .115, .025, .12, .62 + i * .035, .865 + i * .017, 18.18 + i * .012, m.bread, .02); toast.rotation.y = -.1 + i * .2; }
-  rod('cabo de faca sobre a mesa', { x: .45, y: .84, z: 18.13 }, { x: .57, y: .84, z: 18.13 }, .01, m.darkWood);
-  b('lâmina da faca de manteiga', .10, .005, .022, .62, .84, 18.13, m.steel);
+  for (let i = 0; i < 3; i++) { const toast = bevel('fatia de pão no prato', .115, .025, .12, -.7 + i * .035, .865 + i * .017, 18.05 + i * .012, m.bread, .02); toast.rotation.y = -.1 + i * .2; }
+  rod('cabo de faca sobre a mesa', { x: -.9, y: .84, z: 18.0 }, { x: -.78, y: .84, z: 18.0 }, .01, m.darkWood);
+  b('lâmina da faca de manteiga', .10, .005, .022, -.73, .84, 18.0, m.steel);
 
+  });
+
+  chair(PARENT_ANCHORS.father.position.x, PARENT_ANCHORS.father.position.z, PARENT_ANCHORS.father.yaw);
+
+  furnish(KITCHEN_PLACEMENTS.sideboard, () => {
   // Sideboard and a recognizable old CRT television, placed against the left
   // wall so the table remains the visual and physical centre of the room.
   const sideboard = KITCHEN_FURNITURE.sideboard;
@@ -406,24 +438,21 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
   for (const yy of [1.08, 1.26]) { const knob = c('seletor de canal da televisão', .024, .046, .046, -4.10, yy, 18.66, m.iron, undefined, 10); knob.rotation.z = Math.PI / 2; }
   rod('haste da antena da TV', { x: -4.38, y: 1.42, z: 18.40 }, { x: -4.58, y: 1.73, z: 18.58 }, .005, m.steel);
   rod('segunda haste da antena', { x: -4.38, y: 1.42, z: 18.40 }, { x: -4.27, y: 1.69, z: 18.10 }, .005, m.steel);
+  });
+
   // One family picture and a modest wall calendar personalise the kitchen.
-  b('moldura de fotografia familiar na cozinha', .035, .45, .34, KITCHEN.minX + .025, 1.85, 20.10, m.darkWood);
-  g.plane('fotografia familiar junto à geladeira', .29, .40, KITCHEN.minX + .049, 1.85, 20.10, m.photo, -Math.PI / 2);
-  g.plane('calendário doméstico da cozinha', .42, .56, KITCHEN.maxX - .025, 1.72, 20.95, m.calendar, Math.PI / 2);
-  const rug = b('passadeira de cozinha em frente à pia', 2.7, .009, .66, 1.45, .008, 21.02, m.rug); rug.metadata.castShadow = false;
+  b('moldura de fotografia familiar na cozinha', .035, .45, .34, COMPACT_KITCHEN.minX + .025, 1.85, 16.6, m.darkWood);
+  g.plane('fotografia familiar junto à geladeira', .29, .40, COMPACT_KITCHEN.minX + .049, 1.85, 16.6, m.photo, -Math.PI / 2);
+  g.plane('calendário doméstico da cozinha', .42, .56, COMPACT_KITCHEN.maxX - .025, 1.72, 19.05, m.calendar, Math.PI / 2);
+  furnish(KITCHEN_PLACEMENTS.back, () => { const rug = b('passadeira de cozinha em frente à pia', 2.7, .009, .66, 1.45, .008, 21.02, m.rug); rug.metadata.castShadow = false; });
+  furnish(KITCHEN_PLACEMENTS.table, () => {
   c('base da luminária de teto', .045, .19, .19, -.15, 3.20, 18.7, m.enamel, undefined, 12);
   rod('haste da luminária de teto', { x: -.15, y: 3.2, z: 18.7 }, { x: -.15, y: 3.02, z: 18.7 }, .007, m.iron);
   lathe('cúpula de vidro fosco', [[.035, .16], [.13, .13], [.21, .02], [.20, 0], [.17, .01]], -.15, 2.88, 18.7, m.ceramic, 16);
 
-  // The suitcase keeps its original interaction and location in the chapter.
-  const suitcase = KITCHEN_FURNITURE.suitcase;
-  bevel('mala pronta para a viagem', suitcase.width, suitcase.height, suitcase.depth, suitcase.x, suitcase.height / 2 + .025, suitcase.z, m.darkWood, .045, 'suitcase');
-  for (const x of [suitcase.x - .25, suitcase.x + .25]) b('cinta da mala', .045, suitcase.height + .005, suitcase.depth + .01, x, suitcase.height / 2 + .025, suitcase.z, m.wood, 'suitcase');
-  rod('alça da mala pronta', { x: suitcase.x - .13, y: suitcase.height + .04, z: suitcase.z }, { x: suitcase.x - .13, y: suitcase.height + .13, z: suitcase.z }, .013, m.iron, 'suitcase');
-  rod('pega superior da mala', { x: suitcase.x - .13, y: suitcase.height + .13, z: suitcase.z }, { x: suitcase.x + .13, y: suitcase.height + .13, z: suitcase.z }, .014, m.iron, 'suitcase');
-  rod('segunda fixação da alça', { x: suitcase.x + .13, y: suitcase.height + .13, z: suitcase.z }, { x: suitcase.x + .13, y: suitcase.height + .04, z: suitcase.z }, .013, m.iron, 'suitcase');
-  for (const x of [suitcase.x - .32, suitcase.x + .32]) { const wheel = c('rodinha da mala pronta', .04, .08, .08, x, .04, suitcase.z + .21, m.iron, 'suitcase', 10); wheel.rotation.z = Math.PI / 2; }
+  });
 
+  furnish(KITCHEN_PLACEMENTS.back, () => {
   // A quiet garden exists beyond the cut-out window, not as a pasted photograph.
   const grass = m.solid('grama do quintal ao sol', '#6b7549'), roof = m.solid('telhas do quintal vizinho', '#a15e3e');
   b('quintal visto da cozinha', 15, .10, 9, 0, -.08, 27.4, grass);
@@ -437,6 +466,8 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
     rod('galho de árvore no quintal', { x, y: 0, z }, { x: x + .12, y: 2.8 + i % 2 * .4, z }, .065, m.wood);
     for (let j = 0; j < 14; j++) { const a = j * 2.4; leaf('folhagem do quintal', x + Math.cos(a) * (.25 + j % 3 * .18), 2.2 + Math.sin(j * 1.1) * .65, z + Math.sin(a) * .6, a, -.2 + j % 4 * .15, .65); }
   }
+
+  });
 
   // A wall atlas covers 1.6 metres (four 40 cm tiles). Mapping in world space
   // keeps grout and floral motifs continuous around the cut-out window instead
@@ -464,7 +495,7 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
   const ambient = new HemisphericLight('cozinha · luz difusa doméstica', Vector3.Up(), scene);
   ambient.diffuse = new Color3(1, .91, .76); ambient.groundColor = new Color3(.40, .34, .26); ambient.intensity = .50;
   const sun = new DirectionalLight('cozinha · sol entrando pela janela', new Vector3(-.35, -.27, -.83).normalize(), scene);
-  sun.position.set(3.1, 3.3, 26.8); sun.diffuse = new Color3(1, .83, .58); sun.intensity = 1.2;
+  sun.position.set(1.95, 3.3, 25.15); sun.diffuse = new Color3(1, .83, .58); sun.intensity = 1.2;
   sun.shadowMinZ = .1; sun.shadowMaxZ = 35; sun.shadowFrustumSize = 13;
   const bounce = new PointLight('cozinha · luz rebatida do ambiente', new Vector3(-.7, 2.5, 16.8), scene);
   bounce.diffuse = new Color3(1, .88, .72); bounce.intensity = .8; bounce.range = 8;
@@ -481,14 +512,15 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
   // compile, otherwise an early empty map can survive the first visible frame.
   void shadows.forceCompilationAsync().then(() => { if (!disposed) refreshShadows(); })
     .catch(error => console.error('Não foi possível preparar as sombras da cozinha.', error));
-  const targets: InteractionTarget[] = [parents.target, { id: 'suitcase', meshes: g.targets.get('suitcase') ?? [], label: () => 'Pegar a mala', execute: () => undefined }];
+  const targets: InteractionTarget[] = [{ id: 'breakfast-chair', meshes: g.targets.get('breakfast-chair') ?? [], label: () => 'Sentar à mesa', execute: () => undefined }];
   return {
     targets, meshes: allMeshes,
     setActive(value: boolean) { active = value; root.setEnabled(value); for (const light of [ambient, sun, bounce]) light.setEnabled(value); if (value) refreshShadows(); },
     refreshShadows,
-    animate(time: number, speaker?: string, observer?: Point) {
+    get diagnostics() { return { version: 'cafe-compacto-1', bounds: COMPACT_KITCHEN, width: COMPACT_KITCHEN.maxX - COMPACT_KITCHEN.minX, depth: COMPACT_KITCHEN.endZ - COMPACT_KITCHEN.coreStartZ, seat: BREAKFAST_SEAT, parents: parents.diagnostics }; },
+    animate(time: number, speaker?: string, observer?: Point, text?: string) {
       if (!active) return;
-      parents.animate(time, speaker, observer);
+      parents.animate(time, speaker, observer, text);
       // Micro-idle keeps the cached contact shadows; a dialogue reaction gets
       // a fresh map without rendering an entire shadow pass on every frame.
       if ((speaker ?? '') !== previousSpeaker) { previousSpeaker = speaker ?? ''; refreshShadows(); }

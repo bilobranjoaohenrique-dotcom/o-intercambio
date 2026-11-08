@@ -5,10 +5,10 @@ registerHooks({ resolve(specifier, context, next) {
   if (context.parentURL?.endsWith('.ts') && specifier.startsWith('.') && !/\.[a-z]+$/.test(specifier)) specifier += '.ts';
   return next(specifier, context);
 } });
-const { KITCHEN_FURNITURE, PARENT_ANCHORS, KITCHEN_SOLIDS } = await import('../src/game/kitchenLayout.ts');
-const { KITCHEN, HALL, STAIRS, STANDING_POSE, CHAPTER_ZONES } = await import('../src/game/layout.ts');
-const { LIVING_ROOM_ROUTE, HOME_RESUME_POSITION } = await import('../src/game/livingRoomPlacement.ts');
-const { PLAYER_RADIUS, isWalkable, moveWithCollisions, floorHeight, reachedBreakfast } = await import('../src/game/collision.ts');
+const { KITCHEN_FURNITURE, KITCHEN_AUTHORED_FURNITURE, PARENT_ANCHORS, KITCHEN_SOLIDS,
+  COMPACT_KITCHEN, BREAKFAST_SEAT } = await import('../src/game/kitchenLayout.ts');
+const { HOME_RESUME_POSITION } = await import('../src/game/livingRoomPlacement.ts');
+const { PLAYER_RADIUS, isWalkable, moveWithCollisions, floorHeight } = await import('../src/game/collision.ts');
 const near = (value, target) => assert.ok(Math.abs(value - target) < 1e-7, `${value} ≈ ${target}`);
 function follow(from, targets) {
   let point = { ...from };
@@ -25,28 +25,27 @@ function follow(from, targets) {
   return point;
 }
 
-test('cozinha: móveis e pais têm pegadas compartilhadas sólidas sem colisão duplicada da cadeira do pai', () => {
+test('cozinha compacta: preserva medidas dos móveis, pai sentado, mãe em pé e pegadas sólidas', () => {
   assert.equal(KITCHEN_SOLIDS.length, Object.keys(KITCHEN_FURNITURE).length + Object.keys(PARENT_ANCHORS).length);
   for (const furniture of Object.values(KITCHEN_FURNITURE)) assert.equal(isWalkable(furniture), false);
   for (const parent of Object.values(PARENT_ANCHORS)) assert.equal(isWalkable(parent.position), false);
   assert.equal(KITCHEN_FURNITURE.table.tabletopY, .80);
   assert.equal(PARENT_ANCHORS.father.seatY, .46);
-  assert.ok(isWalkable({ x: 0, z: 17.6 }), 'the clear standing space before the tabletop stays accessible');
-  assert.equal(isWalkable({ x: 0, z: 17.75 }), false, 'the capsule touches the real front edge of the table');
-  assert.equal(isWalkable({ x: -.7, z: 17.65 }), false, 'the front chair has its own smaller footprint');
+  assert.equal(PARENT_ANCHORS.father.seated, true); assert.equal(PARENT_ANCHORS.mother.seated, false);
+  for (const [name, item] of Object.entries(KITCHEN_FURNITURE)) {
+    for (const dimension of ['width', 'depth', 'height']) assert.equal(item[dimension], KITCHEN_AUTHORED_FURNITURE[name][dimension]);
+  }
+  assert.ok(isWalkable(BREAKFAST_SEAT.approach));
+  assert.equal(isWalkable(BREAKFAST_SEAT.position), false, 'normal walking cannot enter the physical player chair');
+  assert.equal(isWalkable({ x: 0, z: 17.0 }), false, 'the capsule stops before the actual table edge');
 });
 
-test('cozinha: deslocamentos longos não atravessam mesa, eletrodomésticos, armários ou corpos', () => {
+test('cozinha compacta: movimentos longos não atravessam mesa, cadeira, geladeira ou fogão girados', () => {
   const attempts = [
-    { from: { x: 0, z: 16.7 }, dx: 0, dz: 4, blocked: point => point.z < 17.7 },
-    { from: { x: 1.65, z: 20.9 }, dx: 0, dz: 3, blocked: point => point.z < 21.7 },
-    { from: { x: 4.27, z: 19.8 }, dx: 0, dz: 3, blocked: point => point.z < 20.2 },
-    { from: { x: -3.65, z: 20.5 }, dx: 0, dz: 3, blocked: point => point.z < 21.35 },
-    { from: { x: -1.65, z: 20.5 }, dx: 0, dz: 3, blocked: point => point.z < 21.6 },
-    { from: { x: -3.5, z: 18.5 }, dx: -2, dz: 0, blocked: point => point.x > -3.95 },
-    { from: { x: -2.8, z: 18.95 }, dx: 2, dz: 0, blocked: point => point.x < -2 },
-    { from: { x: 2.6, z: 20 }, dx: -2, dz: 0, blocked: point => point.x > 1.7 },
-    { from: { x: 3, z: 18.7 }, dx: -2, dz: 0, blocked: point => point.x > 2.3 },
+    { from: { x: 0, z: 16.3 }, dx: 0, dz: 1000, blocked: point => point.z <= 16.88 + 1e-7 },
+    { from: BREAKFAST_SEAT.approach, dx: 0, dz: 1000, blocked: point => point.z <= 16.355 + 1e-7 },
+    { from: { x: -1.75, z: 17.2 }, dx: -1000, dz: 0, blocked: point => point.x >= -1.87 - 1e-7 },
+    { from: { x: -1.8, z: 19.2 }, dx: -1000, dz: 0, blocked: point => point.x >= -2.135 - 1e-7 },
   ];
   for (const attempt of attempts) {
     assert.ok(isWalkable(attempt.from));
@@ -55,34 +54,23 @@ test('cozinha: deslocamentos longos não atravessam mesa, eletrodomésticos, arm
   }
 });
 
-test('cozinha: descida atravessa a sala até a mãe e permite circular nos dois lados da mesa original', () => {
-  const approach = follow(LIVING_ROOM_ROUTE[0], [
-    ...LIVING_ROOM_ROUTE.slice(1), { x: 0, z: 16.5 }, { x: -1.6, z: 16.5 }, { x: -1.6, z: 17.9 },
+test('cozinha compacta: portal da sala conecta até cadeira e ponto de levantar, sem reduzir a circulação', () => {
+  const approach = follow({ x: 2.5, z: 14.15 }, [
+    { x: 3.3, z: 14.15 }, { x: 3.5, z: 15.5 }, { x: 3.5, z: 16.25 },
+    { x: 2.2, z: 16.25 }, BREAKFAST_SEAT.approach,
   ]);
   near(floorHeight(approach), 0);
-  assert.ok(Math.hypot(approach.x - PARENT_ANCHORS.mother.interaction.x,
-    approach.z - PARENT_ANCHORS.mother.interaction.z) < 2.2, 'mother is reachable without entering her body');
-  follow({ x: -2.3, z: 16.3 }, [{ x: -2.3, z: 20.8 }, { x: 2.4, z: 20.8 }, { x: 2.4, z: 16.3 }]);
-  assert.ok(isWalkable(HOME_RESUME_POSITION), 'advanced home checkpoints resume on clear floor beyond the moved room');
-  assert.equal(isWalkable({ x: 0, z: 14.2 }), false, 'the former fallback now touches the unchanged coffee table');
-  assert.ok(isWalkable(STANDING_POSE.position), 'bedroom gameplay is preserved');
-  assert.ok(reachedBreakfast({ x: 1.975, z: STAIRS.endZ - .05 }), 'the existing stair mission still triggers on its last tread');
-  for (const zone of Object.values(CHAPTER_ZONES))
-    assert.ok(isWalkable({ x: (zone.minX + zone.maxX) / 2, z: (zone.minZ + zone.maxZ) / 2 }), 'later chapter floor bounds remain unchanged');
+  assert.ok(isWalkable(BREAKFAST_SEAT.stand));
+  follow(BREAKFAST_SEAT.stand, [{ x: .2, z: 16.2 }, { x: 2.2, z: 16.25 }, { x: 3.5, z: 16.25 }]);
+  assert.ok(isWalkable(HOME_RESUME_POSITION), 'the existing home checkpoint remains on clear kitchen floor');
 });
 
-test('cozinha: fachada frontal fica fechada fora da entrada da sala e não permite o desvio antigo', () => {
-  // The front is now partitioned into the approved living room and a side
-  // kitchen aisle. Sample clear body positions beside the new north jambs.
-  for (const x of [.9, KITCHEN.maxX - .4]) {
-    assert.equal(isWalkable({ x, z: KITCHEN.startZ + .02 }), false);
-    assert.ok(isWalkable({ x, z: KITCHEN.startZ + PLAYER_RADIUS + .02 }));
-    const end = moveWithCollisions({ x, z: 13.5 }, 0, -4);
-    assert.ok(end.z >= KITCHEN.startZ + PLAYER_RADIUS - 1e-7);
-    assert.ok(isWalkable(end));
-  }
-  const x = (HALL.minX + HALL.maxX) / 2;
-  follow({ x, z: 11.5 }, [{ x, z: 12.4 }]);
-  assert.equal(isWalkable({ x: 3.7, z: 11.94 }), false, 'the old side-room doorway is closed');
-  assert.equal(isWalkable({ x: -4, z: 14 }), false, 'unused front-left space is exterior rather than a kitchen bypass');
+test('cozinha compacta: novas paredes e limites retiram o vazio antigo sem abrir atalhos para fora', () => {
+  near(COMPACT_KITCHEN.maxX - COMPACT_KITCHEN.minX, 7.1);
+  near(COMPACT_KITCHEN.endZ - COMPACT_KITCHEN.coreStartZ, 5.35);
+  for (const point of [{ x: -4, z: 18 }, { x: 4.4, z: 18 }, { x: 0, z: 22 }, { x: -4, z: 14 }, { x: 3.7, z: 11.94 }])
+    assert.equal(isWalkable(point), false, JSON.stringify(point));
+  const stopped = moveWithCollisions({ x: 3.5, z: 15.5 }, 1000, 0);
+  assert.ok(stopped.x <= COMPACT_KITCHEN.maxX - PLAYER_RADIUS + 1e-7);
+  assert.ok(isWalkable(stopped));
 });

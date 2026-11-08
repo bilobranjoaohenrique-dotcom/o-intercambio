@@ -104,7 +104,7 @@ test('sala: apoio do abajur e vaso conservam colisão e o checkpoint avançado r
   const pot = moveWithCollisions(potFrom, -1000, 0);
   assert.ok(isWalkable(pot)); assert.ok(pot.x >= props[1].x + props[1].halfWidth + PLAYER_RADIUS - 1e-7);
   assert.ok(isWalkable(HOME_RESUME_POSITION)); near(floorHeight(HOME_RESUME_POSITION), 0);
-  follow(HOME_RESUME_POSITION, [{ x: 0, z: 16.9 }, { x: -1.6, z: 16.9 }, { x: -1.6, z: 17.9 }]);
+  follow(HOME_RESUME_POSITION, [{ x: 0, z: 16.2 }, { x: -1.6, z: 16.2 }, { x: -1.6, z: 17.2 }]);
 });
 
 test('sala: escada permanece protegida e a missão só conclui ao alcançar seu último piso físico', () => {

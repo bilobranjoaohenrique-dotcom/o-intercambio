@@ -34,6 +34,7 @@ export function createPlayer(canvas: HTMLCanvasElement, camera: UniversalCamera,
   const readSettings = typeof settings === 'function' ? settings : () => settings;
   const keys = new Set<string>();
   let active = false, disposed = false;
+  let movementEnabled = true;
   let position: Point2 = { x: camera.position.x, z: camera.position.z };
   let velocity: Point2 = { x: 0, z: 0 };
   let yaw = camera.rotation.y, pitch = camera.rotation.x, eyeY = camera.position.y;
@@ -51,7 +52,7 @@ export function createPlayer(canvas: HTMLCanvasElement, camera: UniversalCamera,
     return !!element && (['INPUT', 'TEXTAREA', 'SELECT'].includes(element.tagName) || element.isContentEditable);
   }
   function keyDown(event: KeyboardEvent) {
-    if (!active || disposed || typing(event.target) || event.ctrlKey || event.metaKey || event.altKey || !MOVEMENT_CODES.has(event.code)) return;
+    if (!active || !movementEnabled || disposed || typing(event.target) || event.ctrlKey || event.metaKey || event.altKey || !MOVEMENT_CODES.has(event.code)) return;
     keys.add(event.code); event.preventDefault();
   }
   function keyUp(event: KeyboardEvent) { keys.delete(event.code); }
@@ -111,14 +112,22 @@ export function createPlayer(canvas: HTMLCanvasElement, camera: UniversalCamera,
       if (document.pointerLockElement === canvas) document.exitPointerLock?.();
     }
   }
-  function activateFromCamera() {
+  function adoptCameraPose() {
     if (disposed) return;
     position = { x: camera.position.x, z: camera.position.z };
     yaw = camera.rotation.y; pitch = camera.rotation.x; eyeY = camera.position.y;
-    bob = 0; bobPhase = 0; stepDistance = 0; clearInput(); active = true;
+    bob = 0; bobPhase = 0; stepDistance = 0; clearInput();
+  }
+  function activateFromCamera() {
+    adoptCameraPose(); active = true;
+  }
+  function setMovementEnabled(enabled: boolean) {
+    movementEnabled = enabled;
+    adoptCameraPose();
   }
   function reset() {
     setActive(false);
+    movementEnabled = true;
     position = { x: STANDING_POSE.position.x, z: STANDING_POSE.position.z };
     eyeY = STANDING_POSE.position.y; yaw = STANDING_POSE.yaw; pitch = STANDING_POSE.pitch;
     camera.position.set(position.x, eyeY, position.z);
@@ -133,6 +142,13 @@ export function createPlayer(canvas: HTMLCanvasElement, camera: UniversalCamera,
   }
   function update(seconds: number) {
     if (!active || disposed || document.hidden || !Number.isFinite(seconds) || seconds <= 0) return;
+    // Sitting only locks translation. Mouse look still uses the normal input,
+    // and standing resumes from the final interpolated camera pose.
+    if (!movementEnabled) {
+      position = { x: camera.position.x, z: camera.position.z }; eyeY = camera.position.y;
+      velocity = { x: 0, z: 0 }; bob = 0;
+      return;
+    }
     const dt = Math.min(.05, seconds);
     const running = keys.has('ShiftLeft') || keys.has('ShiftRight');
     const target = movementVector(Number(keys.has('KeyW')) - Number(keys.has('KeyS')),
@@ -168,7 +184,7 @@ export function createPlayer(canvas: HTMLCanvasElement, camera: UniversalCamera,
     canvas.removeEventListener('pointerdown', pointerDown);
     window?.removeEventListener('blur', clearInput);
   }
-  return { update, setActive, activateFromCamera, reset, teleport, requestPointerLock, clearInput, dispose,
+  return { update, setActive, activateFromCamera, adoptCameraPose, setMovementEnabled, reset, teleport, requestPointerLock, clearInput, dispose,
     get enabled() { return active && !disposed; },
     get position(): Point3 { return { x: camera.position.x, y: camera.position.y, z: camera.position.z }; } };
 }

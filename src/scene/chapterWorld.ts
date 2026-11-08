@@ -157,14 +157,14 @@ export function buildChapterWorld(scene: Scene) {
     teleportPoint(zone:Exclude<Zone,'home'>) {
       return zone==='car'?{x:CAR_ORIGIN,y:1.65,z:-3}:zone==='airport'?{x:ZONE_ORIGIN.airport,y:1.65,z:4.5}:zone==='plane'?{x:ZONE_ORIGIN.plane-1.5,y:1.65,z:-3.4}:{x:ZONE_ORIGIN.town,y:1.65,z:-2};
     },
-    animate(time:number,speaker?:string,observer?:Point3) {
-      if(activeZone==='home') kitchen.animate(time,speaker,observer);
+    animate(time:number,speaker?:string,observer?:Point3,text?:string) {
+      if(activeZone==='home') kitchen.animate(time,speaker,observer,text);
       // Existing host body language is preserved, without rebuilding an arm
       // list on each frame while the other chapter sets are active.
       if(activeZone==='town') for(let i=0;i<hostArms.length;i++)
         hostArms[i].rotation.z=(i%2?1:-1)*(.06+Math.sin(time*.9+i)*.02);
     },
-    get kitchenDiagnostics(){return {active:activeZone==='home',version:'cozinha-visual-1',meshes:kitchen.meshes.length};},
+    get kitchenDiagnostics(){return {active:activeZone==='home',meshes:kitchen.meshes.length,...kitchen.diagnostics};},
     dispose(){kitchen.dispose();for(const root of roots.values())root.dispose(false,false);for(const material of materials.values())material.dispose();for(const texture of textures)texture.dispose();}
   };
 }

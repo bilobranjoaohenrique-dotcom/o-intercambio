@@ -61,6 +61,18 @@ A [correção da posição da sala](docs/CORRECAO-POSICAO-SALA.md) mantém esse 
 
 A cozinha usa móveis modelados, azulejos florais, cortinas de renda, cerâmica, armários, eletrodomésticos e uma mesa de café com objetos domésticos. Mãe e pai têm modelos próprios com rosto, cabelo, mãos, roupas texturizadas, postura e pequenos gestos que acompanham os diálogos escritos.
 
+### Café da manhã interativo — atualização atual
+
+A cozinha foi compactada reutilizando os móveis, materiais e iluminação. A área principal tem aproximadamente **7,10 × 5,35 m**; a bancada original de 5,20 m e a circulação dos dois lados da mesa foram preservadas, por isso não se forçou a medida menor da prancha.
+
+Aproxime-se da cadeira da frente e pressione **E — Sentar à mesa**. A câmera desce suavemente, permanece em primeira pessoa e permite olhar para os pais. O pai continua sentado; a mãe usa avental claro e serve café. Mandíbulas, olhares, expressões e gestos acompanham as falas em texto; nenhuma voz foi acrescentada. Após a conversa, use **E — Levantar da mesa** para andar novamente.
+
+Esta etapa termina no objetivo **“Suba ao quarto e busque sua mala”**. A mochila examinável do quarto e os outros ambientes foram preservados; não foi acrescentada coleta de mala ou uma nova viagem nesta entrega. O [Prompt Master 06](docs/PROMPT-MASTER-06-CAFE.md) registra o escopo.
+
+Passaram **15 testes focais**, TypeScript/build e uma execução funcional completa do café em Chromium/Linux. Após encontrar uma sobreposição no avental nas capturas, somente a roupa foi corrigida, o build refeito e as duas vistas conferidas novamente. Veja as capturas reais [de pé](docs/capturas/cafe-cozinha-final.png) e [sentado](docs/capturas/cafe-sentado-pais.png), com o [registro resumido da verificação](docs/resultados-cafe.json). Não foram repetidos os testes de viagem ou dos outros cenários.
+
+Os rostos procedurais continuam estilizados e menos detalhados que a prancha de referência. Não houve nova medição de FPS nem teste em GPU física/Windows.
+
 Veja o [relatório da reconstrução com seis capturas reais](docs/RECONSTRUCAO-COZINHA.md). A atualização preserva os checkpoints. Para rever a cozinha quando sua partida já estiver no aeroporto ou em outra sequência, abra o menu com **Esc** e escolha **Reiniciar cena**.
 
 ## Estrutura
@@ -86,7 +98,7 @@ Na reconstrução anterior do quarto passaram **42 testes unitários**, TypeScri
 
 A atualização anterior da cozinha aprovou **41 testes**, o build, o percurso completo do capítulo e as verificações específicas daquele ambiente. Esse registro histórico está em [validação do capítulo](docs/VALIDACAO-CAPITULO-01.md). As medições da cozinha naquele servidor com renderização por software ficaram em **8,1 a 12,2 FPS**; elas não representam o desempenho do quarto reconstruído. O [relatório do quarto](docs/RECONSTRUCAO-QUARTO.md) registra separadamente a validação desta etapa. GPU física e Windows ainda precisam de verificação própria.
 
-Com Chromium instalado, `CHROMIUM_PATH=/usr/bin/chromium npm run verify` inicia uma prévia de produção temporária e executa as validações focadas da **sala**, do corredor e do quarto antes do percurso completo do capítulo. As suítes individuais são `npm run test:living-room`, `npm run test:hallway` e `npm run test:bedroom`; a de cozinha está em `tests/kitchen-browser.mjs`. Execute uma suíte individual com o jogo servido por HTTP e `INTERCAMBIO_URL` apontando para o servidor.
+Com Chromium instalado, `CHROMIUM_PATH=/usr/bin/chromium npm run verify` inicia uma prévia de produção temporária e executa a validação funcional atual do **café da manhã**, até levantar com o objetivo de buscar a mala. Para executar somente esse fluxo com um servidor já aberto, use `INTERCAMBIO_URL=http://localhost:4180 npm run test:breakfast`. As suítes anteriores de quarto, corredor, cozinha e capítulo permanecem como histórico das etapas anteriores; seus percursos de café/partida antecedem a interação de sentar.
 
 ## Publicação
 

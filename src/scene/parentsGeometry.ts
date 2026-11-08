@@ -25,21 +25,24 @@ export class ParentPart {
     batch.details.push(name);
   }
 
-  loft(name: string, rings: BodyRing[], material: StandardMaterial, sides = 12, uOffset = 0) {
+  loft(name: string, rings: BodyRing[], material: StandardMaterial, sides = 12, uOffset = 0,
+    vRange?: { min: number; max: number }, caps = { bottom: true, top: true }) {
     const positions: number[] = [], indices: number[] = [], uvs: number[] = [];
-    const range = Math.max(.001, rings.at(-1)!.y - rings[0].y);
+    const low = vRange?.min ?? rings[0].y;
+    const range = Math.max(.001, (vRange?.max ?? rings.at(-1)!.y) - low);
     for (const ring of rings) for (let j = 0; j <= sides; j++) {
       const a = j / sides * Math.PI * 2, forward = Math.cos(a);
       const wave = 1 + (ring.pleat ?? 0) * Math.cos(a * 8);
       const facialFront = forward >= 0 ? Math.pow(forward, ring.flatten ?? 1) * ring.front : forward * (ring.back ?? ring.front);
       positions.push((ring.x ?? 0) + Math.sin(a) * ring.width * wave, ring.y, (ring.z ?? 0) + facialFront * wave);
-      uvs.push(j / sides + uOffset, (ring.y - rings[0].y) / range);
+      uvs.push(j / sides + uOffset, (ring.y - low) / range);
     }
     for (let row = 0; row < rings.length - 1; row++) for (let j = 0; j < sides; j++) {
       const a = row * (sides + 1) + j, b = a + 1, c = a + sides + 1, d = c + 1;
       indices.push(a, c, b, b, c, d);
     }
     for (const row of [0, rings.length - 1]) {
+      if (row === 0 ? !caps.bottom : !caps.top) continue;
       const ring = rings[row], center = positions.length / 3;
       positions.push(ring.x ?? 0, ring.y, ring.z ?? 0); uvs.push(.5, row === 0 ? 0 : 1);
       for (let j = 0; j < sides; j++) {

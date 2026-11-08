@@ -1,5 +1,5 @@
-import { CHAPTER_ZONES, DOOR, FURNITURE, KITCHEN, ROOM, STAIRS, type Point2 } from './layout';
-import { KITCHEN_SOLIDS } from './kitchenLayout';
+import { CHAPTER_ZONES, DOOR, FURNITURE, ROOM, STAIRS, type Point2 } from './layout';
+import { KITCHEN_SOLIDS, COMPACT_KITCHEN as KITCHEN } from './kitchenLayout';
 import { HALLWAY, BOTTOM_LANDING, HALLWAY_SOLIDS } from './hallwayLayout';
 import { PRESERVED_STAIR_RETURN } from './livingRoomLayout';
 import { LIVING_ROOM_WORLD, LIVING_ROOM_ENTRY, LIVING_ROOM_KITCHEN_PORTAL,
@@ -68,7 +68,7 @@ const floorRects: readonly FloorRect[] = [
   { minX: STAIRS.minX, maxX: STAIRS.maxX, minZ: STAIRS.startZ, maxZ: STAIRS.endZ },
   { minX: BOTTOM_LANDING.minX, maxX: BOTTOM_LANDING.maxX, minZ: BOTTOM_LANDING.startZ, maxZ: BOTTOM_LANDING.endZ },
   { minX: KITCHEN.minX, maxX: KITCHEN.maxX, minZ: LIVING_ROOM_WORLD.maxZ, maxZ: KITCHEN.endZ },
-  KITCHEN_FRONT_PASSAGE,
+  { ...KITCHEN_FRONT_PASSAGE, maxX: KITCHEN.maxX },
   ...livingFloorRects,
   ...Object.values(CHAPTER_ZONES),
 ];

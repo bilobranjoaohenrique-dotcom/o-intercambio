@@ -89,12 +89,25 @@ export function parentMaterials(scene: Scene) {
     }
   });
   const collar = material('gola de algodão', '#beb09a', cotton), seam = material('costuras e botões', '#827866');
-  const skirt = material('saia de tecido vinho', '#6e4943', (c, n) => {
-    cotton(c, n); for (let x = 0; x < n; x += 16) { c.fillStyle = 'rgba(39,25,23,.07)'; c.fillRect(x, 0, 3, n); }
-  });
-  const shirt = material('camisa listrada do pai', '#afa78f', (c, n) => {
+  const skirt = floral;
+  const apron = material('avental claro bordado da mãe', '#d0c4a8', (c, n) => {
     cotton(c, n);
-    for (let y = 10; y < n; y += 31) { c.fillStyle = '#8a8878'; c.fillRect(0, y, n, 3); c.fillStyle = '#9b9683'; c.fillRect(0, y + 5, n, 2); c.fillStyle = '#c0b79d'; c.fillRect(0, y + 10, n, 2); }
+    c.strokeStyle = '#9e8a70'; c.lineWidth = 1; c.strokeRect(3, 3, n - 6, n - 6);
+    for (const x of [19, 40, 65, 88, 111]) {
+      const y = 101 + (x % 3) * 4;
+      c.strokeStyle = '#7f8562'; c.beginPath(); c.moveTo(x, y + 7); c.lineTo(x + 2, y - 3); c.stroke();
+      c.fillStyle = '#9f6b57';
+      for (let i = 0; i < 5; i++) { const a = i * Math.PI * 2 / 5; c.fillRect(x + Math.cos(a) * 3, y + Math.sin(a) * 3, 3, 3); }
+      c.fillStyle = '#c2a66e'; c.fillRect(x, y, 2, 2);
+    }
+  });
+  const shirt = material('camisa xadrez discreta do pai', '#afa78f', (c, n) => {
+    cotton(c, n);
+    for (let at = 6; at < n; at += 24) {
+      c.fillStyle = 'rgba(101,106,101,.32)'; c.fillRect(0, at, n, 6); c.fillRect(at, 0, 6, n);
+      c.fillStyle = 'rgba(214,204,177,.45)'; c.fillRect(0, at + 8, n, 2); c.fillRect(at + 8, 0, 2, n);
+      c.fillStyle = 'rgba(91,91,80,.25)'; c.fillRect(0, at + 15, n, 1); c.fillRect(at + 15, 0, 1, n);
+    }
   });
   const trousers = material('calça de sarja', '#4c4c46', cotton);
   const leather = material('couro marrom dos calçados', '#483a2d', (c, n) => {
@@ -104,11 +117,19 @@ export function parentMaterials(scene: Scene) {
   const hair = material('cabelo castanho natural', '#372c25', (c, n) => {
     for (let i = 0; i < 90; i++) { c.strokeStyle = i % 3 ? 'rgba(143,111,77,.085)' : 'rgba(13,10,9,.12)'; c.lineWidth = 1; c.beginPath(); const x = i / 90 * n; c.moveTo(x, 0); c.bezierCurveTo(x - 6, 37, x + 8, 91, x + 1, n); c.stroke(); }
   });
+  const fatherHair = material('cabelo escuro com têmporas grisalhas', '#352f28', (c, n) => {
+    for (let i = 0; i < 110; i++) {
+      const x = i / 110 * n, temple = (x > n * .18 && x < n * .3) || (x > n * .7 && x < n * .82);
+      c.strokeStyle = temple && i % 3 === 0 ? 'rgba(183,179,157,.62)' : i % 3 ? 'rgba(147,127,99,.16)' : 'rgba(13,10,9,.18)';
+      c.beginPath(); c.moveTo(x, 0); c.bezierCurveTo(x - 3, 30, x + 4, 75, x + 1, temple ? n * .66 : n); c.stroke();
+    }
+  });
   const eyeWhite = material('branco natural dos olhos', '#c5c0ad'), iris = material('íris castanha', '#554c35');
   const pupil = material('pupilas e linha dos cílios', '#302b25');
   const upperLip = material('contorno dos lábios', '#815d50'), lowerLip = material('lábio inferior', '#a67c68');
   const steel = material('relógio de pulso', '#8e8c7e'); steel.specularColor.set(.22, .2, .16); steel.specularPower = 40;
-  return { skin, motherFace, fatherFace, skinShade, skinLight, floral, collar, seam, skirt, shirt, trousers, leather, sole, hair, eyeWhite, iris, pupil, upperLip, lowerLip, steel,
+  const mouthInside = material('interior escuro da boca', '#422e29'), coffee = material('café coado', '#3f2a1c');
+  return { skin, motherFace, fatherFace, skinShade, skinLight, floral, collar, seam, skirt, apron, shirt, trousers, leather, sole, hair, fatherHair, eyeWhite, iris, pupil, upperLip, lowerLip, mouthInside, coffee, steel,
     dispose() { for (const m of materials) m.dispose(false, false); for (const t of textures) t.dispose(); } };
 }
 export type ParentMaterials = ReturnType<typeof parentMaterials>;

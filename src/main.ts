@@ -13,6 +13,8 @@ import { createAudio } from './game/audio';
 import { loadSettings, storeSettings } from './game/settings';
 import { BED_POSE } from './game/layout';
 import { HOME_RESUME_POSITION } from './game/livingRoomPlacement';
+import { BREAKFAST_SEAT } from './game/kitchenLayout';
+import { createBreakfastSeat, breakfastSpeechDuration } from './game/breakfast';
 import type { Settings } from './game/types';
 import { buildChapterWorld } from './scene/chapterWorld';
 import { createChapterProgress, createDialogue, breakfastConversation, breakfastChoices, schoolClue, airportGoodbye, type StoryBeat, type StoryChoice } from './game/narrative';
@@ -41,6 +43,7 @@ let transitionKind: 'drive'|'arrival'='arrival';
 let pendingAirportDialogue=false;
 let pendingTownTravel=false;
 let freshStartRequested=false;
+let currentSpeechBeat: StoryBeat | null = null, speechUntil = 0;
 const recordError = (message: string) => { if (!errors.includes(message) && errors.length < 20) errors.push(message); };
 window.addEventListener('error', event => recordError(event.message));
 window.addEventListener('unhandledrejection', event => recordError(String(event.reason?.message ?? event.reason)));
@@ -76,6 +79,7 @@ try {
   environment.addDoorMeshes(door.target.meshes);
   const interactions = createInteractions(scene, camera, [door.target, ...environment.targets, ...chapterWorld.targets]);
   const player = createPlayer(canvas, camera, () => settings, () => [door.collider()], () => audio.play('foot'));
+  const breakfast = createBreakfastSeat(camera, player, BREAKFAST_SEAT);
   player.setActive(false);
 
   function applySettings() {
@@ -119,8 +123,9 @@ try {
   function resumeGame() {
     if (phase !== 'paused') return;
     el<HTMLDialogElement>('pauseMenu').close(); phase = beforePause; last = performance.now();
-    audio.pause(false); player.setActive(phase === 'playing' && !dialogue.active);
-    if ((phase === 'playing' && !dialogue.active) || phase === 'opening') player.requestPointerLock();
+    audio.pause(false); player.setActive(phase === 'playing' && (!dialogue.active || breakfast.state === 'seated'));
+    player.setMovementEnabled(breakfast.state === 'standing');
+    if ((phase === 'playing' && (!dialogue.active || breakfast.state === 'seated') && !dialogue.choices.length) || phase === 'opening') player.requestPointerLock();
   }
   function beginScene() {
     if (!ready) return;
@@ -132,7 +137,8 @@ try {
     subtitleUntil = examineUntil = 0; examined.clear(); objective.reset(); door.reset(); environment.setTelevision(false); environment.refreshShadows(); environment.setRoomLight(true); environment.setHallLight(true);
     chapterStage=chapter.mission==='airport-gate'?'airport':chapter.mission==='plane-seat'?'plane':chapter.mission==='find-host'?'town':'home';
     chapterWorld.activate(chapterStage);dialogue.close();
-    interactions.clear(); player.reset(); player.setActive(false); audio.reset(); audio.pause(false); audio.unlock();
+    interactions.clear(); player.reset(); breakfast.reset(); player.setActive(false); audio.reset(); audio.pause(false); audio.unlock();
+    currentSpeechBeat = null; speechUntil = 0; selectedChoice = null;
     camera.position.set(BED_POSE.position.x, BED_POSE.position.y, BED_POSE.position.z);
     camera.rotation.set(BED_POSE.pitch, BED_POSE.yaw, BED_POSE.roll);
     el('startScreen').hidden = true; el('endScreen').hidden = true; el('hud').hidden = false;
@@ -165,7 +171,8 @@ try {
   }
   function renderDialogue() {
     const box=el('dialogueBox'),current=dialogue.current;
-    if(!current){box.hidden=true;return;}
+    if(!current){box.hidden=true;currentSpeechBeat=null;speechUntil=0;return;}
+    if(current!==currentSpeechBeat){currentSpeechBeat=current;speechUntil=worldTime+breakfastSpeechDuration(current.text);}
     box.hidden=false;el('dialogueSpeaker').textContent=current.speaker;el('dialogueText').textContent=current.text;
     const options=el('dialogueChoices');options.replaceChildren();
     const choices=dialogue.choices;
@@ -174,15 +181,23 @@ try {
       button.onclick=()=>advanceDialogue(index);options.append(button);
     }
     el('dialogueHint').textContent=choices.length?'ESCOLHA UMA RESPOSTA':'E · CONTINUAR';
+    if(breakfast.state==='seated'){
+      if(choices.length)releaseMouse();else player.requestPointerLock();
+    }
   }
   function startDialogue(lines: StoryBeat[], choices: StoryChoice[] = []) {
     if(!dialogue.start(lines,choices,choice=>{selectedChoice=choice;chapter.select(choice.id);}))return;
-    player.setActive(false);player.clearInput();releaseMouse();interactions.clear();el('reticle').hidden=true;renderDialogue();
+    player.setActive(breakfast.state==='seated');
+    if(breakfast.state==='seated')player.setMovementEnabled(false);
+    player.clearInput();
+    if(breakfast.state!=='seated')releaseMouse();
+    interactions.clear();el('reticle').hidden=true;renderDialogue();
   }
   function advanceDialogue(choiceIndex=-1) {
     const result=dialogue.advance(choiceIndex);
     if(!result.done){renderDialogue();return;}
     el('dialogueBox').hidden=true;
+    currentSpeechBeat=null;speechUntil=0;
     if(pendingTownTravel){pendingTownTravel=false;travelTo('town','find-host');return;}
     if(selectedChoice&&chapter.mission==='talk-parents'){
       const followup=[selectedChoice.reply,...schoolClue];selectedChoice=null;
@@ -192,7 +207,8 @@ try {
     }
     if(chapter.mission==='talk-parents') { chapter.advance('pack-suitcase');el('objectiveText').textContent=chapter.label;el('objectiveState').textContent='NOVA MISSÃO'; }
     if(chapterStage==='town'&&chapter.mission==='find-host'){chapter.advance('complete');finishScene();return;}
-    player.setActive(true);el('reticle').hidden=false;player.requestPointerLock();
+    player.setActive(true);player.setMovementEnabled(breakfast.state==='standing');
+    el('reticle').hidden=false;player.requestPointerLock();
   }
   function travelTo(zone:'airport'|'plane'|'town', mission:'airport-gate'|'plane-seat'|'find-host') {
     environment.setTelevision(false);
@@ -210,9 +226,18 @@ try {
   }
   function activateInteraction() {
     if (phase !== 'playing'||dialogue.active) return;
+    if(breakfast.state==='seated'){breakfast.stand();interactions.clear();return;}
+    if(breakfast.state!=='standing')return;
     const result = interactions.activate();
-    if(result?.id==='parents'&&chapter.mission==='talk-parents'){selectedChoice=null;startDialogue(breakfastConversation,breakfastChoices);return;}
-    if(result?.id==='suitcase'&&chapter.mission==='pack-suitcase'){travelByCar();return;}
+    if(result?.id==='breakfast-chair'&&chapter.mission==='talk-parents'){
+      const distance=Math.hypot(player.position.x-BREAKFAST_SEAT.approach.x,player.position.z-BREAKFAST_SEAT.approach.z);
+      if(distance<=1.1){selectedChoice=null;breakfast.sit();interactions.clear();}
+      else{el('examine').textContent='Aproxime-se da frente da cadeira para se sentar.';examineUntil=worldTime+3;el('examine').hidden=false;}
+      return;
+    }
+    if(result?.id==='parents'&&chapter.mission==='talk-parents'){
+      el('examine').textContent='Vou me sentar à mesa para tomar café com meus pais.';examineUntil=worldTime+3;el('examine').hidden=false;return;
+    }
     if(result?.id==='gate'&&chapter.mission==='airport-gate'){travelTo('plane','plane-seat');return;}
     if(result?.id==='seat'&&chapter.mission==='plane-seat'){
       pendingTownTravel=true;
@@ -265,7 +290,7 @@ try {
   });
 
   Object.defineProperty(window, '__INTERCAMBIO__', { configurable: true, get: () => ({
-    build:'chapter1-living-room-direct-landing-1',phase, introTime, duration: OPENING_DURATION, mission: objective.state, chapterMission: chapter.mission, chapterStage, dialogue: dialogue.active,
+    build:'chapter1-breakfast-compact-1',phase, introTime, duration: OPENING_DURATION, mission: objective.state, chapterMission: chapter.mission, chapterStage, dialogue: dialogue.active,
     position: { x: camera.position.x, y: camera.position.y, z: camera.position.z },
     rotation: { yaw: camera.rotation.y, pitch: camera.rotation.x, roll: camera.rotation.z },
     horizonTilt: camera.getDirection(Vector3.Right()).y,
@@ -277,6 +302,7 @@ try {
     meshes: scene.meshes.length, vertices: scene.getTotalVertices(), errors: [...errors], dialogueAudio: false,
     livingRoom: environment.livingRoomDiagnostics, hallway: environment.hallwayDiagnostics, bedroom: environment.bedroomDiagnostics, kitchen: chapterWorld.kitchenDiagnostics, dialogueSpeaker: dialogue.current?.speaker ?? null,
     audio: audio.diagnostics,
+    breakfast: { ...breakfast.diagnostics, speechRemaining: Math.max(0,speechUntil-worldTime), movementEnabled: breakfast.state==='standing'&&!dialogue.active },
   }) });
 
   engine.runRenderLoop(() => {
@@ -304,9 +330,13 @@ try {
       door.update(dt, player.position);
       if (Math.abs(door.angle - previousDoorAngle) > 1e-7) environment.refreshShadows();
       player.update(dt);
-      const target = dialogue.active?null:interactions.update();
-      el('interaction').hidden = !target;
+      const seatEvent=breakfast.update(dt);
+      if(seatEvent==='seated')startDialogue(breakfastConversation,breakfastChoices);
+      const target = dialogue.active||breakfast.state!=='standing'?null:interactions.update();
+      const canStand=breakfast.state==='seated'&&!dialogue.active;
+      el('interaction').hidden = !target&&!canStand;
       if (target) el('interactionText').textContent = target.label();
+      else if(canStand)el('interactionText').textContent='Levantar da mesa';
       el('objective').classList.toggle('compact', worldTime - playingAt > 5);
       el('controlsHint').hidden = worldTime - playingAt > 9;
       if (objective.update(player.position)) {
@@ -335,8 +365,8 @@ try {
     }
     el('subtitle').hidden = !settings.subtitles || worldTime >= subtitleUntil || phase === 'ready' || phase === 'complete';
     if (worldTime >= examineUntil) el('examine').hidden = true;
-    chapterWorld.animate(worldTime,dialogue.current?.speaker,camera.position);
-    el('captureMouse').hidden = phase !== 'playing' || dialogue.active || document.pointerLockElement === canvas;
+    if(phase!=='paused')chapterWorld.animate(worldTime,phase==='playing'&&dialogue.active&&worldTime<speechUntil?dialogue.current?.speaker:undefined,camera.position,dialogue.current?.text);
+    el('captureMouse').hidden = phase !== 'playing' || (dialogue.active&&breakfast.state!=='seated') || dialogue.choices.length>0 || document.pointerLockElement === canvas;
     audio.updateListener(camera);
     scene.render(); frameCount++;
     canvas.dataset.phase = phase; canvas.dataset.frames = String(frameCount);
