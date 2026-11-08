@@ -166,7 +166,9 @@ function hair(part: ParentPart, mother: boolean, m: ParentMaterials) {
       const frontHairline = mother ? .232 + Math.sin(a * 2 + .35) * .009 : .225 + Math.abs(Math.sin(a)) * .025;
       const backHairline = mother ? -.055 + Math.min(front, 0) * .015 : .121 + Math.min(front, 0) * .031;
       const bottom = backHairline + (frontHairline - backHairline) * smooth;
-      const radius = [1, 1.035, 1.04, .99, .85, .59, .10][row];
+      // The lower rear hairline makes these rows cross the wider part of the
+      // cranium. Keep the shell outside it when viewed from the rear bench.
+      const radius = [1, 1.035, 1.04, .99, .98, mother ? .92 : .82, .10][row];
       const curl = mother ? Math.sin(a * 11 + t * 3.2) * .0042 * (1 - t * .5) : Math.sin(a * 3 + t) * .0015;
       const width = (mother ? .113 : .109) * radius + curl;
       const depth = (front > 0 ? .091 : mother ? .118 : .109) * radius + curl + (mother && front < 0 ? .012 * (1 - t) : 0);
@@ -549,7 +551,7 @@ export function createParents(scene: Scene, parent: TransformNode) {
           const distance = Math.hypot(dx, dz);
           if (distance < 4 && distance > .15) {
             const delta = Math.atan2(dx, dz) - actor.root.rotation.y;
-            const limit = inCar ? .35 : .68;
+            const limit = inCar ? (mother ? 1.0 : .35) : .68;
             targetYaw = Math.max(-limit, Math.min(limit, Math.atan2(Math.sin(delta), Math.cos(delta))));
             const eyeY = actor.head.position.y + .145;
             targetPitch = Math.max(-.18, Math.min(.14, -Math.atan2(observer.y - eyeY, distance)));

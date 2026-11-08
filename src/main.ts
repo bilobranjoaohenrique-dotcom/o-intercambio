@@ -17,6 +17,7 @@ import { BREAKFAST_SEAT } from './game/kitchenLayout';
 import { createBreakfastSeat, breakfastSpeechDuration } from './game/breakfast';
 import { canEnterFamilyCar, isTravelBagTaken, setTravelBagTaken } from './game/garageProgress';
 import { parentsLocationForProgress } from './game/parentsDeparture';
+import { CAR_BACK_SEAT } from './game/garageLayout';
 import type { Settings } from './game/types';
 import { buildChapterWorld } from './scene/chapterWorld';
 import { createChapterProgress, createDialogue, breakfastConversation, breakfastChoices, schoolClue, airportGoodbye, type StoryBeat, type StoryChoice } from './game/narrative';
@@ -40,9 +41,10 @@ const objective = createBreakfastObjective();
 const chapter = createChapterProgress();
 const dialogue = createDialogue();
 let selectedChoice: StoryChoice | null = null;
-let chapterStage: 'home'|'car'|'airport'|'plane'|'town'='home';
-let transitionKind: 'drive'|'arrival'|'garage-departure'|'parents-departure'='arrival';
+let chapterStage: 'home'|'parked-car'|'car'|'airport'|'plane'|'town'='home';
+let transitionKind: 'drive'|'arrival'|'car-boarding'|'garage-departure'|'parents-departure'='arrival';
 let parentsTransferApplied=false;
+let carBoardingApplied=false;
 let pendingAirportDialogue=false;
 let pendingTownTravel=false;
 let freshStartRequested=false;
@@ -117,6 +119,11 @@ try {
   window.addEventListener('resize', resize);
 
   function releaseMouse() { if (document.pointerLockElement === canvas) document.exitPointerLock(); }
+  function isInParkedCar() { return chapterStage==='parked-car'&&chapter.mission==='car-ready'; }
+  function adoptCarSeat() {
+    player.teleport(CAR_BACK_SEAT.position,CAR_BACK_SEAT.yaw);
+    camera.rotation.x=CAR_BACK_SEAT.pitch;player.adoptCameraPose();player.setMovementEnabled(false);
+  }
   function pauseGame(showSettings = false) {
     if (phase === 'paused' || phase === 'complete') return;
     beforePause = phase; phase = 'paused'; player.setActive(false); player.clearInput(); audio.pause(true);
@@ -130,7 +137,7 @@ try {
     if (phase !== 'paused') return;
     el<HTMLDialogElement>('pauseMenu').close(); phase = beforePause; last = performance.now();
     audio.pause(false); player.setActive(phase === 'playing' && (!dialogue.active || breakfast.state === 'seated'));
-    player.setMovementEnabled(breakfast.state === 'standing');
+    player.setMovementEnabled(breakfast.state === 'standing'&&!isInParkedCar());
     if ((phase === 'playing' && (!dialogue.active || breakfast.state === 'seated') && !dialogue.choices.length) || phase === 'opening') player.requestPointerLock();
   }
   function beginScene() {
@@ -140,12 +147,12 @@ try {
     freshStartRequested=false;
     const resumed=chapter.mission!=='breakfast';
     setTravelBagTaken(chapter.completed.includes('pack-suitcase'));
-    chapterWorld.setParentsLocation(parentsLocationForProgress(chapter.mission,chapter.completed));parentsTransferApplied=false;
+    chapterWorld.setParentsLocation(parentsLocationForProgress(chapter.mission,chapter.completed));parentsTransferApplied=false;carBoardingApplied=false;
     environment.syncTravelBag();
     phase = resumed?'playing':'opening'; beforePause = phase; introTime = worldTime = endingTime = transitionTime = 0;
     subtitleUntil = examineUntil = 0; examined.clear(); objective.reset(); door.reset(); environment.setTelevision(false); environment.refreshShadows(); environment.setRoomLight(true); environment.setHallLight(true);
-    chapterStage=chapter.mission==='airport-gate'?'airport':chapter.mission==='plane-seat'?'plane':chapter.mission==='find-host'?'town':'home';
-    chapterWorld.activate(chapterStage);dialogue.close();
+    chapterStage=chapter.mission==='car-ready'?'parked-car':chapter.mission==='airport-gate'?'airport':chapter.mission==='plane-seat'?'plane':chapter.mission==='find-host'?'town':'home';
+    chapterWorld.activate(chapterStage==='parked-car'?'home':chapterStage);dialogue.close();
     interactions.clear(); player.reset(); breakfast.reset(); player.setActive(false); audio.reset(); audio.pause(false); audio.unlock();
     currentSpeechBeat = null; speechUntil = 0; selectedChoice = null;
     camera.position.set(BED_POSE.position.x, BED_POSE.position.y, BED_POSE.position.z);
@@ -156,8 +163,9 @@ try {
     el('sceneFade').style.opacity = '0'; setEyes(0);
     samples = []; last = performance.now();
     if(resumed){
-      const point=chapterStage==='home'?HOME_RESUME_POSITION:chapterWorld.teleportPoint(chapterStage);
+      const point=chapterStage==='home'?HOME_RESUME_POSITION:chapterStage==='parked-car'?CAR_BACK_SEAT.position:chapterWorld.teleportPoint(chapterStage);
       player.teleport(point);player.setActive(true);setEyes(1);el('objectiveState').textContent='OBJETIVO ATUALIZADO';
+      if(isInParkedCar())adoptCarSeat();
       el('objectiveText').textContent=chapter.label;el('objective').hidden=false;el('reticle').hidden=false;
       document.documentElement.style.setProperty('--blur','0px');playingAt=worldTime;
     }
@@ -219,11 +227,12 @@ try {
       beginParentsDeparture();return;
     }
     if(chapterStage==='town'&&chapter.mission==='find-host'){chapter.advance('complete');finishScene();return;}
-    player.setActive(true);player.setMovementEnabled(breakfast.state==='standing');
+    player.setActive(true);player.setMovementEnabled(breakfast.state==='standing'&&!isInParkedCar());
     el('reticle').hidden=false;player.requestPointerLock();
   }
   function travelTo(zone:'airport'|'plane'|'town', mission:'airport-gate'|'plane-seat'|'find-host') {
     environment.setTelevision(false);
+    player.setMovementEnabled(true);
     phase='transition';transitionKind='arrival';transitionTime=0;player.setActive(false);interactions.clear();el('interaction').hidden=true;el('dialogueBox').hidden=true;
     el('sceneFade').style.opacity='1';chapterStage=zone;chapterWorld.activate(zone);player.teleport(chapterWorld.teleportPoint(zone));
     chapter.advance(mission);el('objectiveText').textContent=chapter.label;el('objectiveState').textContent='NOVA MISSÃO';el('objective').classList.remove('compact');
@@ -245,13 +254,19 @@ try {
   }
   function enterGarageCar() {
     environment.setTelevision(false);
-    phase='transition';transitionKind='garage-departure';transitionTime=0;
+    phase='transition';transitionKind='car-boarding';transitionTime=0;carBoardingApplied=false;
     player.setActive(false);player.clearInput();interactions.clear();releaseMouse();
     el('interaction').hidden=true;el('reticle').hidden=true;el('examine').hidden=true;
-    el('sceneFade').style.opacity='0';audio.play('engine');
+    el('sceneFade').style.opacity='0';
+  }
+  function continueCarTrip() {
+    phase='transition';transitionKind='garage-departure';transitionTime=0;
+    player.setActive(false);player.clearInput();interactions.clear();releaseMouse();
+    el('interaction').hidden=true;el('reticle').hidden=true;el('sceneFade').style.opacity='0';audio.play('engine');
   }
   function activateInteraction() {
     if (phase !== 'playing'||dialogue.active) return;
+    if(isInParkedCar()){continueCarTrip();return;}
     if(breakfast.state==='seated'){breakfast.stand();interactions.clear();return;}
     if(breakfast.state!=='standing')return;
     const result = interactions.activate();
@@ -326,7 +341,7 @@ try {
   });
 
   Object.defineProperty(window, '__INTERCAMBIO__', { configurable: true, get: () => ({
-    build:'chapter1-parents-farewell-1',phase, introTime, duration: OPENING_DURATION, mission: objective.state, chapterMission: chapter.mission, chapterStage, dialogue: dialogue.active,
+    build:'chapter1-car-interior-1',phase, introTime, duration: OPENING_DURATION, mission: objective.state, chapterMission: chapter.mission, chapterStage, dialogue: dialogue.active,
     position: { x: camera.position.x, y: camera.position.y, z: camera.position.z },
     rotation: { yaw: camera.rotation.y, pitch: camera.rotation.x, roll: camera.rotation.z },
     horizonTilt: camera.getDirection(Vector3.Right()).y,
@@ -342,6 +357,7 @@ try {
     garage: chapterWorld.garageDiagnostics, luggageCollected: isTravelBagTaken(),
     laundry: chapterWorld.laundryDiagnostics,
     family: chapterWorld.familyDiagnostics,
+    carSeat: { occupied: isInParkedCar(), pose: CAR_BACK_SEAT },
   }) });
 
   engine.runRenderLoop(() => {
@@ -371,14 +387,16 @@ try {
       player.update(dt);
       const seatEvent=breakfast.update(dt);
       if(seatEvent==='seated')startDialogue(breakfastConversation,breakfastChoices);
-      const target = dialogue.active||breakfast.state!=='standing'?null:interactions.update();
+      const seatedInCar=isInParkedCar();
+      const target = seatedInCar||dialogue.active||breakfast.state!=='standing'?null:interactions.update();
       const canStand=breakfast.state==='seated'&&!dialogue.active;
-      el('interaction').hidden = !target&&!canStand;
-      if (target) el('interactionText').textContent = target.label();
+      el('interaction').hidden = !target&&!canStand&&!seatedInCar;
+      if(seatedInCar)el('interactionText').textContent='Seguir para o aeroporto';
+      else if (target) el('interactionText').textContent = target.label();
       else if(canStand)el('interactionText').textContent='Levantar da mesa';
       el('objective').classList.toggle('compact', worldTime - playingAt > 5);
-      el('controlsHint').hidden = worldTime - playingAt > 9;
-      if (objective.update(player.position)) {
+      el('controlsHint').hidden = seatedInCar||worldTime - playingAt > 9;
+      if (!seatedInCar&&objective.update(player.position)) {
         chapter.advance('talk-parents');el('objectiveState').textContent='NOVA MISSÃO';el('objectiveText').textContent=chapter.label;el('objective').classList.remove('compact');
       }
     } else if (phase === 'transition') {
@@ -390,6 +408,16 @@ try {
         if(transitionTime>=1.30&&breakfast.state==='standing'){
           phase='playing';playingAt=worldTime;el('sceneFade').style.opacity='0';el('reticle').hidden=false;
           player.setActive(true);player.setMovementEnabled(true);player.clearInput();player.requestPointerLock();
+        }
+      } else if(transitionKind==='car-boarding'){
+        el('sceneFade').style.opacity=String(transitionTime<.60?Math.min(1,transitionTime/.45):Math.max(0,1-(transitionTime-.60)/.60));
+        if(!carBoardingApplied&&transitionTime>=.45){
+          chapterStage='parked-car';chapter.advance('car-ready');adoptCarSeat();carBoardingApplied=true;
+          el('objectiveState').textContent='OBJETIVO ATUALIZADO';el('objectiveText').textContent=chapter.label;el('objective').classList.remove('compact');
+        }
+        if(transitionTime>=1.20){
+          phase='playing';playingAt=worldTime;el('sceneFade').style.opacity='0';el('reticle').hidden=false;
+          player.setActive(true);player.setMovementEnabled(false);player.clearInput();player.requestPointerLock();
         }
       } else if(transitionKind==='garage-departure'){
         el('sceneFade').style.opacity=String(Math.min(1,transitionTime/.45));

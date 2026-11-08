@@ -165,6 +165,12 @@ try {
   await aimInteraction(page, 'family-car', FAMILY_CAR_INTERACTION);
   assert.match(await page.locator('#interactionText').textContent(), /Entrar no carro/i);
   await page.keyboard.press('KeyE');
+  await page.waitForFunction(() => window.__INTERCAMBIO__.chapterStage === 'parked-car' && window.__INTERCAMBIO__.phase === 'playing', null, { timeout: 90000 });
+  const seatedInCar = await snapshot(page); familyAt(seatedInCar, 'car');
+  assert.equal(seatedInCar.chapterMission, 'car-ready'); assert.equal(seatedInCar.carSeat.occupied, true);
+  await page.waitForFunction(() => /Seguir para o aeroporto/i.test(document.getElementById('interactionText')?.textContent ?? ''));
+  assert.match(await page.locator('#interactionText').textContent(), /Seguir para o aeroporto/i);
+  await page.keyboard.press('KeyE');
   await page.waitForFunction(() => window.__INTERCAMBIO__.chapterStage === 'airport' && window.__INTERCAMBIO__.phase === 'playing', null, { timeout: 90000 });
   ending = await snapshot(page); assert.equal(ending.chapterMission, 'airport-gate'); assert.equal(ending.dialogueAudio, false);
   assert.deepEqual(ending.errors, []); assertHealthy(session);

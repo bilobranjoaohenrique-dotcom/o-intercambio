@@ -7,6 +7,12 @@ export const GARAGE_WEST_FACE = 4.556;
 export const GARAGE_DOOR = { x: GARAGE.minX, minZ: 14.25, maxZ: 15.25, height: 2.10 } as const;
 export const FAMILY_CAR = { x: 7.25, y: 0, z: 13.75, yaw: Math.PI / 2,
   length: 3.80, width: 1.74, height: 1.45 } as const;
+/** First-person eye pose on the existing rear bench, behind both parents. */
+export const CAR_BACK_SEAT = {
+  position: { x: FAMILY_CAR.x - Math.sin(FAMILY_CAR.yaw) * .75,
+    y: 1.23, z: FAMILY_CAR.z - Math.cos(FAMILY_CAR.yaw) * .75 },
+  yaw: FAMILY_CAR.yaw, pitch: .05,
+} as const;
 export const GARAGE_SHELF = { x: 5.12, z: 12.035, width: 1.10, depth: .33, height: 1.78 } as const;
 export const GARAGE_SOLIDS: readonly Obstacle[] = [
   { x: FAMILY_CAR.x, z: FAMILY_CAR.z, halfWidth: FAMILY_CAR.length / 2, halfDepth: FAMILY_CAR.width / 2 },

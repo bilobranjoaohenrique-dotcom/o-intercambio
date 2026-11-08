@@ -28,8 +28,7 @@ try {
     if (!ready) await new Promise(resolve => setTimeout(resolve, 200));
   }
   if (!ready) throw Error('A prévia do build não iniciou na porta 4181.');
-  // This delivery ends at the upstairs-suitcase objective. Exercise its actual
-  // breakfast interaction instead of replaying unrelated travel chapters.
+  // Exercise breakfast, luggage, visible parents in the parked car and departure.
   await command([fileURLToPath(new URL('../tests/parents-departure-browser.mjs', import.meta.url))], { INTERCAMBIO_URL: 'http://127.0.0.1:4181' });
   console.log('O INTERCÂMBIO: TypeScript, testes, build e fluxo real no navegador concluídos. Inspecione as capturas e as medições em /tmp/o-intercambio-*.');
 } catch (error) {

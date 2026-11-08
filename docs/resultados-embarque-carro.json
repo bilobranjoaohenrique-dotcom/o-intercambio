@@ -1,0 +1,35 @@
+{
+  "build": "chapter1-car-interior-1",
+  "status": "verified in one browser session with test-helper recovery",
+  "checks": {
+    "typescriptAndProductionBuild": "passed",
+    "focusedUnitTests": 13,
+    "runtimeFlow": [
+      "real walk from home to existing car",
+      "same two parents remain visible throughout boarding",
+      "first-person rear-seat mouse look",
+      "WASD cannot leave the seat",
+      "pause and resume retain seat and occupants",
+      "actual checkpoint reload restores car-ready and both parents",
+      "second E explicitly starts existing airport transition",
+      "home and parents disabled only under full opaque departure fade"
+    ],
+    "boardingFrameSamples": 713,
+    "departureFrameSamples": 29,
+    "functionalRuntimeErrors": 0,
+    "functionalConsoleErrors": 0,
+    "functionalFailedAssets": 0,
+    "finalVisualInspection": "passed; both parents visible ahead and hair shell covers the rear cranium"
+  },
+  "capture": "capturas/pais-vista-dentro-carro.png",
+  "environment": "Chromium 154 / Linux / SwiftShader software renderer / Balanced quality",
+  "recoveryNotes": [
+    "The initial browser command stopped on a UI assertion one frame before the interaction text updated. A proper text wait was added to both browser tests. The remaining assertions continued in the same browser via the debug REPL, without replaying the route.",
+    "A final visual-only reload overlapped replacement of dist assets during the hair rebuild and saw three transient shader-chunk 404s. The stable final bundle index-cSWmYoVc.js was then loaded for the final capture with no new runtime, console or asset errors."
+  ],
+  "limits": [
+    "The amended browser script was syntax-checked; it was not replayed end-to-end after recovering the existing session.",
+    "The functional flow preceded the hair-shell-only correction; the production build and the inside-car view were checked again afterward.",
+    "No FPS benchmark or physical GPU/Windows test; other chapter browser suites were not repeated."
+  ]
+}
