@@ -1,0 +1,505 @@
+{
+  "status": "passed",
+  "build": "chapter1-parents-farewell-1",
+  "checks": {
+    "typescriptAndProductionBuild": "passed",
+    "focusedUnitTests": 13,
+    "functionalBrowserFlow": "passed (one complete flow)",
+    "finalVisualCaptures": "passed (two focused views after hair/eye corrections)"
+  },
+  "environment": "Chromium 154/Linux, SwiftShader software renderer, Balanced quality",
+  "flow": [
+    "actual seated conversation and exclusive mouth animation",
+    "exact farewell lines and automatic free movement",
+    "parents move once from kitchen to parked car without visible teleport",
+    "physical ascent, suitcase pickup and descent",
+    "real save reload preserves luggage and car occupants",
+    "actual car-occupant capture",
+    "existing luggage-gated airport transition"
+  ],
+  "dialogue": [
+    {
+      "speaker": "MÃE",
+      "text": "Eu sabia que você ia gostar. Aproveita cada momento."
+    },
+    {
+      "speaker": "PAI",
+      "text": "Engraçado... ainda acho estranho como aquela escola conseguiu nosso contato."
+    },
+    {
+      "speaker": "MÃE",
+      "text": "Foi uma ótima oportunidade. Não fica colocando coisa na cabeça dele."
+    },
+    {
+      "speaker": "MÃE",
+      "text": "Filho, sobe lá e pega tua mala. Eu e teu pai vamos te esperar no carro, tá?"
+    },
+    {
+      "speaker": "PAI",
+      "text": "E vê se não esquece o passaporte!"
+    }
+  ],
+  "identityBeforeTransfer": [
+    {
+      "speaker": "MÃE",
+      "actorId": 5447,
+      "headId": 5466
+    },
+    {
+      "speaker": "PAI",
+      "actorId": 5560,
+      "headId": 5579
+    }
+  ],
+  "transferFrames": [
+    {
+      "location": "kitchen",
+      "fade": 0.222222,
+      "kitchenVisible": 2,
+      "carVisible": 0
+    },
+    {
+      "location": "kitchen",
+      "fade": 0.444444,
+      "kitchenVisible": 2,
+      "carVisible": 0
+    },
+    {
+      "location": "kitchen",
+      "fade": 0.666667,
+      "kitchenVisible": 2,
+      "carVisible": 0
+    },
+    {
+      "location": "kitchen",
+      "fade": 0.888889,
+      "kitchenVisible": 2,
+      "carVisible": 0
+    },
+    {
+      "location": "car",
+      "fade": 1,
+      "kitchenVisible": 0,
+      "carVisible": 2
+    },
+    {
+      "location": "car",
+      "fade": 1,
+      "kitchenVisible": 0,
+      "carVisible": 2
+    },
+    {
+      "location": "car",
+      "fade": 0.923077,
+      "kitchenVisible": 0,
+      "carVisible": 2
+    },
+    {
+      "location": "car",
+      "fade": 0.769231,
+      "kitchenVisible": 0,
+      "carVisible": 2
+    },
+    {
+      "location": "car",
+      "fade": 0.615385,
+      "kitchenVisible": 0,
+      "carVisible": 2
+    },
+    {
+      "location": "car",
+      "fade": 0.461538,
+      "kitchenVisible": 0,
+      "carVisible": 2
+    },
+    {
+      "location": "car",
+      "fade": 0.307692,
+      "kitchenVisible": 0,
+      "carVisible": 2
+    },
+    {
+      "location": "car",
+      "fade": 0.196769,
+      "kitchenVisible": 0,
+      "carVisible": 2
+    },
+    {
+      "location": "car",
+      "fade": 0.0429231,
+      "kitchenVisible": 0,
+      "carVisible": 2
+    }
+  ],
+  "departed": {
+    "mission": "pack-suitcase",
+    "family": {
+      "location": "car",
+      "parents": [
+        {
+          "actorId": 5447,
+          "headId": 5466,
+          "speaker": "MÃE",
+          "meshes": 47,
+          "vertices": 3806,
+          "triangles": 5983,
+          "position": {
+            "x": 7.35,
+            "y": 0,
+            "z": 13.385
+          },
+          "yaw": 1.5707963267948966,
+          "seated": true,
+          "speaking": false,
+          "location": "car",
+          "visible": true,
+          "apron": false,
+          "blink": 0,
+          "mouthOpen": 0,
+          "jawAngle": 0,
+          "expression": "neutral",
+          "smile": 0.1981453833722041,
+          "gesture": 0,
+          "serving": 0,
+          "hasCoffeePot": false,
+          "posture": {
+            "x": -0.0015240591872784318,
+            "z": 0.0011141350135128389
+          },
+          "head": {
+            "x": 0.005999920443985685,
+            "y": -0.017955295124802036,
+            "z": -0.002164084347648098
+          },
+          "arms": [
+            {
+              "x": -0.0007752515932053759,
+              "z": -0.000991846265023763
+            },
+            {
+              "x": 0.00011264708539527314,
+              "z": 0.0006431339951731175
+            }
+          ],
+          "jawPosition": {
+            "x": 0,
+            "y": 0.066,
+            "z": -0.015
+          },
+          "coffeeFlow": false
+        },
+        {
+          "actorId": 5560,
+          "headId": 5579,
+          "speaker": "PAI",
+          "meshes": 51,
+          "vertices": 3365,
+          "triangles": 5226,
+          "position": {
+            "x": 7.35,
+            "y": 0,
+            "z": 14.115
+          },
+          "yaw": 1.5707963267948966,
+          "seated": true,
+          "speaking": false,
+          "location": "car",
+          "visible": true,
+          "apron": false,
+          "blink": 0,
+          "mouthOpen": 0,
+          "jawAngle": 0,
+          "expression": "neutral",
+          "smile": 0.1981214177597528,
+          "gesture": 0,
+          "serving": 0,
+          "hasCoffeePot": false,
+          "posture": {
+            "x": -0.0006420905524195537,
+            "z": 0.002399931721252217
+          },
+          "head": {
+            "x": 0.0034663853979768366,
+            "y": -0.014269455076941717,
+            "z": 0.0035593009819568037
+          },
+          "arms": [
+            {
+              "x": -0.00022516590177772583,
+              "z": -0.0006842567208653293
+            },
+            {
+              "x": 0.0006982047228823536,
+              "z": -0.00024392983366049924
+            }
+          ],
+          "jawPosition": {
+            "x": 0,
+            "y": 0.066,
+            "z": -0.015
+          },
+          "coffeeFlow": false
+        }
+      ],
+      "actorCount": 2,
+      "kitchenVisibleCount": 0,
+      "carVisibleCount": 2
+    },
+    "breakfast": {
+      "state": "standing",
+      "progress": 0,
+      "speechRemaining": 0,
+      "movementEnabled": true
+    }
+  },
+  "pickup": {
+    "mission": "enter-car",
+    "luggageCollected": true
+  },
+  "restored": {
+    "mission": "enter-car",
+    "family": {
+      "location": "car",
+      "parents": [
+        {
+          "actorId": 5447,
+          "headId": 5466,
+          "speaker": "MÃE",
+          "meshes": 47,
+          "vertices": 3806,
+          "triangles": 5983,
+          "position": {
+            "x": 7.35,
+            "y": 0,
+            "z": 13.385
+          },
+          "yaw": 1.5707963267948966,
+          "seated": true,
+          "speaking": false,
+          "location": "car",
+          "visible": true,
+          "apron": false,
+          "blink": 0,
+          "mouthOpen": 0,
+          "jawAngle": 0,
+          "expression": "neutral",
+          "smile": 0,
+          "gesture": 0,
+          "serving": 0,
+          "hasCoffeePot": false,
+          "posture": {
+            "x": 0.0005336557114160725,
+            "z": 0.0009388978418687532
+          },
+          "head": {
+            "x": 0.002598982627058055,
+            "y": 0.004853187805507142,
+            "z": 0.0026905108096337295
+          },
+          "arms": [
+            {
+              "x": 0.0003031533604563804,
+              "z": -0.0004268440036087128
+            },
+            {
+              "x": 0.0009656673195222095,
+              "z": 0.0009915882761495545
+            }
+          ],
+          "jawPosition": {
+            "x": 0,
+            "y": 0.066,
+            "z": -0.015
+          },
+          "coffeeFlow": false
+        },
+        {
+          "actorId": 5560,
+          "headId": 5579,
+          "speaker": "PAI",
+          "meshes": 51,
+          "vertices": 3365,
+          "triangles": 5226,
+          "position": {
+            "x": 7.35,
+            "y": 0,
+            "z": 14.115
+          },
+          "yaw": 1.5707963267948966,
+          "seated": true,
+          "speaking": false,
+          "location": "car",
+          "visible": true,
+          "apron": false,
+          "blink": 0,
+          "mouthOpen": 0,
+          "jawAngle": 0,
+          "expression": "neutral",
+          "smile": 0,
+          "gesture": 0,
+          "serving": 0,
+          "hasCoffeePot": false,
+          "posture": {
+            "x": 0.0014599480883773878,
+            "z": 0.002339040003883465
+          },
+          "head": {
+            "x": 0.005920667510428015,
+            "y": 0.013617651116596406,
+            "z": 0.007048107094960096
+          },
+          "arms": [
+            {
+              "x": 0.0008237534652589852,
+              "z": -0.0009829736952225625
+            },
+            {
+              "x": 0.0009221463324388806,
+              "z": 0.0006857201610267976
+            }
+          ],
+          "jawPosition": {
+            "x": 0,
+            "y": 0.066,
+            "z": -0.015
+          },
+          "coffeeFlow": false
+        }
+      ],
+      "actorCount": 2,
+      "kitchenVisibleCount": 0,
+      "carVisibleCount": 2
+    },
+    "luggageCollected": true
+  },
+  "final": {
+    "phase": "playing",
+    "stage": "airport",
+    "mission": "airport-gate"
+  },
+  "finalVisualFamily": {
+    "location": "car",
+    "parents": [
+      {
+        "actorId": 5447,
+        "headId": 5466,
+        "speaker": "MÃE",
+        "meshes": 47,
+        "vertices": 3942,
+        "triangles": 6207,
+        "position": {
+          "x": 7.35,
+          "y": 0,
+          "z": 13.385
+        },
+        "yaw": 1.5707963267948966,
+        "seated": true,
+        "speaking": false,
+        "location": "car",
+        "visible": true,
+        "apron": false,
+        "blink": 0,
+        "mouthOpen": 0,
+        "jawAngle": 0,
+        "expression": "neutral",
+        "smile": 0.19999999999999998,
+        "gesture": 0,
+        "serving": 0,
+        "hasCoffeePot": false,
+        "posture": {
+          "x": 0.0011985945357114482,
+          "z": 0.0022027154420525903
+        },
+        "head": {
+          "x": -0.17862884853930588,
+          "y": -0.20443113280045333,
+          "z": -0.006283572122373283
+        },
+        "arms": [
+          {
+            "x": 0.00023206934983197172,
+            "z": 0.00026088470973954894
+          },
+          {
+            "x": -0.0006931105848927811,
+            "z": 0.0006713742044350894
+          }
+        ],
+        "jawPosition": {
+          "x": 0,
+          "y": 0.066,
+          "z": -0.015
+        },
+        "coffeeFlow": false
+      },
+      {
+        "actorId": 5560,
+        "headId": 5579,
+        "speaker": "PAI",
+        "meshes": 51,
+        "vertices": 3365,
+        "triangles": 5226,
+        "position": {
+          "x": 7.35,
+          "y": 0,
+          "z": 14.115
+        },
+        "yaw": 1.5707963267948966,
+        "seated": true,
+        "speaking": false,
+        "location": "car",
+        "visible": true,
+        "apron": false,
+        "blink": 0,
+        "mouthOpen": 0,
+        "jawAngle": 0,
+        "expression": "neutral",
+        "smile": 0.19999999999999998,
+        "gesture": 0,
+        "serving": 0,
+        "hasCoffeePot": false,
+        "posture": {
+          "x": 0.0001504493063282249,
+          "z": 0.000626146398663175
+        },
+        "head": {
+          "x": 0.005571411521970841,
+          "y": 0.015338020498497125,
+          "z": -0.0013409774602462477
+        },
+        "arms": [
+          {
+            "x": -0.0004130453141028995,
+            "z": -0.0006296180351669081
+          },
+          {
+            "x": -0.0009895057755519398,
+            "z": 0.0009939269566963554
+          }
+        ],
+        "jawPosition": {
+          "x": 0,
+          "y": 0.066,
+          "z": -0.015
+        },
+        "coffeeFlow": false
+      }
+    ],
+    "actorCount": 2,
+    "kitchenVisibleCount": 0,
+    "carVisibleCount": 2
+  },
+  "errors": [],
+  "consoleErrors": [],
+  "failedAssets": [],
+  "pictures": [
+    "capturas/pais-cafe-atualizados.png",
+    "capturas/pais-esperando-no-carro.png"
+  ],
+  "preservation": "Only parent models, animation/location, parent lighting and body colliders, dialogue/mission labels and controlled farewell were changed. All room architecture, furnishings, principal door and travel sets remain intact.",
+  "limits": [
+    "Original stylized procedural models inspired by the reference images; no external human mesh was supplied.",
+    "The full functional flow ran before the final purely visual hair and eye-placement correction. The final build and two actual views verified those corrections without replaying the sequence.",
+    "No FPS benchmark or physical GPU/Windows verification."
+  ]
+}

@@ -5,6 +5,8 @@ import type { InteractionTarget } from '../game/types';
 import { PARENT_ANCHORS } from '../game/kitchenLayout';
 import { ParentPart, type V3, type BodyRing } from './parentsGeometry';
 import { parentMaterials, type ParentMaterials } from './parentsMaterials';
+import { createCarParentPose } from './parentsCarPose';
+import { CAR_PARENT_ANCHORS, type ParentsLocation } from '../game/parentsDeparture';
 
 type Actor = {
   root: TransformNode; posture: TransformNode; head: TransformNode;
@@ -12,6 +14,8 @@ type Actor = {
   jaw: TransformNode; mouth: TransformNode; brows: TransformNode[]; corners: TransformNode[];
   pot?: TransformNode; stream?: TransformNode; mouthOpen: number; smile: number; gesture: number; serving: number;
   speaking: boolean; expression: 'neutral' | 'attention' | 'warm' | 'concern';
+  kitchenPose: TransformNode; carPose: TransformNode; kitchenArms: TransformNode[]; carArms: TransformNode[];
+  kitchenHeadY: number; carHeadY: number; blinkLids: TransformNode[]; blink: number;
 };
 const mixPoint = (a: V3, b: V3, t: number): V3 => ({
   x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t, z: a.z + (b.z - a.z) * t,
@@ -26,6 +30,20 @@ function shoe(part: ParentPart, x: number, z: number, m: ParentMaterials, mother
     { x, y: .036, z: z + .035, width, front: .126, back: .086 },
   ];
   part.loft('sola recortada do sapato', soleRings, m.sole, 12);
+  if (mother) {
+    part.loft('pé visível na sandália', [
+      { x, y: .035, z: z + .025, width: width * .96, front: .117, back: .078 },
+      { x, y: .061, z: z + .012, width: width * .86, front: .105, back: .066 },
+      { x, y: .086, z, width: ankle, front: .040, back: .046 },
+    ], m.skin, 12);
+    for (const zz of [z + .045, z + .087]) part.tube('tira de couro da sandália', [
+      { x: x - width * .95, y: .043, z: zz, width: .008, depth: .008 },
+      { x: x - width * .35, y: .076, z: zz - .005, width: .008, depth: .008 },
+      { x: x + width * .35, y: .076, z: zz - .005, width: .008, depth: .008 },
+      { x: x + width * .95, y: .043, z: zz, width: .008, depth: .008 },
+    ], m.leather, 6);
+    return;
+  }
   part.loft('cabedal costurado do sapato', [
     { x, y: .035, z: z + .028, width, front: .12, back: .082 },
     { x, y: .068, z: z + .015, width: width * .94, front: .106, back: .078 },
@@ -146,12 +164,12 @@ function hair(part: ParentPart, mother: boolean, m: ParentMaterials) {
       const blend = Math.max(0, Math.min(1, (front + .12) / .65));
       const smooth = blend * blend * (3 - 2 * blend);
       const frontHairline = mother ? .232 + Math.sin(a * 2 + .35) * .009 : .225 + Math.abs(Math.sin(a)) * .025;
-      const backHairline = mother ? .022 + Math.min(front, 0) * .042 : .121 + Math.min(front, 0) * .031;
+      const backHairline = mother ? -.055 + Math.min(front, 0) * .015 : .121 + Math.min(front, 0) * .031;
       const bottom = backHairline + (frontHairline - backHairline) * smooth;
       const radius = [1, 1.035, 1.04, .99, .85, .59, .10][row];
       const curl = mother ? Math.sin(a * 11 + t * 3.2) * .0042 * (1 - t * .5) : Math.sin(a * 3 + t) * .0015;
       const width = (mother ? .113 : .109) * radius + curl;
-      const depth = (front > 0 ? .091 : mother ? .118 : .109) * radius + curl;
+      const depth = (front > 0 ? .091 : mother ? .118 : .109) * radius + curl + (mother && front < 0 ? .012 * (1 - t) : 0);
       positions.push(Math.sin(a) * width, bottom + (.297 - bottom) * t, front * depth - .002);
       uvs.push(i / sides, t);
     }
@@ -164,13 +182,13 @@ function hair(part: ParentPart, mother: boolean, m: ParentMaterials) {
   for (let i = 0; i < sides; i++) indices.push(top, rows * (sides + 1) + i + 1, rows * (sides + 1) + i);
   part.geometry(mother ? 'cabelo ondulado com silhueta e nuca' : 'cabelo curto penteado com entradas', positions, indices, hairMaterial, uvs);
   if (mother) {
-    for (const side of [-1, 1]) for (let j = 0; j < 5; j++) {
-      const y = .025 + j * .039;
+    for (const side of [-1, 1]) for (let j = 0; j < 7; j++) {
+      const y = -.045 + j * .038, shoulderTip = Math.max(0, Math.min(1, -y / .045));
       part.tube('mecha curva na lateral', [
-        { x: side * .106, y: y + .03, z: .039, width: .013, depth: .008 },
-        { x: side * .122, y: y + .018, z: .050, width: .012, depth: .009 },
-        { x: side * .118, y: y - .002, z: .052, width: .011, depth: .009 },
-        { x: side * .106, y: y - .010, z: .040, width: .006, depth: .006 },
+        { x: side * (.106 + shoulderTip * .015), y: y + .03, z: .039 + shoulderTip * .030, width: .013, depth: .008 },
+        { x: side * (.122 + shoulderTip * .025), y: y + .018, z: .050 + shoulderTip * .045, width: .012, depth: .009 },
+        { x: side * (.118 + shoulderTip * .043), y: y - .002, z: .052 + shoulderTip * .060, width: .011, depth: .009 },
+        { x: side * (.106 + shoulderTip * .064), y: y - .010, z: .040 + shoulderTip * .085, width: .006, depth: .006 },
       ], m.hair, 7);
     }
     part.tube('risca lateral discreta da mãe', [
@@ -204,6 +222,11 @@ function hair(part: ParentPart, mother: boolean, m: ParentMaterials) {
       { x: side * .101, y: .168, z: .025 }, { x: side * .110, y: .164, z: .021 },
       { x: side * .109, y: .113, z: .018 }, { x: side * .100, y: .121, z: .030 },
     ], m.hair);
+    for (const side of [-1, 1]) for (let j = 0; j < 5; j++) part.tube('fio grisalho visível na têmpora', [
+      { x: side * (.099 + j * .0016), y: .225 - j * .006, z: .037 - j * .009, width: .0012, depth: .0012 },
+      { x: side * (.111 + j * .0005), y: .182 - j * .003, z: .024 - j * .007, width: .0010, depth: .0010 },
+      { x: side * .108, y: .156 - j * .001, z: .016 - j * .006, width: .0007, depth: .0007 },
+    ], m.hairGrey, 5);
   }
 }
 
@@ -212,9 +235,9 @@ function head(parent: TransformNode, mother: boolean, m: ParentMaterials) {
   node.parent = parent; node.position.set(0, mother ? 1.372 : 1.183, mother ? .018 : .014);
   const p = new ParentPart(node);
   const shape: BodyRing[] = [
-    { y: 0, width: .041, front: .059, back: .052, z: .003 },
-    { y: .026, width: mother ? .073 : .078, front: .072, back: .068, z: .002, flatten: .8 },
-    { y: .066, width: mother ? .087 : .094, front: .078, back: .084, flatten: .65 },
+    { y: 0, width: mother ? .045 : .052, front: .059, back: .052, z: .003 },
+    { y: .026, width: mother ? .074 : .082, front: .074, back: .068, z: .002, flatten: .8 },
+    { y: .066, width: mother ? .089 : .096, front: .080, back: .084, flatten: .65 },
     { y: .116, width: mother ? .097 : .102, front: .084, back: .096, flatten: .55 },
     { y: .170, width: .098, front: .083, back: .103, flatten: .6 },
     { y: .214, width: .092, front: .076, back: .100, flatten: .75 },
@@ -241,7 +264,11 @@ function head(parent: TransformNode, mother: boolean, m: ParentMaterials) {
   const interior = new ParentPart(mouth);
   interior.oval('cavidade da boca', { x: 0, y: 0, z: 0 }, .0235, .007, m.mouthInside, .0005, 12);
   mouth.scaling.y = .025;
-  const brows: TransformNode[] = [], corners: TransformNode[] = [], facialMeshes: Mesh[] = [];
+  const brows: TransformNode[] = [], corners: TransformNode[] = [], blinkLids: TransformNode[] = [], facialMeshes: Mesh[] = [];
+  // Keep the adult eye dimensions. Advance the complete assembly out of the
+  // cheek plane so the skin does not hide the inner sclera at rendered angles.
+  const eyeForward = .004;
+  const ocular = (point: V3): V3 => ({ ...point, z: point.z + eyeForward });
   for (const side of [-1, 1]) {
     p.loft('orelha com lóbulo', [
       { y: .074, x: side * .103, z: -.003, width: .006, front: .012, back: .009 },
@@ -251,22 +278,28 @@ function head(parent: TransformNode, mother: boolean, m: ParentMaterials) {
       { y: .174, x: side * .102, z: -.007, width: .002, front: .005, back: .004 },
     ], m.skin, 10);
     p.oval('concha da orelha', { x: side * .110, y: .126, z: .016 }, .0055, .023, m.skinShade, .002, 8);
+    if (mother) p.oval('brinco pequeno de uso diário', { x: side * .109, y: .077, z: .022 }, .0036, .0051, m.steel, .0018, 10);
     const x = side * .043;
-    p.oval('encaixe suave do olho', { x, y: .145, z: .075 }, .0195, .0100, m.skinShade, .003);
-    p.oval('olho em amêndoa', { x, y: .145, z: .078 }, .0167, .0067, m.eyeWhite, .003);
-    p.oval('íris adulta', { x, y: .145, z: .0823 }, .0074, .0064, m.iris, .0010, 12);
-    p.oval('pupila', { x, y: .145, z: .0840 }, .0035, .0041, m.pupil, .0004, 10);
-    p.oval('reflexo discreto no olho', { x: x - .0016, y: .1468, z: .0848 }, .0009, .0011, m.eyeWhite, .0002, 6);
+    p.oval('encaixe suave do olho', ocular({ x, y: .145, z: .075 }), .0195, .0100, m.skinShade, .003);
+    p.oval('olho em amêndoa', ocular({ x, y: .145, z: .078 }), .0167, .0067, m.eyeWhite, .003);
+    p.oval('íris adulta', ocular({ x, y: .145, z: .0823 }), .0074, .0064, m.iris, .0010, 12);
+    p.oval('pupila', ocular({ x, y: .145, z: .0840 }), .0035, .0041, m.pupil, .0004, 10);
+    p.oval('reflexo discreto no olho', ocular({ x: x - .0016, y: .1468, z: .0848 }), .0009, .0011, m.eyeWhite, .0002, 6);
+    const lid = new TransformNode((mother ? 'mãe' : 'pai') + ' · piscar ' + side, parent.getScene());
+    lid.parent = node; lid.position.set(x, .145, .086 + eyeForward); lid.scaling.y = .001; lid.setEnabled(false); blinkLids.push(lid);
+    const eyelid = new ParentPart(lid);
+    eyelid.oval('pálpebras fechando suavemente', { x: 0, y: 0, z: 0 }, .0186, .0092, m.skin, .001, 12);
+    facialMeshes.push(...eyelid.build());
     p.polygon('pálpebra superior', [
       { x: x - .019, y: .145, z: .077 }, { x: x - .010, y: .153, z: .079 },
       { x: x + .009, y: .153, z: .079 }, { x: x + .019, y: .146, z: .076 },
       { x: x + .012, y: .156, z: .077 }, { x: x - .011, y: .156, z: .077 },
-    ], m.skinShade);
+    ].map(ocular), m.skinShade);
     p.polygon('linha fina de cílios superiores', [
       { x: x - .016, y: .1465, z: .0825 }, { x: x - .007, y: .1512, z: .083 },
       { x: x + .008, y: .151, z: .083 }, { x: x + .016, y: .1465, z: .082 },
       { x: x + .007, y: .1497, z: .0832 }, { x: x - .007, y: .1499, z: .0832 },
-    ], m.pupil);
+    ].map(ocular), m.pupil);
     const brow = new TransformNode((mother ? 'mãe' : 'pai') + ' · sobrancelha ' + side, parent.getScene());
     brow.parent = node; brow.position.set(x, .176, .074); brows.push(brow);
     const eyebrow = new ParentPart(brow);
@@ -280,7 +313,7 @@ function head(parent: TransformNode, mother: boolean, m: ParentMaterials) {
     p.polygon('dobra sutil abaixo do olho', [
       { x: x - .017, y: .132, z: .077 }, { x: x + .013, y: .132, z: .076 },
       { x: x + .014, y: .1308, z: .076 }, { x: x - .015, y: .1305, z: .077 },
-    ], m.skinShade);
+    ].map(ocular), m.skinShade);
   }
   // A closed anatomical nose, including bridge, tip, alae and underside.
   const tip = mother ? .120 : .129;
@@ -311,26 +344,25 @@ function head(parent: TransformNode, mother: boolean, m: ParentMaterials) {
     { x: -.017, y: .068, z: .090 },
   ], m.hair);
   hair(p, mother, m);
-  return { node, jaw, mouth, brows, corners, meshes: [...p.build(), ...lower.build(), ...interior.build(), ...facialMeshes] };
+  return { node, jaw, mouth, brows, corners, blinkLids, meshes: [...p.build(), ...lower.build(), ...interior.build(), ...facialMeshes] };
 }
 
 function body(parent: TransformNode, mother: boolean, m: ParentMaterials): Mesh[] {
   const p = new ParentPart(parent);
   if (mother) {
     for (const side of [-1, 1]) {
-      p.loft('perna abaixo da saia', [
-        { x: side * .095, y: .077, width: .025, front: .034, back: .034 },
-        { x: side * .095, y: .17, width: .031, front: .036, back: .036 },
-        { x: side * .095, y: .32, width: .040, front: .044, back: .043 },
-        { x: side * .095, y: .38, width: .041, front: .046, back: .042 },
-      ], m.skin, 10);
+      p.loft('perna de calça marrom com joelho e barra', [
+        { x: side * .095, y: .093, width: .042, front: .049, back: .046 },
+        { x: side * .095, y: .28, width: .050, front: .060, back: .054 },
+        { x: side * .095, y: .52, width: .058, front: .069, back: .065 },
+        { x: side * .095, y: .76, width: .078, front: .084, back: .085 },
+        { x: side * .095, y: .94, width: .089, front: .096, back: .090 },
+      ], m.skirt, 12);
       shoe(p, side * .095, side > 0 ? .014 : -.006, m, true);
     }
-    p.loft('saia com quadril pregas e barra', [
-      { y: .32, width: .237, front: .15, back: .15, pleat: .035 },
-      { y: .43, width: .242, front: .157, back: .155, pleat: .025 },
-      { y: .65, width: .218, front: .146, back: .15, pleat: .025 },
-      { y: .87, width: .185, front: .125, back: .132, pleat: .01 },
+    p.loft('quadril e cós da calça marrom', [
+      { y: .86, width: .184, front: .119, back: .126 },
+      { y: .94, width: .178, front: .119, back: .123 },
       { y: 1.005, width: .159, front: .112, back: .113 },
     ], m.skirt, 20);
     p.loft('blusa com cintura busto e ombros', [
@@ -425,9 +457,9 @@ function body(parent: TransformNode, mother: boolean, m: ParentMaterials): Mesh[
   ], m.collar);
   p.polygon('prega frontal de botões', [
     { x: -.007, y: top - .068, z: mother ? .144 : .145 }, { x: .007, y: top - .068, z: mother ? .144 : .145 },
-    { x: .007, y: mother ? 1.015 : .71, z: .133 }, { x: -.007, y: mother ? 1.015 : .71, z: .133 },
+    { x: .007, y: mother ? 1.015 : .915, z: .133 }, { x: -.007, y: mother ? 1.015 : .915, z: .133 },
   ], m.collar);
-  for (let i = 0; i < (mother ? 4 : 6); i++) {
+  for (let i = 0; i < (mother ? 4 : 3); i++) {
     const y = top - .105 - i * (mother ? .056 : .064);
     p.oval('botão da camisa', { x: .002, y, z: mother ? .146 : .148 }, .0035, .0035, m.seam, .001, 8);
   }
@@ -443,16 +475,21 @@ function body(parent: TransformNode, mother: boolean, m: ParentMaterials): Mesh[
  * Speech remains entirely in the existing text dialogue system. */
 export function createParents(scene: Scene, parent: TransformNode) {
   const m = parentMaterials(scene), actors: Actor[] = [], meshes: Mesh[] = [];
+  let location: ParentsLocation = 'kitchen';
   for (const [key, mother] of [['mother', true], ['father', false]] as const) {
     const anchor = PARENT_ANCHORS[key], root = new TransformNode(mother ? 'MÃE · personagem humano' : 'PAI · personagem humano', scene);
     root.parent = parent; root.position.set(anchor.position.x, anchor.position.y, anchor.position.z); root.rotation.y = anchor.yaw;
     const posture = new TransformNode((mother ? 'mãe' : 'pai') + ' · postura', scene); posture.parent = root;
-    const torsoMeshes = body(posture, mother, m), face = head(posture, mother, m);
-    const left = arm(posture, mother, -1, m), right = arm(posture, mother, 1, m);
-    const actorMeshes = [...torsoMeshes, ...face.meshes, ...left.meshes, ...right.meshes];
+    const kitchenPose = new TransformNode((mother ? 'mãe' : 'pai') + ' · pose de cozinha', scene); kitchenPose.parent = posture;
+    const torsoMeshes = body(kitchenPose, mother, m), face = head(posture, mother, m);
+    const left = arm(kitchenPose, mother, -1, m), right = arm(kitchenPose, mother, 1, m);
+    const car = createCarParentPose(posture, mother, m); car.node.setEnabled(false);
+    const actorMeshes = [...torsoMeshes, ...face.meshes, ...left.meshes, ...right.meshes, ...car.meshes];
     for (const mesh of actorMeshes) mesh.metadata = { ...mesh.metadata, role: key, anatomicalModel: true };
     actors.push({ root, posture, head: face.node, jaw: face.jaw, mouth: face.mouth, brows: face.brows, corners: face.corners,
       arms: [left.node, right.node], pot: left.pot, stream: left.stream, meshes: actorMeshes,
+      kitchenPose, carPose: car.node, kitchenArms: [left.node, right.node], carArms: car.arms,
+      kitchenHeadY: face.node.position.y, carHeadY: car.headY, blinkLids: face.blinkLids, blink: 0,
       speaker: mother ? 'MÃE' : 'PAI', phase: mother ? .7 : 2.2, lookYaw: 0, lookPitch: 0,
       mouthOpen: 0, smile: 0, gesture: 0, serving: 0, speaking: false, expression: 'neutral' });
     meshes.push(...actorMeshes);
@@ -461,20 +498,39 @@ export function createParents(scene: Scene, parent: TransformNode) {
   const tiny = new Set([m.eyeWhite, m.iris, m.pupil, m.upperLip, m.lowerLip, m.mouthInside, m.coffee, m.skinLight, m.seam, m.steel]);
   const shadowCasters = meshes.filter(mesh => !tiny.has(mesh.material as typeof m.skin));
   let disposed = false, lastTime = 0;
+  function setLocation(next: ParentsLocation) {
+    if (disposed || next === location) return;
+    location = next;
+    for (const actor of actors) {
+      const key = actor.speaker === 'MÃE' ? 'mother' : 'father';
+      const anchor = next === 'car' ? CAR_PARENT_ANCHORS[key] : PARENT_ANCHORS[key];
+      actor.root.position.set(anchor.position.x, anchor.position.y, anchor.position.z);
+      actor.root.rotation.set(0, anchor.yaw, 0);
+      actor.kitchenPose.setEnabled(next === 'kitchen'); actor.carPose.setEnabled(next === 'car');
+      actor.arms = next === 'car' ? actor.carArms : actor.kitchenArms;
+      actor.head.position.y = next === 'car' ? actor.carHeadY : actor.kitchenHeadY;
+      actor.posture.rotation.set(0, 0, 0); actor.posture.scaling.setAll(1); actor.head.rotation.set(0, 0, 0);
+      actor.lookYaw = actor.lookPitch = actor.mouthOpen = actor.gesture = actor.serving = 0;
+      actor.speaking = false; actor.jaw.rotation.x = 0; actor.mouth.scaling.y = .025;
+      actor.stream?.setEnabled(false);
+      for (const mesh of actor.meshes) mesh.isPickable = next === 'kitchen';
+    }
+  }
   return {
-    meshes, shadowCasters, target,
+    meshes, shadowCasters, target, setLocation,
+    get location() { return location; },
     animate(time: number, speaker?: string, observer?: V3, text = '') {
       if (disposed || !Number.isFinite(time)) return;
       const dt = Math.max(0, Math.min(.1, time - lastTime)); lastTime = time;
       const smoothing = 1 - Math.exp(-4 * dt);
       for (const actor of actors) {
-        const talking = speaker === actor.speaker, t = time + actor.phase;
+        const inCar = location === 'car', talking = !inCar && speaker === actor.speaker, t = time + actor.phase;
         actor.speaking = talking;
         const mother = actor.speaker === 'MÃE';
         const concern = mother && talking && /viag|cuidado|mala|longe|escola/i.test(text);
         const affection = talking && /filh|am[oa]|orgulh|saudad|bom dia|querid|café/i.test(text);
         actor.expression = concern ? 'concern' : affection ? 'warm' : speaker ? 'attention' : 'neutral';
-        const desiredSmile = affection && !concern ? .75 : speaker ? .22 : .08;
+        const desiredSmile = inCar ? .20 : affection && !concern ? .75 : speaker ? .22 : .08;
         actor.smile += (desiredSmile - actor.smile) * smoothing;
         // A bounded, irregular syllable rhythm follows only the active text
         // speaker. Closing is immediate on a hand-off, with no shared lip sync.
@@ -485,15 +541,16 @@ export function createParents(scene: Scene, parent: TransformNode) {
         actor.gesture += ((talking ? .5 + Math.sin(t * .73) * .28 + Math.sin(t * .31) * .15 : 0) - actor.gesture) * smoothing;
         const cycle = ((time % 14) + 14) % 14;
         const ease = (v: number) => { const a = Math.max(0, Math.min(1, v)); return a * a * (3 - 2 * a); };
-        const pour = !mother || talking ? 0 : cycle < 3.5 ? ease((cycle - 2) / 1.5) : cycle < 5.2 ? 1 : 1 - ease((cycle - 5.2) / 1.5);
+        const pour = inCar || !mother || talking ? 0 : cycle < 3.5 ? ease((cycle - 2) / 1.5) : cycle < 5.2 ? 1 : 1 - ease((cycle - 5.2) / 1.5);
         actor.serving += (pour - actor.serving) * smoothing;
         let targetYaw = 0, targetPitch = 0;
-        if (observer && [observer.x, observer.y, observer.z].every(Number.isFinite)) {
+        if ((!inCar || mother && Math.sin(t * .27) > -.15) && observer && [observer.x, observer.y, observer.z].every(Number.isFinite)) {
           const dx = observer.x - actor.root.position.x, dz = observer.z - actor.root.position.z;
           const distance = Math.hypot(dx, dz);
           if (distance < 4 && distance > .15) {
             const delta = Math.atan2(dx, dz) - actor.root.rotation.y;
-            targetYaw = Math.max(-.68, Math.min(.68, Math.atan2(Math.sin(delta), Math.cos(delta))));
+            const limit = inCar ? .35 : .68;
+            targetYaw = Math.max(-limit, Math.min(limit, Math.atan2(Math.sin(delta), Math.cos(delta))));
             const eyeY = actor.head.position.y + .145;
             targetPitch = Math.max(-.18, Math.min(.14, -Math.atan2(observer.y - eyeY, distance)));
           }
@@ -506,6 +563,9 @@ export function createParents(scene: Scene, parent: TransformNode) {
         actor.head.rotation.y = actor.lookYaw + Math.sin(t * .39) * .018 + (speaker && !talking ? actor.speaker === 'MÃE' ? -.035 : .035 : 0);
         actor.head.rotation.x = actor.lookPitch + Math.sin(t * (talking ? 1.9 : .64)) * (talking ? .017 : .006);
         actor.head.rotation.z = Math.sin(t * .49) * .008 + (concern ? -.012 : 0);
+        const blinkPhase = ((time + actor.phase) % (mother ? 5.3 : 6.1));
+        actor.blink = blinkPhase < .22 ? Math.sin(blinkPhase / .22 * Math.PI) ** 2 : 0;
+        for (const lid of actor.blinkLids) { lid.setEnabled(actor.blink > .015); lid.scaling.y = Math.max(.001, actor.blink); }
         for (const [i, brow] of actor.brows.entries()) {
           const side = i === 0 ? -1 : 1;
           brow.position.y = .176 + (speaker ? .0015 : 0) + (concern ? .002 : 0);
@@ -514,11 +574,11 @@ export function createParents(scene: Scene, parent: TransformNode) {
         for (const corner of actor.corners) corner.position.y = .053 + actor.smile * .0022;
         for (let i = 0; i < actor.arms.length; i++) {
           const sign = i === 0 ? -1 : 1;
-          actor.arms[i].rotation.z = sign * (Math.sin(t * .63 + i) * .003 + actor.gesture * .024);
+          actor.arms[i].rotation.z = sign * (Math.sin(t * .63 + i) * (inCar ? .001 : .003) + actor.gesture * .024);
           // Forearms lift away from the tabletop. Positive downward swings
           // would push the resting wrist through the existing80cm table.
-          actor.arms[i].rotation.x = -.008 - actor.gesture * (.025 + .012 * Math.sin(t * .91 + i));
-          if (mother && i === 0) actor.arms[i].rotation.x -= actor.serving * .192;
+          actor.arms[i].rotation.x = (inCar ? Math.sin(t * .44 + i) * .001 : -.008) - actor.gesture * (.025 + .012 * Math.sin(t * .91 + i));
+          if (!inCar && mother && i === 0) actor.arms[i].rotation.x -= actor.serving * .192;
         }
         if (actor.pot) actor.pot.rotation.x = actor.serving * .45;
         if (actor.stream) {
@@ -529,13 +589,14 @@ export function createParents(scene: Scene, parent: TransformNode) {
       }
     },
     get diagnostics() {
-      return actors.map(actor => ({ speaker: actor.speaker, meshes: actor.meshes.length,
+      return actors.map(actor => ({ actorId: actor.root.uniqueId, headId: actor.head.uniqueId, speaker: actor.speaker, meshes: actor.meshes.length,
         vertices: actor.meshes.reduce((n, mesh) => n + mesh.getTotalVertices(), 0),
         triangles: actor.meshes.reduce((n, mesh) => n + mesh.getTotalIndices() / 3, 0),
         position: { x: actor.root.position.x, y: actor.root.position.y, z: actor.root.position.z },
-        yaw: actor.root.rotation.y, seated: actor.speaker === 'PAI', speaking: actor.speaking,
+        yaw: actor.root.rotation.y, seated: location === 'car' || actor.speaker === 'PAI', speaking: actor.speaking,
+        location, visible: actor.root.isEnabled(), apron: actor.speaker === 'MÃE' && location === 'kitchen', blink: actor.blink,
         mouthOpen: actor.mouthOpen, jawAngle: actor.jaw.rotation.x, expression: actor.expression,
-        smile: actor.smile, gesture: actor.gesture, serving: actor.serving, hasCoffeePot: Boolean(actor.pot),
+        smile: actor.smile, gesture: actor.gesture, serving: actor.serving, hasCoffeePot: Boolean(actor.pot) && location === 'kitchen',
         posture: { x: actor.posture.rotation.x, z: actor.posture.rotation.z },
         head: { x: actor.head.rotation.x, y: actor.head.rotation.y, z: actor.head.rotation.z },
         arms: actor.arms.map(arm => ({ x: arm.rotation.x, z: arm.rotation.z })),

@@ -24,6 +24,7 @@ import { LAUNDRY_KITCHEN_DOOR } from '../game/laundryLayout';
 import { HomeGeometry } from './props';
 import { createKitchenMaterials } from './kitchenMaterials';
 import { createParents } from './parents';
+import type { ParentsLocation } from '../game/parentsDeparture';
 
 type Point = { x: number; y: number; z: number };
 
@@ -586,6 +587,17 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
     if (!transparent.has(mesh.material as StandardMaterial) && mesh.metadata?.castShadow !== false) shadows.addShadowCaster(mesh as Mesh);
   const map = shadows.getShadowMap()!; map.refreshRate = RenderTargetTexture.REFRESHRATE_RENDER_ONCE;
   const refreshShadows = () => map.resetRefreshCounter();
+  const parentMeshSet = new Set<AbstractMesh>(parents.meshes);
+  const kitchenShadowCasters = (map.renderList ?? []).filter(mesh => !parentMeshSet.has(mesh));
+  function setParentsLocation(location: ParentsLocation) {
+    parents.setLocation(location);
+    const inKitchen = location === 'kitchen';
+    for (const light of [ambient, sun, bounce])
+      light.includedOnlyMeshes = inKitchen ? [...allMeshes] : allMeshes.filter(mesh => !parentMeshSet.has(mesh));
+    map.renderList = inKitchen ? [...new Set([...kitchenShadowCasters, ...parents.shadowCasters])] : [...kitchenShadowCasters];
+    for (const mesh of g.targets.get('breakfast-chair') ?? []) mesh.isPickable = inKitchen;
+    refreshShadows();
+  }
   let active = true, disposed = false, previousSpeaker = '';
   // Render-once maps must be invalidated after their depth effects actually
   // compile, otherwise an early empty map can survive the first visible frame.
@@ -596,7 +608,8 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
     { id: entryTarget, meshes: g.targets.get(entryTarget) ?? [], label: () => 'Examinar porta', execute: () => 'Esta é a porta de entrada da casa. Ela está fechada.' },
   ];
   return {
-    targets, meshes: allMeshes,
+    targets, meshes: allMeshes, parentMeshes: parents.meshes, parentShadowCasters: parents.shadowCasters,
+    setParentsLocation,
     setActive(value: boolean) { active = value; root.setEnabled(value); for (const light of [ambient, sun, bounce]) light.setEnabled(value); if (value) refreshShadows(); },
     refreshShadows,
     get diagnostics() { return { version: 'cafe-porta-principal-1', bounds: COMPACT_KITCHEN, entryDoor: { ...entry, closed: true }, width: COMPACT_KITCHEN.maxX - COMPACT_KITCHEN.minX, depth: COMPACT_KITCHEN.endZ - COMPACT_KITCHEN.coreStartZ, seat: BREAKFAST_SEAT, parents: parents.diagnostics }; },
@@ -605,7 +618,10 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
       parents.animate(time, speaker, observer, text);
       // Micro-idle keeps the cached contact shadows; a dialogue reaction gets
       // a fresh map without rendering an entire shadow pass on every frame.
-      if ((speaker ?? '') !== previousSpeaker) { previousSpeaker = speaker ?? ''; refreshShadows(); }
+      if ((speaker ?? '') !== previousSpeaker) {
+        previousSpeaker = speaker ?? '';
+        if (parents.location === 'kitchen') refreshShadows();
+      }
     },
     dispose() {
       disposed = true;

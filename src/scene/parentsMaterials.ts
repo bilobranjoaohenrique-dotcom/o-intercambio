@@ -52,7 +52,7 @@ export function parentMaterials(scene: Scene) {
       wash(0, .215, .07, .045, 'rgba(230,187,150,.13)');
       wash(0, .025, .075, .021, 'rgba(78,54,43,.15)');
       for (const side of [-1, 1]) {
-        wash(side * .046, .145, .029, .022, 'rgba(88,62,48,.20)');
+        wash(side * .046, .145, .029, .022, 'rgba(88,62,48,.16)');
         wash(side * .055, .125, .028, .012, 'rgba(98,65,50,.13)');
         wash(side * .061, .108, .027, .024, 'rgba(216,171,137,.17)');
         wash(side * .065, .085, .02, .016, mother ? 'rgba(161,93,78,.12)' : 'rgba(151,103,78,.09)');
@@ -65,7 +65,7 @@ export function parentMaterials(scene: Scene) {
       }
       for (let row = 0; row < (mother ? 2 : 3); row++) {
         const y = .199 + row * .014, a = uv(-.046, y), b = uv(.049, y);
-        c.strokeStyle = mother ? 'rgba(111,78,57,.10)' : 'rgba(104,74,54,.13)'; c.lineWidth = 1;
+        c.strokeStyle = mother ? 'rgba(111,78,57,.10)' : 'rgba(104,74,54,.18)'; c.lineWidth = 1;
         c.beginPath(); c.moveTo(a.x, a.y); c.quadraticCurveTo((a.x + b.x) / 2, a.y + 1.7, b.x, b.y); c.stroke();
       }
       if (!mother) {
@@ -89,7 +89,12 @@ export function parentMaterials(scene: Scene) {
     }
   });
   const collar = material('gola de algodão', '#beb09a', cotton), seam = material('costuras e botões', '#827866');
-  const skirt = floral;
+  // Kept under the existing key so both sitting/standing poses share the exact
+  // same brown cloth, rather than receiving a different travel costume.
+  const skirt = material('calça marrom de algodão da mãe', '#69503f', (c, n) => {
+    cotton(c, n);
+    for (let x = 0; x < n; x += 11) { c.fillStyle = 'rgba(42,29,22,.06)'; c.fillRect(x, 0, 1, n); }
+  });
   const apron = material('avental claro bordado da mãe', '#d0c4a8', (c, n) => {
     cotton(c, n);
     c.strokeStyle = '#9e8a70'; c.lineWidth = 1; c.strokeRect(3, 3, n - 6, n - 6);
@@ -101,15 +106,18 @@ export function parentMaterials(scene: Scene) {
       c.fillStyle = '#c2a66e'; c.fillRect(x, y, 2, 2);
     }
   });
-  const shirt = material('camisa xadrez discreta do pai', '#afa78f', (c, n) => {
+  const shirt = material('polo bege listrada do pai', '#b7aa8f', (c, n) => {
     cotton(c, n);
-    for (let at = 6; at < n; at += 24) {
-      c.fillStyle = 'rgba(101,106,101,.32)'; c.fillRect(0, at, n, 6); c.fillRect(at, 0, 6, n);
-      c.fillStyle = 'rgba(214,204,177,.45)'; c.fillRect(0, at + 8, n, 2); c.fillRect(at + 8, 0, 2, n);
-      c.fillStyle = 'rgba(91,91,80,.25)'; c.fillRect(0, at + 15, n, 1); c.fillRect(at + 15, 0, 1, n);
+    for (let at = 8; at < n; at += 24) {
+      c.fillStyle = 'rgba(101,94,78,.36)'; c.fillRect(0, at, n, 6);
+      c.fillStyle = 'rgba(224,212,182,.45)'; c.fillRect(0, at + 7, n, 2);
+      c.fillStyle = 'rgba(88,82,70,.22)'; c.fillRect(0, at + 16, n, 2);
     }
   });
-  const trousers = material('calça de sarja', '#4c4c46', cotton);
+  const trousers = material('jeans escuro do pai', '#3e4850', (c, n) => {
+    cotton(c, n);
+    for (let y = 0; y < n; y += 3) { c.fillStyle = 'rgba(143,155,158,.07)'; c.fillRect(0, y, n, 1); }
+  });
   const leather = material('couro marrom dos calçados', '#483a2d', (c, n) => {
     for (let i = 0; i < 1200; i++) { c.fillStyle = random() > .5 ? 'rgba(194,163,121,.025)' : 'rgba(0,0,0,.035)'; c.fillRect(random() * n, random() * n, 2, 1); }
   });
@@ -124,12 +132,13 @@ export function parentMaterials(scene: Scene) {
       c.beginPath(); c.moveTo(x, 0); c.bezierCurveTo(x - 3, 30, x + 4, 75, x + 1, temple ? n * .66 : n); c.stroke();
     }
   });
+  const hairGrey = material('fios grisalhos nas têmporas do pai', '#817c6f');
   const eyeWhite = material('branco natural dos olhos', '#c5c0ad'), iris = material('íris castanha', '#554c35');
   const pupil = material('pupilas e linha dos cílios', '#302b25');
   const upperLip = material('contorno dos lábios', '#815d50'), lowerLip = material('lábio inferior', '#a67c68');
   const steel = material('relógio de pulso', '#8e8c7e'); steel.specularColor.set(.22, .2, .16); steel.specularPower = 40;
   const mouthInside = material('interior escuro da boca', '#422e29'), coffee = material('café coado', '#3f2a1c');
-  return { skin, motherFace, fatherFace, skinShade, skinLight, floral, collar, seam, skirt, apron, shirt, trousers, leather, sole, hair, fatherHair, eyeWhite, iris, pupil, upperLip, lowerLip, mouthInside, coffee, steel,
+  return { skin, motherFace, fatherFace, skinShade, skinLight, floral, collar, seam, skirt, apron, shirt, trousers, leather, sole, hair, fatherHair, hairGrey, eyeWhite, iris, pupil, upperLip, lowerLip, mouthInside, coffee, steel,
     dispose() { for (const m of materials) m.dispose(false, false); for (const t of textures) t.dispose(); } };
 }
 export type ParentMaterials = ReturnType<typeof parentMaterials>;

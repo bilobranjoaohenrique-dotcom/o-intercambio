@@ -167,12 +167,25 @@ export function buildGarage(scene: Scene, parent: TransformNode) {
   const map = shadows.getShadowMap()!; map.refreshRate = RenderTargetTexture.REFRESHRATE_RENDER_ONCE;
   let active = true, disposed = false;
   const refreshShadows = () => map.resetRefreshCounter();
+  let occupantMeshes: readonly AbstractMesh[] = [], occupantsActive = false;
+  function setParentOccupants(parentMeshes: readonly AbstractMesh[], parentShadowCasters: readonly AbstractMesh[], value: boolean) {
+    if (occupantMeshes === parentMeshes && occupantsActive === value) return;
+    const previous = new Set(occupantMeshes);
+    for (const light of lights) {
+      const remaining = light.includedOnlyMeshes.filter(mesh => !previous.has(mesh));
+      light.includedOnlyMeshes = value ? [...new Set([...remaining, ...parentMeshes])] : remaining;
+    }
+    const remainingCasters = (map.renderList ?? []).filter(mesh => !previous.has(mesh));
+    map.renderList = value ? [...new Set([...remainingCasters, ...parentShadowCasters])] : remainingCasters;
+    occupantMeshes = parentMeshes; occupantsActive = value;
+    refreshShadows();
+  }
   void shadows.forceCompilationAsync().then(() => { if (!disposed) refreshShadows(); })
     .catch(error => console.error('Não foi possível preparar as sombras da garagem.', error));
   return {
-    meshes, targets: [car.target], refreshShadows,
+    meshes, targets: [car.target], refreshShadows, setParentOccupants,
     setActive(value: boolean) { active = value; root.setEnabled(value); for (const light of lights) light.setEnabled(value); if (value) refreshShadows(); },
-    get diagnostics() { return { version: 'garagem-familia-1', active, bounds: GARAGE, door: GARAGE_DOOR, meshes: meshes.length, car: car.diagnostics, materials: m.diagnostics }; },
+    get diagnostics() { return { version: 'garagem-familia-1', active, bounds: GARAGE, door: GARAGE_DOOR, meshes: meshes.length, parentOccupants: occupantsActive ? 2 : 0, car: car.diagnostics, materials: m.diagnostics }; },
     dispose() {
       if (disposed) return; disposed = true;
       for (const light of oldLights) light.excludedMeshes = light.excludedMeshes.filter(mesh => !meshes.includes(mesh));

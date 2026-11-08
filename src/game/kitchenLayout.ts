@@ -1,5 +1,6 @@
 import type { Obstacle } from './types';
 import type { Point2, Point3 } from './layout';
+import { areParentsInKitchen } from './parentsDeparture';
 
 /** Metres on the existing kitchen floor. Geometry and collision share these
  * footprints; height is measured from the floor to the furniture's top. */
@@ -77,5 +78,9 @@ export const KITCHEN_SOLIDS: readonly Obstacle[] = [
   ...Object.values(PARENT_ANCHORS).map(parent => ({
     x: parent.position.x, z: parent.position.z,
     halfWidth: parent.footprint.width / 2, halfDepth: parent.footprint.depth / 2, rotation: parent.yaw,
+    enabled: areParentsInKitchen,
   })),
+  // The father leaves, but his existing wooden chair stays in the kitchen.
+  { x: PARENT_ANCHORS.father.position.x, z: PARENT_ANCHORS.father.position.z,
+    halfWidth: .47 / 2, halfDepth: .46 / 2, rotation: PARENT_ANCHORS.father.yaw },
 ];

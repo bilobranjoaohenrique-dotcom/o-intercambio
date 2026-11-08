@@ -13,7 +13,8 @@ export const breakfastChoices: StoryChoice[] = [
 export const schoolClue: StoryBeat[] = [
   { speaker: 'PAI', text: 'Engraçado... ainda acho estranho como aquela escola conseguiu nosso contato.' },
   { speaker: 'MÃE', text: 'Foi uma ótima oportunidade. Não fica colocando coisa na cabeça dele.' },
-  { speaker: 'MÃE', text: 'Terminou? Então sobe ao quarto e pega sua mala, querido. A gente já vai te esperar no carro.' },
+  { speaker: 'MÃE', text: 'Filho, sobe lá e pega tua mala. Eu e teu pai vamos te esperar no carro, tá?' },
+  { speaker: 'PAI', text: 'E vê se não esquece o passaporte!' },
 ];
 export const airportGoodbye: StoryBeat[] = [
   { speaker: 'MÃE', text: 'Me manda mensagem assim que chegar, tá?' },
@@ -26,8 +27,8 @@ export type ChapterMission =
 export const missionLabels: Record<ChapterMission, string> = {
   breakfast: 'Desça para tomar café',
   'talk-parents': 'Converse com seus pais',
-  'pack-suitcase': 'Suba ao quarto e busque sua mala',
-  'enter-car': 'Vá à garagem e entre no carro',
+  'pack-suitcase': 'Suba e pegue sua mala',
+  'enter-car': 'Vá até a garagem. Seus pais estão esperando.',
   'airport-gate': 'Encontre seu portão de embarque',
   'plane-seat': 'Prepare-se para a chegada',
   'find-host': 'Encontre sua família anfitriã',

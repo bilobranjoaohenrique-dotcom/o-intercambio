@@ -10,6 +10,7 @@ import { buildKitchen } from './kitchen';
 import { buildGarage } from './garage';
 import { buildLaundry } from './laundry';
 import type { Point3 } from '../game/layout';
+import { getParentsLocation, setParentsLocationState, type ParentsLocation } from '../game/parentsDeparture';
 
 type Zone = 'home' | 'car' | 'airport' | 'plane' | 'town';
 const ZONE_ORIGIN: Record<Exclude<Zone,'home'|'car'>, number> = { airport: 30, plane: 58, town: 86 };
@@ -157,9 +158,15 @@ export function buildChapterWorld(scene: Scene) {
     laundry.setActive(zone==='home');
   }
   activate('home');
+  function setParentsLocation(location: ParentsLocation) {
+    setParentsLocationState(location);
+    kitchen.setParentsLocation(location);
+    garage.setParentOccupants(kitchen.parentMeshes, kitchen.parentShadowCasters, location === 'car');
+  }
   return {
     targets,
     activate,
+    setParentsLocation,
     teleportPoint(zone:Exclude<Zone,'home'>) {
       return zone==='car'?{x:CAR_ORIGIN,y:1.65,z:-3}:zone==='airport'?{x:ZONE_ORIGIN.airport,y:1.65,z:4.5}:zone==='plane'?{x:ZONE_ORIGIN.plane-1.5,y:1.65,z:-3.4}:{x:ZONE_ORIGIN.town,y:1.65,z:-2};
     },
@@ -173,6 +180,12 @@ export function buildChapterWorld(scene: Scene) {
     get kitchenDiagnostics(){return {active:activeZone==='home',meshes:kitchen.meshes.length,...kitchen.diagnostics};},
     get garageDiagnostics(){return garage.diagnostics;},
     get laundryDiagnostics(){return laundry.diagnostics;},
+    get familyDiagnostics(){
+      const parents = kitchen.diagnostics.parents;
+      return { location: getParentsLocation(), parents, actorCount: parents.length,
+        kitchenVisibleCount: parents.filter(actor => actor.visible && actor.location === 'kitchen').length,
+        carVisibleCount: parents.filter(actor => actor.visible && actor.location === 'car').length };
+    },
     dispose(){laundry.dispose();garage.dispose();kitchen.dispose();for(const root of roots.values())root.dispose(false,false);for(const material of materials.values())material.dispose();for(const texture of textures)texture.dispose();}
   };
 }

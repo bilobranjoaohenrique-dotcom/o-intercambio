@@ -73,7 +73,7 @@ A cozinha usa móveis modelados, azulejos florais, cortinas de renda, cerâmica,
 
 A cozinha foi compactada reutilizando os móveis, materiais e iluminação. A área principal tem aproximadamente **7,10 × 5,35 m**; a bancada original de 5,20 m e a circulação dos dois lados da mesa foram preservadas, por isso não se forçou a medida menor da prancha.
 
-Aproxime-se da cadeira da frente e pressione **E — Sentar à mesa**. A câmera desce suavemente, permanece em primeira pessoa e permite olhar para os pais. O pai continua sentado; a mãe usa avental claro e serve café. Mandíbulas, olhares, expressões e gestos acompanham as falas em texto; nenhuma voz foi acrescentada. Após a conversa, use **E — Levantar da mesa** para andar novamente.
+Aproxime-se da cadeira da frente e pressione **E — Sentar à mesa**. A câmera desce suavemente, permanece em primeira pessoa e permite olhar para os pais. O pai continua sentado; a mãe usa avental claro e serve café. Mandíbulas, olhares, expressões e gestos acompanham as falas em texto; nenhuma voz foi acrescentada. Ao terminar a conversa, o protagonista se levanta automaticamente durante a breve transição de saída dos pais.
 
 A entrega do café (Prompt Master 06) terminou no objetivo **“Suba ao quarto e busque sua mala”**. A atualização da garagem, descrita abaixo, continua esse objetivo reutilizando a mochila existente. O [Prompt Master 06](docs/PROMPT-MASTER-06-CAFE.md) registra o escopo daquela etapa.
 
@@ -87,7 +87,7 @@ Veja o [relatório da reconstrução com seis capturas reais](docs/RECONSTRUCAO-
 
 A garagem está ligada à passagem lateral do térreo por uma porta interna aberta. Tem aproximadamente **5,70 × 3,80 m**, piso de concreto, paredes pintadas, teto de madeira, portão com grade, luminária, pequena estante, ferramentas e caixas. O hatch original inspirado nos anos 2000 tem quatro rodas, portas, vidros, bancos e volante; não há direção nem física veicular.
 
-Depois do café, volte ao quarto e use **E — Pegar bagagem** na mochila existente. O objetivo passa a **“Vá à garagem e entre no carro”**. Aproxime-se do carro e pressione **E — Entrar no carro** para a transição curta ao aeroporto já existente. Antes de pegar a bagagem, a partida permanece bloqueada. O checkpoint conserva essa etapa.
+Depois do café, volte ao quarto e use **E — Pegar mala** na mochila existente. O objetivo passa a **“Vá até a garagem. Seus pais estão esperando.”**. Aproxime-se do carro e pressione **E — Entrar no carro** para a transição curta ao aeroporto já existente. Antes de pegar a bagagem, a partida permanece bloqueada. O checkpoint conserva essa etapa.
 
 Verificação focal: `node --test --test-isolation=none tests/garage.test.mjs`; com uma prévia aberta, `INTERCAMBIO_URL=http://localhost:4180 npm run test:garage`. Passaram os quatro testes focais, TypeScript/build e um percurso real no Chromium/Linux: entrada, volta ao redor do carro, colisões, bloqueio antes da mala, subida/coleta da bagagem, retorno e embarque. Veja a [garagem no jogo](docs/capturas/garagem-visao-geral.png), o [portão e interior](docs/capturas/garagem-portao.png) e o [registro breve](docs/resultados-garagem.json). Renderização por software SwiftShader; não houve benchmark de FPS nem teste em GPU física/Windows.
 
@@ -102,6 +102,14 @@ Porta de madeira escura de **84 × 210 cm**, fechada, deslocada **1,15 m para a 
 Verificação focal: `node --test --test-isolation=none tests/laundry.test.mjs`; com uma prévia aberta, `INTERCAMBIO_URL=http://localhost:4180 npm run test:laundry`.
 
 TypeScript/build e os três testes focais passaram. Uma sessão real confirmou ida e volta entre cozinha, lavanderia e garagem, colisões e missão intacta. O helper inicial de movimento excedeu o destino; a verificação continuou na mesma sessão com o controle de mouse/W existente. O comando inicial terminou com código 1 por esse timeout; o roteiro final foi ajustado e teve sintaxe checada, sem repetir todo o percurso. Veja a [captura principal](docs/capturas/lavanderia-visao-principal.png), a [vista do armário e cozinha](docs/capturas/lavanderia-armario-cozinha.png) e o [registro breve](docs/resultados-lavanderia.json). Chromium/Linux com SwiftShader, sem benchmark de FPS nem teste em GPU física/Windows.
+
+## Pais e despedida
+
+Pai e mãe usam as mesmas cabeças, roupas e identidades na cozinha e no carro. O pai tem polo bege listrada, jeans escuro e cabelo grisalho; a mãe, blusa florida, calça marrom e sandálias. O avental e o bule ficam somente na cozinha. Gestos, respiração, olhar, piscar e boca acompanham as legendas, sem vozes.
+
+Ao terminar a conversa, o protagonista se levanta e uma breve transição encobre a saída dos pais. Eles aguardam sentados no carro estacionado: pai ao volante e mãe no passageiro. A missão é **“Suba e pegue sua mala”**. Use **E — Pegar mala** no quarto; depois siga **“Vá até a garagem. Seus pais estão esperando.”**. O carro exige a mala e usa a transição já existente, sem novo trajeto pelas ruas. O checkpoint restaura a posição dos pais e a coleta sem repetir o café.
+
+Passaram TypeScript/build, **13 testes focais** e o percurso real café → mala no quarto → descida → recarga do save → pais no carro → embarque. A troca sob tela opaca manteve as mesmas duas identidades e cabeças, sem duplicação. Após o teste funcional, ajustaram-se somente o comprimento do cabelo e a posição dos olhos; o build e as duas vistas finais foram conferidos novamente. [Pais na cozinha](docs/capturas/pais-cafe-atualizados.png), [pais aguardando no carro](docs/capturas/pais-esperando-no-carro.png) e [registro breve](docs/resultados-pais-despedida.json). Chromium/Linux com SwiftShader, sem benchmark de desempenho ou teste em GPU física/Windows.
 
 ## Estrutura
 
@@ -126,7 +134,7 @@ Na reconstrução anterior do quarto passaram **42 testes unitários**, TypeScri
 
 A atualização anterior da cozinha aprovou **41 testes**, o build, o percurso completo do capítulo e as verificações específicas daquele ambiente. Esse registro histórico está em [validação do capítulo](docs/VALIDACAO-CAPITULO-01.md). As medições da cozinha naquele servidor com renderização por software ficaram em **8,1 a 12,2 FPS**; elas não representam o desempenho do quarto reconstruído. O [relatório do quarto](docs/RECONSTRUCAO-QUARTO.md) registra separadamente a validação desta etapa. GPU física e Windows ainda precisam de verificação própria.
 
-Com Chromium instalado, `CHROMIUM_PATH=/usr/bin/chromium npm run verify` inicia uma prévia de produção temporária e executa a validação funcional do **café da manhã (etapa 06)**, até levantar com o objetivo de buscar a mala. Para executar somente esse fluxo com um servidor já aberto, use `INTERCAMBIO_URL=http://localhost:4180 npm run test:breakfast`. As suítes anteriores de quarto, corredor, cozinha e capítulo permanecem como histórico das etapas anteriores; seus percursos de café/partida antecedem a interação de sentar.
+Com Chromium instalado, `CHROMIUM_PATH=/usr/bin/chromium npm run verify` inicia uma prévia temporária e verifica o fluxo atual de **café → saída dos pais → mala → garagem → embarque**, incluindo restauração de checkpoint. Com servidor já aberto, use `INTERCAMBIO_URL=http://localhost:4180 npm run test:parents`. As suítes de navegador de etapas anteriores permanecem como histórico; suas expectativas de término do café antecedem a saída dos pais e o levantar automático.
 
 ## Publicação
 
