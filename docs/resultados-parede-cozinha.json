@@ -1,0 +1,19 @@
+{
+  "status": "passed",
+  "correction": "Face da divisória voltada para a cozinha, topo e retorno do canto revestidos com o mesmo azulejo até3.25m.",
+  "verification": "Build TypeScript/Vite e conferência visual antes/depois na mesma sessão de navegador; nenhuma outra suíte.",
+  "image": "docs/capturas/parede-cozinha-completa.png",
+  "imageSha256": "325573b55f7a83f911314b1c547f798bb1f045ac2d1aa3040922ed7f327bef1a",
+  "finalKitchenSourceSha256": "bc138e02274e8c857637da31309ee7457a2b5483b372be80057608cc16c9f35f",
+  "beforePose": {
+    "x": 2.3002786744233927,
+    "y": 1.6499999988845002,
+    "z": 16.97538953199926
+  },
+  "afterPose": {
+    "x": 2.2917402849190145,
+    "y": 1.6500000010756726,
+    "z": 16.94104128234748
+  },
+  "mission": "talk-parents"
+}

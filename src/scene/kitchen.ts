@@ -169,8 +169,16 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
   // kitchen detour, and place the exterior edge behind the vacated front area.
   b('fechamento frontal azulejado da ligação lateral', KITCHEN_FRONT_PASSAGE.maxX - LIVING_ROOM_WORLD.maxX, ceilingY, .15,
     (KITCHEN_FRONT_PASSAGE.maxX + LIVING_ROOM_WORLD.maxX) / 2, ceilingY / 2, COMPACT_KITCHEN.startZ - .075, m.wallTile);
-  b('fechamento da área do café junto à sala', LIVING_ROOM_WORLD.minX - COMPACT_KITCHEN.minX, ceilingY, .15,
-    (COMPACT_KITCHEN.minX + LIVING_ROOM_WORLD.minX) / 2, ceilingY / 2, LIVING_ROOM_WORLD.maxZ - .075, m.wallTile);
+  // Finish the ENTIRE kitchen-facing side of the living-room partition, not
+  // only the narrow left stub or the perpendicular doorway face. All three
+  // pieces share one outer plane/grid and close the wall up to the ceiling.
+  const partitionZ = LIVING_ROOM_WORLD.maxZ;
+  b('parede completa azulejada diante da área do café', LIVING_ROOM_WORLD.maxX - LIVING_ROOM_WORLD.minX, ceilingY, .145,
+    (LIVING_ROOM_WORLD.minX + LIVING_ROOM_WORLD.maxX) / 2, ceilingY / 2, partitionZ + .0775, m.wallTile);
+  b('continuação azulejada até a parede lateral', LIVING_ROOM_WORLD.minX - COMPACT_KITCHEN.minX, ceilingY, .15,
+    (COMPACT_KITCHEN.minX + LIVING_ROOM_WORLD.minX) / 2, ceilingY / 2, partitionZ + .075, m.wallTile);
+  b('retorno azulejado fechado no canto da passagem', LIVING_ROOM_KITCHEN_PORTAL.maxX - LIVING_ROOM_WORLD.maxX, ceilingY, .15,
+    (LIVING_ROOM_WORLD.maxX + LIVING_ROOM_KITCHEN_PORTAL.maxX) / 2, ceilingY / 2, partitionZ + .075, m.wallTile);
   // Cover only the kitchen-facing surface of the existing shared wall. The
   // tile face sits beyond the old plaster face, avoiding coincident surfaces,
   // and continues to the kitchen ceiling around the real widened aperture.

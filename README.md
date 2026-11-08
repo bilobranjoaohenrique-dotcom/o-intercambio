@@ -59,6 +59,8 @@ A [correção da posição da sala](docs/CORRECAO-POSICAO-SALA.md) mantém esse 
 
 ### Ajustes pontuais de circulação
 
+A divisória voltada para a área do café está fechada e revestida até o teto de **3,25 m**, incluindo o retorno do canto. A [captura real da parede completa](docs/capturas/parede-cozinha-completa.png) foi conferida no mesmo ângulo em que antes apareciam a face cinza e a abertura superior. Móveis, personagens e iluminação foram preservados.
+
 A sala passou de **4,20 para 4,80 m de largura**, com os mesmos móveis e materiais. O vão para a cozinha tem **1,50 m**, e a passagem lateral tem **1,52 m**. A face antes cinza usa os azulejos da cozinha até o teto. Pequenos deslocamentos do sofá, poltrona e mesa lateral liberam os caminhos; cozinha mobiliada, pais, história e demais cômodos permanecem iguais.
 
 Build aprovado e uma única caminhada real pela sala e passagem, nos dois sentidos, sem repetir as suítes anteriores. [Acabamento e passagem](docs/capturas/casa-cozinha-azulejos.png), [cozinha preservada](docs/capturas/casa-cozinha-preservada.png) e [registro breve](docs/resultados-ajustes-casa.json).
