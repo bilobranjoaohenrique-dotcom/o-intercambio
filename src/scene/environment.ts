@@ -18,6 +18,7 @@ import {buildHallway} from './hallway';
 import {HALLWAY} from '../game/hallwayLayout';
 import {buildLivingRoom} from './livingRoom';
 import {LIVING_ROOM_WORLD_OBJECTS} from '../game/livingRoomPlacement';
+import {isTravelBagTaken} from '../game/garageProgress';
 
 type LivingRoomCallbacks = {
  onTelevisionChange?:(on:boolean,position:{x:number;y:number;z:number})=>void;
@@ -77,7 +78,8 @@ export function buildEnvironment(scene:Scene,callbacks:LivingRoomCallbacks={}){
   {id:'living-photo',meshes:living.targets.get('living-photo')??[],label:()=> 'Examinar fotografia',execute:()=> 'Essa foto foi tirada nas nossas últimas férias.'},
   {id:'living-exit',meshes:living.targets.get('living-exit')??[],label:()=> 'Tentar abrir a porta',execute:()=> 'Ainda tenho algumas coisas para resolver antes de sair.'},
  ];
- return{targets,setTelevision,setHallLight:hallway.setLight,setRoomLight:bedroom.setRoomLight,get roomLightOn(){return bedroom.roomLightOn;},shadowGenerator,
+ const syncTravelBag=()=>{for(const mesh of bedroom.targets.get('suitcase')??[])mesh.setEnabled(!isTravelBagTaken());bedroom.refreshShadows();};
+ return{targets,setTelevision,syncTravelBag,setHallLight:hallway.setLight,setRoomLight:bedroom.setRoomLight,get roomLightOn(){return bedroom.roomLightOn;},shadowGenerator,
   // Only the preserved moving bedroom door invalidates these maps. Living-room
   // geometry is static and owns its one-time shadow refresh independently.
   refreshShadows(){refreshShadows();bedroom.refreshShadows();hallway.refreshShadows();},

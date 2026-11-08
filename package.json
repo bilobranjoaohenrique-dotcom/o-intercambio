@@ -14,6 +14,7 @@
     "test:hallway": "node tests/hallway-browser.mjs",
     "test:living-room": "node tests/living-room-browser.mjs",
     "test:breakfast": "node tests/breakfast-browser.mjs",
+    "test:garage": "node tests/garage-browser.mjs",
     "verify": "node scripts/verify.mjs"
   },
   "dependencies": { "@babylonjs/core": "^8.0.0" },

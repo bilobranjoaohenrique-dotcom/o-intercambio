@@ -6,6 +6,8 @@ import { LIVING_ROOM_WORLD, LIVING_ROOM_ENTRY, LIVING_ROOM_KITCHEN_PORTAL,
   LIVING_ROOM_WORLD_SOLIDS, LIVING_ROOM_WORLD_PROP_SOLIDS,
   KITCHEN_FRONT_PASSAGE } from './livingRoomPlacement';
 import type { Obstacle } from './types';
+import { GARAGE, GARAGE_DOOR, GARAGE_WEST_FACE, GARAGE_SOLIDS } from './garageLayout';
+import { isTravelBagTaken } from './garageProgress';
 
 export const PLAYER_RADIUS = .22;
 const WALL_THICKNESS = .12;
@@ -32,7 +34,8 @@ export const staticObstacles: readonly Obstacle[] = [
   box(LIVING_ROOM_ENTRY.maxX, KITCHEN_FRONT_PASSAGE.maxX, LIVING_ROOM_ENTRY.minZ, KITCHEN.startZ),
   box(KITCHEN.minX, KITCHEN.minX + WALL_THICKNESS, LIVING_ROOM_WORLD.maxZ, KITCHEN.endZ),
   box(KITCHEN.maxX - WALL_THICKNESS, KITCHEN.maxX, LIVING_ROOM_WORLD.maxZ, KITCHEN.endZ),
-  box(KITCHEN_FRONT_PASSAGE.maxX - WALL_THICKNESS, KITCHEN_FRONT_PASSAGE.maxX, KITCHEN.startZ, LIVING_ROOM_WORLD.maxZ),
+  box(KITCHEN_FRONT_PASSAGE.maxX - WALL_THICKNESS, KITCHEN_FRONT_PASSAGE.maxX, KITCHEN.startZ, GARAGE_DOOR.minZ),
+  box(KITCHEN_FRONT_PASSAGE.maxX - WALL_THICKNESS, KITCHEN_FRONT_PASSAGE.maxX, GARAGE_DOOR.maxZ, LIVING_ROOM_WORLD.maxZ),
   box(KITCHEN.maxX, KITCHEN_FRONT_PASSAGE.maxX, LIVING_ROOM_WORLD.maxZ, LIVING_ROOM_WORLD.maxZ + WALL_THICKNESS),
   box(KITCHEN.minX, KITCHEN.maxX, KITCHEN.endZ, KITCHEN.endZ + WALL_THICKNESS),
   box(LIVING_ROOM_WORLD.minX - WALL_THICKNESS, LIVING_ROOM_WORLD.minX, LIVING_ROOM_WORLD.minZ, LIVING_ROOM_WORLD.maxZ),
@@ -40,16 +43,24 @@ export const staticObstacles: readonly Obstacle[] = [
   box(LIVING_ROOM_WORLD.maxX, LIVING_ROOM_KITCHEN_PORTAL.maxX, LIVING_ROOM_KITCHEN_PORTAL.maxZ, LIVING_ROOM_WORLD.maxZ),
   box(KITCHEN.minX, LIVING_ROOM_WORLD.minX, LIVING_ROOM_WORLD.maxZ, LIVING_ROOM_WORLD.maxZ + WALL_THICKNESS),
   box(LIVING_ROOM_WORLD.minX, LIVING_ROOM_KITCHEN_PORTAL.maxX, LIVING_ROOM_WORLD.maxZ, LIVING_ROOM_WORLD.maxZ + WALL_THICKNESS),
-  ...Object.values(FURNITURE).map(item => ({ x: item.x, z: item.z, halfWidth: item.width / 2, halfDepth: item.depth / 2 })),
+  ...Object.values(FURNITURE).map(item => ({ x: item.x, z: item.z, halfWidth: item.width / 2, halfDepth: item.depth / 2,
+    ...(item === FURNITURE.backpack ? { enabled: () => !isTravelBagTaken() } : {}) })),
   ...HALLWAY_SOLIDS,
   ...KITCHEN_SOLIDS,
   ...LIVING_ROOM_WORLD_SOLIDS,
   ...LIVING_ROOM_WORLD_PROP_SOLIDS,
   PRESERVED_STAIR_RETURN,
+  box(GARAGE.minX, GARAGE_WEST_FACE, GARAGE.minZ, GARAGE_DOOR.minZ),
+  box(GARAGE.minX, GARAGE_WEST_FACE, GARAGE_DOOR.maxZ, GARAGE.maxZ),
+  box(GARAGE.minX, GARAGE.maxX, GARAGE.minZ - WALL_THICKNESS, GARAGE.minZ),
+  box(GARAGE.minX, GARAGE.maxX, GARAGE.maxZ, GARAGE.maxZ + WALL_THICKNESS),
+  box(GARAGE.maxX, GARAGE.maxX + WALL_THICKNESS, GARAGE.minZ, GARAGE.maxZ),
+  ...GARAGE_SOLIDS,
 ];
 
 /** Height of the physical tread below the player's feet, never a camera offset. */
 export function floorHeight(point: Point2): number {
+  if (point.x >= GARAGE.minX && point.x <= GARAGE.maxX && point.z >= GARAGE.minZ && point.z <= GARAGE.maxZ) return GARAGE.floor;
   if (Object.values(CHAPTER_ZONES).some(zone => point.x >= zone.minX && point.x <= zone.maxX && point.z >= zone.minZ && point.z <= zone.maxZ)) return 0;
   if (point.x >= KITCHEN.minX && point.x <= KITCHEN.maxX && point.z >= KITCHEN.startZ && point.z <= KITCHEN.endZ) return KITCHEN.floor;
   if (livingFloorRects.some(rect => containsPoint(rect, point))) return LIVING_ROOM_WORLD.floor;
@@ -66,6 +77,7 @@ const containsPoint = (rect: FloorRect, point: Point2) =>
   point.x >= rect.minX && point.x <= rect.maxX && point.z >= rect.minZ && point.z <= rect.maxZ;
 const floorRects: readonly FloorRect[] = [
   ROOM,
+  GARAGE,
   { minX: HALLWAY.minX, maxX: HALLWAY.maxX, minZ: HALLWAY.startZ, maxZ: HALLWAY.endZ },
   { minX: STAIRS.minX, maxX: STAIRS.maxX, minZ: STAIRS.startZ, maxZ: STAIRS.endZ },
   { minX: BOTTOM_LANDING.minX, maxX: BOTTOM_LANDING.maxX, minZ: BOTTOM_LANDING.startZ, maxZ: BOTTOM_LANDING.endZ },
@@ -122,6 +134,7 @@ function edgeDistanceSquared(point: Point2, [ax, az, bx, bz]: Edge) {
 }
 export function circleOverlapsObstacle(point: Point2, obstacle: Obstacle, radius = PLAYER_RADIUS): boolean {
   if (!finitePoint(point) || !Number.isFinite(radius) || radius < 0) return true;
+  if (obstacle.enabled?.() === false) return false;
   if (![obstacle.x, obstacle.z, obstacle.halfWidth, obstacle.halfDepth, obstacle.rotation ?? 0].every(Number.isFinite) ||
     obstacle.halfWidth < 0 || obstacle.halfDepth < 0) return true;
   const angle = obstacle.rotation ?? 0, cos = Math.cos(angle), sin = Math.sin(angle);

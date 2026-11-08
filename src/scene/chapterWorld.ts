@@ -7,6 +7,7 @@ import { TransformNode } from '@babylonjs/core/Meshes/transformNode';
 import type { Scene } from '@babylonjs/core/scene';
 import type { InteractionTarget } from '../game/types';
 import { buildKitchen } from './kitchen';
+import { buildGarage } from './garage';
 import type { Point3 } from '../game/layout';
 
 type Zone = 'home' | 'car' | 'airport' | 'plane' | 'town';
@@ -84,8 +85,9 @@ export function buildChapterWorld(scene: Scene) {
   const kitchenRoot=new TransformNode('cozinha da família',scene);
   roots.set('home',kitchenRoot);
   const kitchen=buildKitchen(scene,kitchenRoot);
-  meshes.set('home',kitchen.meshes);
-  targets.push(...kitchen.targets);
+  const garage=buildGarage(scene,kitchenRoot);
+  meshes.set('home',[...kitchen.meshes,...garage.meshes]);
+  targets.push(...kitchen.targets,...garage.targets);
 
   const carRoot=new TransformNode('viagem de carro',scene);roots.set('car',carRoot);meshes.set('car',[]);
   box('car','estrada durante a viagem',5,.06,35,CAR_ORIGIN,-.03,12,mat('car-road','#535454'));
@@ -149,6 +151,7 @@ export function buildChapterWorld(scene: Scene) {
     activeZone=zone;
     for(const [key,root]of roots) root.setEnabled(key===zone);
     kitchen.setActive(zone==='home');
+    garage.setActive(zone==='home');
   }
   activate('home');
   return {
@@ -165,6 +168,7 @@ export function buildChapterWorld(scene: Scene) {
         hostArms[i].rotation.z=(i%2?1:-1)*(.06+Math.sin(time*.9+i)*.02);
     },
     get kitchenDiagnostics(){return {active:activeZone==='home',meshes:kitchen.meshes.length,...kitchen.diagnostics};},
-    dispose(){kitchen.dispose();for(const root of roots.values())root.dispose(false,false);for(const material of materials.values())material.dispose();for(const texture of textures)texture.dispose();}
+    get garageDiagnostics(){return garage.diagnostics;},
+    dispose(){garage.dispose();kitchen.dispose();for(const root of roots.values())root.dispose(false,false);for(const material of materials.values())material.dispose();for(const texture of textures)texture.dispose();}
   };
 }

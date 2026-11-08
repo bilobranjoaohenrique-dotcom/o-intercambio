@@ -1,0 +1,341 @@
+{
+  "status": "passed",
+  "pictures": [
+    "capturas/garagem-visao-geral.png",
+    "capturas/garagem-portao.png"
+  ],
+  "route": [
+    {
+      "position": {
+        "x": 3.5000627160921742,
+        "y": 1.6526550629867554,
+        "z": 16.250291336054417
+      },
+      "mission": "pack-suitcase"
+    },
+    {
+      "position": {
+        "x": 3.500056618571701,
+        "y": 1.652548396455499,
+        "z": 15.420291336076819
+      },
+      "mission": "pack-suitcase"
+    },
+    {
+      "position": {
+        "x": 3.6501293068301917,
+        "y": 1.647444783207647,
+        "z": 14.74977752803918
+      },
+      "mission": "pack-suitcase"
+    },
+    {
+      "position": {
+        "x": 5.1051282596833225,
+        "y": 1.655017935159618,
+        "z": 14.74989818349937
+      },
+      "mission": "pack-suitcase"
+    },
+    {
+      "position": {
+        "x": 5.003018765806304,
+        "y": 1.6491566231721584,
+        "z": 12.597320572859736
+      },
+      "mission": "pack-suitcase"
+    },
+    {
+      "position": {
+        "x": 9.56885831056101,
+        "y": 1.6541806444349507,
+        "z": 12.54060279129611
+      },
+      "mission": "pack-suitcase"
+    },
+    {
+      "position": {
+        "x": 9.600115745694957,
+        "y": 1.646950786465534,
+        "z": 15.11934301026222
+      },
+      "mission": "pack-suitcase"
+    },
+    {
+      "position": {
+        "x": 5.060119014172561,
+        "y": 1.648066729254964,
+        "z": 15.120104240010484
+      },
+      "mission": "pack-suitcase"
+    },
+    {
+      "position": {
+        "x": 7.325117383026883,
+        "y": 1.6459711443628267,
+        "z": 15.120005920228522
+      },
+      "mission": "pack-suitcase"
+    },
+    {
+      "position": {
+        "x": 9.560020362333146,
+        "y": 1.6483592811529175,
+        "z": 15.11570813373829
+      },
+      "mission": "pack-suitcase"
+    },
+    {
+      "position": {
+        "x": 9.604751703043643,
+        "y": 1.6504767288258653,
+        "z": 12.581043152289947
+      },
+      "mission": "pack-suitcase"
+    },
+    {
+      "position": {
+        "x": 9.600265786321659,
+        "y": 1.6484928283311313,
+        "z": 15.125910550609326
+      },
+      "mission": "pack-suitcase"
+    },
+    {
+      "position": {
+        "x": 7.21902923709329,
+        "y": 1.6470984682840049,
+        "z": 15.120145540725972
+      },
+      "mission": "pack-suitcase"
+    },
+    {
+      "position": {
+        "x": 5.011991645854263,
+        "y": 1.6529229119533522,
+        "z": 15.120224986787235
+      },
+      "mission": "pack-suitcase"
+    },
+    {
+      "position": {
+        "x": 4.9995109200865695,
+        "y": 1.6468737576029138,
+        "z": 14.73042499089652
+      },
+      "mission": "pack-suitcase"
+    },
+    {
+      "position": {
+        "x": 3.7546479990418846,
+        "y": 1.6531672018846324,
+        "z": 14.748845734015598
+      },
+      "mission": "pack-suitcase"
+    },
+    {
+      "position": {
+        "x": 3.5251900055519028,
+        "y": 1.6484168262286736,
+        "z": 14.254288191919839
+      },
+      "mission": "pack-suitcase"
+    },
+    {
+      "position": {
+        "x": 1.605948399873407,
+        "y": 1.6530804569779594,
+        "z": 14.20036025813515
+      },
+      "mission": "pack-suitcase"
+    },
+    {
+      "position": {
+        "x": 1.600080589335536,
+        "y": 1.6523350802585328,
+        "z": 12.590372109179624
+      },
+      "mission": "pack-suitcase"
+    },
+    {
+      "position": {
+        "x": 1.8457706614234788,
+        "y": 1.6487670225898006,
+        "z": 11.961675112731129
+      },
+      "mission": "pack-suitcase"
+    },
+    {
+      "position": {
+        "x": 1.85017236039101,
+        "y": 4.644768358739367,
+        "z": 4.67533388646943
+      },
+      "mission": "pack-suitcase"
+    },
+    {
+      "position": {
+        "x": 1.8501585059630525,
+        "y": 4.647897966339071,
+        "z": 2.7894566265267824
+      },
+      "mission": "pack-suitcase"
+    },
+    {
+      "position": {
+        "x": 1.8495345065620994,
+        "y": 4.64995088798183,
+        "z": 4.559127448927275
+      },
+      "mission": "enter-car"
+    },
+    {
+      "position": {
+        "x": 1.8495345065621334,
+        "y": 1.6430907358113274,
+        "z": 11.938799768927074
+      },
+      "mission": "enter-car"
+    },
+    {
+      "position": {
+        "x": 1.6111095354351523,
+        "y": 1.64793634518005,
+        "z": 12.570288401381697
+      },
+      "mission": "enter-car"
+    },
+    {
+      "position": {
+        "x": 1.5999616257632505,
+        "y": 1.648757102254959,
+        "z": 14.20524976634141
+      },
+      "mission": "enter-car"
+    },
+    {
+      "position": {
+        "x": 3.6585057198064517,
+        "y": 1.6542735997311573,
+        "z": 14.75232479875499
+      },
+      "mission": "enter-car"
+    },
+    {
+      "position": {
+        "x": 4.9335047961779575,
+        "y": 1.6450616961899742,
+        "z": 14.75079011578907
+      },
+      "mission": "enter-car"
+    },
+    {
+      "position": {
+        "x": 4.983855129217081,
+        "y": 1.6482884929927477,
+        "z": 15.031307216805835
+      },
+      "mission": "enter-car"
+    },
+    {
+      "position": {
+        "x": 7.247106006076557,
+        "y": 1.643725832496572,
+        "z": 15.120285967237516
+      },
+      "mission": "enter-car"
+    }
+  ],
+  "solids": {
+    "carBefore": {
+      "x": 7.325117383026883,
+      "y": 1.6499999176817417,
+      "z": 15.120005920228522
+    },
+    "carStop": {
+      "x": 7.327378438511884,
+      "y": 1.6468643139198977,
+      "z": 14.85750667160701
+    },
+    "gateStop": {
+      "x": 9.873550137965193,
+      "y": 1.6496859512684388,
+      "z": 15.116836401232689
+    },
+    "wallStop": {
+      "x": 9.608017672077548,
+      "y": 1.6436651319520614,
+      "z": 12.073544504771226
+    }
+  },
+  "blocked": {
+    "position": {
+      "x": 7.21902923709329,
+      "y": 1.6499999887906378,
+      "z": 15.120145540725972
+    },
+    "mission": "pack-suitcase",
+    "luggageCollected": false
+  },
+  "pickup": {
+    "position": {
+      "x": 1.8501585059630525,
+      "y": 4.6499999360298965,
+      "z": 2.7894566265267824
+    },
+    "mission": "enter-car",
+    "luggageCollected": true
+  },
+  "final": {
+    "phase": "playing",
+    "stage": "airport",
+    "mission": "airport-gate"
+  },
+  "coverage": [
+    "physical house-to-garage connection",
+    "two actual garage/car captures",
+    "walking around all four sides of parked car",
+    "solid car/gate/wall",
+    "car blocks departure before luggage",
+    "real upstairs walk and existing bag pickup",
+    "physical return with collected bag",
+    "existing car-to-airport progression"
+  ],
+  "limits": [
+    "One focused garage/bag/departure flow; older breakfast and room suites were not repeated.",
+    "No FPS benchmark, physical GPU or Windows validation.",
+    "Original procedural models inspired by the reference; no vehicle driving."
+  ],
+  "build": "chapter1-garage-1",
+  "checks": {
+    "typescript": "passed (npm run build)",
+    "productionBuild": "passed",
+    "focusedUnitTests": 4,
+    "browserFlow": "passed"
+  },
+  "environment": {
+    "browser": "Chromium 154",
+    "os": "Linux",
+    "renderer": "SwiftShader (software)"
+  },
+  "preservation": {
+    "sourceUnchanged": [
+      "bedroom",
+      "hallway",
+      "livingRoom",
+      "parents",
+      "kitchenMaterials",
+      "player"
+    ],
+    "necessaryConnection": "Only an external passage doorway, lintel and matching collider were opened; furnished kitchen unchanged."
+  },
+  "visualInspection": {
+    "status": "passed",
+    "observed": [
+      "garage and car visible",
+      "seats and steering wheel visible through glass",
+      "painted/concrete/wood surfaces, tools, shelf and gate visible",
+      "existing living room visible through the actual garage doorway"
+    ]
+  }
+}

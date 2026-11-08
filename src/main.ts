@@ -15,6 +15,7 @@ import { BED_POSE } from './game/layout';
 import { HOME_RESUME_POSITION } from './game/livingRoomPlacement';
 import { BREAKFAST_SEAT } from './game/kitchenLayout';
 import { createBreakfastSeat, breakfastSpeechDuration } from './game/breakfast';
+import { canEnterFamilyCar, isTravelBagTaken, setTravelBagTaken } from './game/garageProgress';
 import type { Settings } from './game/types';
 import { buildChapterWorld } from './scene/chapterWorld';
 import { createChapterProgress, createDialogue, breakfastConversation, breakfastChoices, schoolClue, airportGoodbye, type StoryBeat, type StoryChoice } from './game/narrative';
@@ -39,7 +40,7 @@ const chapter = createChapterProgress();
 const dialogue = createDialogue();
 let selectedChoice: StoryChoice | null = null;
 let chapterStage: 'home'|'car'|'airport'|'plane'|'town'='home';
-let transitionKind: 'drive'|'arrival'='arrival';
+let transitionKind: 'drive'|'arrival'|'garage-departure'='arrival';
 let pendingAirportDialogue=false;
 let pendingTownTravel=false;
 let freshStartRequested=false;
@@ -74,6 +75,8 @@ try {
     onTelevisionClick: () => audio.play('tv'),
   });
   const chapterWorld = buildChapterWorld(scene);
+  const bagTarget = environment.targets.find(target => target.id === 'suitcase');
+  if(bagTarget)bagTarget.label=()=>chapter.mission==='pack-suitcase'?'Pegar bagagem':'Examinar mochila';
   const door = createDoor(scene, cue => audio.play(cue));
   for (const mesh of door.target.meshes) environment.shadowGenerator.addShadowCaster(mesh);
   environment.addDoorMeshes(door.target.meshes);
@@ -133,6 +136,8 @@ try {
     if(freshStartRequested||chapter.mission==='complete')chapter.reset();
     freshStartRequested=false;
     const resumed=chapter.mission!=='breakfast';
+    setTravelBagTaken(chapter.completed.includes('pack-suitcase'));
+    environment.syncTravelBag();
     phase = resumed?'playing':'opening'; beforePause = phase; introTime = worldTime = endingTime = transitionTime = 0;
     subtitleUntil = examineUntil = 0; examined.clear(); objective.reset(); door.reset(); environment.setTelevision(false); environment.refreshShadows(); environment.setRoomLight(true); environment.setHallLight(true);
     chapterStage=chapter.mission==='airport-gate'?'airport':chapter.mission==='plane-seat'?'plane':chapter.mission==='find-host'?'town':'home';
@@ -224,6 +229,13 @@ try {
     chapterStage='car';chapterWorld.activate('car');player.teleport(chapterWorld.teleportPoint('car'));
     camera.rotation.set(0,0,0);audio.play('engine');releaseMouse();
   }
+  function enterGarageCar() {
+    environment.setTelevision(false);
+    phase='transition';transitionKind='garage-departure';transitionTime=0;
+    player.setActive(false);player.clearInput();interactions.clear();releaseMouse();
+    el('interaction').hidden=true;el('reticle').hidden=true;el('examine').hidden=true;
+    el('sceneFade').style.opacity='0';audio.play('engine');
+  }
   function activateInteraction() {
     if (phase !== 'playing'||dialogue.active) return;
     if(breakfast.state==='seated'){breakfast.stand();interactions.clear();return;}
@@ -237,6 +249,16 @@ try {
     }
     if(result?.id==='parents'&&chapter.mission==='talk-parents'){
       el('examine').textContent='Vou me sentar à mesa para tomar café com meus pais.';examineUntil=worldTime+3;el('examine').hidden=false;return;
+    }
+    if(result?.id==='suitcase'&&chapter.mission==='pack-suitcase'){
+      chapter.advance('enter-car');setTravelBagTaken(true);environment.syncTravelBag();interactions.clear();
+      el('objectiveState').textContent='NOVA MISSÃO';el('objectiveText').textContent=chapter.label;el('objective').classList.remove('compact');
+      el('examine').textContent='Bagagem em mãos. Hora de ir para o carro.';examineUntil=worldTime+3.5;el('examine').hidden=false;
+      audio.play('objective');return;
+    }
+    if(result?.id==='family-car'){
+      if(canEnterFamilyCar(chapter.mission,chapter.completed)){enterGarageCar();return;}
+      el('examine').textContent='Ainda preciso pegar minha mala.';examineUntil=worldTime+3.5;el('examine').hidden=false;return;
     }
     if(result?.id==='gate'&&chapter.mission==='airport-gate'){travelTo('plane','plane-seat');return;}
     if(result?.id==='seat'&&chapter.mission==='plane-seat'){
@@ -290,7 +312,7 @@ try {
   });
 
   Object.defineProperty(window, '__INTERCAMBIO__', { configurable: true, get: () => ({
-    build:'chapter1-breakfast-compact-1',phase, introTime, duration: OPENING_DURATION, mission: objective.state, chapterMission: chapter.mission, chapterStage, dialogue: dialogue.active,
+    build:'chapter1-garage-1',phase, introTime, duration: OPENING_DURATION, mission: objective.state, chapterMission: chapter.mission, chapterStage, dialogue: dialogue.active,
     position: { x: camera.position.x, y: camera.position.y, z: camera.position.z },
     rotation: { yaw: camera.rotation.y, pitch: camera.rotation.x, roll: camera.rotation.z },
     horizonTilt: camera.getDirection(Vector3.Right()).y,
@@ -303,6 +325,7 @@ try {
     livingRoom: environment.livingRoomDiagnostics, hallway: environment.hallwayDiagnostics, bedroom: environment.bedroomDiagnostics, kitchen: chapterWorld.kitchenDiagnostics, dialogueSpeaker: dialogue.current?.speaker ?? null,
     audio: audio.diagnostics,
     breakfast: { ...breakfast.diagnostics, speechRemaining: Math.max(0,speechUntil-worldTime), movementEnabled: breakfast.state==='standing'&&!dialogue.active },
+    garage: chapterWorld.garageDiagnostics, luggageCollected: isTravelBagTaken(),
   }) });
 
   engine.runRenderLoop(() => {
@@ -344,7 +367,10 @@ try {
       }
     } else if (phase === 'transition') {
       transitionTime+=dt;
-      if(transitionKind==='drive'){
+      if(transitionKind==='garage-departure'){
+        el('sceneFade').style.opacity=String(Math.min(1,transitionTime/.45));
+        if(transitionTime>=.45)travelTo('airport','airport-gate');
+      } else if(transitionKind==='drive'){
         const progress=Math.min(1,transitionTime/3);
         player.teleport({x:46,y:1.65,z:-3+progress*7.5});
         if(progress>=1){chapterStage='airport';chapterWorld.activate('airport');player.teleport(chapterWorld.teleportPoint('airport'));chapter.advance('airport-gate');el('objectiveText').textContent=chapter.label;el('objectiveState').textContent='NOVA MISSÃO';el('objective').classList.remove('compact');pendingAirportDialogue=true;transitionKind='arrival';transitionTime=0;el('sceneFade').style.opacity='1';}

@@ -19,6 +19,7 @@ import { KITCHEN_AUTHORED_FURNITURE as KITCHEN_FURNITURE, COMPACT_KITCHEN, BREAK
   KITCHEN_PLACEMENTS, placeKitchenPoint, type KitchenPlacement, PARENT_ANCHORS } from '../game/kitchenLayout';
 import { LIVING_ROOM_WORLD, LIVING_ROOM_KITCHEN_PORTAL, KITCHEN_FRONT_PASSAGE } from '../game/livingRoomPlacement';
 import type { InteractionTarget } from '../game/types';
+import { GARAGE_DOOR } from '../game/garageLayout';
 import { HomeGeometry } from './props';
 import { createKitchenMaterials } from './kitchenMaterials';
 import { createParents } from './parents';
@@ -154,8 +155,13 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
     COMPACT_KITCHEN.minX - .075, ceilingY / 2, (COMPACT_KITCHEN.endZ + LIVING_ROOM_WORLD.maxZ) / 2, m.wallTile);
   b('parede lateral direita da área do café', .15, ceilingY, COMPACT_KITCHEN.endZ - LIVING_ROOM_WORLD.maxZ,
     COMPACT_KITCHEN.maxX + .075, ceilingY / 2, (COMPACT_KITCHEN.endZ + LIVING_ROOM_WORLD.maxZ) / 2, m.wallTile);
-  b('parede lateral da passagem ampliada', .15, ceilingY, LIVING_ROOM_WORLD.maxZ - COMPACT_KITCHEN.startZ,
-    KITCHEN_FRONT_PASSAGE.maxX + .075, ceilingY / 2, (LIVING_ROOM_WORLD.maxZ + COMPACT_KITCHEN.startZ) / 2, m.wallTile);
+  // Only the passage's outside wall gains an internal garage doorway. The
+  // furnished kitchen, its lighting and every approved tile surface stay put.
+  for (const [z0, z1] of [[COMPACT_KITCHEN.startZ, GARAGE_DOOR.minZ], [GARAGE_DOOR.maxZ, LIVING_ROOM_WORLD.maxZ]])
+    b('parede lateral da passagem junto à porta da garagem', .15, ceilingY, z1 - z0,
+      KITCHEN_FRONT_PASSAGE.maxX + .075, ceilingY / 2, (z0 + z1) / 2, m.wallTile);
+  b('verga azulejada sobre acesso à garagem', .15, ceilingY - GARAGE_DOOR.height, GARAGE_DOOR.maxZ - GARAGE_DOOR.minZ,
+    KITCHEN_FRONT_PASSAGE.maxX + .075, (ceilingY + GARAGE_DOOR.height) / 2, (GARAGE_DOOR.minZ + GARAGE_DOOR.maxZ) / 2, m.wallTile);
   b('arremate azulejado entre passagem e cozinha', KITCHEN_FRONT_PASSAGE.maxX - COMPACT_KITCHEN.maxX, ceilingY, .15,
     (KITCHEN_FRONT_PASSAGE.maxX + COMPACT_KITCHEN.maxX) / 2, ceilingY / 2, LIVING_ROOM_WORLD.maxZ + .075, m.wallTile);
   const rear = (name: string, x0: number, x1: number, y0: number, y1: number) =>
@@ -193,8 +199,9 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
     COMPACT_KITCHEN.minX + .015, .045, (COMPACT_KITCHEN.endZ + LIVING_ROOM_WORLD.maxZ) / 2, m.darkWood);
   b('rodapé de cerâmica lateral direito', .035, .09, COMPACT_KITCHEN.endZ - LIVING_ROOM_WORLD.maxZ,
     COMPACT_KITCHEN.maxX - .015, .045, (COMPACT_KITCHEN.endZ + LIVING_ROOM_WORLD.maxZ) / 2, m.darkWood);
-  b('rodapé da passagem ampliada', .035, .09, LIVING_ROOM_WORLD.maxZ - COMPACT_KITCHEN.startZ,
-    KITCHEN_FRONT_PASSAGE.maxX - .015, .045, (LIVING_ROOM_WORLD.maxZ + COMPACT_KITCHEN.startZ) / 2, m.darkWood);
+  for (const [z0, z1] of [[COMPACT_KITCHEN.startZ, GARAGE_DOOR.minZ], [GARAGE_DOOR.maxZ, LIVING_ROOM_WORLD.maxZ]])
+    b('rodapé da passagem junto à garagem', .035, .09, z1 - z0,
+      KITCHEN_FRONT_PASSAGE.maxX - .015, .045, (z0 + z1) / 2, m.darkWood);
   b('rodapé cerâmico do fundo', width, .09, .035, (COMPACT_KITCHEN.minX + COMPACT_KITCHEN.maxX) / 2, .045, COMPACT_KITCHEN.endZ - .015, m.darkWood);
 
   // Window, slim security bars and cotton lace. Morning shadows are generated

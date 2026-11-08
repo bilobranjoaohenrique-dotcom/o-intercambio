@@ -21,12 +21,13 @@ export const airportGoodbye: StoryBeat[] = [
 ];
 
 export type ChapterMission =
-  | 'breakfast' | 'talk-parents' | 'pack-suitcase' | 'airport-gate'
+  | 'breakfast' | 'talk-parents' | 'pack-suitcase' | 'enter-car' | 'airport-gate'
   | 'plane-seat' | 'find-host' | 'complete';
 export const missionLabels: Record<ChapterMission, string> = {
   breakfast: 'Desça para tomar café',
   'talk-parents': 'Converse com seus pais',
   'pack-suitcase': 'Suba ao quarto e busque sua mala',
+  'enter-car': 'Vá à garagem e entre no carro',
   'airport-gate': 'Encontre seu portão de embarque',
   'plane-seat': 'Prepare-se para a chegada',
   'find-host': 'Encontre sua família anfitriã',
@@ -40,7 +41,7 @@ export function createChapterProgress() {
   let completed: ChapterMission[] = [];
   try {
     const saved = JSON.parse(localStorage.getItem(SAVE_KEY) ?? 'null');
-    if (saved && ['breakfast','talk-parents','pack-suitcase','airport-gate','plane-seat','find-host'].includes(saved.mission)) {
+    if (saved && ['breakfast','talk-parents','pack-suitcase','enter-car','airport-gate','plane-seat','find-host'].includes(saved.mission)) {
       mission = saved.mission; choice = typeof saved.choice === 'string' ? saved.choice : null;
       completed = Array.isArray(saved.completed) ? saved.completed.filter((x: unknown): x is ChapterMission =>
         typeof x === 'string' && x in missionLabels) : [];

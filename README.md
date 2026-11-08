@@ -75,13 +75,21 @@ A cozinha foi compactada reutilizando os móveis, materiais e iluminação. A á
 
 Aproxime-se da cadeira da frente e pressione **E — Sentar à mesa**. A câmera desce suavemente, permanece em primeira pessoa e permite olhar para os pais. O pai continua sentado; a mãe usa avental claro e serve café. Mandíbulas, olhares, expressões e gestos acompanham as falas em texto; nenhuma voz foi acrescentada. Após a conversa, use **E — Levantar da mesa** para andar novamente.
 
-Esta etapa termina no objetivo **“Suba ao quarto e busque sua mala”**. A mochila examinável do quarto e os outros ambientes foram preservados; não foi acrescentada coleta de mala ou uma nova viagem nesta entrega. O [Prompt Master 06](docs/PROMPT-MASTER-06-CAFE.md) registra o escopo.
+A entrega do café (Prompt Master 06) terminou no objetivo **“Suba ao quarto e busque sua mala”**. A atualização da garagem, descrita abaixo, continua esse objetivo reutilizando a mochila existente. O [Prompt Master 06](docs/PROMPT-MASTER-06-CAFE.md) registra o escopo daquela etapa.
 
 Passaram **15 testes focais**, TypeScript/build e uma execução funcional completa do café em Chromium/Linux. Após encontrar uma sobreposição no avental nas capturas, somente a roupa foi corrigida, o build refeito e as duas vistas conferidas novamente. Veja as capturas reais [de pé](docs/capturas/cafe-cozinha-final.png) e [sentado](docs/capturas/cafe-sentado-pais.png), com o [registro resumido da verificação](docs/resultados-cafe.json). Não foram repetidos os testes de viagem ou dos outros cenários.
 
 Os rostos procedurais continuam estilizados e menos detalhados que a prancha de referência. Não houve nova medição de FPS nem teste em GPU física/Windows.
 
 Veja o [relatório da reconstrução com seis capturas reais](docs/RECONSTRUCAO-COZINHA.md). A atualização preserva os checkpoints. Para rever a cozinha quando sua partida já estiver no aeroporto ou em outra sequência, abra o menu com **Esc** e escolha **Reiniciar cena**.
+
+## Garagem da família
+
+A garagem está ligada à passagem lateral do térreo por uma porta interna aberta. Tem aproximadamente **5,70 × 3,80 m**, piso de concreto, paredes pintadas, teto de madeira, portão com grade, luminária, pequena estante, ferramentas e caixas. O hatch original inspirado nos anos 2000 tem quatro rodas, portas, vidros, bancos e volante; não há direção nem física veicular.
+
+Depois do café, volte ao quarto e use **E — Pegar bagagem** na mochila existente. O objetivo passa a **“Vá à garagem e entre no carro”**. Aproxime-se do carro e pressione **E — Entrar no carro** para a transição curta ao aeroporto já existente. Antes de pegar a bagagem, a partida permanece bloqueada. O checkpoint conserva essa etapa.
+
+Verificação focal: `node --test --test-isolation=none tests/garage.test.mjs`; com uma prévia aberta, `INTERCAMBIO_URL=http://localhost:4180 npm run test:garage`. Passaram os quatro testes focais, TypeScript/build e um percurso real no Chromium/Linux: entrada, volta ao redor do carro, colisões, bloqueio antes da mala, subida/coleta da bagagem, retorno e embarque. Veja a [garagem no jogo](docs/capturas/garagem-visao-geral.png), o [portão e interior](docs/capturas/garagem-portao.png) e o [registro breve](docs/resultados-garagem.json). Renderização por software SwiftShader; não houve benchmark de FPS nem teste em GPU física/Windows.
 
 ## Estrutura
 
@@ -106,7 +114,7 @@ Na reconstrução anterior do quarto passaram **42 testes unitários**, TypeScri
 
 A atualização anterior da cozinha aprovou **41 testes**, o build, o percurso completo do capítulo e as verificações específicas daquele ambiente. Esse registro histórico está em [validação do capítulo](docs/VALIDACAO-CAPITULO-01.md). As medições da cozinha naquele servidor com renderização por software ficaram em **8,1 a 12,2 FPS**; elas não representam o desempenho do quarto reconstruído. O [relatório do quarto](docs/RECONSTRUCAO-QUARTO.md) registra separadamente a validação desta etapa. GPU física e Windows ainda precisam de verificação própria.
 
-Com Chromium instalado, `CHROMIUM_PATH=/usr/bin/chromium npm run verify` inicia uma prévia de produção temporária e executa a validação funcional atual do **café da manhã**, até levantar com o objetivo de buscar a mala. Para executar somente esse fluxo com um servidor já aberto, use `INTERCAMBIO_URL=http://localhost:4180 npm run test:breakfast`. As suítes anteriores de quarto, corredor, cozinha e capítulo permanecem como histórico das etapas anteriores; seus percursos de café/partida antecedem a interação de sentar.
+Com Chromium instalado, `CHROMIUM_PATH=/usr/bin/chromium npm run verify` inicia uma prévia de produção temporária e executa a validação funcional do **café da manhã (etapa 06)**, até levantar com o objetivo de buscar a mala. Para executar somente esse fluxo com um servidor já aberto, use `INTERCAMBIO_URL=http://localhost:4180 npm run test:breakfast`. As suítes anteriores de quarto, corredor, cozinha e capítulo permanecem como histórico das etapas anteriores; seus percursos de café/partida antecedem a interação de sentar.
 
 ## Publicação
 
