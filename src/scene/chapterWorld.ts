@@ -8,6 +8,7 @@ import type { Scene } from '@babylonjs/core/scene';
 import type { InteractionTarget } from '../game/types';
 import { buildKitchen } from './kitchen';
 import { buildGarage } from './garage';
+import { buildLaundry } from './laundry';
 import type { Point3 } from '../game/layout';
 
 type Zone = 'home' | 'car' | 'airport' | 'plane' | 'town';
@@ -86,7 +87,8 @@ export function buildChapterWorld(scene: Scene) {
   roots.set('home',kitchenRoot);
   const kitchen=buildKitchen(scene,kitchenRoot);
   const garage=buildGarage(scene,kitchenRoot);
-  meshes.set('home',[...kitchen.meshes,...garage.meshes]);
+  const laundry=buildLaundry(scene,kitchenRoot);
+  meshes.set('home',[...kitchen.meshes,...garage.meshes,...laundry.meshes]);
   targets.push(...kitchen.targets,...garage.targets);
 
   const carRoot=new TransformNode('viagem de carro',scene);roots.set('car',carRoot);meshes.set('car',[]);
@@ -152,6 +154,7 @@ export function buildChapterWorld(scene: Scene) {
     for(const [key,root]of roots) root.setEnabled(key===zone);
     kitchen.setActive(zone==='home');
     garage.setActive(zone==='home');
+    laundry.setActive(zone==='home');
   }
   activate('home');
   return {
@@ -169,6 +172,7 @@ export function buildChapterWorld(scene: Scene) {
     },
     get kitchenDiagnostics(){return {active:activeZone==='home',meshes:kitchen.meshes.length,...kitchen.diagnostics};},
     get garageDiagnostics(){return garage.diagnostics;},
-    dispose(){garage.dispose();kitchen.dispose();for(const root of roots.values())root.dispose(false,false);for(const material of materials.values())material.dispose();for(const texture of textures)texture.dispose();}
+    get laundryDiagnostics(){return laundry.diagnostics;},
+    dispose(){laundry.dispose();garage.dispose();kitchen.dispose();for(const root of roots.values())root.dispose(false,false);for(const material of materials.values())material.dispose();for(const texture of textures)texture.dispose();}
   };
 }

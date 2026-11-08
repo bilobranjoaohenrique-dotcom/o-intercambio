@@ -91,6 +91,14 @@ Depois do café, volte ao quarto e use **E — Pegar bagagem** na mochila existe
 
 Verificação focal: `node --test --test-isolation=none tests/garage.test.mjs`; com uma prévia aberta, `INTERCAMBIO_URL=http://localhost:4180 npm run test:garage`. Passaram os quatro testes focais, TypeScript/build e um percurso real no Chromium/Linux: entrada, volta ao redor do carro, colisões, bloqueio antes da mala, subida/coleta da bagagem, retorno e embarque. Veja a [garagem no jogo](docs/capturas/garagem-visao-geral.png), o [portão e interior](docs/capturas/garagem-portao.png) e o [registro breve](docs/resultados-garagem.json). Renderização por software SwiftShader; não houve benchmark de FPS nem teste em GPU física/Windows.
 
+## Lavanderia
+
+Área de serviço de **3,20 × 3,20 m**, conectada à cozinha e à garagem por passagens reais, no mesmo piso. Tem cerâmica, azulejos até meia altura, janela, tanque de concreto, máquina de lavar de abertura superior, armário, produtos de limpeza, varal, cesto, balde, vassoura e tapete. Os objetos são decorativos nesta etapa; não foram criadas missões ou alterações de diálogo.
+
+Verificação focal: `node --test --test-isolation=none tests/laundry.test.mjs`; com uma prévia aberta, `INTERCAMBIO_URL=http://localhost:4180 npm run test:laundry`.
+
+TypeScript/build e os três testes focais passaram. Uma sessão real confirmou ida e volta entre cozinha, lavanderia e garagem, colisões e missão intacta. O helper inicial de movimento excedeu o destino; a verificação continuou na mesma sessão com o controle de mouse/W existente. O comando inicial terminou com código 1 por esse timeout; o roteiro final foi ajustado e teve sintaxe checada, sem repetir todo o percurso. Veja a [captura principal](docs/capturas/lavanderia-visao-principal.png), a [vista do armário e cozinha](docs/capturas/lavanderia-armario-cozinha.png) e o [registro breve](docs/resultados-lavanderia.json). Chromium/Linux com SwiftShader, sem benchmark de FPS nem teste em GPU física/Windows.
+
 ## Estrutura
 
 - `src/scene/`: quarto/casa e cenários 3D do capítulo.

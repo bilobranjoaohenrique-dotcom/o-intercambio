@@ -8,6 +8,8 @@ import { LIVING_ROOM_WORLD, LIVING_ROOM_ENTRY, LIVING_ROOM_KITCHEN_PORTAL,
 import type { Obstacle } from './types';
 import { GARAGE, GARAGE_DOOR, GARAGE_WEST_FACE, GARAGE_SOLIDS } from './garageLayout';
 import { isTravelBagTaken } from './garageProgress';
+import { LAUNDRY, LAUNDRY_KITCHEN_DOOR, LAUNDRY_GARAGE_DOOR, LAUNDRY_THRESHOLD,
+  LAUNDRY_WEST_FACE, LAUNDRY_SOLIDS } from './laundryLayout';
 
 export const PLAYER_RADIUS = .22;
 const WALL_THICKNESS = .12;
@@ -33,7 +35,8 @@ export const staticObstacles: readonly Obstacle[] = [
   box(LIVING_ROOM_WORLD.minX, LIVING_ROOM_ENTRY.minX, LIVING_ROOM_ENTRY.minZ, KITCHEN.startZ),
   box(LIVING_ROOM_ENTRY.maxX, KITCHEN_FRONT_PASSAGE.maxX, LIVING_ROOM_ENTRY.minZ, KITCHEN.startZ),
   box(KITCHEN.minX, KITCHEN.minX + WALL_THICKNESS, LIVING_ROOM_WORLD.maxZ, KITCHEN.endZ),
-  box(KITCHEN.maxX - WALL_THICKNESS, KITCHEN.maxX, LIVING_ROOM_WORLD.maxZ, KITCHEN.endZ),
+  box(KITCHEN.maxX - WALL_THICKNESS, KITCHEN.maxX, LIVING_ROOM_WORLD.maxZ, LAUNDRY_KITCHEN_DOOR.minZ),
+  box(KITCHEN.maxX - WALL_THICKNESS, KITCHEN.maxX, LAUNDRY_KITCHEN_DOOR.maxZ, KITCHEN.endZ),
   box(KITCHEN_FRONT_PASSAGE.maxX - WALL_THICKNESS, KITCHEN_FRONT_PASSAGE.maxX, KITCHEN.startZ, GARAGE_DOOR.minZ),
   box(KITCHEN_FRONT_PASSAGE.maxX - WALL_THICKNESS, KITCHEN_FRONT_PASSAGE.maxX, GARAGE_DOOR.maxZ, LIVING_ROOM_WORLD.maxZ),
   box(KITCHEN.maxX, KITCHEN_FRONT_PASSAGE.maxX, LIVING_ROOM_WORLD.maxZ, LIVING_ROOM_WORLD.maxZ + WALL_THICKNESS),
@@ -53,13 +56,22 @@ export const staticObstacles: readonly Obstacle[] = [
   box(GARAGE.minX, GARAGE_WEST_FACE, GARAGE.minZ, GARAGE_DOOR.minZ),
   box(GARAGE.minX, GARAGE_WEST_FACE, GARAGE_DOOR.maxZ, GARAGE.maxZ),
   box(GARAGE.minX, GARAGE.maxX, GARAGE.minZ - WALL_THICKNESS, GARAGE.minZ),
-  box(GARAGE.minX, GARAGE.maxX, GARAGE.maxZ, GARAGE.maxZ + WALL_THICKNESS),
+  box(GARAGE.minX, LAUNDRY_GARAGE_DOOR.minX, GARAGE.maxZ, GARAGE.maxZ + WALL_THICKNESS),
+  box(LAUNDRY_GARAGE_DOOR.maxX, GARAGE.maxX, GARAGE.maxZ, GARAGE.maxZ + WALL_THICKNESS),
   box(GARAGE.maxX, GARAGE.maxX + WALL_THICKNESS, GARAGE.minZ, GARAGE.maxZ),
   ...GARAGE_SOLIDS,
+  box(LAUNDRY.minX, LAUNDRY_WEST_FACE, LAUNDRY.minZ, LAUNDRY_KITCHEN_DOOR.minZ),
+  box(LAUNDRY.minX, LAUNDRY_WEST_FACE, LAUNDRY_KITCHEN_DOOR.maxZ, LAUNDRY.maxZ),
+  box(GARAGE.minX, LAUNDRY_GARAGE_DOOR.minX, GARAGE.maxZ, LAUNDRY.minZ),
+  box(LAUNDRY_GARAGE_DOOR.maxX, LAUNDRY.maxX, GARAGE.maxZ, LAUNDRY.minZ),
+  box(LAUNDRY.minX, LAUNDRY.maxX, LAUNDRY.maxZ, LAUNDRY.maxZ + WALL_THICKNESS),
+  box(LAUNDRY.maxX, LAUNDRY.maxX + WALL_THICKNESS, LAUNDRY.minZ, LAUNDRY.maxZ),
+  ...LAUNDRY_SOLIDS,
 ];
 
 /** Height of the physical tread below the player's feet, never a camera offset. */
 export function floorHeight(point: Point2): number {
+  if (point.x >= LAUNDRY.minX && point.x <= LAUNDRY.maxX && point.z >= LAUNDRY_THRESHOLD.minZ && point.z <= LAUNDRY.maxZ) return LAUNDRY.floor;
   if (point.x >= GARAGE.minX && point.x <= GARAGE.maxX && point.z >= GARAGE.minZ && point.z <= GARAGE.maxZ) return GARAGE.floor;
   if (Object.values(CHAPTER_ZONES).some(zone => point.x >= zone.minX && point.x <= zone.maxX && point.z >= zone.minZ && point.z <= zone.maxZ)) return 0;
   if (point.x >= KITCHEN.minX && point.x <= KITCHEN.maxX && point.z >= KITCHEN.startZ && point.z <= KITCHEN.endZ) return KITCHEN.floor;
@@ -78,6 +90,8 @@ const containsPoint = (rect: FloorRect, point: Point2) =>
 const floorRects: readonly FloorRect[] = [
   ROOM,
   GARAGE,
+  LAUNDRY,
+  LAUNDRY_THRESHOLD,
   { minX: HALLWAY.minX, maxX: HALLWAY.maxX, minZ: HALLWAY.startZ, maxZ: HALLWAY.endZ },
   { minX: STAIRS.minX, maxX: STAIRS.maxX, minZ: STAIRS.startZ, maxZ: STAIRS.endZ },
   { minX: BOTTOM_LANDING.minX, maxX: BOTTOM_LANDING.maxX, minZ: BOTTOM_LANDING.startZ, maxZ: BOTTOM_LANDING.endZ },

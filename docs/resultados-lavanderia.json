@@ -1,0 +1,257 @@
+{
+  "status": "passed-with-helper-recovery",
+  "build": "chapter1-laundry-1",
+  "pictures": [
+    "capturas/lavanderia-visao-principal.png",
+    "capturas/lavanderia-armario-cozinha.png"
+  ],
+  "route": [
+    {
+      "position": {
+        "x": 3.540000000000006,
+        "y": 1.6567430725144792,
+        "z": 16.3
+      },
+      "mission": "talk-parents"
+    },
+    {
+      "position": {
+        "x": 3.555407231512765,
+        "y": 1.6485045842634247,
+        "z": 16.580778929327384
+      },
+      "mission": "talk-parents"
+    },
+    {
+      "position": {
+        "x": 4.80058739505892,
+        "y": 1.6527434634080236,
+        "z": 16.46659867278478
+      },
+      "mission": "talk-parents"
+    },
+    {
+      "position": {
+        "x": 4.737286887232122,
+        "y": 1.6538317501489905,
+        "z": 16.9903404032014
+      },
+      "mission": "talk-parents"
+    },
+    {
+      "position": {
+        "x": 4.843927222836173,
+        "y": 1.642810660641224,
+        "z": 18.090626694266767
+      },
+      "mission": "talk-parents"
+    },
+    {
+      "position": {
+        "x": 5.601612667308665,
+        "y": 1.6442227838889898,
+        "z": 17.96305663147041
+      },
+      "mission": "talk-parents"
+    },
+    {
+      "position": {
+        "x": 5.313444733987904,
+        "y": 1.647578157667426,
+        "z": 16.939082831363873
+      },
+      "mission": "talk-parents"
+    },
+    {
+      "position": {
+        "x": 5.248032830504215,
+        "y": 1.6566277965475014,
+        "z": 18.18713887637509
+      },
+      "mission": "talk-parents"
+    },
+    {
+      "position": {
+        "x": 5.643679427883972,
+        "y": 1.6515715234255413,
+        "z": 17.903973498034283
+      },
+      "mission": "talk-parents"
+    },
+    {
+      "position": {
+        "x": 5.602767417359065,
+        "y": 1.6470997305342516,
+        "z": 16.52958398167977
+      },
+      "mission": "talk-parents"
+    },
+    {
+      "position": {
+        "x": 5.600141318579518,
+        "y": 1.656628725847439,
+        "z": 15.154587140133568
+      },
+      "mission": "talk-parents"
+    },
+    {
+      "position": {
+        "x": 7.21331546051361,
+        "y": 1.6530596330829819,
+        "z": 15.12105085223451
+      },
+      "mission": "talk-parents"
+    },
+    {
+      "position": {
+        "x": 5.683316563842863,
+        "y": 1.65146064539895,
+        "z": 15.120577232347086
+      },
+      "mission": "talk-parents"
+    },
+    {
+      "position": {
+        "x": 5.59967164531962,
+        "y": 1.642912445623924,
+        "z": 17.384030676295186
+      },
+      "mission": "talk-parents"
+    },
+    {
+      "position": {
+        "x": 5.8572492569636445,
+        "y": 1.6569020666693233,
+        "z": 18.637509231816214
+      },
+      "mission": "talk-parents"
+    },
+    {
+      "position": {
+        "x": 5.609510470787542,
+        "y": 1.6464393905192878,
+        "z": 16.577352064180335
+      },
+      "mission": "talk-parents"
+    },
+    {
+      "position": {
+        "x": 4.782191897283593,
+        "y": 1.6468533746180647,
+        "z": 16.510688896423336
+      },
+      "mission": "talk-parents"
+    },
+    {
+      "position": {
+        "x": 3.5866334519092393,
+        "y": 1.6568450037482323,
+        "z": 16.50157760958336
+      },
+      "mission": "talk-parents"
+    },
+    {
+      "position": {
+        "x": 3.544359402849351,
+        "y": 1.652493027390543,
+        "z": 16.37864305473371
+      },
+      "mission": "talk-parents"
+    },
+    {
+      "position": {
+        "x": 0.12031403868246873,
+        "y": 1.6510754855601948,
+        "z": 16.30393311098554
+      },
+      "mission": "talk-parents"
+    }
+  ],
+  "solids": {
+    "washerStop": {
+      "x": 6.021612667308666,
+      "y": 1.6500641667033997,
+      "z": 17.96305663147041
+    },
+    "sinkStop": {
+      "x": 5.995944733987907,
+      "y": 1.6501193401371705,
+      "z": 16.939082831363873
+    },
+    "wallStop": {
+      "x": 5.248032830504215,
+      "y": 1.6499122249314637,
+      "z": 18.77865273637358
+    }
+  },
+  "garage": {
+    "position": {
+      "x": 7.21331546051361,
+      "y": 1.6530596330829819,
+      "z": 15.12105085223451
+    },
+    "mission": "talk-parents"
+  },
+  "final": {
+    "position": {
+      "x": 0.12031403868246873,
+      "y": 1.6510754855601948,
+      "z": 16.30393311098554
+    },
+    "mission": "talk-parents",
+    "stage": "home",
+    "dialogue": false
+  },
+  "execution": {
+    "initialScript": "The cardinal key-release helper overshot toward the shelf and timed out; the game correctly blocked it.",
+    "recovery": "Continued from the same player position in the same Chromium session using existing real mouse/W walkTo. No scene/gameplay changes or teleports; the initial script exit remains failed after the recovery REPL closes."
+  },
+  "coverage": [
+    "physical kitchen/laundry/garage route in both directions",
+    "two actual scene captures",
+    "washer, sink and wall stop the real capsule",
+    "existing narrative and interactions preserved"
+  ],
+  "errors": [],
+  "consoleErrors": [],
+  "failedAssets": [],
+  "limits": [
+    "The initial browser runner exited 1 after a cardinal-helper timeout; checks continued in the same preserved browser using real mouse/W input and the existing walkTo helper. The final script was adjusted and syntax-checked, without replaying the entire flow.",
+    "No performance benchmark, physical GPU or Windows verification.",
+    "One focused laundry verification; older room, luggage, breakfast and travel suites were not repeated."
+  ],
+  "checks": {
+    "typescript": "passed (npm run build)",
+    "productionBuild": "passed",
+    "focusedUnitTests": 3,
+    "actualBrowserChecks": "completed with helper recovery in the same session"
+  },
+  "environment": {
+    "browser": "Chromium 154",
+    "os": "Linux",
+    "renderer": "SwiftShader (software)"
+  },
+  "visualInspection": {
+    "status": "completed",
+    "observed": [
+      "washer, open concrete sink, window and tiled surfaces visible",
+      "garage car visible through the physical doorway",
+      "cabinet, cleaning products, broom and kitchen opening visible in the reverse view"
+    ]
+  },
+  "preservation": {
+    "unchanged": [
+      "bedroom",
+      "upper hallway and stair",
+      "living-room models",
+      "kitchen furniture and materials",
+      "parents",
+      "garage car, furniture and materials",
+      "movement",
+      "missions",
+      "dialogue",
+      "airport progression"
+    ],
+    "necessaryShellChanges": "Only kitchen/garage wall openings, matching trims and collision boundaries."
+  }
+}

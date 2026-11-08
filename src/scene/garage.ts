@@ -14,6 +14,7 @@ import { ShadowGenerator } from '@babylonjs/core/Lights/Shadows/shadowGenerator'
 import { RenderTargetTexture } from '@babylonjs/core/Materials/Textures/renderTargetTexture';
 import '@babylonjs/core/Lights/Shadows/shadowGeneratorSceneComponent';
 import { GARAGE, GARAGE_DOOR, GARAGE_SHELF, GARAGE_WEST_FACE } from '../game/garageLayout';
+import { LAUNDRY_GARAGE_DOOR } from '../game/laundryLayout';
 import { HomeGeometry } from './props';
 import { createGarageMaterials } from './garageMaterials';
 import { buildFamilyCar } from './familyCar';
@@ -56,10 +57,18 @@ export function buildGarage(scene: Scene, parent: TransformNode) {
   board('verga sobre a porta interna', .020, GARAGE.ceiling - GARAGE_DOOR.height, GARAGE_DOOR.maxZ - GARAGE_DOOR.minZ,
     westX, (GARAGE.ceiling + GARAGE_DOOR.height) / 2, (GARAGE_DOOR.minZ + GARAGE_DOOR.maxZ) / 2, m.wall);
   for (const z of [GARAGE.minZ - .06, GARAGE.maxZ + .06]) {
-    board('parede lateral clara', width + .12, GARAGE.ceiling - .75, .12, cx, (GARAGE.ceiling + .75) / 2, z, m.wall);
-    board('barra inferior lateral', width + .12, .75, .12, cx, .375, z, m.dado);
-    board('rodapé de concreto', width, .065, .022, cx, .0325, z + (z < cz ? .071 : -.071), m.dado);
+    const spans = z < cz ? [[GARAGE.minX - .06, GARAGE.maxX + .06]] :
+      [[GARAGE.minX - .06, LAUNDRY_GARAGE_DOOR.minX], [LAUNDRY_GARAGE_DOOR.maxX, GARAGE.maxX + .06]];
+    for (const [x0, x1] of spans) {
+      board('parede lateral clara', x1 - x0, GARAGE.ceiling - .75, .12, (x0 + x1) / 2, (GARAGE.ceiling + .75) / 2, z, m.wall);
+      board('barra inferior lateral', x1 - x0, .75, .12, (x0 + x1) / 2, .375, z, m.dado);
+      const a = Math.max(x0, GARAGE.minX), b = Math.min(x1, GARAGE.maxX);
+      board('rodapé de concreto', b - a, .065, .022, (a + b) / 2, .0325, z + (z < cz ? .071 : -.071), m.dado);
+    }
   }
+  board('verga sobre a porta da lavanderia', LAUNDRY_GARAGE_DOOR.maxX - LAUNDRY_GARAGE_DOOR.minX,
+    GARAGE.ceiling - LAUNDRY_GARAGE_DOOR.height, .12, (LAUNDRY_GARAGE_DOOR.minX + LAUNDRY_GARAGE_DOOR.maxX) / 2,
+    (GARAGE.ceiling + LAUNDRY_GARAGE_DOOR.height) / 2, GARAGE.maxZ + .06, m.wall);
 
   // A 1m opening and a leaf folded fully back leave the real walking route free.
   for (const z of [GARAGE_DOOR.minZ - .035, GARAGE_DOOR.maxZ + .035])

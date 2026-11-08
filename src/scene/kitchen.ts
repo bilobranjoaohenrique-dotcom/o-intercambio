@@ -20,6 +20,7 @@ import { KITCHEN_AUTHORED_FURNITURE as KITCHEN_FURNITURE, COMPACT_KITCHEN, BREAK
 import { LIVING_ROOM_WORLD, LIVING_ROOM_KITCHEN_PORTAL, KITCHEN_FRONT_PASSAGE } from '../game/livingRoomPlacement';
 import type { InteractionTarget } from '../game/types';
 import { GARAGE_DOOR } from '../game/garageLayout';
+import { LAUNDRY_KITCHEN_DOOR } from '../game/laundryLayout';
 import { HomeGeometry } from './props';
 import { createKitchenMaterials } from './kitchenMaterials';
 import { createParents } from './parents';
@@ -153,8 +154,12 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
   horizontalPiece('teto da ligação lateral com a sala', KITCHEN_FRONT_PASSAGE.minX, KITCHEN_FRONT_PASSAGE.maxX + .1, ceilingBounds.minZ, LIVING_ROOM_WORLD.maxZ, .13, ceilingY + .065, m.ceiling, originalCeiling);
   b('parede lateral esquerda azulejada', .15, ceilingY, COMPACT_KITCHEN.endZ - LIVING_ROOM_WORLD.maxZ,
     COMPACT_KITCHEN.minX - .075, ceilingY / 2, (COMPACT_KITCHEN.endZ + LIVING_ROOM_WORLD.maxZ) / 2, m.wallTile);
-  b('parede lateral direita da área do café', .15, ceilingY, COMPACT_KITCHEN.endZ - LIVING_ROOM_WORLD.maxZ,
-    COMPACT_KITCHEN.maxX + .075, ceilingY / 2, (COMPACT_KITCHEN.endZ + LIVING_ROOM_WORLD.maxZ) / 2, m.wallTile);
+  for (const [z0, z1] of [[LIVING_ROOM_WORLD.maxZ, LAUNDRY_KITCHEN_DOOR.minZ], [LAUNDRY_KITCHEN_DOOR.maxZ, COMPACT_KITCHEN.endZ]])
+    b('parede lateral direita junto ao acesso à lavanderia', .15, ceilingY, z1 - z0,
+      COMPACT_KITCHEN.maxX + .075, ceilingY / 2, (z0 + z1) / 2, m.wallTile);
+  b('verga azulejada sobre acesso à lavanderia', .15, ceilingY - LAUNDRY_KITCHEN_DOOR.height,
+    LAUNDRY_KITCHEN_DOOR.maxZ - LAUNDRY_KITCHEN_DOOR.minZ, COMPACT_KITCHEN.maxX + .075,
+    (ceilingY + LAUNDRY_KITCHEN_DOOR.height) / 2, (LAUNDRY_KITCHEN_DOOR.minZ + LAUNDRY_KITCHEN_DOOR.maxZ) / 2, m.wallTile);
   // Only the passage's outside wall gains an internal garage doorway. The
   // furnished kitchen, its lighting and every approved tile surface stay put.
   for (const [z0, z1] of [[COMPACT_KITCHEN.startZ, GARAGE_DOOR.minZ], [GARAGE_DOOR.maxZ, LIVING_ROOM_WORLD.maxZ]])
@@ -197,8 +202,9 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
     tileFaceX, (ceilingY + portal.height) / 2, (portal.minZ + portal.maxZ) / 2, m.wallTile);
   b('rodapé de cerâmica lateral esquerdo', .035, .09, COMPACT_KITCHEN.endZ - LIVING_ROOM_WORLD.maxZ,
     COMPACT_KITCHEN.minX + .015, .045, (COMPACT_KITCHEN.endZ + LIVING_ROOM_WORLD.maxZ) / 2, m.darkWood);
-  b('rodapé de cerâmica lateral direito', .035, .09, COMPACT_KITCHEN.endZ - LIVING_ROOM_WORLD.maxZ,
-    COMPACT_KITCHEN.maxX - .015, .045, (COMPACT_KITCHEN.endZ + LIVING_ROOM_WORLD.maxZ) / 2, m.darkWood);
+  for (const [z0, z1] of [[LIVING_ROOM_WORLD.maxZ, LAUNDRY_KITCHEN_DOOR.minZ], [LAUNDRY_KITCHEN_DOOR.maxZ, COMPACT_KITCHEN.endZ]])
+    b('rodapé de cerâmica junto ao acesso à lavanderia', .035, .09, z1 - z0,
+      COMPACT_KITCHEN.maxX - .015, .045, (z0 + z1) / 2, m.darkWood);
   for (const [z0, z1] of [[COMPACT_KITCHEN.startZ, GARAGE_DOOR.minZ], [GARAGE_DOOR.maxZ, LIVING_ROOM_WORLD.maxZ]])
     b('rodapé da passagem junto à garagem', .035, .09, z1 - z0,
       KITCHEN_FRONT_PASSAGE.maxX - .015, .045, (z0 + z1) / 2, m.darkWood);
