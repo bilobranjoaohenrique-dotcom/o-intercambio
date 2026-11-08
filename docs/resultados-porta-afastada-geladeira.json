@@ -1,0 +1,29 @@
+{
+  "status": "passed",
+  "change": "Closed kitchen door shifted 1.15m left from the previous position. Former position tiled over. No new room, recess, passage or scenery behind the door.",
+  "door": {
+    "x": -1.3,
+    "z": 15.95,
+    "width": 0.84,
+    "height": 2.1
+  },
+  "horizontalFrameClearanceFromFridge": 0.27,
+  "checks": {
+    "typescriptAndBuild": "passed",
+    "geometryApproachAndClosedCollision": "passed",
+    "actualBrowserExaminationAndClosedCollision": "passed",
+    "actualWideCaptureInspected": "passed",
+    "browserErrors": [],
+    "consoleErrors": [],
+    "failedAssets": []
+  },
+  "preservation": [
+    "furniture",
+    "parents",
+    "living-room geometry and existing passage",
+    "story and missions",
+    "laundry and garage"
+  ],
+  "capture": "capturas/porta-principal-livre-geladeira.png",
+  "scope": "One focused Chromium/Linux SwiftShader verification; no full room/story suite or performance benchmark."
+}

@@ -184,15 +184,15 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
   // only the narrow left stub or the perpendicular doorway face. All three
   // pieces share one outer plane/grid and close the wall up to the ceiling.
   const partitionZ = LIVING_ROOM_WORLD.maxZ;
-  b('parede completa azulejada diante da área do café', LIVING_ROOM_WORLD.maxX - LIVING_ROOM_WORLD.minX, ceilingY, .145,
-    (LIVING_ROOM_WORLD.minX + LIVING_ROOM_WORLD.maxX) / 2, ceilingY / 2, partitionZ + .0775, m.wallTile);
   const entry = KITCHEN_ENTRY_DOOR, entryMin = entry.x - entry.apertureWidth / 2, entryMax = entry.x + entry.apertureWidth / 2;
-  for (const [x0, x1] of [[COMPACT_KITCHEN.minX, entryMin], [entryMax, LIVING_ROOM_WORLD.minX]])
-    b('azulejos ao lado da porta principal', x1 - x0, ceilingY, .15, (x0 + x1) / 2, ceilingY / 2, partitionZ + .075, m.wallTile);
+  b('continuação azulejada até a parede lateral', LIVING_ROOM_WORLD.minX - COMPACT_KITCHEN.minX, ceilingY, .15,
+    (COMPACT_KITCHEN.minX + LIVING_ROOM_WORLD.minX) / 2, ceilingY / 2, partitionZ + .075, m.wallTile);
+  for (const [x0, x1] of [[LIVING_ROOM_WORLD.minX, entryMin], [entryMax, LIVING_ROOM_WORLD.maxX]])
+    b('azulejos ao lado da porta principal', x1 - x0, ceilingY, .145, (x0 + x1) / 2, ceilingY / 2, partitionZ + .0775, m.wallTile);
   b('azulejos até o teto sobre a porta principal', entry.apertureWidth, ceilingY - entry.apertureHeight, .15,
     entry.x, (ceilingY + entry.apertureHeight) / 2, partitionZ + .075, m.wallTile);
-  // One real exterior aperture, fully occupied by a closed residential leaf.
-  // All pieces reuse the kitchen's wood/metal materials and lighting.
+  // The user requested only a closed door, with nothing new behind it. Fit
+  // the leaf into the kitchen tile finish; preserve the existing room wall.
   const entryTarget = 'kitchen-entry-door';
   bevel('porta principal · folha de madeira escura', entry.width, entry.height, entry.depth,
     entry.x, entry.height / 2 + .018, entry.z, m.darkWood, .008, entryTarget);

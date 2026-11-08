@@ -5,8 +5,8 @@ import { BASE, launchBrowser, snapshot, assertHealthy, capture, waitFrames, wait
   walkTo, lookAt, faceYaw, aimInteraction } from './browser-helpers.mjs';
 import { pushUntilBlocked } from './bedroom-route.mjs';
 
-const { KITCHEN_ENTRY_DOOR:D } = await import('../src/game/kitchenLayout.ts');
-const { LIVING_ROOM_WORLD:room, LIVING_ROOM_KITCHEN_PORTAL:portal } = await import('../src/game/livingRoomPlacement.ts');
+const { KITCHEN_ENTRY_DOOR:D, KITCHEN_FURNITURE } = await import('../src/game/kitchenLayout.ts');
+const { LIVING_ROOM_KITCHEN_PORTAL:portal } = await import('../src/game/livingRoomPlacement.ts');
 const { isWalkable } = await import('../src/game/collision.ts');
 const pictures=[],route=[];let browser,session,inspected,doorStop,portalCrossed;
 
@@ -32,9 +32,11 @@ try{
  await page.locator('#startSettings').click();await page.locator('#quality').selectOption('balanced');
  await page.locator('#resume').click();await page.locator('#startGame').click();await waitPhase(page,'playing');
  assert.equal((await snapshot(page)).build,'chapter1-kitchen-entry-1');
- assert.ok(D.x+D.apertureWidth/2<room.minX,'the exterior kitchen door must be beyond the living-room wall footprint');
+ const fridge=KITCHEN_FURNITURE.fridge;
+ const fridgeRight=fridge.x+Math.abs(Math.cos(fridge.rotation))*fridge.width/2+Math.abs(Math.sin(fridge.rotation))*fridge.depth/2;
+ assert.ok(D.x-D.apertureWidth/2-.07>fridgeRight+.20,'the door frame must be clearly beside the refrigerator');
 
- console.log('KITCHEN ENTRY: approach and examine the closed exterior door');
+ console.log('KITCHEN ENTRY: approach and examine the closed kitchen door');
  for(const point of [{x:0,z:16.25},{x:-1.72,z:16.25},D.approach])await move(page,point);
  await aimInteraction(page,'kitchen-entry-door',{x:D.x,y:1.25,z:D.z});
  assert.match(await page.locator('#interactionText').textContent(),/Examinar porta/i);
@@ -63,10 +65,10 @@ try{
   door:D,doorStop,portalCrossed:{position:portalCrossed.position,mission:portalCrossed.chapterMission},
   final:{position:final.position,mission:final.chapterMission,stage:final.chapterStage,dialogue:final.dialogue},
   errors,consoleErrors,failedAssets:failed,
-  coverage:['real approach and E examination','closed leaf stops the physical capsule','door lies outside the living-room footprint','existing living-room passage crossed in both directions','two actual final-position captures','mission and dialogue preserved'],
+  coverage:['real approach and E examination','closed leaf stops the physical capsule','door frame clearly beside the refrigerator','existing living-room passage crossed in both directions','two actual final-position captures','mission and dialogue preserved'],
   limits:['Captures require visual inspection.','One focused Chromium/Linux SwiftShader flow; no benchmark or replay of other rooms.'],
  },null,2));
- console.log('PASS KITCHEN ENTRY: correct kitchen wall, closed exterior door and intact living-room passage.');
+ console.log('PASS KITCHEN ENTRY: closed kitchen door beside the refrigerator and intact living-room passage.');
 }catch(error){
  if(session)await session.page.screenshot({path:'/tmp/o-intercambio-kitchen-entry-failure.png'}).catch(()=>{});
  writeFileSync('/tmp/o-intercambio-kitchen-entry-results.json',JSON.stringify({status:'failed',error:String(error),pictures,route,doorStop,
