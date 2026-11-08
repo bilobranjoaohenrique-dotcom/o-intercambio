@@ -16,7 +16,7 @@ import { RenderTargetTexture } from '@babylonjs/core/Materials/Textures/renderTa
 import '@babylonjs/core/Lights/Shadows/shadowGeneratorSceneComponent';
 import { KITCHEN } from '../game/layout';
 import { KITCHEN_AUTHORED_FURNITURE as KITCHEN_FURNITURE, COMPACT_KITCHEN, BREAKFAST_SEAT,
-  KITCHEN_PLACEMENTS, placeKitchenPoint, type KitchenPlacement, PARENT_ANCHORS } from '../game/kitchenLayout';
+  KITCHEN_PLACEMENTS, placeKitchenPoint, type KitchenPlacement, PARENT_ANCHORS, KITCHEN_ENTRY_DOOR } from '../game/kitchenLayout';
 import { LIVING_ROOM_WORLD, LIVING_ROOM_KITCHEN_PORTAL, KITCHEN_FRONT_PASSAGE } from '../game/livingRoomPlacement';
 import type { InteractionTarget } from '../game/types';
 import { GARAGE_DOOR } from '../game/garageLayout';
@@ -186,8 +186,41 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
   const partitionZ = LIVING_ROOM_WORLD.maxZ;
   b('parede completa azulejada diante da área do café', LIVING_ROOM_WORLD.maxX - LIVING_ROOM_WORLD.minX, ceilingY, .145,
     (LIVING_ROOM_WORLD.minX + LIVING_ROOM_WORLD.maxX) / 2, ceilingY / 2, partitionZ + .0775, m.wallTile);
-  b('continuação azulejada até a parede lateral', LIVING_ROOM_WORLD.minX - COMPACT_KITCHEN.minX, ceilingY, .15,
-    (COMPACT_KITCHEN.minX + LIVING_ROOM_WORLD.minX) / 2, ceilingY / 2, partitionZ + .075, m.wallTile);
+  const entry = KITCHEN_ENTRY_DOOR, entryMin = entry.x - entry.apertureWidth / 2, entryMax = entry.x + entry.apertureWidth / 2;
+  for (const [x0, x1] of [[COMPACT_KITCHEN.minX, entryMin], [entryMax, LIVING_ROOM_WORLD.minX]])
+    b('azulejos ao lado da porta principal', x1 - x0, ceilingY, .15, (x0 + x1) / 2, ceilingY / 2, partitionZ + .075, m.wallTile);
+  b('azulejos até o teto sobre a porta principal', entry.apertureWidth, ceilingY - entry.apertureHeight, .15,
+    entry.x, (ceilingY + entry.apertureHeight) / 2, partitionZ + .075, m.wallTile);
+  // One real exterior aperture, fully occupied by a closed residential leaf.
+  // All pieces reuse the kitchen's wood/metal materials and lighting.
+  const entryTarget = 'kitchen-entry-door';
+  bevel('porta principal · folha de madeira escura', entry.width, entry.height, entry.depth,
+    entry.x, entry.height / 2 + .018, entry.z, m.darkWood, .008, entryTarget);
+  for (const x of [entryMin - .035, entryMax + .035])
+    b('porta principal · batente lateral', .07, entry.apertureHeight + .07, .19, x, (entry.apertureHeight + .07) / 2, entry.z, m.darkWood, entryTarget);
+  b('porta principal · batente superior', entry.apertureWidth + .14, .07, .19,
+    entry.x, entry.apertureHeight + .035, entry.z, m.darkWood, entryTarget);
+  for (const x of [entryMin + .02, entryMax - .02])
+    b('porta principal · rebaixo de vedação do batente', .04, entry.apertureHeight, .025, x,
+      entry.apertureHeight / 2, entry.z - .05, m.darkWood, entryTarget);
+  b('porta principal · vedação superior', entry.apertureWidth, .05, .025, entry.x,
+    entry.apertureHeight - .02, entry.z - .05, m.darkWood, entryTarget);
+  for (const dx of [-.19, .19]) for (const [y, h] of [[.54, .68], [1.58, .72]]) {
+    bevel('porta principal · painel em relevo', .29, h, .018, entry.x + dx, y, entry.z + .038, m.wood, .009, entryTarget);
+    b('porta principal · centro rebaixado', .235, h - .065, .009, entry.x + dx, y, entry.z + .051, m.darkWood, entryTarget);
+  }
+  for (const y of [.11, 1.04, 2.025])
+    b('porta principal · travessa de madeira', .73, .055, .014, entry.x, y, entry.z + .037, m.wood, entryTarget);
+  const handleX = entry.x + .31;
+  bevel('porta principal · espelho metálico da fechadura', .045, .21, .012, handleX, 1.035, entry.z + .042, m.steel, .005, entryTarget);
+  rod('porta principal · eixo da maçaneta', { x: handleX, y: 1.075, z: entry.z + .05 }, { x: handleX, y: 1.075, z: entry.z + .09 }, .012, m.steel, entryTarget);
+  rod('porta principal · alavanca da maçaneta', { x: handleX, y: 1.075, z: entry.z + .09 }, { x: handleX - .09, y: 1.075, z: entry.z + .09 }, .012, m.steel, entryTarget);
+  b('porta principal · entrada da chave', .010, .025, .006, handleX, .982, entry.z + .051, m.iron, entryTarget);
+  for (const y of [.25, 1.05, 1.88]) {
+    c('porta principal · pino da dobradiça', .095, .018, .018, entry.x - entry.width / 2 + .008, y, entry.z + .039, m.steel, entryTarget, 8);
+    b('porta principal · chapa da dobradiça', .038, .075, .006, entry.x - entry.width / 2 + .012, y, entry.z + .034, m.steel, entryTarget);
+  }
+  b('porta principal · soleira', entry.apertureWidth, .018, .18, entry.x, .009, entry.z + .015, m.counter);
   b('retorno azulejado fechado no canto da passagem', LIVING_ROOM_KITCHEN_PORTAL.maxX - LIVING_ROOM_WORLD.maxX, ceilingY, .15,
     (LIVING_ROOM_WORLD.maxX + LIVING_ROOM_KITCHEN_PORTAL.maxX) / 2, ceilingY / 2, partitionZ + .075, m.wallTile);
   // Cover only the kitchen-facing surface of the existing shared wall. The
@@ -551,12 +584,15 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
   // compile, otherwise an early empty map can survive the first visible frame.
   void shadows.forceCompilationAsync().then(() => { if (!disposed) refreshShadows(); })
     .catch(error => console.error('Não foi possível preparar as sombras da cozinha.', error));
-  const targets: InteractionTarget[] = [{ id: 'breakfast-chair', meshes: g.targets.get('breakfast-chair') ?? [], label: () => 'Sentar à mesa', execute: () => undefined }];
+  const targets: InteractionTarget[] = [
+    { id: 'breakfast-chair', meshes: g.targets.get('breakfast-chair') ?? [], label: () => 'Sentar à mesa', execute: () => undefined },
+    { id: entryTarget, meshes: g.targets.get(entryTarget) ?? [], label: () => 'Examinar porta', execute: () => 'Esta é a porta de entrada da casa. Ela está fechada.' },
+  ];
   return {
     targets, meshes: allMeshes,
     setActive(value: boolean) { active = value; root.setEnabled(value); for (const light of [ambient, sun, bounce]) light.setEnabled(value); if (value) refreshShadows(); },
     refreshShadows,
-    get diagnostics() { return { version: 'cafe-compacto-1', bounds: COMPACT_KITCHEN, width: COMPACT_KITCHEN.maxX - COMPACT_KITCHEN.minX, depth: COMPACT_KITCHEN.endZ - COMPACT_KITCHEN.coreStartZ, seat: BREAKFAST_SEAT, parents: parents.diagnostics }; },
+    get diagnostics() { return { version: 'cafe-porta-principal-1', bounds: COMPACT_KITCHEN, entryDoor: { ...entry, closed: true }, width: COMPACT_KITCHEN.maxX - COMPACT_KITCHEN.minX, depth: COMPACT_KITCHEN.endZ - COMPACT_KITCHEN.coreStartZ, seat: BREAKFAST_SEAT, parents: parents.diagnostics }; },
     animate(time: number, speaker?: string, observer?: Point, text?: string) {
       if (!active) return;
       parents.animate(time, speaker, observer, text);

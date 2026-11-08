@@ -91,6 +91,10 @@ Depois do café, volte ao quarto e use **E — Pegar bagagem** na mochila existe
 
 Verificação focal: `node --test --test-isolation=none tests/garage.test.mjs`; com uma prévia aberta, `INTERCAMBIO_URL=http://localhost:4180 npm run test:garage`. Passaram os quatro testes focais, TypeScript/build e um percurso real no Chromium/Linux: entrada, volta ao redor do carro, colisões, bloqueio antes da mala, subida/coleta da bagagem, retorno e embarque. Veja a [garagem no jogo](docs/capturas/garagem-visao-geral.png), o [portão e interior](docs/capturas/garagem-portao.png) e o [registro breve](docs/resultados-garagem.json). Renderização por software SwiftShader; não houve benchmark de FPS nem teste em GPU física/Windows.
 
+## Porta principal da cozinha
+
+Porta de madeira escura de **84 × 210 cm**, fechada, instalada num vão verdadeiro na parede à direita na vista da referência. A faixa escolhida fica fora da sala e permite aproximação sem mover os móveis. Use **E — Examinar porta**; não abre nem altera a missão. A passagem existente para a sala continua livre. [Captura real da posição](docs/capturas/porta-principal-contexto.png).
+
 ## Lavanderia
 
 Área de serviço de **3,20 × 3,20 m**, conectada à cozinha e à garagem por passagens reais, no mesmo piso. Tem cerâmica, azulejos até meia altura, janela, tanque de concreto, máquina de lavar de abertura superior, armário, produtos de limpeza, varal, cesto, balde, vassoura e tapete. Os objetos são decorativos nesta etapa; não foram criadas missões ou alterações de diálogo.

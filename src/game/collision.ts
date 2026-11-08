@@ -1,5 +1,5 @@
 import { CHAPTER_ZONES, DOOR, FURNITURE, ROOM, STAIRS, type Point2 } from './layout';
-import { KITCHEN_SOLIDS, COMPACT_KITCHEN as KITCHEN } from './kitchenLayout';
+import { KITCHEN_SOLIDS, COMPACT_KITCHEN as KITCHEN, KITCHEN_ENTRY_DOOR } from './kitchenLayout';
 import { HALLWAY, BOTTOM_LANDING, HALLWAY_SOLIDS } from './hallwayLayout';
 import { PRESERVED_STAIR_RETURN } from './livingRoomLayout';
 import { LIVING_ROOM_WORLD, LIVING_ROOM_ENTRY, LIVING_ROOM_KITCHEN_PORTAL,
@@ -44,7 +44,9 @@ export const staticObstacles: readonly Obstacle[] = [
   box(LIVING_ROOM_WORLD.minX - WALL_THICKNESS, LIVING_ROOM_WORLD.minX, LIVING_ROOM_WORLD.minZ, LIVING_ROOM_WORLD.maxZ),
   box(LIVING_ROOM_WORLD.maxX, LIVING_ROOM_KITCHEN_PORTAL.maxX, LIVING_ROOM_WORLD.minZ, LIVING_ROOM_KITCHEN_PORTAL.minZ),
   box(LIVING_ROOM_WORLD.maxX, LIVING_ROOM_KITCHEN_PORTAL.maxX, LIVING_ROOM_KITCHEN_PORTAL.maxZ, LIVING_ROOM_WORLD.maxZ),
-  box(KITCHEN.minX, LIVING_ROOM_WORLD.minX, LIVING_ROOM_WORLD.maxZ, LIVING_ROOM_WORLD.maxZ + WALL_THICKNESS),
+  box(KITCHEN.minX, KITCHEN_ENTRY_DOOR.x - KITCHEN_ENTRY_DOOR.apertureWidth / 2, LIVING_ROOM_WORLD.maxZ, LIVING_ROOM_WORLD.maxZ + WALL_THICKNESS),
+  box(KITCHEN_ENTRY_DOOR.x + KITCHEN_ENTRY_DOOR.apertureWidth / 2, LIVING_ROOM_WORLD.minX, LIVING_ROOM_WORLD.maxZ, LIVING_ROOM_WORLD.maxZ + WALL_THICKNESS),
+  { x: KITCHEN_ENTRY_DOOR.x, z: KITCHEN_ENTRY_DOOR.z, halfWidth: KITCHEN_ENTRY_DOOR.width / 2, halfDepth: KITCHEN_ENTRY_DOOR.depth / 2 },
   box(LIVING_ROOM_WORLD.minX, LIVING_ROOM_KITCHEN_PORTAL.maxX, LIVING_ROOM_WORLD.maxZ, LIVING_ROOM_WORLD.maxZ + WALL_THICKNESS),
   ...Object.values(FURNITURE).map(item => ({ x: item.x, z: item.z, halfWidth: item.width / 2, halfDepth: item.depth / 2,
     ...(item === FURNITURE.backpack ? { enabled: () => !isTravelBagTaken() } : {}) })),

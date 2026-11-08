@@ -1,0 +1,175 @@
+{
+  "status": "passed",
+  "build": "chapter1-kitchen-entry-1",
+  "pictures": [
+    "capturas/porta-principal-contexto.png",
+    "capturas/porta-principal-cozinha.png"
+  ],
+  "route": [
+    {
+      "position": {
+        "x": 0,
+        "y": 1.65,
+        "z": 16.3
+      },
+      "mission": "talk-parents"
+    },
+    {
+      "position": {
+        "x": -1.6593094936211015,
+        "y": 1.64920942724765,
+        "z": 16.25219257059702
+      },
+      "mission": "talk-parents"
+    },
+    {
+      "position": {
+        "x": -2.5679996812031427,
+        "y": 1.650913451068648,
+        "z": 16.30099378911044
+      },
+      "mission": "talk-parents"
+    },
+    {
+      "position": {
+        "x": -1.6593855879609754,
+        "y": 1.6527675424592805,
+        "z": 16.29066968775554
+      },
+      "mission": "talk-parents"
+    },
+    {
+      "position": {
+        "x": -1.5987437696395979,
+        "y": 1.6528545389320204,
+        "z": 17.118450056241173
+      },
+      "mission": "talk-parents"
+    },
+    {
+      "position": {
+        "x": -1.713235556490488,
+        "y": 1.6529309779926393,
+        "z": 16.296385134186874
+      },
+      "mission": "talk-parents"
+    },
+    {
+      "position": {
+        "x": 3.470049172027018,
+        "y": 1.6499766406333056,
+        "z": 16.250581402486752
+      },
+      "mission": "talk-parents"
+    },
+    {
+      "position": {
+        "x": 3.500302835052103,
+        "y": 1.649087315011567,
+        "z": 14.19623118465824
+      },
+      "mission": "talk-parents"
+    },
+    {
+      "position": {
+        "x": 2.569665071866132,
+        "y": 1.6512575918092494,
+        "z": 14.199819625797575
+      },
+      "mission": "talk-parents"
+    },
+    {
+      "position": {
+        "x": 3.504663650544021,
+        "y": 1.6528874042922936,
+        "z": 14.200002192209949
+      },
+      "mission": "talk-parents"
+    },
+    {
+      "position": {
+        "x": 3.4998918227249827,
+        "y": 1.6489416367984893,
+        "z": 16.188259966013824
+      },
+      "mission": "talk-parents"
+    },
+    {
+      "position": {
+        "x": 2.6718590758651097,
+        "y": 1.6491165400354506,
+        "z": 16.245355714382754
+      },
+      "mission": "talk-parents"
+    },
+    {
+      "position": {
+        "x": 2.600727996276146,
+        "y": 1.6428005447901821,
+        "z": 19.754632398772948
+      },
+      "mission": "talk-parents"
+    }
+  ],
+  "door": {
+    "x": -2.55,
+    "z": 15.875,
+    "width": 0.84,
+    "height": 2.1,
+    "depth": 0.06,
+    "apertureWidth": 0.9,
+    "apertureHeight": 2.14,
+    "approach": {
+      "x": -2.55,
+      "z": 16.3
+    }
+  },
+  "doorStop": {
+    "x": -2.565738625718133,
+    "y": 1.6579865944712002,
+    "z": 16.143494239937528
+  },
+  "portalCrossed": {
+    "position": {
+      "x": 2.569665071866132,
+      "y": 1.6512575918092494,
+      "z": 14.199819625797575
+    },
+    "mission": "talk-parents"
+  },
+  "final": {
+    "position": {
+      "x": 2.600727996276146,
+      "y": 1.64999999991974,
+      "z": 19.754632398772948
+    },
+    "mission": "talk-parents",
+    "stage": "home",
+    "dialogue": false
+  },
+  "errors": [],
+  "consoleErrors": [],
+  "failedAssets": [],
+  "coverage": [
+    "real approach and E examination",
+    "closed leaf stops the physical capsule",
+    "door lies outside the living-room footprint",
+    "existing living-room passage crossed in both directions",
+    "two actual final-position captures",
+    "mission and dialogue preserved"
+  ],
+  "limits": [
+    "One focused Chromium/Linux SwiftShader session. No performance benchmark or unrelated room/story suite."
+  ],
+  "checks": {
+    "typescript": "passed (npm run build)",
+    "productionBuild": "passed",
+    "browserCommandExitCode": 0,
+    "focusedGeometryProbe": "passed: approach, closed collision and unchanged living portal"
+  },
+  "visualInspection": {
+    "status": "passed",
+    "mainCapture": "capturas/porta-principal-contexto.png",
+    "observed": "Existing TV/passage at left; new wooden door at rear-right beside the refrigerator; full-height floral tile finish. Close detail partially occluded by the preserved refrigerator/plant."
+  }
+}

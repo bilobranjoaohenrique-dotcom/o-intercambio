@@ -17,6 +17,10 @@ export const KITCHEN_AUTHORED_FURNITURE = {
 
 /** Existing pieces are relocated rigidly, never scaled to make the room fit. */
 export const COMPACT_KITCHEN = { minX: -3.2, maxX: 3.9, startZ: 12, coreStartZ: 15.8, endZ: 21.15, floor: 0 } as const;
+/** Right-hand exterior wall in the reference view (the player faces -Z).
+ * This strip is west of the living-room footprint, never its existing portal. */
+export const KITCHEN_ENTRY_DOOR = { x: -2.55, z: 15.875, width: .84, height: 2.10, depth: .06,
+  apertureWidth: .90, apertureHeight: 2.14, approach: { x: -2.55, z: 16.30 } } as const;
 export const KITCHEN_PLACEMENTS = {
   back: { from: { x: 0, z: 0 }, to: { x: -1.15, z: -1.65 }, yaw: 0 },
   left: { from: { x: -2.65, z: 22.1 }, to: { x: -2.68, z: 18.2 }, yaw: -Math.PI / 2 },
