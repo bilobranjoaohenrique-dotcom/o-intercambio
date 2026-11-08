@@ -12,6 +12,7 @@ import { sampleOpening, openingCuesBetween, OPENING_DURATION } from './game/open
 import { createAudio } from './game/audio';
 import { loadSettings, storeSettings } from './game/settings';
 import { BED_POSE } from './game/layout';
+import { HOME_RESUME_POSITION } from './game/livingRoomPlacement';
 import type { Settings } from './game/types';
 import { buildChapterWorld } from './scene/chapterWorld';
 import { createChapterProgress, createDialogue, breakfastConversation, breakfastChoices, schoolClue, airportGoodbye, type StoryBeat, type StoryChoice } from './game/narrative';
@@ -140,7 +141,7 @@ try {
     el('sceneFade').style.opacity = '0'; setEyes(0);
     samples = []; last = performance.now();
     if(resumed){
-      const point=chapterStage==='home'?{x:0,y:1.65,z:14.2}:chapterWorld.teleportPoint(chapterStage);
+      const point=chapterStage==='home'?HOME_RESUME_POSITION:chapterWorld.teleportPoint(chapterStage);
       player.teleport(point);player.setActive(true);setEyes(1);el('objectiveState').textContent='OBJETIVO ATUALIZADO';
       el('objectiveText').textContent=chapter.label;el('objective').hidden=false;el('reticle').hidden=false;
       document.documentElement.style.setProperty('--blur','0px');playingAt=worldTime;
@@ -264,7 +265,7 @@ try {
   });
 
   Object.defineProperty(window, '__INTERCAMBIO__', { configurable: true, get: () => ({
-    build:'chapter1-living-room-reference-1',phase, introTime, duration: OPENING_DURATION, mission: objective.state, chapterMission: chapter.mission, chapterStage, dialogue: dialogue.active,
+    build:'chapter1-living-room-direct-landing-1',phase, introTime, duration: OPENING_DURATION, mission: objective.state, chapterMission: chapter.mission, chapterStage, dialogue: dialogue.active,
     position: { x: camera.position.x, y: camera.position.y, z: camera.position.z },
     rotation: { yaw: camera.rotation.y, pitch: camera.rotation.x, roll: camera.rotation.z },
     horizonTilt: camera.getDirection(Vector3.Right()).y,

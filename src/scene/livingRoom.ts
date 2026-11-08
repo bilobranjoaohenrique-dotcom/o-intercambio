@@ -1,6 +1,7 @@
 import type { Scene } from '@babylonjs/core/scene';
 import type { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial';
 import { Mesh } from '@babylonjs/core/Meshes/mesh';
+import { TransformNode } from '@babylonjs/core/Meshes/transformNode';
 import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import { Color3 } from '@babylonjs/core/Maths/math.color';
@@ -13,10 +14,10 @@ import '@babylonjs/core/Lights/Shadows/shadowGeneratorSceneComponent';
 import { LivingRoomGeometry } from './livingRoomGeometry';
 import { createLivingRoomMaterials } from './livingRoomMaterials';
 import { LIVING_ROOM, LIVING_ROOM_FURNITURE as F, LIVING_ROOM_WINDOW, LIVING_ROOM_RUG } from '../game/livingRoomLayout';
-import { STAIRS } from '../game/layout';
+import { LIVING_ROOM_PLACEMENT, LIVING_ROOM_WORLD, livingToWorld } from '../game/livingRoomPlacement';
 
-/** A single furnished ground-floor set. Existing stairs remain the actual
- * stairs visible through its west opening; this module never rebuilds them. */
+/** The approved room is authored unchanged in local space. One rigid parent
+ * places its entrance at the original stair landing; only its joints change. */
 export function buildLivingRoom(scene: Scene) {
   const existingLights = [...scene.lights], m = createLivingRoomMaterials(scene), g = new LivingRoomGeometry(scene);
   const b = g.box.bind(g), bevel = g.bevel.bind(g), c = g.cylinder.bind(g), rod = g.rod.bind(g);
@@ -36,16 +37,25 @@ export function buildLivingRoom(scene: Scene) {
 
   // Ceramic floor and independent ceiling stop exactly at the shared seams.
   board('sala · piso de cerâmica marrom', 4.20, .10, 3.80, 4.77, -.05, 9.95, m.floor, undefined, 1);
-  board('sala · piso da passagem da cozinha', .90, .10, .15, 3.70, -.05, 11.925, m.floor, undefined, 1);
-  board('sala · piso junto ao corrimão existente', .30, .10, 1.95, 2.52, -.05, 10.675, m.floor, undefined, 1);
+  // The original wooden landing and the kitchen floor now meet this main
+  // floor at its two apertures; no coincident threshold or old side alcove.
   board('sala · teto', 4.20, .12, 3.80, 4.77, 2.66, 9.95, m.ceiling, undefined, 1.15);
   // Real north-wall door aperture; its closed leaf supplies the final face.
   boardWall('sala · parede norte esquerda', 3.13, 2.60, .12, 4.235, 1.30, 7.99);
   boardWall('sala · parede norte direita', .27, 2.60, .12, 6.735, 1.30, 7.99);
   boardWall('sala · verga da porta principal', .80, .50, .12, 6.20, 2.35, 7.99);
   boardWall('sala · parede sul complementar', 2.07, 2.60, .12, 5.835, 1.30, 11.91);
-  // West is the approved stair enclosure, with its lower viewing opening.
-  // No duplicated wall or decorative stair flight is added here.
+  // Complete the former kitchen-facing joint around its approved doorway.
+  // After the half turn this is the north entry, aligned with the last tread.
+  boardWall('sala · ligação à esquerda da entrada', .58, 2.60, .12, 2.96, 1.30, 11.91);
+  boardWall('sala · ligação à direita da entrada', .65, 2.60, .12, 4.475, 1.30, 11.91);
+  boardWall('sala · fechamento acima da entrada', .90, .50, .12, 3.70, 2.35, 11.91);
+  board('sala · encaixe alto do patamar', 2.10, .65, .12, 3.70, 2.925, 11.94, m.wall);
+  // The formerly stair-facing side now leads to the kitchen. A single real
+  // doorway fits between the unchanged chair and phone table.
+  boardWall('sala · lateral antes da passagem da cozinha', .12, 2.60, 1.15, 2.61, 1.30, 8.625);
+  boardWall('sala · lateral depois da passagem da cozinha', .12, 2.60, 1.75, 2.61, 1.30, 10.975);
+  boardWall('sala · verga lateral da cozinha', .12, .50, .90, 2.61, 2.35, 9.65);
   boardWall('sala · parede antes da janela', .12, 2.60, .55, 6.93, 1.30, 8.325);
   boardWall('sala · parede depois da janela', .12, 2.60, 1.85, 6.93, 1.30, 10.925);
   boardWall('sala · parede sob janela', .12, .95, 1.40, 6.93, .475, 9.30);
@@ -61,28 +71,8 @@ export function buildLivingRoom(scene: Scene) {
   }
   for (const x of [3.215, 4.185]) board('sala · batente da passagem', .065, 2.16, .15, x, 1.08, 11.91, m.wood);
   board('sala · verga aparente da passagem', 1.035, .07, .15, 3.70, 2.135, 11.91, m.wood);
-  for (const z of [9.70, 11.65]) board('sala · acabamento do vão da escada', .045, 2.60, .037, 2.69, 1.30, z, trim);
-  board('sala · acabamento alto do vão da escada', .045, .045, 1.95, 2.69, 2.575, 10.675, trim);
-  // Only the newly exposed side is lined. The original treads, rail, lights
-  // and collision remain untouched. This prevents a view through the empty
-  // volume beneath the upper corridor into the exterior garden.
-  const treadDepth = (STAIRS.endZ - STAIRS.startZ) / STAIRS.steps;
-  const stairRise = (STAIRS.topY - STAIRS.bottomY) / STAIRS.steps;
-  for (let step = 0; step < STAIRS.steps; step++) {
-    const z0 = Math.max(9.70, STAIRS.startZ + step * treadDepth);
-    const z1 = Math.min(11.65, STAIRS.startZ + (step + 1) * treadDepth);
-    const height = STAIRS.topY - (step + 1) * stairRise - .045;
-    if (z1 <= z0 || height <= .01) continue;
-    board('sala · revestimento sob escada existente', .024, height, z1 - z0, 2.317, height / 2, (z0 + z1) / 2, m.wall);
-    board('sala · arremate discreto sob degrau existente', .032, .018, z1 - z0, 2.317, height - .009, (z0 + z1) / 2, m.darkWood);
-  }
-  // Oblique sight lines can enter the new opening at z>9.7, then travel
-  // north of the side lining before reaching x=2.317. Close the formerly
-  // invisible under-landing cavity at its back, beneath the original upper
-  // hallway floor. Its front stops 5mm before the first original riser and
-  // its top joins the floor underside; neither step nor player path changes.
-  board('sala · fundo do vão sob o patamar existente', 1.40, 2.910, .060,
-    1.85, 1.430, STAIRS.startZ - .035, m.wall);
+  for (const z of [9.165, 10.135]) board('sala · batente lateral da cozinha', .15, 2.16, .065, 2.61, 1.08, z, m.wood);
+  board('sala · travessa lateral da cozinha', .15, .07, 1.035, 2.61, 2.135, 9.65, m.wood);
 
   function picture(name: string, x: number, y: number, z: number, w: number, h: number, image: StandardMaterial, yaw = 0, target?: string) {
     g.group(name, x, y, z, yaw, () => {
@@ -333,6 +323,17 @@ export function buildLivingRoom(scene: Scene) {
   const tvLight = new PointLight('sala · luz suave da tela', new Vector3(4.80, 1.10, 8.91), scene); tvLight.diffuse = new Color3(.60, .73, .90); tvLight.intensity = .20; tvLight.range = 1.65;
   const lights = [ambient, sun, ceilingLight, lampLight, tvLight];
   for (const light of lights) light.includedOnlyMeshes = [...meshes];
+  // Adopt only top-level groups/meshes while the placement node is identity.
+  // Single target meshes can still belong to a furnished group after batching.
+  // Their local transforms, UVs, normals and materials are never rewritten.
+  const placement = new TransformNode('sala · posição no pé da escada', scene);
+  for (const group of g.groups) if (!group.parent) group.parent = placement;
+  for (const mesh of meshes) if (!mesh.parent) mesh.parent = placement;
+  for (const light of lights) light.parent = placement;
+  placement.position.set(LIVING_ROOM_PLACEMENT.x, LIVING_ROOM_PLACEMENT.y, LIVING_ROOM_PLACEMENT.z);
+  placement.rotation.y = LIVING_ROOM_PLACEMENT.yaw;
+  placement.computeWorldMatrix(true);
+  for (const mesh of meshes) mesh.computeWorldMatrix(true);
   const shadows = new ShadowGenerator(1024, sun); shadows.bias = .001; shadows.normalBias = .012; shadows.useBlurExponentialShadowMap = true; shadows.blurScale = 1; shadows.blurKernel = 5;
   const noShadow = new Set([m.lace, m.crochet, m.glass, m.sky, m.leaf, m.bulb, m.tvOff, m.tvOn]);
   for (const mesh of meshes) if (mesh.metadata?.castShadow && !noShadow.has(mesh.material as StandardMaterial)) shadows.addShadowCaster(mesh);
@@ -348,7 +349,7 @@ export function buildLivingRoom(scene: Scene) {
     m.tvOn.forceCompilationAsync(screen, { useInstances: false }),
   ]).then(refreshShadows);
   return { meshes, targets: g.targets, setTV, get tvOn() { return tvOn; }, refreshShadows,
-    get diagnostics() { return { version: 'sala-referencia-1', meshes: meshes.length, tvOn, bounds: room, screen: { x: 4.80, y: 1.10, z: 8.61 }, staticShadowMap: 1024, materials: m.diagnostics }; },
-    dispose() { disposed = true; shadows.dispose(); for (const light of lights) light.dispose(); for (const mesh of meshes) if (!mesh.isDisposed()) mesh.dispose(); for (const node of g.groups) node.dispose(); m.dispose(); },
+    get diagnostics() { return { version: 'sala-entrada-direta-1', meshes: meshes.length, tvOn, bounds: LIVING_ROOM_WORLD, localBounds: room, placement: LIVING_ROOM_PLACEMENT, screen: livingToWorld({ x: 4.80, y: 1.10, z: 8.61 }), staticShadowMap: 1024, materials: m.diagnostics }; },
+    dispose() { disposed = true; shadows.dispose(); for (const light of lights) light.dispose(); for (const mesh of meshes) if (!mesh.isDisposed()) mesh.dispose(); for (const node of g.groups) node.dispose(); placement.dispose(); m.dispose(); },
   };
 }

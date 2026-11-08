@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import './register-typescript.mjs';
 import { DOOR, STANDING_POSE, STAIRS, EYE_HEIGHT } from '../src/game/layout.ts';
 import { snapshot, waitFrames, waitIntro, startScene, finishOpening, walkTo, aimInteraction, faceYaw } from './browser-helpers.mjs';
+import { crossLivingToKitchen } from './living-room-route.mjs';
 
 const distance = (a, b) => Math.hypot(a.x - b.x, a.z - b.z);
 
@@ -69,6 +70,6 @@ export async function leaveBedroomForKitchen(page, { checkDoor = true } = {}) {
   await walkTo(page, { x: stairX, z: STAIRS.endZ + .15 }, { tolerance: .08 });
   assert.ok((await snapshot(page)).position.z >= STAIRS.endZ - tread / 2, 'the capsule must cross the actual last-tread trigger');
   await page.waitForFunction(() => window.__INTERCAMBIO__.chapterMission === 'talk-parents');
-  await walkTo(page, { x: doorX, z: 14.3 });
+  await crossLivingToKitchen(page);
   assert.equal((await page.locator('#objectiveText').textContent()).trim(), 'Converse com seus pais');
 }

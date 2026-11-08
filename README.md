@@ -51,9 +51,11 @@ A reconstrução do corredor e da escada usa as duas referências fornecidas pel
 
 A nova sala tem sofá e poltrona estofados, estante com TV de tubo, mesa de centro, tapete ornamental, cerâmica marrom, cortinas rendadas, plantas e objetos domésticos. Use a mira e **E** para ligar/desligar a TV, examinar o telefone e a fotografia ou tentar abrir a porta principal, que permanece bloqueada nesta etapa. A TV usa imagem e ruído eletrônico originais, sem vozes ou transmissão externa.
 
-**Para encontrar a sala:** saia do quarto, desça a escada e vire à direita na entrada da cozinha. Se sua partida já estiver avançada, pressione **Esc → Reiniciar cena** primeiro. A sala usa a escada e a cozinha existentes, com somente duas aberturas locais de conexão; a história e as missões continuam as mesmas.
+**Para encontrar a sala:** saia do quarto, atravesse o corredor e desça a escada. A sala fica diretamente à frente, no térreo. Atravesse-a e use a passagem lateral para continuar até a cozinha. Se sua partida já estiver avançada, pressione **Esc → Reiniciar cena** primeiro.
 
 O [Prompt Master 05](docs/PROMPT-MASTER-05-SALA.md) contém o pedido integral. O [relatório da sala](docs/RECONSTRUCAO-SALA.md) registra implementação, limites da comparação com as referências, preservação das cenas, testes e capturas reais.
+
+A [correção da posição da sala](docs/CORRECAO-POSICAO-SALA.md) mantém esse visual aprovado e ajusta sua ligação com a base da escada. Ela ocupa o espaço livre anterior à área do café; os móveis e personagens da cozinha continuam nos mesmos lugares. O relatório separa a verificação desta correção dos resultados da entrega visual anterior.
 
 ## Cozinha e pais
 
@@ -74,7 +76,9 @@ Veja o [relatório da reconstrução com seis capturas reais](docs/RECONSTRUCAO-
 
 `npm run typecheck`, `npm test` e `npm run build` verificam tipos, regras de movimento e build de produção. A validação de navegador cobre a sequência jogável em Chromium. Desempenho depende da GPU e do navegador; não se promete 60 FPS em todos os computadores.
 
-Nesta entrega da sala passaram **58 testes unitários**, TypeScript, build e a suíte da sala no navegador com dez capturas reais, TV/áudio, objetos, colisões e percurso físico. Também passaram as regressões do corredor, do quarto e do capítulo completo, incluindo recarga do checkpoint. No servidor Linux com SwiftShader foram medidos **6,5 FPS** com a câmera parada e **9,5 FPS** durante exploração amostrada; são resultados baixos de renderização por software, sem medição em GPU física ou Windows. Veja as [capturas e os resultados da sala](docs/RECONSTRUCAO-SALA.md).
+Na correção atual da posição passaram **58/58 testes unitários**, TypeScript, build e `npm run verify` completo. A suíte percorreu quarto → corredor → escada original → sala diretamente à frente → cozinha com controles reais, além de TV, objetos e colisões no novo local. As regressões do corredor, quarto e capítulo também passaram, incluindo recarga real de checkpoint. A [captura no último degrau e o relatório da correção](docs/CORRECAO-POSICAO-SALA.md) registram essa execução em Chromium/SwiftShader no Linux; a suíte focada não mede FPS da sala nem comprova desempenho em GPU física ou Windows.
+
+Na entrega visual anterior da sala passaram **58 testes unitários**, TypeScript, build e a suíte da sala no navegador com dez capturas reais, TV/áudio, objetos, colisões e percurso físico. Também passaram as regressões do corredor, do quarto e do capítulo completo, incluindo recarga do checkpoint. No servidor Linux com SwiftShader foram medidos **6,5 FPS** com a câmera parada e **9,5 FPS** durante exploração amostrada; são resultados baixos de renderização por software, sem medição em GPU física ou Windows. Veja as [capturas e os resultados dessa etapa visual](docs/RECONSTRUCAO-SALA.md). As verificações da nova posição estão registradas separadamente no [relatório da correção](docs/CORRECAO-POSICAO-SALA.md).
 
 Na etapa do corredor passaram **46 testes unitários**, TypeScript, build e a suíte focada em Chromium com as cinco vistas solicitadas, interruptor, portas, colisões, descida/subida e missão existente. Também passaram a regressão do quarto e o percurso completo até o fim do capítulo, incluindo recarga real do checkpoint e diálogos somente por texto. No servidor com renderização por software SwiftShader, foram medidos **7,3 FPS** com a câmera parada e **7,0 FPS** durante uma caminhada real; esses resultados baixos não representam uma medição de GPU física ou Windows. Veja as [capturas e os resultados do corredor](docs/RECONSTRUCAO-CORREDOR.md).
 

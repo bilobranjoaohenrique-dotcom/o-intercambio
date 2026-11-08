@@ -17,7 +17,7 @@ import {buildBedroom} from './bedroom';
 import {buildHallway} from './hallway';
 import {HALLWAY} from '../game/hallwayLayout';
 import {buildLivingRoom} from './livingRoom';
-import {LIVING_ROOM_OBJECTS} from '../game/livingRoomLayout';
+import {LIVING_ROOM_WORLD_OBJECTS} from '../game/livingRoomPlacement';
 
 type LivingRoomCallbacks = {
  onTelevisionChange?:(on:boolean,position:{x:number;y:number;z:number})=>void;
@@ -32,7 +32,7 @@ export function buildEnvironment(scene:Scene,callbacks:LivingRoomCallbacks={}){
  const bedroom=buildBedroom(scene);
  const hallway=buildHallway(scene);
  const living=buildLivingRoom(scene);
- const setTelevision=(on:boolean)=>{living.setTV(on);callbacks.onTelevisionChange?.(on,LIVING_ROOM_OBJECTS.tv);};
+ const setTelevision=(on:boolean)=>{living.setTV(on);callbacks.onTelevisionChange?.(on,LIVING_ROOM_WORLD_OBJECTS.tv);};
  // The exterior is deliberately modest: gardens, low houses and real foliage
  // at a distance beyond the window, never an additional playable district.
  b('jardins do bairro',55,.15,65,-15,-.13,-4,m.grass);

@@ -6,6 +6,7 @@ import { DOOR, EYE_HEIGHT, STAIRS } from '../src/game/layout.ts';
 import { launchBrowser, openScene, assertHealthy, snapshot, capture, walkTo, lookAt,
   faceYaw, aimInteraction, waitFrames, benchmark, pause, hold, waitPhase } from './browser-helpers.mjs';
 import { wakeInBedroom, pushUntilBlocked } from './bedroom-route.mjs';
+import { crossLivingToKitchen } from './living-room-route.mjs';
 
 const { HALLWAY, HALLWAY_FURNITURE, HALLWAY_OBJECTS } = await import('../src/game/hallwayLayout.ts');
 const profile = process.env.INTERCAMBIO_HALLWAY_PROFILE || 'balanced';
@@ -210,7 +211,7 @@ try {
   await walkTo(page, { x: centerX, z: STAIRS.endZ + .15 }, { tolerance: .08 });
   assert.ok((await snapshot(page)).position.z >= STAIRS.endZ - tread / 2);
   await page.waitForFunction(() => window.__INTERCAMBIO__.chapterMission === 'talk-parents');
-  await walkTo(page, { x: centerX, z: 14.3 });
+  await crossLivingToKitchen(page);
   assert.equal((await page.locator('#objectiveText').textContent()).trim(), 'Converse com seus pais');
   assertHealthy(session);
   const state = await snapshot(page);
@@ -222,7 +223,7 @@ try {
       'five reference perspectives and console detail', 'independent corridor switch with canvas pixel proof',
       'closed side doors and decorations without fake prompts', 'console and both handrail collisions',
       'physical descent and ascent with measured camera progression', 'pause',
-      'real final stair tread', 'unchanged breakfast mission and kitchen connection'],
+      'real final stair tread', 'direct living-room traversal before unchanged kitchen and breakfast mission'],
     limits: ['The reference images are compared by human inspection; this does not assert exact visual fidelity.',
       'Camera step sampling uses actual rendered frames; it is not a hardware input-latency benchmark.',
       'SwiftShader/Linux measurements do not establish physical-GPU or Windows performance.'],

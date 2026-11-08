@@ -1,8 +1,10 @@
-import { CHAPTER_ZONES, DOOR, FURNITURE, HALL, KITCHEN, ROOM, STAIRS, type Point2 } from './layout';
+import { CHAPTER_ZONES, DOOR, FURNITURE, KITCHEN, ROOM, STAIRS, type Point2 } from './layout';
 import { KITCHEN_SOLIDS } from './kitchenLayout';
 import { HALLWAY, BOTTOM_LANDING, HALLWAY_SOLIDS } from './hallwayLayout';
-import { LIVING_ROOM, LIVING_ROOM_ALCOVE, LIVING_ROOM_PORTAL, LIVING_ROOM_SOLIDS, LIVING_ROOM_PROP_SOLIDS,
-  PRESERVED_STAIR_RETURN } from './livingRoomLayout';
+import { PRESERVED_STAIR_RETURN } from './livingRoomLayout';
+import { LIVING_ROOM_WORLD, LIVING_ROOM_ENTRY, LIVING_ROOM_KITCHEN_PORTAL,
+  LIVING_ROOM_WORLD_SOLIDS, LIVING_ROOM_WORLD_PROP_SOLIDS,
+  KITCHEN_FRONT_PASSAGE } from './livingRoomPlacement';
 import type { Obstacle } from './types';
 
 export const PLAYER_RADIUS = .22;
@@ -23,24 +25,24 @@ export const staticObstacles: readonly Obstacle[] = [
   box(ROOM.minX, DOOR.hingeX, ROOM.maxZ, ROOM.maxZ + WALL_THICKNESS),
   box(DOOR.hingeX + DOOR.width, ROOM.maxX, ROOM.maxZ, ROOM.maxZ + WALL_THICKNESS),
   box(HALLWAY.minX - WALL_THICKNESS, HALLWAY.minX, HALLWAY.startZ, STAIRS.endZ),
-  box(HALLWAY.maxX, HALLWAY.maxX + WALL_THICKNESS, HALLWAY.startZ, LIVING_ROOM_ALCOVE.minZ),
-  box(HALLWAY.maxX, HALLWAY.maxX + WALL_THICKNESS, LIVING_ROOM_ALCOVE.maxZ, STAIRS.endZ),
+  box(HALLWAY.maxX, HALLWAY.maxX + WALL_THICKNESS, HALLWAY.startZ, STAIRS.endZ),
   box(BOTTOM_LANDING.minX - WALL_THICKNESS, BOTTOM_LANDING.minX, BOTTOM_LANDING.startZ, KITCHEN.startZ),
-  box(BOTTOM_LANDING.maxX, BOTTOM_LANDING.maxX + WALL_THICKNESS, BOTTOM_LANDING.startZ, LIVING_ROOM_PORTAL.minZ),
-  box(KITCHEN.minX, HALL.minX, KITCHEN.startZ - WALL_THICKNESS, KITCHEN.startZ),
-  box(HALL.maxX, LIVING_ROOM_PORTAL.minX, LIVING_ROOM_PORTAL.minZ, KITCHEN.startZ),
-  box(LIVING_ROOM_PORTAL.maxX, KITCHEN.maxX, LIVING_ROOM_PORTAL.minZ, KITCHEN.startZ),
-  box(KITCHEN.minX, KITCHEN.minX + WALL_THICKNESS, KITCHEN.startZ, KITCHEN.endZ),
+  box(BOTTOM_LANDING.maxX, BOTTOM_LANDING.maxX + WALL_THICKNESS, BOTTOM_LANDING.startZ, KITCHEN.startZ),
+  box(LIVING_ROOM_WORLD.minX, LIVING_ROOM_ENTRY.minX, LIVING_ROOM_ENTRY.minZ, KITCHEN.startZ),
+  box(LIVING_ROOM_ENTRY.maxX, KITCHEN.maxX, LIVING_ROOM_ENTRY.minZ, KITCHEN.startZ),
+  box(KITCHEN.minX, KITCHEN.minX + WALL_THICKNESS, LIVING_ROOM_WORLD.maxZ, KITCHEN.endZ),
   box(KITCHEN.maxX - WALL_THICKNESS, KITCHEN.maxX, KITCHEN.startZ, KITCHEN.endZ),
   box(KITCHEN.minX, KITCHEN.maxX, KITCHEN.endZ, KITCHEN.endZ + WALL_THICKNESS),
-  box(LIVING_ROOM.minX, LIVING_ROOM.maxX, LIVING_ROOM.minZ - WALL_THICKNESS, LIVING_ROOM.minZ),
-  box(LIVING_ROOM.maxX, LIVING_ROOM.maxX + WALL_THICKNESS, LIVING_ROOM.minZ, LIVING_ROOM.maxZ),
-  box(KITCHEN.maxX, LIVING_ROOM.maxX, LIVING_ROOM.maxZ, LIVING_ROOM.maxZ + WALL_THICKNESS),
+  box(LIVING_ROOM_WORLD.minX - WALL_THICKNESS, LIVING_ROOM_WORLD.minX, LIVING_ROOM_WORLD.minZ, LIVING_ROOM_WORLD.maxZ),
+  box(LIVING_ROOM_WORLD.maxX, LIVING_ROOM_KITCHEN_PORTAL.maxX, LIVING_ROOM_WORLD.minZ, LIVING_ROOM_KITCHEN_PORTAL.minZ),
+  box(LIVING_ROOM_WORLD.maxX, LIVING_ROOM_KITCHEN_PORTAL.maxX, LIVING_ROOM_KITCHEN_PORTAL.maxZ, LIVING_ROOM_WORLD.maxZ),
+  box(KITCHEN.minX, LIVING_ROOM_WORLD.minX, LIVING_ROOM_WORLD.maxZ - .15, LIVING_ROOM_WORLD.maxZ),
+  box(LIVING_ROOM_WORLD.minX, LIVING_ROOM_WORLD.maxX, LIVING_ROOM_WORLD.maxZ, LIVING_ROOM_WORLD.maxZ + WALL_THICKNESS),
   ...Object.values(FURNITURE).map(item => ({ x: item.x, z: item.z, halfWidth: item.width / 2, halfDepth: item.depth / 2 })),
   ...HALLWAY_SOLIDS,
   ...KITCHEN_SOLIDS,
-  ...LIVING_ROOM_SOLIDS,
-  ...LIVING_ROOM_PROP_SOLIDS,
+  ...LIVING_ROOM_WORLD_SOLIDS,
+  ...LIVING_ROOM_WORLD_PROP_SOLIDS,
   PRESERVED_STAIR_RETURN,
 ];
 
@@ -48,7 +50,7 @@ export const staticObstacles: readonly Obstacle[] = [
 export function floorHeight(point: Point2): number {
   if (Object.values(CHAPTER_ZONES).some(zone => point.x >= zone.minX && point.x <= zone.maxX && point.z >= zone.minZ && point.z <= zone.maxZ)) return 0;
   if (point.x >= KITCHEN.minX && point.x <= KITCHEN.maxX && point.z >= KITCHEN.startZ && point.z <= KITCHEN.endZ) return KITCHEN.floor;
-  if (livingFloorRects.some(rect => containsPoint(rect, point))) return LIVING_ROOM.floor;
+  if (livingFloorRects.some(rect => containsPoint(rect, point))) return LIVING_ROOM_WORLD.floor;
   if (!Number.isFinite(point.z) || point.z < STAIRS.startZ) return ROOM.floor;
   if (point.z >= STAIRS.endZ) return STAIRS.bottomY;
   const tread = (STAIRS.endZ - STAIRS.startZ) / STAIRS.steps;
@@ -57,7 +59,7 @@ export function floorHeight(point: Point2): number {
 }
 
 type FloorRect = { minX: number; maxX: number; minZ: number; maxZ: number };
-const livingFloorRects: readonly FloorRect[] = [LIVING_ROOM, LIVING_ROOM_ALCOVE, LIVING_ROOM_PORTAL];
+const livingFloorRects: readonly FloorRect[] = [LIVING_ROOM_WORLD, LIVING_ROOM_ENTRY, LIVING_ROOM_KITCHEN_PORTAL];
 const containsPoint = (rect: FloorRect, point: Point2) =>
   point.x >= rect.minX && point.x <= rect.maxX && point.z >= rect.minZ && point.z <= rect.maxZ;
 const floorRects: readonly FloorRect[] = [
@@ -65,7 +67,8 @@ const floorRects: readonly FloorRect[] = [
   { minX: HALLWAY.minX, maxX: HALLWAY.maxX, minZ: HALLWAY.startZ, maxZ: HALLWAY.endZ },
   { minX: STAIRS.minX, maxX: STAIRS.maxX, minZ: STAIRS.startZ, maxZ: STAIRS.endZ },
   { minX: BOTTOM_LANDING.minX, maxX: BOTTOM_LANDING.maxX, minZ: BOTTOM_LANDING.startZ, maxZ: BOTTOM_LANDING.endZ },
-  { minX: KITCHEN.minX, maxX: KITCHEN.maxX, minZ: KITCHEN.startZ, maxZ: KITCHEN.endZ },
+  { minX: KITCHEN.minX, maxX: KITCHEN.maxX, minZ: LIVING_ROOM_WORLD.maxZ, maxZ: KITCHEN.endZ },
+  KITCHEN_FRONT_PASSAGE,
   ...livingFloorRects,
   ...Object.values(CHAPTER_ZONES),
 ];
@@ -162,6 +165,6 @@ export function moveWithCollisions(position: Point2, dx: number, dz: number,
 /** Complete on the last tread, with enough room for a natural final step. */
 export function reachedBreakfast(point: Point2): boolean {
   const halfTread = (STAIRS.endZ - STAIRS.startZ) / STAIRS.steps / 2;
-  return !livingFloorRects.some(rect => containsPoint(rect, point)) &&
+  return ![LIVING_ROOM_WORLD, LIVING_ROOM_KITCHEN_PORTAL].some(rect => containsPoint(rect, point)) &&
     isWalkable(point) && point.z >= STAIRS.endZ - halfTread && floorHeight(point) === STAIRS.bottomY;
 }

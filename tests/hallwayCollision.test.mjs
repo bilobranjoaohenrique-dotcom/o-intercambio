@@ -24,13 +24,14 @@ function walkRoute(from, targets) {
   return point;
 }
 
-test('corredor: percurso contínuo de ida e volta pelos quatro encaixes sem alterar quarto ou abertura da cozinha', () => {
+test('corredor: percurso contínuo de ida e volta pelos quatro encaixes sem alterar quarto ou degraus', () => {
   near(HALLWAY.maxX - HALLWAY.minX, 1.4);
   near(HALLWAY.endZ - HALLWAY.startZ, 4.5);
   near(STAIRS.maxX - STAIRS.minX, .9);
   assert.equal(STAIRS.steps, 18);
   near((STAIRS.topY - STAIRS.bottomY) / STAIRS.steps, 1 / 6);
-  // The former HALL aperture is still consumed by the unchanged kitchen set.
+  // Legacy dimensions stay intact; the living-room entry continues the same
+  // clear stair width rather than moving the flight or upper hallway.
   near(HALL.minX, .95); near(HALL.maxX, 3.05);
   near(ROOM.maxZ, HALLWAY.startZ);
   near(HALLWAY.endZ, STAIRS.startZ); near(STAIRS.endZ, BOTTOM_LANDING.startZ);
@@ -67,7 +68,8 @@ test('escada: corrimãos limitam movimentos longos e os espaços laterais não s
     assert.equal(isWalkable({ x: HALLWAY.minX + .08, z }), false);
     assert.equal(isWalkable({ x: HALLWAY.maxX - .08, z }), false);
   }
-  assert.ok(isWalkable({ x: 1.2, z: 12.15 }), 'the bottom landing widens into the original kitchen opening');
+  assert.ok(isWalkable({ x: center, z: 12.15 }), 'the original last tread opens directly into the living room');
+  assert.equal(isWalkable({ x: 1.2, z: 12.15 }), false, 'the new room jamb closes the old sideways kitchen shortcut');
 });
 
 test('escada: objetivo permanece ativo até a parte final do último piso físico', () => {

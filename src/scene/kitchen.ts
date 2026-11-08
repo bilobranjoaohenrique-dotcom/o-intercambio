@@ -16,7 +16,7 @@ import { RenderTargetTexture } from '@babylonjs/core/Materials/Textures/renderTa
 import '@babylonjs/core/Lights/Shadows/shadowGeneratorSceneComponent';
 import { KITCHEN, HALL } from '../game/layout';
 import { KITCHEN_FURNITURE, PARENT_ANCHORS } from '../game/kitchenLayout';
-import { LIVING_ROOM_PORTAL } from '../game/livingRoomLayout';
+import { LIVING_ROOM_WORLD, KITCHEN_FRONT_PASSAGE } from '../game/livingRoomPlacement';
 import type { InteractionTarget } from '../game/types';
 import { HomeGeometry } from './props';
 import { createKitchenMaterials } from './kitchenMaterials';
@@ -112,9 +112,31 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
   // Ceramic room shell. The rear window and the connection to the stairs are
   // physical openings; the room is not an enclosing box behind a window decal.
   const width = KITCHEN.maxX - KITCHEN.minX, length = KITCHEN.endZ - KITCHEN.startZ, middle = (KITCHEN.endZ + KITCHEN.startZ) / 2;
-  b('cerâmica assentada no piso', width, .14, length, 0, -.07, middle, m.tile);
-  b('teto doméstico com acabamento', width + .2, .13, length + .2, 0, ceilingY + .065, middle, m.ceiling);
-  for (const x of [KITCHEN.minX - .075, KITCHEN.maxX + .075]) b('parede lateral azulejada', .15, ceilingY, length, x, ceilingY / 2, middle, m.wallTile);
+  // Reuse only the empty front of the former kitchen footprint for the room.
+  // Every breakfast prop, parent, window and light below stays at its original
+  // world coordinates. The remaining floor/ceiling retain their old UVs.
+  function horizontalPiece(name: string, x0: number, x1: number, z0: number, z1: number,
+    h: number, y: number, material: StandardMaterial, original: { minX: number; maxX: number; minZ: number; maxZ: number }) {
+    const mesh = b(name, x1 - x0, h, z1 - z0, (x0 + x1) / 2, y, (z0 + z1) / 2, material);
+    const positions = mesh.getVerticesData(VertexBuffer.PositionKind)!, normals = mesh.getVerticesData(VertexBuffer.NormalKind)!;
+    const uv = [...mesh.getVerticesData(VertexBuffer.UVKind)!];
+    for (let i = 0; i < positions.length / 3; i++) if (Math.abs(normals[i * 3 + 1]) > .5) {
+      const x = positions[i * 3] + mesh.position.x, z = positions[i * 3 + 2] + mesh.position.z;
+      uv[i * 2] = (z - original.minZ) / (original.maxZ - original.minZ);
+      uv[i * 2 + 1] = normals[i * 3 + 1] > 0 ?
+        (original.maxX - x) / (original.maxX - original.minX) : (x - original.minX) / (original.maxX - original.minX);
+    }
+    mesh.setVerticesData(VertexBuffer.UVKind, uv);
+  }
+  const floorBounds = { minX: KITCHEN.minX, maxX: KITCHEN.maxX, minZ: KITCHEN.startZ, maxZ: KITCHEN.endZ };
+  horizontalPiece('cerâmica original junto à área do café', KITCHEN.minX, KITCHEN.maxX, LIVING_ROOM_WORLD.maxZ, KITCHEN.endZ, .14, -.07, m.tile, floorBounds);
+  horizontalPiece('cerâmica da ligação lateral com a sala', KITCHEN_FRONT_PASSAGE.minX, KITCHEN.maxX, KITCHEN.startZ, LIVING_ROOM_WORLD.maxZ, .14, -.07, m.tile, floorBounds);
+  const ceilingBounds = { minX: KITCHEN.minX - .1, maxX: KITCHEN.maxX + .1, minZ: KITCHEN.startZ - .1, maxZ: KITCHEN.endZ + .1 };
+  horizontalPiece('teto original sobre a área do café', ceilingBounds.minX, ceilingBounds.maxX, LIVING_ROOM_WORLD.maxZ, ceilingBounds.maxZ, .13, ceilingY + .065, m.ceiling, ceilingBounds);
+  horizontalPiece('teto da ligação lateral com a sala', KITCHEN_FRONT_PASSAGE.minX, ceilingBounds.maxX, ceilingBounds.minZ, LIVING_ROOM_WORLD.maxZ, .13, ceilingY + .065, m.ceiling, ceilingBounds);
+  b('parede lateral esquerda azulejada', .15, ceilingY, KITCHEN.endZ - LIVING_ROOM_WORLD.maxZ,
+    KITCHEN.minX - .075, ceilingY / 2, (KITCHEN.endZ + LIVING_ROOM_WORLD.maxZ) / 2, m.wallTile);
+  b('parede lateral direita azulejada', .15, ceilingY, length, KITCHEN.maxX + .075, ceilingY / 2, middle, m.wallTile);
   const rear = (name: string, x0: number, x1: number, y0: number, y1: number) =>
     b(name, x1 - x0, y1 - y0, .15, (x0 + x1) / 2, (y0 + y1) / 2, KITCHEN.endZ + .075, m.wallTile);
   const wx0 = window.x - window.width / 2, wx1 = window.x + window.width / 2, wy0 = window.y - window.height / 2, wy1 = window.y + window.height / 2;
@@ -122,17 +144,16 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
   rear('azulejos à direita da janela', wx1, KITCHEN.maxX, 0, ceilingY);
   rear('azulejos sob a janela', wx0, wx1, 0, wy0);
   rear('verga acima da janela', wx0, wx1, wy1, ceilingY);
-  // Preserve the existing staircase aperture. Only this extra local doorway
-  // connects the new room beside it; kitchen props and finishes keep position.
-  for (const [x0, x1] of [[KITCHEN.minX, HALL.minX], [HALL.maxX, LIVING_ROOM_PORTAL.minX], [LIVING_ROOM_PORTAL.maxX, KITCHEN.maxX]])
-    b('parede junto à passagem da escada', x1 - x0, ceilingY, .15, (x0 + x1) / 2, ceilingY / 2, KITCHEN.startZ - .075, m.plaster);
-  b('verga da passagem para a sala', LIVING_ROOM_PORTAL.maxX - LIVING_ROOM_PORTAL.minX,
-    ceilingY - LIVING_ROOM_PORTAL.height, .15, (LIVING_ROOM_PORTAL.minX + LIVING_ROOM_PORTAL.maxX) / 2,
-    (ceilingY + LIVING_ROOM_PORTAL.height) / 2, KITCHEN.startZ - .075, m.plaster);
-  b('verga da entrada da cozinha', HALL.maxX - HALL.minX, .88, .15, (HALL.maxX + HALL.minX) / 2, ceilingY - .44, KITCHEN.startZ - .075, m.plaster);
-  for (const x of [KITCHEN.minX + .015, KITCHEN.maxX - .015]) b('rodapé de cerâmica lateral', .035, .09, length, x, .045, middle, m.darkWood);
+  // The stair aperture belongs to the living-room entry now. Close the old
+  // kitchen detour, and place the exterior edge behind the vacated front area.
+  b('fechamento frontal da ligação lateral', KITCHEN.maxX - LIVING_ROOM_WORLD.maxX, ceilingY, .15,
+    (KITCHEN.maxX + LIVING_ROOM_WORLD.maxX) / 2, ceilingY / 2, KITCHEN.startZ - .075, m.plaster);
+  b('fechamento da área do café junto à sala', LIVING_ROOM_WORLD.minX - KITCHEN.minX, ceilingY, .15,
+    (KITCHEN.minX + LIVING_ROOM_WORLD.minX) / 2, ceilingY / 2, LIVING_ROOM_WORLD.maxZ - .075, m.plaster);
+  b('rodapé de cerâmica lateral esquerdo', .035, .09, KITCHEN.endZ - LIVING_ROOM_WORLD.maxZ,
+    KITCHEN.minX + .015, .045, (KITCHEN.endZ + LIVING_ROOM_WORLD.maxZ) / 2, m.darkWood);
+  b('rodapé de cerâmica lateral direito', .035, .09, length, KITCHEN.maxX - .015, .045, middle, m.darkWood);
   b('rodapé cerâmico do fundo', width, .09, .035, 0, .045, KITCHEN.endZ - .015, m.darkWood);
-  for (const x of [HALL.minX - .04, HALL.maxX + .04]) b('guarnição da passagem', .065, 2.4, .14, x, 1.2, KITCHEN.startZ, m.wood);
 
   // Window, slim security bars and cotton lace. Morning shadows are generated
   // by these actual pieces rather than painted on top of the reference image.

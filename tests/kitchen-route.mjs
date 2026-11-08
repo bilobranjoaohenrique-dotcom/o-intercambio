@@ -6,6 +6,8 @@ import { wakeInBedroom, leaveBedroomForKitchen } from './bedroom-route.mjs';
 import { snapshot, waitFrames, waitPhase,
   walkTo, aimInteraction, faceYaw, lookAt, pause, hold, benchmark } from './browser-helpers.mjs';
 
+const { HOME_RESUME_POSITION } = await import('../src/game/livingRoomPlacement.ts');
+
 const horizontalDistance = (a, b) => Math.hypot(a.x - b.x, a.z - b.z);
 /** Observe the rendered camera basis rather than a configuration flag or the
  * Euler roll field: a stale up-vector can tilt the image while roll is zero. */
@@ -83,7 +85,7 @@ async function observeIdleMotion(page) {
 export async function kitchenViewsAndPhysics(page, record, profile, detailed = true) {
   const horizon = [];
   console.log('STAGE kitchen overview and measurement', profile);
-  await walkTo(page, { x: 0, z: 15.9 });
+  await walkTo(page, { x: 0, z: 16.4 });
   await lookAt(page, { x: 0, y: 1.25, z: 19.4 });
   horizon.push(await assertLevelHorizon(page, `${profile} kitchen overview`));
   await record(`${profile}-cozinha-geral`);
@@ -150,7 +152,7 @@ export async function checkKitchenPauseAndCheckpoint(page) {
   assert.equal((await snapshot(page)).chapterMission, 'talk-parents', 'the real saved checkpoint survives a reload');
   await page.locator('#startGame').click(); await waitPhase(page, 'playing');
   const resumed = await snapshot(page);
-  assert.ok(horizontalDistance(resumed.position, { x: 0, z: 14.2 }) < .05, 'a kitchen checkpoint resumes at the kitchen entrance');
+  assert.ok(horizontalDistance(resumed.position, HOME_RESUME_POSITION) < .05, 'a kitchen checkpoint resumes on clear kitchen floor');
   assert.equal((await page.locator('#objectiveText').textContent()).trim(), 'Converse com seus pais');
   await assertLevelHorizon(page, 'kitchen checkpoint after genuine page reload');
 }
@@ -197,5 +199,6 @@ export async function talkToParents(page, record) {
 export async function approachKitchenSuitcase(page) {
   await walkTo(page, { x: -2.4, z: 16.6 });
   await walkTo(page, { x: 2.3, z: 16.6 });
+  await walkTo(page, { x: 4.1, z: 16.4 });
   await aimInteraction(page, 'suitcase', { x: 3.25, y: .45, z: 15.6 });
 }

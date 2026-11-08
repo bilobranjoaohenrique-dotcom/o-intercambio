@@ -1,15 +1,16 @@
 import assert from 'node:assert/strict';
 import './register-typescript.mjs';
 import { DOOR, EYE_HEIGHT, STAIRS } from '../src/game/layout.ts';
-import { aimInteraction, snapshot, walkTo } from './browser-helpers.mjs';
+import { aimInteraction, faceYaw, lookAt, snapshot, walkTo, waitFrames } from './browser-helpers.mjs';
 
+const { LIVING_ROOM_ROUTE, LIVING_ROOM_WORLD } = await import('../src/game/livingRoomPlacement.ts');
 const { isWalkable } = await import('../src/game/collision.ts');
 
 /** Reach the original bottom landing using only the physical player controls.
  * The living-room suite starts from the real waking sequence, not a saved
  * checkpoint or a diagnostic setter. The existing last-tread mission trigger
  * remains the only way to complete the descent. */
-export async function descendToLivingLanding(page) {
+export async function descendToLivingLanding(page, { onLastTread } = {}) {
   const doorX = DOOR.hingeX + DOOR.width / 2;
   const stairX = (STAIRS.minX + STAIRS.maxX) / 2;
   const tread = (STAIRS.endZ - STAIRS.startZ) / STAIRS.steps;
@@ -27,6 +28,19 @@ export async function descendToLivingLanding(page) {
   'the real camera descends the preserved flight before the breakfast trigger');
   await walkTo(page, { x: stairX, z: STAIRS.endZ - tread * 1.5 }, { tolerance: .08 });
   assert.equal((await snapshot(page)).chapterMission, 'breakfast');
+  if (onLastTread) {
+    // Stop inside the last real tread, not at a later lateral viewpoint. This
+    // remains a physical walk; the camera is never assigned coordinates.
+    await walkTo(page, { x: stairX, z: STAIRS.endZ - tread * .43 }, { tolerance: .065 });
+    await faceYaw(page, 0, .08); await waitFrames(page, 2);
+    const last = await snapshot(page);
+    assert.ok(last.position.z >= STAIRS.endZ - tread && last.position.z < STAIRS.endZ,
+      `arrival capture must remain on the final physical tread: ${JSON.stringify(last.position)}`);
+    const forwardYaw = Math.atan2(Math.sin(last.rotation.yaw), Math.cos(last.rotation.yaw));
+    assert.ok(Math.abs(forwardYaw) < .025 && Math.abs(last.horizonTilt) < .003,
+      'arrival shows the normal forward view of the descent, without a lateral camera turn');
+    await onLastTread(last);
+  }
   await walkTo(page, { x: stairX, z: STAIRS.endZ + .15 }, { tolerance: .08 });
   const landing = await snapshot(page);
   assert.ok(landing.position.z >= STAIRS.endZ - tread / 2);
@@ -34,6 +48,51 @@ export async function descendToLivingLanding(page) {
   await page.waitForFunction(() => window.__INTERCAMBIO__.chapterMission === 'talk-parents');
   assert.equal((await page.locator('#objectiveText').textContent()).trim(), 'Converse com seus pais');
   return { middle: middle.position, landing: landing.position, steps: STAIRS.steps };
+}
+
+/** The approved set now lies directly ahead of the unchanged flight. Every
+ * chapter regression must traverse it before entering the existing kitchen. */
+export async function crossLivingToKitchen(page, { recordPosition } = {}) {
+  for (const point of LIVING_ROOM_ROUTE.slice(1)) {
+    if (Math.abs(point.z - 14.15) < .001) await walkPrecisely(page, point);
+    else await walkTo(page, point, { tolerance: .11 });
+    const state = await snapshot(page);
+    assert.equal(state.phase, 'playing', 'walking through the living room has no loading/teleport phase');
+    assert.equal(state.chapterStage, 'home');
+    assert.equal(state.chapterMission, 'talk-parents');
+    assert.ok(Math.abs(state.position.y - EYE_HEIGHT) < .06, 'the ground floor remains physically level');
+    recordPosition?.(state);
+  }
+}
+
+/** Fine alignment through the preserved chair/table gap needs shorter input
+ * than the general two-frame walking pulses on a software renderer. Approach
+ * normally, then press W for one observed frame and let velocity settle. The
+ * player's speed, camera pose and world coordinates are never assigned here. */
+export async function walkPrecisely(page, point, tolerance = .03) {
+  await walkTo(page, point, { tolerance: .18 });
+  for (let attempt = 0; attempt < 45; attempt++) {
+    const state = await snapshot(page);
+    if (Math.hypot(point.x - state.position.x, point.z - state.position.z) < tolerance) return;
+    assert.equal(state.phase, 'playing');
+    await lookAt(page, { ...point, y: state.position.y }, .012);
+    await waitFrames(page, 3);
+    // Read before keydown: reading a new baseline after keydown can miss the
+    // first movement frame and turn a one-frame nudge into a larger pulse.
+    const before = Number(await page.locator('#game').getAttribute('data-frames'));
+    await page.keyboard.down('KeyW');
+    try {
+      await page.waitForFunction(before => Number(document.getElementById('game')?.dataset.frames) > before,
+        before, { timeout: 30000 });
+    } finally { await page.keyboard.up('KeyW'); }
+    await waitFrames(page, 3);
+  }
+  assert.fail(`fine physical input did not align with ${JSON.stringify(point)}: ${JSON.stringify((await snapshot(page)).position)}`);
+}
+
+export function insideLivingRoom(point, margin = 0) {
+  return point.x >= LIVING_ROOM_WORLD.minX + margin && point.x <= LIVING_ROOM_WORLD.maxX - margin &&
+    point.z >= LIVING_ROOM_WORLD.minZ + margin && point.z <= LIVING_ROOM_WORLD.maxZ - margin;
 }
 
 /** Test-side route planning reads the canonical collision map, then drives the
