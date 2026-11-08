@@ -11,7 +11,10 @@ export const CAR_PARENT_ANCHORS = { father: carSeat(-.365), mother: carSeat(.365
 /** Parent placement is derived from the existing saved quest, never a second
  * checkpoint that could disagree with the suitcase or repeat breakfast. */
 export function parentsLocationForProgress(mission: string, completed: readonly string[]): ParentsLocation {
-  return !['breakfast', 'talk-parents'].includes(mission) || completed.includes('talk-parents') ? 'car' : 'kitchen';
+  // Finishing breakfast only asks the player to pack. The parents stay at the
+  // table until that objective is completed, including after a checkpoint load.
+  return completed.includes('pack-suitcase') ||
+    ['enter-car', 'car-ready', 'airport-gate', 'plane-seat', 'find-host', 'complete'].includes(mission) ? 'car' : 'kitchen';
 }
 let location: ParentsLocation = 'kitchen';
 export const areParentsInKitchen = () => location === 'kitchen';

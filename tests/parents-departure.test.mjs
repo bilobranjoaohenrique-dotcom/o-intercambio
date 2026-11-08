@@ -10,15 +10,17 @@ const { isWalkable } = await import('../src/game/collision.ts');
 test('despedida: missão salva determina uma única localização dos pais', () => {
   assert.equal(parentsLocationForProgress('breakfast', []), 'kitchen');
   assert.equal(parentsLocationForProgress('talk-parents', ['breakfast']), 'kitchen');
-  for (const mission of ['pack-suitcase', 'enter-car', 'airport-gate', 'plane-seat', 'find-host'])
+  assert.equal(parentsLocationForProgress('pack-suitcase', ['breakfast', 'talk-parents']), 'kitchen');
+  for (const mission of ['enter-car', 'car-ready', 'airport-gate', 'plane-seat', 'find-host'])
     assert.equal(parentsLocationForProgress(mission, ['breakfast', 'talk-parents']), 'car');
-  assert.equal(parentsLocationForProgress('talk-parents', ['breakfast', 'talk-parents']), 'car');
+  assert.equal(parentsLocationForProgress('talk-parents', ['breakfast', 'talk-parents']), 'kitchen');
+  assert.equal(parentsLocationForProgress('pack-suitcase', ['breakfast', 'talk-parents', 'pack-suitcase']), 'car');
   assert.ok(CAR_PARENT_ANCHORS.father.position.z > CAR_PARENT_ANCHORS.mother.position.z,
     'the driver stays at the steering-wheel side of the parked car');
   assert.equal(CAR_PARENT_ANCHORS.father.yaw, CAR_PARENT_ANCHORS.mother.yaw);
 });
 
-test('despedida: coleta e recarga conservam os pais no carro sem repetir o café', () => {
+test('despedida: recarga mantém os pais na cozinha até a mala ser coletada', () => {
   const descriptor = Object.getOwnPropertyDescriptor(globalThis, 'localStorage');
   let stored = JSON.stringify({ mission: 'pack-suitcase', choice: 'excited', completed: ['breakfast', 'talk-parents'] });
   Object.defineProperty(globalThis, 'localStorage', { configurable: true, value: {
@@ -26,7 +28,7 @@ test('despedida: coleta e recarga conservam os pais no carro sem repetir o café
   } });
   try {
     const progress = createChapterProgress();
-    assert.equal(parentsLocationForProgress(progress.mission, progress.completed), 'car');
+    assert.equal(parentsLocationForProgress(progress.mission, progress.completed), 'kitchen');
     assert.equal(canEnterFamilyCar(progress.mission, progress.completed), false);
     progress.advance('enter-car');
     const restored = createChapterProgress();

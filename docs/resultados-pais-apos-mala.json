@@ -1,0 +1,124 @@
+{
+  "status": "passed",
+  "build": "chapter1-parents-after-luggage-1",
+  "checks": {
+    "typescriptAndProductionBuild": "passed",
+    "focusedUnitTests": 13,
+    "browserFlow": "passed, exit 0; one complete focused flow without helper recovery",
+    "runtimeHealth": "no runtime, console or asset errors",
+    "visualInspection": "both real captures inspected"
+  },
+  "afterBreakfast": {
+    "mission": "pack-suitcase",
+    "location": "kitchen",
+    "kitchenVisibleCount": 2,
+    "carVisibleCount": 0,
+    "actors": [
+      {
+        "speaker": "MÃE",
+        "actorId": 5447,
+        "headId": 5466
+      },
+      {
+        "speaker": "PAI",
+        "actorId": 5560,
+        "headId": 5579
+      }
+    ]
+  },
+  "reloadBeforeBag": {
+    "mission": "pack-suitcase",
+    "location": "kitchen",
+    "kitchenVisibleCount": 2,
+    "carVisibleCount": 0,
+    "actors": [
+      {
+        "speaker": "MÃE",
+        "actorId": 5447,
+        "headId": 5466
+      },
+      {
+        "speaker": "PAI",
+        "actorId": 5560,
+        "headId": 5579
+      }
+    ]
+  },
+  "beforeBagPickup": {
+    "mission": "pack-suitcase",
+    "location": "kitchen",
+    "kitchenVisibleCount": 2,
+    "carVisibleCount": 0,
+    "actors": [
+      {
+        "speaker": "MÃE",
+        "actorId": 5447,
+        "headId": 5466
+      },
+      {
+        "speaker": "PAI",
+        "actorId": 5560,
+        "headId": 5579
+      }
+    ],
+    "position": {
+      "x": 1.8502893048450955,
+      "y": 4.650002145549692,
+      "z": 2.777755506189559
+    }
+  },
+  "afterBagPickup": {
+    "mission": "enter-car",
+    "location": "car",
+    "kitchenVisibleCount": 0,
+    "carVisibleCount": 2,
+    "actors": [
+      {
+        "speaker": "MÃE",
+        "actorId": 5447,
+        "headId": 5466
+      },
+      {
+        "speaker": "PAI",
+        "actorId": 5560,
+        "headId": 5579
+      }
+    ]
+  },
+  "inRearSeat": {
+    "mission": "car-ready",
+    "location": "car",
+    "kitchenVisibleCount": 0,
+    "carVisibleCount": 2,
+    "actors": [
+      {
+        "speaker": "MÃE",
+        "actorId": 5447,
+        "headId": 5466
+      },
+      {
+        "speaker": "PAI",
+        "actorId": 5560,
+        "headId": 5579
+      }
+    ],
+    "occupied": true
+  },
+  "physicalWaypoints": 21,
+  "coverage": [
+    "completed breakfast leaves both parents in the kitchen",
+    "pack-suitcase reload keeps parents in the kitchen",
+    "parents remain in the kitchen during the physical upstairs walk",
+    "actual suitcase pickup relocates the same actors out of view",
+    "physical descent and garage arrival",
+    "both parents remain visible while boarding the rear bench"
+  ],
+  "captures": [
+    "capturas/pais-na-cozinha-apos-dialogo.png",
+    "capturas/pais-no-carro-depois-da-mala.png"
+  ],
+  "environment": "Chromium 154 / Linux / SwiftShader software renderer / Balanced quality",
+  "limits": [
+    "No airport continuation or performance benchmark; other chapter browser suites were not repeated."
+  ]
+}
