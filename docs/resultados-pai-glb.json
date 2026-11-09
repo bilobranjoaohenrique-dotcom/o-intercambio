@@ -1,65 +1,134 @@
 {
   "status": "passed",
-  "build": "chapter1-father-glb-1",
+  "source": "pai_intercambio_rigged.glb",
+  "runtimeAsset": "public/models/pai_intercambio.glb",
+  "sha256": "7811eed141e6341ecdd32945a993f3ce1fe678d2d8fe9c5d085896c75c3d91d4",
+  "sizeBytes": 2183612,
   "asset": {
-    "sourceUpload": "pai_intercambio_final.glb",
-    "gameFile": "public/models/pai_intercambio.glb",
-    "bytes": 1621968,
-    "sha256": "603a2d7bb088efe778ab5775d8fcfc50aa9a4fca2384a4ea06afec4715bdba70",
-    "sourceFileUnchanged": true,
-    "embeddedPNG": 8,
-    "materials": 14,
-    "clips": 7,
-    "joints": 65
+    "vertices": 20029,
+    "triangles": 33000,
+    "bones": 22,
+    "materials": 1,
+    "embeddedJpegTextures": 3,
+    "poses": [
+      "Pose_EmPe",
+      "Pose_Sentado_Mesa",
+      "Pose_Dirigindo"
+    ],
+    "posesAreStatic": true,
+    "facialMorphs": false
   },
   "checks": {
-    "typescriptAndProductionBuild": "passed",
-    "focusedAssetTests": 2,
-    "kitchenDialogue": "native Talk_Seated frame advances; actual JawOpen changes only while the father speaks",
-    "exclusiveReplacement": "16 imported visible meshes; zero procedural father meshes",
-    "kitchenAndAirport": "real captures inspected; source textures and actor anchors retained",
-    "carFinal": "real capture inspected; 16/16 meshes lit, hands on wheel, original driver anchor",
-    "carBounds": {
-      "space": "parent-local",
-      "min": {
-        "x": -0.2576771980536474,
-        "y": 0.33815711895086764,
-        "z": -0.17054715152509203
-      },
-      "max": {
-        "x": 0.2578238703962956,
-        "y": 1.3526444236829889,
-        "z": 0.9593559388139461
-      },
-      "size": {
-        "x": 0.515501068449943,
-        "y": 1.0144873047321212,
-        "z": 1.1299030903390381
-      }
-    },
-    "motherAndScenery": "mother renderer/materials and scenery geometry unchanged",
-    "runtimeErrors": 0,
-    "consoleErrors": 0,
-    "failedAssets": 0
+    "typescriptAndBuild": "passed",
+    "focusedUnitTests": 2,
+    "browser": "passed",
+    "existingBreakfastDialogue": "passed",
+    "motherUnchanged": true
   },
-  "adaptation": [
-    "Use embedded seated, idle and talking clips, driven by the existing game clock and text controls.",
-    "Correct seated joint rotations and fit existing table/steering targets without changing meshes, weights, textures or bone lengths.",
-    "Register asynchronous meshes with existing scoped lights and shadows before enabling play."
-  ],
-  "verificationScope": [
-    "One browser session checked kitchen dialogue, kept parents at the table, then used an explicit enter-car checkpoint fixture and checked car-to-airport continuity.",
-    "Initial visual inspection found the father unlit in the car after checkpoint load: the garage cached a mutable mesh array. The registration bridge now supplies a fresh snapshot.",
-    "After the correction, only the focused car check was repeated in a second browser. Kitchen and airport were not replayed; the final car capture and light-source assertion passed."
-  ],
+  "stages": {
+    "kitchen": {
+      "mission": "talk-parents",
+      "position": {
+        "x": 1.2799999713897705,
+        "y": 0,
+        "z": 19.049999237060547
+      },
+      "pose": "Pose_Sentado_Mesa",
+      "bounds": {
+        "space": "parent-local",
+        "min": {
+          "x": -0.34742094266494705,
+          "y": 0.019598080645323535,
+          "z": -0.151465446433793
+        },
+        "max": {
+          "x": 0.3397366924528562,
+          "y": 1.4135620051712294,
+          "z": 0.5806536262651001
+        },
+        "size": {
+          "x": 0.6871576351178033,
+          "y": 1.393963924525906,
+          "z": 0.7321190726988931
+        }
+      },
+      "visibleMeshes": 1,
+      "litMeshes": 1,
+      "proceduralFatherMeshes": 0,
+      "actors": 2
+    },
+    "car": {
+      "mission": "car-ready",
+      "position": {
+        "x": 7.349999904632568,
+        "y": 0,
+        "z": 14.114999771118164
+      },
+      "pose": "Pose_Dirigindo",
+      "bounds": {
+        "space": "parent-local",
+        "min": {
+          "x": -0.279607745984384,
+          "y": 0.299685230073905,
+          "z": -0.15921873964128697
+        },
+        "max": {
+          "x": 0.272394687647763,
+          "y": 1.3909864656277762,
+          "z": 0.9501875494663103
+        },
+        "size": {
+          "x": 0.552002433632147,
+          "y": 1.0913012355538712,
+          "z": 1.1094062891075973
+        }
+      },
+      "visibleMeshes": 1,
+      "litMeshes": 1,
+      "proceduralFatherMeshes": 0,
+      "actors": 2
+    },
+    "airport": {
+      "mission": "airport-farewell",
+      "position": {
+        "x": 29.66,
+        "y": 0,
+        "z": -1.55
+      },
+      "pose": "Pose_EmPe",
+      "bounds": {
+        "space": "parent-local",
+        "min": {
+          "x": -0.3961937177072272,
+          "y": 6.999133784525713e-08,
+          "z": -0.17201769949074475
+        },
+        "max": {
+          "x": 0.3962776600497975,
+          "y": 1.77688848756452,
+          "z": 0.17226699634147047
+        },
+        "size": {
+          "x": 0.7924713777570247,
+          "y": 1.776888417573182,
+          "z": 0.3442846958322152
+        }
+      },
+      "visibleMeshes": 1,
+      "litMeshes": 1,
+      "proceduralFatherMeshes": 0,
+      "actors": 2
+    }
+  },
+  "errors": [],
+  "consoleErrors": [],
+  "failedAssets": [],
   "captures": [
     "capturas/novo-pai-glb-cozinha.png",
     "capturas/novo-pai-glb-carro.png",
     "capturas/novo-pai-glb-aeroporto.png"
   ],
-  "environment": "Chromium 154 / Linux / SwiftShader software renderer / Balanced quality",
-  "limits": [
-    "The upstairs suitcase pickup and complete airport boarding route were not repeated; their quest logic was unchanged.",
-    "No performance benchmark or physical-GPU/Windows test."
-  ]
+  "visualInspection": "As três capturas reais foram inspecionadas: escala, materiais, assento e contato com mesa/volante, teto do carro e pai em pé no aeroporto.",
+  "scope": "Um café completo e checkpoints existentes do carro e aeroporto, sem repetir rotas da casa ou embarque. GLB original preservado, sem reconstruir malhas, materiais ou cenários.",
+  "limitations": "O GLB contém poses estáticas, sem ciclos de fala/repouso nem boca animada. O controle existente mantém olhar e pequenos movimentos de cabeça. Chromium/Linux com SwiftShader, sem benchmark ou teste em GPU física/Windows."
 }

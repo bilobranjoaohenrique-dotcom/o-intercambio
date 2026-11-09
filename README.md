@@ -117,11 +117,15 @@ A correção do embarque passou TypeScript/build e **13 testes focais**. Uma ses
 
 ## Modelo do pai — GLB
 
-O pai usa o arquivo mais recente enviado, `pai_intercambio_final.glb`, guardado intacto em `public/models/pai_intercambio.glb`. As oito texturas, 14 materiais, rig Mixamo, animações sentadas/de conversa e morphs de boca/sorriso vêm do arquivo. O adaptador mantém as posições existentes e ajusta apenas os ossos para a mesa e o volante; a mãe e os cenários continuam iguais. Como não há clip próprio de direção, a postura do motorista usa os pontos do volante já existentes. O carregamento registra o modelo nas luzes e sombras existentes antes de habilitar **Começar**.
+O pai usa o arquivo enviado `pai_intercambio_rigged.glb`, preservado em `public/models/pai_intercambio.glb` (aproximadamente 2,18 MB, 20.029 vértices e 33.000 triângulos). O modelo tem uma malha, três texturas JPEG incorporadas, um esqueleto de 22 ossos e as poses originais `Pose_EmPe`, `Pose_Sentado_Mesa` e `Pose_Dirigindo`. O adaptador mantém o mesmo personagem e suas âncoras, ajustando escala, altura e contato das mãos/pés com os móveis existentes. A mãe e os cenários permanecem iguais.
+
+As três poses são estáticas. O olhar e os pequenos movimentos de cabeça usam o controle existente; **o arquivo não possui animação de boca, morphs faciais ou ciclos de fala/repouso**. Os diálogos continuam por texto. Nenhum material ou malha foi reconstruído, e o GLB é carregado uma única vez para os três locais.
 
 Verificação focal: `node --test --test-isolation=none tests/father-glb.test.mjs`; com a prévia aberta, `INTERCAMBIO_URL=http://localhost:4180 npm run test:father`.
 
-Passaram TypeScript/build, dois testes do arquivo e a verificação real de diálogo, boca, texturas e poses. A inspeção encontrou o pai sem iluminação ao recarregar a etapa do carro; a lista de malhas assíncronas foi corrigida e apenas essa vista foi repetida, confirmando 16/16 malhas iluminadas. A mãe, os cenários e a progressão permaneceram iguais. Capturas reais: [cozinha](docs/capturas/novo-pai-glb-cozinha.png), [carro](docs/capturas/novo-pai-glb-carro.png), [aeroporto](docs/capturas/novo-pai-glb-aeroporto.png). [Registro curto](docs/resultados-pai-glb.json). Chromium/Linux com SwiftShader, sem benchmark.
+Passaram TypeScript/build, dois testes do arquivo e a conferência real das três poses. O café manteve os diálogos e o objetivo de buscar a mala; carro e aeroporto foram verificados com checkpoints existentes, sem repetir os percursos anteriores. As três capturas foram inspecionadas. Chromium/Linux com SwiftShader, sem benchmark de desempenho.
+
+Capturas reais: [cozinha](docs/capturas/novo-pai-glb-cozinha.png), [carro](docs/capturas/novo-pai-glb-carro.png), [aeroporto](docs/capturas/novo-pai-glb-aeroporto.png). [Registro curto](docs/resultados-pai-glb.json).
 
 ## Aeroporto — Portão 24
 

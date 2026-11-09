@@ -13,15 +13,15 @@ type Bounds = { space: 'parent-local'; min: { x: number; y: number; z: number };
   max: { x: number; y: number; z: number }; size: { x: number; y: number; z: number } };
 
 const SOURCE = '/models/pai_intercambio.glb';
-const SCALE = 1.778 / (1.7961 - .006);
-const HEIGHT_OFFSET: Record<Location, number> = { kitchen: .031, car: .565 - .5972 * SCALE, airport: -.006 * SCALE };
-const CLIPS = ['Idle_Breathe', 'Walk_InPlace', 'Sit_Down', 'Seated_Idle', 'Talk_Gesture', 'Talk_Seated', 'Look_Nod'] as const;
+const SCALE = 1.778 / (1.78020179271698 - .00007931751315481961);
+const HEIGHT_OFFSET: Record<Location, number> = { kitchen: .04, car: -.025, airport: -.00007931751315481961 * SCALE };
+const POSES: Record<Location, string> = { kitchen: 'Pose_Sentado_Mesa', car: 'Pose_Dirigindo', airport: 'Pose_EmPe' };
 const plain = (point: Vector3) => ({ x: point.x, y: point.y, z: point.z });
 const clamp = (value: number, min = 0, max = 1) => Number.isFinite(value) ? Math.max(min, Math.min(max, value)) : min;
 
-/** The supplied character stays intact: original GLB materials, embedded
- * images, rig, shape keys and clips. Only the rig pose is adapted to the two
- * existing seats; neither vertex buffers nor bone lengths are rewritten. */
+/** Preserve the supplied mesh, materials and three authored poses. The
+ * existing seat fitting and look controls adapt its rig to the established
+ * furniture; this file does not add facial targets or rewrite the model. */
 export async function loadImportedFather(scene: Scene, parent: TransformNode) {
   const container = await LoadAssetContainerAsync(SOURCE, scene, {
     pluginExtension: '.glb', pluginOptions: { gltf: { animationStartMode: 0 } },
@@ -37,15 +37,20 @@ export async function loadImportedFather(scene: Scene, parent: TransformNode) {
     const meshes = container.meshes.filter((mesh): mesh is Mesh => mesh instanceof Mesh && mesh.getTotalVertices() > 0);
     const joints = new Map<string, TransformNode>();
     for (const node of container.transformNodes) joints.set(node.name.replace(/^mixamorig\d*:/i, ''), node);
+    for (const [side, suffix] of [['Left', '.L'], ['Right', '.R']]) {
+      for (const [legacy, supplied] of [['Arm', 'UpperArm'], ['ForeArm', 'Forearm'], ['Hand', 'Hand'], ['UpLeg', 'Thigh'], ['Leg', 'Shin'], ['Foot', 'Foot']]) {
+        const node = joints.get(supplied + suffix);
+        if (node) joints.set(side + legacy, node);
+      }
+    }
     const headNode = joints.get('Head');
     if (!headNode || !meshes.length) throw Error('O arquivo não contém a cabeça ou as malhas esperadas do pai.');
     const head: TransformNode = headNode;
     const groups = new Map<string, AnimationGroup>();
     for (const group of container.animationGroups) { group.stop(true); groups.set(group.name, group); }
-    for (const name of CLIPS) if (!groups.has(name)) throw Error('Animação ausente no modelo do pai: ' + name);
+    for (const name of Object.values(POSES)) if (!groups.has(name)) throw Error('Pose ausente no modelo do pai: ' + name);
     const rest: RestPose[] = container.transformNodes.map(node => ({ node, position: node.position.clone(),
       rotation: node.rotationQuaternion?.clone() ?? Quaternion.FromEulerVector(node.rotation), scaling: node.scaling.clone() }));
-    const restByNode = new Map(rest.map(pose => [pose.node, pose]));
     const jawTargets: MorphTarget[] = [], smileTargets: MorphTarget[] = [], morphNames: string[] = [];
     for (const mesh of meshes) {
       mesh.isPickable = false; mesh.receiveShadows = true; mesh.alwaysSelectAsActiveMesh = true;
@@ -61,9 +66,8 @@ export async function loadImportedFather(scene: Scene, parent: TransformNode) {
         if (/smile/i.test(target.name)) smileTargets.push(target);
       }
     }
-    if (!jawTargets.length || !smileTargets.length) throw Error('O modelo do pai não contém os morphs de boca e sorriso.');
     container.addAllToScene();
-    let location: Location = 'kitchen', animation = 'Seated_Idle', group: AnimationGroup | null = null;
+    let location: Location = 'kitchen', animation = POSES.kitchen, group: AnimationGroup | null = null;
     let clipStarted = 0, lastTime = 0, frame = 0, disposed = false, lastBoundsTick = -Infinity;
     let currentJaw = 0, currentSmile = 0;
     let bounds: Bounds = { space: 'parent-local', min: plain(Vector3.Zero()), max: plain(Vector3.Zero()), size: plain(Vector3.Zero()) };
@@ -89,12 +93,6 @@ export async function loadImportedFather(scene: Scene, parent: TransformNode) {
       const span = Math.max(.001, group.to - group.from);
       frame = group.from + Math.max(0, time - clipStarted) * fps % span;
       group.goToFrame(frame);
-    }
-    function invertSeatDelta(name: string) {
-      const node = joints.get(name), pose = node && restByNode.get(node);
-      if (!node?.rotationQuaternion || !pose) return;
-      const delta = pose.rotation.conjugate().multiply(node.rotationQuaternion).normalize();
-      node.rotationQuaternion.copyFrom(pose.rotation.multiply(delta.conjugate()).normalize());
     }
     function worldPosition(node: TransformNode) {
       node.computeWorldMatrix(true); return node.getAbsolutePosition().clone();
@@ -135,11 +133,8 @@ export async function loadImportedFather(scene: Scene, parent: TransformNode) {
       }
     }
     function seatedFit() {
-      for (const side of ['Left', 'Right']) {
-        // These two authored seated clips bend toward -Z although the face is
-        // +Z. Reverse their local animated delta relative to the untouched bind.
-        for (const part of ['UpLeg', 'Leg', 'Arm', 'ForeArm']) invertSeatDelta(side + part);
-      }
+      // The supplied seated poses already bend forward. Only adjust contact
+      // points to the existing tabletop, steering wheel and pedal space.
       parent.computeWorldMatrix(true); adapter.computeWorldMatrix(true);
       const parentMatrix = parent.getWorldMatrix(), inverseParent = Matrix.Invert(parentMatrix);
       const inWorld = (x: number, y: number, z: number) => Vector3.TransformCoordinates(new Vector3(x, y, z), parentMatrix);
@@ -182,11 +177,12 @@ export async function loadImportedFather(scene: Scene, parent: TransformNode) {
       if (location !== 'airport') seatedFit();
       const nod = location === 'airport' ? clamp(farewell) * .045 : 0;
       // The loader's X reflection reverses yaw, while pitch retains its sign.
-      const look = Quaternion.FromEulerAngles(clamp(lookPitch, -.20, .20) + nod, -clamp(lookYaw, -.65, .65), 0);
+      const look = Quaternion.FromEulerAngles(clamp(lookPitch, -.20, .20) + nod +
+        Math.sin(time * (speaking ? 1.9 : .64)) * (speaking ? .017 : .006), -clamp(lookYaw, -.65, .65), 0);
       head.rotationQuaternion ??= Quaternion.Identity();
       head.rotationQuaternion.multiplyInPlace(look);
-      currentJaw = speaking && location !== 'car' ? clamp(mouthOpen, 0, .85) : 0;
-      currentSmile = speaking && location !== 'car' ? clamp(smile, 0, .75) : 0;
+      currentJaw = jawTargets.length && speaking && location !== 'car' ? clamp(mouthOpen, 0, .85) : 0;
+      currentSmile = smileTargets.length && speaking && location !== 'car' ? clamp(smile, 0, .75) : 0;
       for (const target of jawTargets) target.influence = currentJaw;
       for (const target of smileTargets) target.influence = currentSmile;
       for (const skeleton of container.skeletons) skeleton.prepare(true);
@@ -196,7 +192,7 @@ export async function loadImportedFather(scene: Scene, parent: TransformNode) {
       if (disposed) return;
       location = next; adapter.position.y = HEIGHT_OFFSET[next]; lastBoundsTick = -Infinity;
       group?.stop(true); group = null;
-      select(next === 'airport' ? 'Idle_Breathe' : 'Seated_Idle', lastTime);
+      select(POSES[next], lastTime);
       apply(lastTime, false, 0, .16, 0, 0, 0); updateBounds(lastTime, true);
     }
     setLocation('kitchen'); adapter.setEnabled(true);
@@ -207,13 +203,12 @@ export async function loadImportedFather(scene: Scene, parent: TransformNode) {
       animate(time: number, speaking: boolean, mouthOpen: number, smile: number, lookYaw: number, lookPitch: number, farewell = 0) {
         if (disposed || !Number.isFinite(time)) return;
         lastTime = time;
-        const clip = location === 'car' ? 'Seated_Idle' : location === 'kitchen' ? speaking ? 'Talk_Seated' : 'Seated_Idle'
-          : speaking ? 'Talk_Gesture' : farewell > .01 ? 'Look_Nod' : 'Idle_Breathe';
-        select(clip, time); apply(time, speaking, mouthOpen, smile, lookYaw, lookPitch, farewell);
+        select(POSES[location], time); apply(time, speaking, mouthOpen, smile, lookYaw, lookPitch, farewell);
       },
       get diagnostics() { return { source: SOURCE, loaded: true, error: null, pose: location,
         animation, frame, deterministicClock: true, clips: [...groups.keys()], materialCount: materials.size,
         textureCount: textures.size, morphs: morphNames, morphWeights: { JawOpen: currentJaw, Smile: currentSmile },
+        facialAnimation: jawTargets.length > 0, poseClips: true,
         bounds, scale: SCALE, offsetY: adapter.position.y,
         headId: head.uniqueId, meshes: meshes.length,
         loaderRoot: container.meshes.find(mesh => mesh.name === '__root__')?.rotationQuaternion?.asArray(),
