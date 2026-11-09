@@ -1,0 +1,106 @@
+{
+  "status": "passed",
+  "source": "personagem_intercambio_rigged.glb",
+  "runtimeAsset": "public/models/mae_intercambio.glb",
+  "sha256": "959f4cfdb2deaa500fc11df39a5de90f585d5e454a8b3b4ea3babc8880454a3e",
+  "sizeBytes": 2219940,
+  "asset": {
+    "vertices": 20140,
+    "triangles": 33000,
+    "bones": 22,
+    "materials": 1,
+    "embeddedJpegTextures": 3,
+    "clips": [
+      "Pose_EmPe",
+      "Pose_Sentado_Mesa",
+      "Pose_Dirigindo"
+    ],
+    "posesAreStatic": true,
+    "facialMorphs": false,
+    "originalClothingPreserved": true
+  },
+  "checks": {
+    "typescriptAndBuild": "passed",
+    "focusedUnitTests": 2,
+    "browser": "passed",
+    "breakfastDialogue": "passed",
+    "luggageQuestPreserved": true,
+    "coffeeServingCycle": true,
+    "directBodyInteraction": {
+      "kind": "imported-body-interaction",
+      "text": "Vou me sentar à mesa para tomar café com meus pais.",
+      "visible": true,
+      "mission": "talk-parents",
+      "dialogue": false,
+      "errors": [],
+      "note": "Final build registers the existing parents target in kitchen.targets and lazily resolves imported hit meshes; direct E keeps the original sit-at-table response without quest advancement. Only this interaction was rechecked after the final logical fix."
+    },
+    "fatherAssetSha256": "7811eed141e6341ecdd32945a993f3ce1fe678d2d8fe9c5d085896c75c3d91d4"
+  },
+  "stages": {
+    "kitchen": {
+      "mission": "talk-parents",
+      "motherPosition": {
+        "x": -1.5499999523162842,
+        "y": 0,
+        "z": 18.25
+      },
+      "motherPose": "Pose_EmPe",
+      "motherScale": 0.9326013356104956,
+      "visibleImportedBodyMeshes": 1,
+      "litImportedBodyMeshes": 1,
+      "proceduralMotherBodyMeshes": 0,
+      "coffeeProp": true,
+      "fatherPose": "Pose_Sentado_Mesa",
+      "actors": 2
+    },
+    "car": {
+      "mission": "car-ready",
+      "motherPosition": {
+        "x": 7.349999904632568,
+        "y": 0,
+        "z": 13.385000228881836
+      },
+      "motherPose": "Pose_Sentado_Mesa",
+      "motherScale": 0.9326013356104956,
+      "visibleImportedBodyMeshes": 1,
+      "litImportedBodyMeshes": 1,
+      "proceduralMotherBodyMeshes": 0,
+      "coffeeProp": false,
+      "fatherPose": "Pose_Dirigindo",
+      "actors": 2
+    },
+    "airport": {
+      "mission": "airport-farewell",
+      "motherPosition": {
+        "x": 30.3,
+        "y": 0,
+        "z": -1.55
+      },
+      "motherPose": "Pose_EmPe",
+      "motherScale": 0.9326013356104956,
+      "visibleImportedBodyMeshes": 1,
+      "litImportedBodyMeshes": 1,
+      "proceduralMotherBodyMeshes": 0,
+      "coffeeProp": false,
+      "fatherPose": "Pose_EmPe",
+      "actors": 2
+    }
+  },
+  "errors": [],
+  "consoleErrors": [],
+  "failedAssets": [],
+  "captures": [
+    "capturas/nova-mae-glb-cozinha.png",
+    "capturas/nova-mae-glb-carro.png",
+    "capturas/nova-mae-glb-aeroporto.png"
+  ],
+  "visualInspection": "As três capturas reais foram inspecionadas: modelo e escala na cozinha, contato bule/mão, passageira sob o teto sem dirigir e mãe em pé no aeroporto.",
+  "corrections": [
+    "Aguardar o modelo antes de animar seus controles e ocultar props durante o carregamento.",
+    "Ajustar contato do bule com a palma; recapturar apenas a cozinha após o café já aprovado.",
+    "Registrar o alvo existente dos pais na cozinha e resolver malhas importadas no raycast; revalidar somente a mira e o E no corpo."
+  ],
+  "scope": "Um café/ciclo de servir e checkpoints existentes do carro/aeroporto. Sem repetir rotas da casa, garagem ou avião. Modelo e adaptador do pai preservados; nenhuma alteração na arquitetura ou nos diálogos.",
+  "limitations": "O arquivo possui poses estáticas e nenhum controle facial/boca animada. Roupa original, incluindo avental, preservada. Olhar e pequenos gestos do café usam o controle existente. Chromium/Linux com SwiftShader, sem benchmark de desempenho ou teste em GPU física/Windows."
+}

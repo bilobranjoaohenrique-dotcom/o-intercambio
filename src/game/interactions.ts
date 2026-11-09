@@ -24,6 +24,12 @@ export function createInteractions(scene: Scene, camera: Camera, targets: readon
       if (target) return target;
       node = node.parent as typeof node;
     }
+    // Imported character meshes join their target after this registry is
+    // created. Register the actual hit lazily, keeping their existing prompts.
+    for (const target of targets) if (target.meshes.includes(hit.pickedMesh)) {
+      registry.set(hit.pickedMesh, target);
+      return target;
+    }
     return null;
   }
 

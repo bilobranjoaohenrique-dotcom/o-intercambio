@@ -614,6 +614,7 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
   void shadows.forceCompilationAsync().then(() => { if (!disposed) refreshShadows(); })
     .catch(error => console.error('Não foi possível preparar as sombras da cozinha.', error));
   const targets: InteractionTarget[] = [
+    parents.target,
     { id: 'breakfast-chair', meshes: g.targets.get('breakfast-chair') ?? [], label: () => 'Sentar à mesa', execute: () => undefined },
     { id: entryTarget, meshes: g.targets.get(entryTarget) ?? [], label: () => 'Examinar porta', execute: () => 'Esta é a porta de entrada da casa. Ela está fechada.' },
   ];

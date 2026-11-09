@@ -10,7 +10,8 @@ import { createAirportParentPose } from './parentAirportPose';
 import { CAR_PARENT_ANCHORS, type ParentsLocation } from '../game/parentsDeparture';
 import { AIRPORT_PARENTS } from '../game/airportLayout';
 import { loadImportedFather } from './importedFather';
-type ImportedFather = Awaited<ReturnType<typeof loadImportedFather>>;
+import { loadImportedMother } from './importedMother';
+type ImportedParent = Awaited<ReturnType<typeof loadImportedFather>> | Awaited<ReturnType<typeof loadImportedMother>>;
 
 type Actor = {
   root: TransformNode; posture: TransformNode; head: TransformNode;
@@ -22,7 +23,7 @@ type Actor = {
   kitchenArms: TransformNode[]; carArms: TransformNode[]; airportArms: TransformNode[];
   kitchenHeadY: number; carHeadY: number; airportHeadY: number; blinkLids: TransformNode[]; blink: number;
   disposeAirport(): void;
-  importedModel?: ImportedFather; importError?: string;
+  importedModel?: ImportedParent; importError?: string;
 };
 const mixPoint = (a: V3, b: V3, t: number): V3 => ({
   x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t, z: a.z + (b.z - a.z) * t,
@@ -486,46 +487,49 @@ export function createParents(scene: Scene, parent: TransformNode) {
   const m = parentMaterials(scene), actors: Actor[] = [], meshes: Mesh[] = [];
   let location: ParentsLocation = 'kitchen', farewellAmount = 0;
   let disposed = false, lastTime = 0;
-  let fatherReady: Promise<void> = Promise.resolve();
+  const modelReady: Promise<void>[] = [];
   for (const [key, mother] of [['mother', true], ['father', false]] as const) {
-    const anchor = PARENT_ANCHORS[key], root = new TransformNode(mother ? 'MÃE · personagem humano' : 'PAI · personagem humano', scene);
+    const anchor = PARENT_ANCHORS[key];
+    const role = mother ? 'mãe' : 'pai', speaker = mother ? 'MÃE' : 'PAI';
+    const root = new TransformNode(speaker + ' · personagem humano', scene);
     root.parent = parent; root.position.set(anchor.position.x, anchor.position.y, anchor.position.z); root.rotation.y = anchor.yaw;
-    const posture = new TransformNode((mother ? 'mãe' : 'pai') + ' · postura', scene); posture.parent = root;
-    if (!mother) {
-      // Keep the established actor root and quest anchors, replacing only its
-      // renderer. No procedural father body is built beside the imported GLB.
-      const control = (name: string) => { const node = new TransformNode('pai · ' + name, scene); node.parent = posture; return node; };
-      const actor: Actor = { root, posture, head: control('controle de cabeça'), jaw: control('controle de fala'), mouth: control('controle de boca'),
-        arms: [], meshes: [], speaker: 'PAI', phase: 2.2, lookYaw: 0, lookPitch: 0,
-        brows: [], corners: [], kitchenPose: control('controle de cozinha'), carPose: control('controle do carro'), airportPose: control('controle do aeroporto'),
-        kitchenArms: [], carArms: [], airportArms: [], kitchenHeadY: 1.183, carHeadY: 1.043, airportHeadY: 1.478,
-        mouthOpen: 0, smile: 0, gesture: 0, serving: 0, speaking: false, expression: 'neutral', blinkLids: [], blink: 0, disposeAirport() {} };
-      actors.push(actor);
-      fatherReady = loadImportedFather(scene, root).then(model => {
-        if (disposed) { model.dispose(); return; }
-        actor.importedModel = model; actor.head = model.head;
-        actor.meshes.push(...model.meshes); meshes.push(...model.meshes); shadowCasters.push(...model.shadowCasters);
-        for (const mesh of model.meshes) { mesh.metadata = { ...mesh.metadata, role: 'father', anatomicalModel: true, importedFather: true }; mesh.isPickable = location === 'kitchen'; }
-        model.setLocation(location);model.animate(lastTime, false, 0, 0, 0, 0, 0);
-      }).catch(error => { actor.importError = String(error?.message ?? error); throw new Error('Não foi possível carregar o modelo do pai: ' + actor.importError); });
-      continue;
+    const posture = new TransformNode(role + ' · postura', scene); posture.parent = root;
+    const control = (name: string) => { const node = new TransformNode(role + ' · ' + name, scene); node.parent = posture; return node; };
+    const actor: Actor = { root, posture, head: control('controle de cabeça'), jaw: control('controle de fala'), mouth: control('controle de boca'),
+      arms: [], meshes: [], speaker, phase: mother ? .7 : 2.2, lookYaw: 0, lookPitch: 0,
+      brows: [], corners: [], kitchenPose: control('controle de cozinha'), carPose: control('controle do carro'), airportPose: control('controle do aeroporto'),
+      kitchenArms: [], carArms: [], airportArms: [], kitchenHeadY: mother ? 1.39 : 1.183, carHeadY: 1.043, airportHeadY: 1.478,
+      mouthOpen: 0, smile: 0, gesture: 0, serving: 0, speaking: false, expression: 'neutral', blinkLids: [], blink: 0, disposeAirport() {} };
+    actors.push(actor);
+    if (mother) {
+      // Reuse only the existing coffee prop. Its old arm is discarded before
+      // rendering; the supplied skinned arm is the sole visible character arm.
+      const carrying = arm(root, true, -1, m), pot = carrying.pot!, stream = carrying.stream!;
+      const props = carrying.meshes.filter(mesh => mesh.isDescendantOf(pot));
+      pot.setParent(root);
+      pot.setEnabled(false);
+      for (const mesh of carrying.meshes) if (!props.includes(mesh)) mesh.dispose(false, false);
+      carrying.node.dispose(false, false);
+      actor.pot = pot; actor.stream = stream;
+      for (const mesh of props) mesh.metadata = { ...mesh.metadata, role: 'mother', characterProp: true };
+      actor.meshes.push(...props); meshes.push(...props);
     }
-    const kitchenPose = new TransformNode((mother ? 'mãe' : 'pai') + ' · pose de cozinha', scene); kitchenPose.parent = posture;
-    const torsoMeshes = body(kitchenPose, mother, m), face = head(posture, mother, m);
-    const left = arm(kitchenPose, mother, -1, m), right = arm(kitchenPose, mother, 1, m);
-    const car = createCarParentPose(posture, mother, m); car.node.setEnabled(false);
-    const airport = createAirportParentPose(posture, mother, m); airport.node.setEnabled(false);
-    const actorMeshes = [...torsoMeshes, ...face.meshes, ...left.meshes, ...right.meshes, ...car.meshes, ...airport.meshes];
-    for (const mesh of actorMeshes) mesh.metadata = { ...mesh.metadata, role: key, anatomicalModel: true };
-    actors.push({ root, posture, head: face.node, jaw: face.jaw, mouth: face.mouth, brows: face.brows, corners: face.corners,
-      arms: [left.node, right.node], pot: left.pot, stream: left.stream, meshes: actorMeshes,
-      kitchenPose, carPose: car.node, airportPose: airport.node,
-      kitchenArms: [left.node, right.node], carArms: car.arms, airportArms: airport.arms,
-      kitchenHeadY: face.node.position.y, carHeadY: car.headY, airportHeadY: airport.headY,
-      disposeAirport: airport.dispose, blinkLids: face.blinkLids, blink: 0,
-      speaker: mother ? 'MÃE' : 'PAI', phase: mother ? .7 : 2.2, lookYaw: 0, lookPitch: 0,
-      mouthOpen: 0, smile: 0, gesture: 0, serving: 0, speaking: false, expression: 'neutral' });
-    meshes.push(...actorMeshes);
+    const load = mother ? loadImportedMother : loadImportedFather;
+    modelReady.push(load(scene, root).then(model => {
+      if (disposed) { model.dispose(); return; }
+      actor.importedModel = model; actor.head = model.head;
+      actor.meshes.push(...model.meshes); meshes.push(...model.meshes); shadowCasters.push(...model.shadowCasters);
+      for (const mesh of model.meshes) {
+        mesh.metadata = { ...mesh.metadata, role: key, anatomicalModel: true };
+        mesh.isPickable = location === 'kitchen';
+      }
+      if ('attachCoffeeProps' in model && typeof model.attachCoffeeProps === 'function' && actor.pot && actor.stream)
+        model.attachCoffeeProps(actor.pot, actor.stream);
+      model.setLocation(location); model.animate(lastTime, false, 0, 0, 0, 0, 0);
+    }).catch(error => {
+      actor.importError = String(error?.message ?? error);
+      throw new Error('Não foi possível carregar o modelo ' + (mother ? 'da mãe: ' : 'do pai: ') + actor.importError);
+    }));
   }
   const target: InteractionTarget = { id: 'parents', meshes, label: () => 'Conversar com seus pais', execute: () => undefined };
   const tiny = new Set([m.eyeWhite, m.iris, m.pupil, m.upperLip, m.lowerLip, m.mouthInside, m.coffee, m.skinLight, m.seam, m.steel]);
@@ -538,23 +542,15 @@ export function createParents(scene: Scene, parent: TransformNode) {
       const anchor = next === 'airport' ? AIRPORT_PARENTS[key] : next === 'car' ? CAR_PARENT_ANCHORS[key] : PARENT_ANCHORS[key];
       actor.root.position.set(anchor.position.x, anchor.position.y, anchor.position.z);
       actor.root.rotation.set(0, anchor.yaw, 0);
-      if (actor.speaker === 'PAI') {
-        actor.importedModel?.setLocation(next);actor.lookYaw = actor.lookPitch = actor.mouthOpen = actor.gesture = 0;
-        actor.speaking = false;for (const mesh of actor.meshes) mesh.isPickable = next === 'kitchen';
-        continue;
-      }
-      actor.kitchenPose.setEnabled(next === 'kitchen'); actor.carPose.setEnabled(next === 'car'); actor.airportPose.setEnabled(next === 'airport');
-      actor.arms = next === 'airport' ? actor.airportArms : next === 'car' ? actor.carArms : actor.kitchenArms;
-      actor.head.position.y = next === 'airport' ? actor.airportHeadY : next === 'car' ? actor.carHeadY : actor.kitchenHeadY;
-      actor.posture.rotation.set(0, 0, 0); actor.posture.scaling.setAll(1); actor.head.rotation.set(0, 0, 0);
+      actor.importedModel?.setLocation(next);
       actor.lookYaw = actor.lookPitch = actor.mouthOpen = actor.gesture = actor.serving = 0;
-      actor.speaking = false; actor.jaw.rotation.x = 0; actor.mouth.scaling.y = .025;
-      actor.stream?.setEnabled(false);
+      actor.speaking = false;
       for (const mesh of actor.meshes) mesh.isPickable = next === 'kitchen';
+      actor.stream?.setEnabled(false);
     }
   }
   return {
-    meshes, shadowCasters, target, setLocation, ready: fatherReady,
+    meshes, shadowCasters, target, setLocation, ready: Promise.all(modelReady).then(() => undefined),
     // The two character roots keep their identities and world transforms when
     // the home set is disabled and the airport set becomes active.
     setParent(next: TransformNode) { if (!disposed) for (const actor of actors) actor.root.setParent(next); },
@@ -565,6 +561,7 @@ export function createParents(scene: Scene, parent: TransformNode) {
       const dt = Math.max(0, Math.min(.1, time - lastTime)); lastTime = time;
       const smoothing = 1 - Math.exp(-4 * dt);
       for (const actor of actors) {
+        if (!actor.importedModel) continue;
         const inCar = location === 'car', inAirport = location === 'airport';
         const talking = !inCar && speaker === actor.speaker, t = time + actor.phase;
         actor.speaking = talking;
@@ -609,6 +606,7 @@ export function createParents(scene: Scene, parent: TransformNode) {
             anchor.position.z + Math.cos(anchor.yaw) * approach);
         }
         if (actor.importedModel) {
+          if ('setServing' in actor.importedModel) actor.importedModel.setServing(actor.serving);
           actor.importedModel.animate(time, talking, actor.mouthOpen, actor.smile, actor.lookYaw, actor.lookPitch, inAirport ? farewellAmount : 0);
           continue;
         }
@@ -649,13 +647,14 @@ export function createParents(scene: Scene, parent: TransformNode) {
     get diagnostics() {
       return actors.map(actor => {
         const headRotation = actor.head.rotationQuaternion?.toEulerAngles() ?? actor.head.rotation;
+        const importedMeshes = actor.importedModel?.meshes ?? [];
         return { actorId: actor.root.uniqueId, headId: actor.head.uniqueId, speaker: actor.speaker, meshes: actor.meshes.length,
         vertices: actor.meshes.reduce((n, mesh) => n + mesh.getTotalVertices(), 0),
         triangles: actor.meshes.reduce((n, mesh) => n + mesh.getTotalIndices() / 3, 0),
         position: { x: actor.root.position.x, y: actor.root.position.y, z: actor.root.position.z },
         yaw: actor.root.rotation.y, seated: location === 'car' || location === 'kitchen' && actor.speaker === 'PAI', speaking: actor.speaking,
-        location, visible: actor.root.isEnabled(), apron: actor.speaker === 'MÃE' && location === 'kitchen', blink: actor.blink,
-        cardigan: actor.speaker === 'MÃE' && location === 'airport', parentSet: actor.root.parent?.name,
+        location, visible: actor.root.isEnabled(), apron: !actor.importedModel && actor.speaker === 'MÃE' && location === 'kitchen', blink: actor.blink,
+        cardigan: !actor.importedModel && actor.speaker === 'MÃE' && location === 'airport', parentSet: actor.root.parent?.name,
         farewell: location === 'airport' ? farewellAmount : 0,
         mouthOpen: actor.mouthOpen, jawAngle: actor.jaw.rotation.x, expression: actor.expression,
         smile: actor.smile, gesture: actor.gesture, serving: actor.serving, hasCoffeePot: Boolean(actor.pot) && location === 'kitchen',
@@ -663,12 +662,12 @@ export function createParents(scene: Scene, parent: TransformNode) {
         head: { x: headRotation.x, y: headRotation.y, z: headRotation.z },
         arms: actor.arms.map(arm => ({ x: arm.rotation.x, z: arm.rotation.z })),
         jawPosition: { x: actor.jaw.position.x, y: actor.jaw.position.y, z: actor.jaw.position.z },
-        importedModel: actor.speaker === 'PAI' ? {
-          ...(actor.importedModel?.diagnostics ?? { source: '/models/pai_intercambio.glb', loaded: false, error: actor.importError ?? null }),
-          importedVisibleMeshes: actor.meshes.filter(mesh => mesh.isEnabled() && mesh.isVisible && mesh.visibility > 0).length,
-          litMeshes: actor.meshes.filter(mesh => mesh.isEnabled() && mesh.lightSources.some(light => light.isEnabled())).length,
+        importedModel: {
+          ...(actor.importedModel?.diagnostics ?? { source: actor.speaker === 'PAI' ? '/models/pai_intercambio.glb' : '/models/mae_intercambio.glb', loaded: false, error: actor.importError ?? null }),
+          importedVisibleMeshes: importedMeshes.filter(mesh => mesh.isEnabled() && mesh.isVisible && mesh.visibility > 0).length,
+          litMeshes: importedMeshes.filter(mesh => mesh.isEnabled() && mesh.lightSources.some(light => light.isEnabled())).length,
           proceduralVisibleMeshes: 0,
-        } : null,
+        },
         coffeeFlow: actor.stream?.isEnabled() ?? false };
       });
     },

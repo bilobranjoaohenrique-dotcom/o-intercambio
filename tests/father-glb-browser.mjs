@@ -20,7 +20,7 @@ function atAnchor(state, location) {
   const parent = father(state), imported = parent.importedModel;
   assert.equal(state.family.actorCount, 2); assert.equal(state.family.location, location);
   assert.equal(parent.visible, true); assert.equal(mother(state).visible, true);
-  assert.equal(mother(state).importedModel, null, 'the mother keeps the existing model');
+  assert.equal(mother(state).importedModel.source, '/models/mae_intercambio.glb', 'the mother keeps her current supplied model');
   assert.equal(imported.source, SOURCE); assert.equal(imported.loaded, true); assert.equal(imported.error, null);
   assert.equal(imported.pose, location); assert.equal(imported.animation, poses[location]);
   assert.deepEqual([...imported.clips].sort(), Object.values(poses).sort());
