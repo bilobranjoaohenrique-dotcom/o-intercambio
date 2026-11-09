@@ -11,6 +11,8 @@ import { buildGarage } from './garage';
 import { buildLaundry } from './laundry';
 import { buildAirport } from './airport';
 import { AIRPORT_ARRIVAL } from '../game/airportLayout';
+import { buildPlane } from './plane';
+import { PLANE_SEAT } from '../game/planeLayout';
 import type { Point3 } from '../game/layout';
 import { getParentsLocation, setParentsLocationState, type ParentsLocation } from '../game/parentsDeparture';
 
@@ -115,22 +117,9 @@ export function buildChapterWorld(scene: Scene) {
   meshes.set('airport',airport.meshes);targets.push(...airport.targets);
   airport.setParentMeshes(kitchen.parentMeshes);
 
-  makeZone('plane',ZONE_ORIGIN.plane,0,dark);
-  for(let row=0;row<4;row++) for(const side of[-1,1]) {
-    const x=ZONE_ORIGIN.plane+side*1.5,z=-3+row*1.8;
-    box('plane','poltrona de avião',1,.95,.85,x,.52,z,blue);
-    box('plane','encosto da poltrona',.95,1.1,.2,x,1.05,z-.35,blue,row===1&&side===-1?'seat':undefined);
-    box('plane','janela do avião',.12,.65,.75,ZONE_ORIGIN.plane+side*5.75,1.7,z,glass);
-  }
-  box('plane','corredor do avião',1.2,.02,9,ZONE_ORIGIN.plane,0,0,mat('plane-aisle','#807a70'));
-  box('plane','teto interno do avião',11,.16,12,ZONE_ORIGIN.plane,3.25,0,dark);
-  box('plane','parede lateral do avião esquerda',.16,3.2,12,ZONE_ORIGIN.plane-5.9,1.6,0,wall);
-  box('plane','parede lateral do avião direita',.16,3.2,12,ZONE_ORIGIN.plane+5.9,1.6,0,wall);
-  box('plane','placa de aproximação',2,.5,.08,ZONE_ORIGIN.plane,2.65,-5.82,screen);
-  sign('plane','VOO EM APROXIMAÇÃO',ZONE_ORIGIN.plane,2.65,-5.75,1.9,.4);
-  box('plane','folheto de boas vindas',.45,.02,.3,ZONE_ORIGIN.plane-1.5,1.03,-1.2,linen,'seat');
-  box('plane','celular sobre a poltrona',.25,.035,.14,ZONE_ORIGIN.plane-3,1.06,-1.2,screen,'phone');
-  box('plane','folheto da escola',.45,.025,.3,ZONE_ORIGIN.plane+1.3,1.08,-1.2,linen,'leaflet');
+  const planeRoot=new TransformNode('cabine de avião · viagem aos Estados Unidos',scene);
+  roots.set('plane',planeRoot);
+  const plane=buildPlane(scene,planeRoot);meshes.set('plane',plane.meshes);targets.push(...plane.targets);
 
   makeZone('town',ZONE_ORIGIN.town,0,mat('town-ground','#777763'));
   box('town','casa de chegada',4,3,2,ZONE_ORIGIN.town+3,1.5,-5,green);
@@ -154,6 +143,7 @@ export function buildChapterWorld(scene: Scene) {
     garage.setActive(zone==='home');
     laundry.setActive(zone==='home');
     airport.setActive(zone==='airport');
+    plane.setActive(zone==='plane');
   }
   activate('home');
   function setParentsLocation(location: ParentsLocation) {
@@ -176,11 +166,12 @@ export function buildChapterWorld(scene: Scene) {
     resetGarageDeparture(){garage.resetDeparture();},
     updateGarageDeparture(seconds:number){garage.updateDeparture(seconds);},
     teleportPoint(zone:Exclude<Zone,'home'>) {
-      return zone==='car'?{x:CAR_ORIGIN,y:1.65,z:-3}:zone==='airport'?AIRPORT_ARRIVAL.position:zone==='plane'?{x:ZONE_ORIGIN.plane-1.5,y:1.65,z:-3.4}:{x:ZONE_ORIGIN.town,y:1.65,z:-2};
+      return zone==='car'?{x:CAR_ORIGIN,y:1.65,z:-3}:zone==='airport'?AIRPORT_ARRIVAL.position:zone==='plane'?PLANE_SEAT.position:{x:ZONE_ORIGIN.town,y:1.65,z:-2};
     },
     animate(time:number,speaker?:string,observer?:Point3,text?:string) {
       if(activeZone==='home') kitchen.animate(time,speaker,observer,text);
       if(activeZone==='airport'){airport.animate(time);kitchen.animateParents(time,speaker,observer,text);}
+      if(activeZone==='plane')plane.animate(time);
       // Existing host body language is preserved, without rebuilding an arm
       // list on each frame while the other chapter sets are active.
       if(activeZone==='town') for(let i=0;i<hostArms.length;i++)
@@ -190,6 +181,7 @@ export function buildChapterWorld(scene: Scene) {
     get garageDiagnostics(){return garage.diagnostics;},
     get laundryDiagnostics(){return laundry.diagnostics;},
     get airportDiagnostics(){return airport.diagnostics;},
+    get planeDiagnostics(){return plane.diagnostics;},
     get familyDiagnostics(){
       const parents = kitchen.diagnostics.parents;
       return { location: getParentsLocation(), parents, actorCount: parents.length,
@@ -197,6 +189,6 @@ export function buildChapterWorld(scene: Scene) {
         carVisibleCount: parents.filter(actor => actor.visible && actor.location === 'car').length,
         airportVisibleCount: parents.filter(actor => actor.visible && actor.location === 'airport').length };
     },
-    dispose(){laundry.dispose();garage.dispose();kitchen.dispose();airport.dispose();for(const root of roots.values())root.dispose(false,false);for(const material of materials.values())material.dispose();for(const texture of textures)texture.dispose();}
+    dispose(){laundry.dispose();garage.dispose();kitchen.dispose();airport.dispose();plane.dispose();for(const root of roots.values())root.dispose(false,false);for(const material of materials.values())material.dispose();for(const texture of textures)texture.dispose();}
   };
 }

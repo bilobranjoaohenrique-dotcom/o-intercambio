@@ -133,6 +133,16 @@ Passaram TypeScript/build, **18 testes focais** e o percurso real garagem → ae
 
 Com a prévia aberta: `INTERCAMBIO_URL=http://localhost:4180 npm run test:airport`.
 
+## Avião — viagem aos Estados Unidos
+
+Depois do portão 24, o protagonista aparece sentado junto à janela esquerda em uma cabine 3D. O banco dianteiro tem tela desligada, bandeja fechada, trava e bolso com revista. A janela oval mostra asa, winglet, nuvens em movimento e pôr do sol; há fileiras, bagageiros, luminárias e poucos passageiros. Os pais permanecem no aeroporto.
+
+Use o **mouse** para olhar ao redor, com rotação limitada e caminhada bloqueada. Olhe para a janela e pressione **E — Olhar pela janela** para aproximar a câmera e acompanhar duas reflexões em legenda. **E** retorna ao assento. Depois da reflexão, **E — Avançar para a chegada** permite continuar; a sequência também avança automaticamente após aproximadamente um minuto ativo. Pausar interrompe esse tempo. A transição reutiliza a chegada já existente, sem novos cenários ou vozes.
+
+Verificação focal: `node --test --test-isolation=none tests/plane.test.mjs`; com a prévia aberta, `INTERCAMBIO_URL=http://localhost:4180 npm run test:plane`.
+
+Passaram os três testes focais, TypeScript/build e o percurso real portão 24 → cabine → janela/reflexões → retorno ao assento → chegada existente, sem erros de execução ou arquivos. As capturas revelaram ajustes necessários no enquadramento e na cobertura do panorama; após corrigi-los, apenas as vistas afetadas foram conferidas novamente. Capturas reais: [visão do passageiro](docs/capturas/aviao-visao-passageiro.png) e [janela com asa e nuvens](docs/capturas/aviao-janela-asa-nuvens.png). [Registro breve](docs/resultados-aviao.json). Chromium/Linux com SwiftShader; sem benchmark ou repetição das cenas anteriores. A composição segue as referências, com modelos e texturas procedurais próprios.
+
 ## Estrutura
 
 - `src/scene/`: quarto/casa e cenários 3D do capítulo.
@@ -156,7 +166,7 @@ Na reconstrução anterior do quarto passaram **42 testes unitários**, TypeScri
 
 A atualização anterior da cozinha aprovou **41 testes**, o build, o percurso completo do capítulo e as verificações específicas daquele ambiente. Esse registro histórico está em [validação do capítulo](docs/VALIDACAO-CAPITULO-01.md). As medições da cozinha naquele servidor com renderização por software ficaram em **8,1 a 12,2 FPS**; elas não representam o desempenho do quarto reconstruído. O [relatório do quarto](docs/RECONSTRUCAO-QUARTO.md) registra separadamente a validação desta etapa. GPU física e Windows ainda precisam de verificação própria.
 
-Com Chromium instalado, `CHROMIUM_PATH=/usr/bin/chromium npm run verify` inicia uma prévia temporária e verifica **garagem → abertura do portão → aeroporto → despedida → portão 24 → avião existente**, incluindo restauração de checkpoint. Com servidor já aberto, use `INTERCAMBIO_URL=http://localhost:4180 npm run test:airport`; `test:car-boarding` é um alias desse percurso. O teste `test:parents` preserva o percurso de café/mala até a chegada ao aeroporto. As demais suítes de navegador anteriores permanecem como histórico.
+Com Chromium instalado, `CHROMIUM_PATH=/usr/bin/chromium npm run verify` inicia uma prévia temporária e verifica **portão 24 → cabine → janela/reflexões → chegada existente**, usando um checkpoint válido após a despedida. Com servidor já aberto, use `INTERCAMBIO_URL=http://localhost:4180 npm run test:plane`. As suítes dos ambientes anteriores continuam disponíveis separadamente.
 
 ## Publicação
 

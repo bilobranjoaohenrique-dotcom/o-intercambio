@@ -110,7 +110,7 @@ try {
   await page.locator('#startSettings').click(); await page.locator('#quality').selectOption('balanced');
   await page.locator('#resume').click(); await page.locator('#startGame').click(); await waitPhase(page, 'playing');
   initial = await snapshot(page); parentsAt(initial, 'car');
-  assert.equal(initial.build, 'chapter1-father-glb-1');
+  assert.equal(initial.build, 'chapter1-plane-cabin-1');
   assert.equal(initial.luggageCollected, true); assert.equal(initial.chapterMission, 'enter-car');
 
   console.log('AIRPORT: real garage approach, one E and automatic gate departure');

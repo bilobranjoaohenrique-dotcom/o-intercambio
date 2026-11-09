@@ -2,6 +2,7 @@ import type { UniversalCamera } from '@babylonjs/core/Cameras/universalCamera';
 import { EYE_HEIGHT, STANDING_POSE, type Point2, type Point3 } from './layout';
 import { floorHeight, moveWithCollisions } from './collision';
 import type { Obstacle, Settings } from './types';
+import { clampLook, type LookLimits } from './planeSequence';
 
 export const LOOK_RADIANS_PER_PIXEL = .0024;
 export const WALK_SPEED = 2.1;
@@ -35,6 +36,7 @@ export function createPlayer(canvas: HTMLCanvasElement, camera: UniversalCamera,
   const keys = new Set<string>();
   let active = false, disposed = false;
   let movementEnabled = true;
+  let lookLimits: LookLimits | null = null;
   let position: Point2 = { x: camera.position.x, z: camera.position.z };
   let velocity: Point2 = { x: 0, z: 0 };
   let yaw = camera.rotation.y, pitch = camera.rotation.x, eyeY = camera.position.y;
@@ -84,8 +86,16 @@ export function createPlayer(canvas: HTMLCanvasElement, camera: UniversalCamera,
     if (!Number.isFinite(dx) || !Number.isFinite(dy)) return;
     const configured = readSettings().sensitivity;
     const sensitivity = Number.isFinite(configured) ? Math.max(.05, Math.min(5, configured)) : 1;
-    yaw += dx * LOOK_RADIANS_PER_PIXEL * sensitivity;
-    pitch = Math.max(-MAX_PITCH, Math.min(MAX_PITCH, pitch + dy * LOOK_RADIANS_PER_PIXEL * sensitivity));
+    let moveYaw = dx * LOOK_RADIANS_PER_PIXEL * sensitivity, movePitch = dy * LOOK_RADIANS_PER_PIXEL * sensitivity;
+    if(lookLimits){
+      const offset=Math.atan2(Math.sin(yaw-lookLimits.centerYaw),Math.cos(yaw-lookLimits.centerYaw));
+      const yawRoom=moveYaw<0?offset-lookLimits.minYaw:lookLimits.maxYaw-offset;
+      const pitchRoom=movePitch<0?pitch-lookLimits.minPitch:lookLimits.maxPitch-pitch;
+      moveYaw*=Math.min(1,Math.max(.1,yawRoom/.18));movePitch*=Math.min(1,Math.max(.1,pitchRoom/.14));
+    }
+    yaw += moveYaw;
+    pitch = Math.max(-MAX_PITCH, Math.min(MAX_PITCH, pitch + movePitch));
+    if(lookLimits){const bounded=clampLook(yaw,pitch,lookLimits);yaw=bounded.yaw;pitch=bounded.pitch;}
     camera.rotation.y = yaw; camera.rotation.x = pitch;
   }
   function pointerLockChange() {
@@ -125,9 +135,11 @@ export function createPlayer(canvas: HTMLCanvasElement, camera: UniversalCamera,
     movementEnabled = enabled;
     adoptCameraPose();
   }
+  function setLookLimits(limits: LookLimits | null){lookLimits=limits;}
   function reset() {
     setActive(false);
     movementEnabled = true;
+    lookLimits = null;
     position = { x: STANDING_POSE.position.x, z: STANDING_POSE.position.z };
     eyeY = STANDING_POSE.position.y; yaw = STANDING_POSE.yaw; pitch = STANDING_POSE.pitch;
     camera.position.set(position.x, eyeY, position.z);
@@ -184,7 +196,7 @@ export function createPlayer(canvas: HTMLCanvasElement, camera: UniversalCamera,
     canvas.removeEventListener('pointerdown', pointerDown);
     window?.removeEventListener('blur', clearInput);
   }
-  return { update, setActive, activateFromCamera, adoptCameraPose, setMovementEnabled, reset, teleport, requestPointerLock, clearInput, dispose,
+  return { update, setActive, activateFromCamera, adoptCameraPose, setMovementEnabled, setLookLimits, reset, teleport, requestPointerLock, clearInput, dispose,
     get enabled() { return active && !disposed; },
     get position(): Point3 { return { x: camera.position.x, y: camera.position.y, z: camera.position.z }; } };
 }

@@ -1,0 +1,40 @@
+{
+  "status": "passed",
+  "build": "chapter1-plane-cabin-1",
+  "checks": {
+    "typescriptAndProductionBuild": "passed",
+    "focusedUnitTests": 3,
+    "browserFlow": "Portão 24 → cabine → janela e duas legendas → retorno ao assento → chegada existente",
+    "walkingBlocked": true,
+    "boundedMouseLook": true,
+    "cloudsMoving": true,
+    "parentsInCabin": false,
+    "screenOn": false,
+    "fadeTransitions": true
+  },
+  "reflections": [
+    "É estranho... Estou realmente indo.",
+    "Tomara que tudo dê certo."
+  ],
+  "arrival": {
+    "phase": "playing",
+    "stage": "town",
+    "mission": "find-host"
+  },
+  "errors": [],
+  "consoleErrors": [],
+  "failedAssets": [],
+  "captures": [
+    "capturas/aviao-visao-passageiro.png",
+    "capturas/aviao-janela-asa-nuvens.png"
+  ],
+  "visualReview": {
+    "inspected": true,
+    "composition": "Banco central, janela à esquerda, corredor à direita e câmera sentada, seguindo a organização das referências.",
+    "corrections": "Abertura da janela, vista do corredor, asa, normais e cobertura contínua do panorama corrigidas após capturas reais.",
+    "limits": "Modelos e texturas procedurais próprios; passageiros simplificados. Não se declara reprodução idêntica da referência."
+  },
+  "scope": "Um fluxo funcional focal. Após correções visuais, apenas as vistas afetadas foram recapturadas; a última alteração aumentou somente a altura dos dois planos de céu.",
+  "environment": "Chromium/Linux com SwiftShader. Sem benchmark de FPS ou teste em GPU física/Windows.",
+  "preservation": "Sem alterações nos arquivos de modelos dos pais ou na construção da casa, aeroporto e cidade; não foram repetidas suas suítes anteriores."
+}

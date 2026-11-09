@@ -39,7 +39,7 @@ export const missionLabels: Record<ChapterMission, string> = {
   'car-ready': 'Siga viagem com seus pais',
   'airport-farewell': 'Despeça-se dos seus pais',
   'airport-gate': 'Dirija-se ao portão de embarque.',
-  'plane-seat': 'Prepare-se para a chegada',
+  'plane-seat': 'Aguarde a chegada ao destino.',
   'find-host': 'Encontre sua família anfitriã',
   complete: 'Capítulo 1 concluído',
 };

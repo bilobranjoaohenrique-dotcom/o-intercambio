@@ -20,6 +20,7 @@
     "test:car-boarding": "node tests/car-boarding-browser.mjs",
     "test:airport": "node tests/airport-browser.mjs",
     "test:father": "node tests/father-glb-browser.mjs",
+    "test:plane": "node tests/plane-browser.mjs",
     "verify": "node scripts/verify.mjs"
   },
   "dependencies": {

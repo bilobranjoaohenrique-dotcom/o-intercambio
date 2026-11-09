@@ -1,7 +1,7 @@
 import type { Settings } from './types';
 
 export type AudioCue = 'cloth' | 'bed' | 'foot' | 'door' | 'handle' | 'objective' | 'engine' | 'garageGate' | 'tv';
-type AmbienceArea = 'home' | 'airport';
+type AmbienceArea = 'home' | 'airport' | 'plane';
 type Point = { x:number;y:number;z:number };
 const clamp=(n:number,a:number,b:number)=>Math.max(a,Math.min(b,n));
 const valid=(p:Point)=>[p.x,p.y,p.z].every(Number.isFinite);
@@ -86,17 +86,17 @@ export function createAudio(settings:()=>Settings) {
   }
   function syncAmbience(){
     if(context&&homeWindGain)homeWindGain.gain.setTargetAtTime(ambience==='home'?.022:0,context.currentTime,.12);
-    if(ambience!=='airport'){stopAirportAmbience();return;}
+    if(ambience==='home'){stopAirportAmbience();return;}
     if(disposed||disabled||paused||!unlocked||!context||!master||!noise||airportSources.size)return;
     try{
       // Air conditioning and a distant engine use the same noise buffer as
       // the house. Two very quiet electrical harmonics suggest fluorescent
       // fixtures; there are no recordings, voices or crowd-like syllables.
       const air=context.createBufferSource();airportNodes.push(air);air.buffer=noise;air.loop=true;
-      const low=context.createBiquadFilter();airportNodes.push(low);low.type='lowpass';low.frequency.value=250;
-      const airGain=context.createGain();airportNodes.push(airGain);airGain.gain.value=.034;
+      const low=context.createBiquadFilter();airportNodes.push(low);low.type='lowpass';low.frequency.value=ambience==='plane'?190:250;
+      const airGain=context.createGain();airportNodes.push(airGain);airGain.gain.value=ambience==='plane'?.065:.034;
       air.connect(low);low.connect(airGain);airGain.connect(master);air.start();airportSources.add(air);persistent.add(air);
-      for(const [frequency,level] of [[120,.0035],[240,.0012]]){
+      for(const [frequency,level] of ambience==='plane'?[[72,.008],[144,.002]]:[[120,.0035],[240,.0012]]){
         const hum=context.createOscillator();airportNodes.push(hum);hum.type='sine';hum.frequency.value=frequency;
         const gain=context.createGain();airportNodes.push(gain);gain.gain.value=level;
         hum.connect(gain);gain.connect(master);hum.start();airportSources.add(hum);persistent.add(hum);
@@ -105,10 +105,15 @@ export function createAudio(settings:()=>Settings) {
   }
   function setAmbience(area:AmbienceArea){
     if(disposed)return;
-    ambience=area;syncAmbience();
+    if(area!==ambience)stopAirportAmbience();
+    ambience=area;lastVolume=-1;setVolume();syncAmbience();
   }
   function ambient(){
     if(!context||paused||disposed||context.state!=='running')return;
+    if(ambience==='plane'){
+      if(random()<.22)rustle(.22,.008,600);
+      return;
+    }
     if(ambience==='airport'){
       const event=random();
       if(event<.30){
@@ -210,6 +215,7 @@ export function createAudio(settings:()=>Settings) {
   function reset(){ambience='home';syncAmbience();televisionRequested=false;stopTelevision();for(const source of transient){try{source.stop();}catch{/* already ended */}}transient.clear();}
   return{
     unlock,play,pause,reset,setTelevision,setAmbience,
+    fadeAmbienceOut(seconds:number){if(context&&master){master.gain.cancelScheduledValues(context.currentTime);master.gain.setTargetAtTime(.0001,context.currentTime,Math.max(.03,seconds/3));}},
     updateListener(camera:{position:Point;globalPosition?:Point}){const point=camera.globalPosition??camera.position;if(valid(point))listener=copyPoint(point);setVolume();updateTelevisionLevel();},
     get diagnostics(){return{supported:!disabled,unlocked,paused,state:context?.state??'not-created',ambience,listener:copyPoint(listener),dialogueAudio:false,transientSources:transient.size,television:televisionDiagnostics()};},
     dispose(){if(disposed)return;disposed=true;reset();if(timer)clearInterval(timer);for(const source of persistent){try{source.stop();}catch{/* stopped */}}persistent.clear();void context?.close().catch(()=>undefined);master?.disconnect();},
