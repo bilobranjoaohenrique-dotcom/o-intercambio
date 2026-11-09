@@ -105,7 +105,7 @@ TypeScript/build e os três testes focais passaram. Uma sessão real confirmou i
 
 ## Pais e despedida
 
-Pai e mãe usam as mesmas cabeças, roupas e identidades na cozinha e no carro. O pai tem polo bege listrada, jeans escuro e cabelo grisalho; a mãe, blusa florida, calça marrom e sandálias. O avental e o bule ficam somente na cozinha. Gestos, respiração, olhar, piscar e boca acompanham as legendas, sem vozes.
+Pai e mãe mantêm suas identidades entre cozinha, carro e aeroporto. O pai agora usa o GLB enviado pelo usuário; a mãe mantém seu modelo, blusa florida, calça marrom e sandálias. O avental e o bule ficam somente na cozinha. Gestos, respiração, olhar e boca acompanham as legendas, sem vozes.
 
 Ao terminar a conversa, o protagonista se levanta e os pais **permanecem na cozinha**, com a missão **“Suba e pegue sua mala”**. Somente ao usar **E — Pegar mala** no quarto eles passam a aguardar no carro estacionado: pai ao volante e mãe no passageiro. Depois siga **“Vá até a garagem. Seus pais estão esperando.”**. Entrar no carro mantém os mesmos pais visíveis durante a abertura do portão, antes da transição automática para a despedida no aeroporto. O checkpoint conserva os pais na cozinha antes da mala e no carro depois dela, sem repetir o café.
 
@@ -114,6 +114,14 @@ Na correção dessa ordem passaram TypeScript/build, **13 testes focais** e uma 
 Na atualização dos modelos passaram TypeScript/build, **13 testes focais** e o percurso real café → mala no quarto → descida → recarga do save → pais no carro → embarque. A troca sob tela opaca manteve as mesmas duas identidades e cabeças, sem duplicação. Após o teste funcional, ajustaram-se somente o comprimento do cabelo e a posição dos olhos; o build e as duas vistas finais foram conferidos novamente. [Pais na cozinha](docs/capturas/pais-cafe-atualizados.png), [pais aguardando no carro](docs/capturas/pais-esperando-no-carro.png) e [registro breve](docs/resultados-pais-despedida.json). Chromium/Linux com SwiftShader, sem benchmark de desempenho ou teste em GPU física/Windows.
 
 A correção do embarque passou TypeScript/build e **13 testes focais**. Uma sessão real verificou caminhada até o carro, os mesmos dois pais durante o embarque, câmera livre, caminhada bloqueada, pausa/retomada, recarga do banco traseiro e partida somente com a segunda interação. A captura revelou pele atravessando o cabelo por trás; a casca foi corrigida e a [vista final dentro do carro](docs/capturas/pais-vista-dentro-carro.png) foi inspecionada no build final. O [registro breve](docs/resultados-embarque-carro.json) descreve a recuperação da espera do teste e da recaptura durante o rebuild. Com uma prévia aberta: `INTERCAMBIO_URL=http://localhost:4180 npm run test:car-boarding`. Chromium/Linux com SwiftShader, sem medição de desempenho.
+
+## Modelo do pai — GLB
+
+O pai usa o arquivo mais recente enviado, `pai_intercambio_final.glb`, guardado intacto em `public/models/pai_intercambio.glb`. As oito texturas, 14 materiais, rig Mixamo, animações sentadas/de conversa e morphs de boca/sorriso vêm do arquivo. O adaptador mantém as posições existentes e ajusta apenas os ossos para a mesa e o volante; a mãe e os cenários continuam iguais. Como não há clip próprio de direção, a postura do motorista usa os pontos do volante já existentes. O carregamento registra o modelo nas luzes e sombras existentes antes de habilitar **Começar**.
+
+Verificação focal: `node --test --test-isolation=none tests/father-glb.test.mjs`; com a prévia aberta, `INTERCAMBIO_URL=http://localhost:4180 npm run test:father`.
+
+Passaram TypeScript/build, dois testes do arquivo e a verificação real de diálogo, boca, texturas e poses. A inspeção encontrou o pai sem iluminação ao recarregar a etapa do carro; a lista de malhas assíncronas foi corrigida e apenas essa vista foi repetida, confirmando 16/16 malhas iluminadas. A mãe, os cenários e a progressão permaneceram iguais. Capturas reais: [cozinha](docs/capturas/novo-pai-glb-cozinha.png), [carro](docs/capturas/novo-pai-glb-carro.png), [aeroporto](docs/capturas/novo-pai-glb-aeroporto.png). [Registro curto](docs/resultados-pai-glb.json). Chromium/Linux com SwiftShader, sem benchmark.
 
 ## Aeroporto — Portão 24
 

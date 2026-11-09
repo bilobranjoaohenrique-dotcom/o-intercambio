@@ -81,6 +81,11 @@ try {
     onTelevisionClick: () => audio.play('tv'),
   });
   const chapterWorld = buildChapterWorld(scene);
+  let characterAssetsReady = false;
+  void chapterWorld.ready.then(() => { characterAssetsReady = true; }).catch(error => {
+    const message = String(error?.message ?? error);recordError(message);
+    el('fatal').hidden = false;el('fatalMessage').textContent = message;console.error(message);
+  });
   chapterWorld.setParentsLocation(parentsLocationForProgress(chapter.mission,chapter.completed));
   const bagTarget = environment.targets.find(target => target.id === 'suitcase');
   if(bagTarget)bagTarget.label=()=>chapter.mission==='pack-suitcase'?'Pegar mala':'Examinar mochila';
@@ -355,7 +360,7 @@ try {
   });
 
   Object.defineProperty(window, '__INTERCAMBIO__', { configurable: true, get: () => ({
-    build:'chapter1-airport-gate24-1',phase, introTime, duration: OPENING_DURATION, mission: objective.state, chapterMission: chapter.mission, chapterStage, dialogue: dialogue.active,
+    build:'chapter1-father-glb-1',phase, introTime, duration: OPENING_DURATION, mission: objective.state, chapterMission: chapter.mission, chapterStage, dialogue: dialogue.active,
     position: { x: camera.position.x, y: camera.position.y, z: camera.position.z },
     rotation: { yaw: camera.rotation.y, pitch: camera.rotation.x, roll: camera.rotation.z },
     horizonTilt: camera.getDirection(Vector3.Right()).y,
@@ -378,7 +383,7 @@ try {
   engine.runRenderLoop(() => {
     const now = performance.now(), frameMs = Math.max(0, now - last), dt = document.hidden ? 0 : Math.min(.1, frameMs / 1000);
     last = now;
-    if (!ready && scene.isReady()) {
+    if (!ready && characterAssetsReady && scene.isReady()) {
       ready = true; el<HTMLButtonElement>('startGame').disabled = false; el('startGame').textContent = 'Começar';
       canvas.dataset.ready = 'true';
     }

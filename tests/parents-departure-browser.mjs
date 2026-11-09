@@ -67,7 +67,7 @@ try {
   await page.waitForFunction(() => window.__INTERCAMBIO__ && document.getElementById('game')?.dataset.ready === 'true', null, { timeout: 90000 });
   await page.locator('#startSettings').click(); await page.locator('#quality').selectOption('balanced');
   await page.locator('#resume').click(); await page.locator('#startGame').click(); await waitPhase(page, 'playing');
-  assert.equal((await snapshot(page)).build, 'chapter1-airport-gate24-1');
+  assert.equal((await snapshot(page)).build, 'chapter1-father-glb-1');
   familyAt(await snapshot(page), 'kitchen');
   kitchenIdentity = actors(await snapshot(page)).map(actor => ({ speaker: actor.speaker, actorId: actor.actorId, headId: actor.headId }));
 

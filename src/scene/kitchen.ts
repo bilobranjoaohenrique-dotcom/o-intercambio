@@ -598,6 +598,16 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
     for (const mesh of g.targets.get('breakfast-chair') ?? []) mesh.isPickable = inKitchen;
     refreshShadows();
   }
+  const ready = parents.ready.then(() => {
+    for (const mesh of parents.meshes) {
+      if (parentMeshSet.has(mesh)) continue;
+      parentMeshSet.add(mesh);allMeshes.push(mesh);
+      for (const light of oldLights) light.excludedMeshes.push(mesh);
+    }
+    // Imported meshes arrive after the synchronous scenery was batched.
+    // Register them with the same lights and shadow map before enabling play.
+    setParentsLocation(parents.location);
+  });
   let active = true, disposed = false, previousSpeaker = '';
   // Render-once maps must be invalidated after their depth effects actually
   // compile, otherwise an early empty map can survive the first visible frame.
@@ -608,7 +618,7 @@ export function buildKitchen(scene: Scene, parent: TransformNode) {
     { id: entryTarget, meshes: g.targets.get(entryTarget) ?? [], label: () => 'Examinar porta', execute: () => 'Esta é a porta de entrada da casa. Ela está fechada.' },
   ];
   return {
-    targets, meshes: allMeshes, parentMeshes: parents.meshes, parentShadowCasters: parents.shadowCasters,
+    targets, meshes: allMeshes, parentMeshes: parents.meshes, parentShadowCasters: parents.shadowCasters, ready,
     setParentsLocation,
     setParentsParent(parent: TransformNode) { parents.setParent(parent); },
     setParentsFarewell(amount: number) { parents.farewell(amount); },

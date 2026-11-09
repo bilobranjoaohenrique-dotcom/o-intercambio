@@ -160,10 +160,15 @@ export function buildChapterWorld(scene: Scene) {
     setParentsLocationState(location);
     kitchen.setParentsParent(roots.get(location==='airport'?'airport':'home')!);
     kitchen.setParentsLocation(location);
-    garage.setParentOccupants(kitchen.parentMeshes, kitchen.parentShadowCasters, location === 'car');
+    // Keep the garage's identity cache from missing meshes appended by GLB load.
+    garage.setParentOccupants([...kitchen.parentMeshes], kitchen.parentShadowCasters, location === 'car');
   }
+  const ready = kitchen.ready.then(() => {
+    airport.setParentMeshes(kitchen.parentMeshes);
+    setParentsLocation(getParentsLocation());
+  });
   return {
-    targets,
+    targets, ready,
     activate,
     setParentsLocation,
     setParentsFarewell(amount:number){kitchen.setParentsFarewell(amount);},

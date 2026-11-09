@@ -1,0 +1,65 @@
+{
+  "status": "passed",
+  "build": "chapter1-father-glb-1",
+  "asset": {
+    "sourceUpload": "pai_intercambio_final.glb",
+    "gameFile": "public/models/pai_intercambio.glb",
+    "bytes": 1621968,
+    "sha256": "603a2d7bb088efe778ab5775d8fcfc50aa9a4fca2384a4ea06afec4715bdba70",
+    "sourceFileUnchanged": true,
+    "embeddedPNG": 8,
+    "materials": 14,
+    "clips": 7,
+    "joints": 65
+  },
+  "checks": {
+    "typescriptAndProductionBuild": "passed",
+    "focusedAssetTests": 2,
+    "kitchenDialogue": "native Talk_Seated frame advances; actual JawOpen changes only while the father speaks",
+    "exclusiveReplacement": "16 imported visible meshes; zero procedural father meshes",
+    "kitchenAndAirport": "real captures inspected; source textures and actor anchors retained",
+    "carFinal": "real capture inspected; 16/16 meshes lit, hands on wheel, original driver anchor",
+    "carBounds": {
+      "space": "parent-local",
+      "min": {
+        "x": -0.2576771980536474,
+        "y": 0.33815711895086764,
+        "z": -0.17054715152509203
+      },
+      "max": {
+        "x": 0.2578238703962956,
+        "y": 1.3526444236829889,
+        "z": 0.9593559388139461
+      },
+      "size": {
+        "x": 0.515501068449943,
+        "y": 1.0144873047321212,
+        "z": 1.1299030903390381
+      }
+    },
+    "motherAndScenery": "mother renderer/materials and scenery geometry unchanged",
+    "runtimeErrors": 0,
+    "consoleErrors": 0,
+    "failedAssets": 0
+  },
+  "adaptation": [
+    "Use embedded seated, idle and talking clips, driven by the existing game clock and text controls.",
+    "Correct seated joint rotations and fit existing table/steering targets without changing meshes, weights, textures or bone lengths.",
+    "Register asynchronous meshes with existing scoped lights and shadows before enabling play."
+  ],
+  "verificationScope": [
+    "One browser session checked kitchen dialogue, kept parents at the table, then used an explicit enter-car checkpoint fixture and checked car-to-airport continuity.",
+    "Initial visual inspection found the father unlit in the car after checkpoint load: the garage cached a mutable mesh array. The registration bridge now supplies a fresh snapshot.",
+    "After the correction, only the focused car check was repeated in a second browser. Kitchen and airport were not replayed; the final car capture and light-source assertion passed."
+  ],
+  "captures": [
+    "capturas/novo-pai-glb-cozinha.png",
+    "capturas/novo-pai-glb-carro.png",
+    "capturas/novo-pai-glb-aeroporto.png"
+  ],
+  "environment": "Chromium 154 / Linux / SwiftShader software renderer / Balanced quality",
+  "limits": [
+    "The upstairs suitcase pickup and complete airport boarding route were not repeated; their quest logic was unchanged.",
+    "No performance benchmark or physical-GPU/Windows test."
+  ]
+}
