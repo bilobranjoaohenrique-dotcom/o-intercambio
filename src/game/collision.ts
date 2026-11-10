@@ -8,7 +8,7 @@ import { LIVING_ROOM_WORLD, LIVING_ROOM_ENTRY, LIVING_ROOM_KITCHEN_PORTAL,
 import type { Obstacle } from './types';
 import { GARAGE, GARAGE_DOOR, GARAGE_WEST_FACE, GARAGE_SOLIDS } from './garageLayout';
 import { isTravelBagTaken } from './garageProgress';
-import { AIRPORT_SOLIDS } from './airportLayout';
+import { AIRPORT_SOLIDS, AIRPORT_FLOORS } from './airportLayout';
 import { LAUNDRY, LAUNDRY_KITCHEN_DOOR, LAUNDRY_GARAGE_DOOR, LAUNDRY_THRESHOLD,
   LAUNDRY_WEST_FACE, LAUNDRY_SOLIDS } from './laundryLayout';
 
@@ -101,7 +101,8 @@ const floorRects: readonly FloorRect[] = [
   { minX: KITCHEN.minX, maxX: KITCHEN.maxX, minZ: LIVING_ROOM_WORLD.maxZ, maxZ: KITCHEN.endZ },
   KITCHEN_FRONT_PASSAGE,
   ...livingFloorRects,
-  ...Object.values(CHAPTER_ZONES),
+  ...AIRPORT_FLOORS,
+  ...Object.entries(CHAPTER_ZONES).filter(([zone]) => zone !== 'airport').map(([, rect]) => rect),
 ];
 const insideFloor = (point: Point2) => floorRects.some(rect => containsPoint(rect, point));
 type Edge = readonly [number, number, number, number];

@@ -1,0 +1,109 @@
+{
+  "status": "passed",
+  "source": {
+    "file": "public/models/aeroporto_intercambio.glb",
+    "uploadedName": "intercambio_aeroporto_com_npcs_ps2.glb",
+    "bytes": 23636852,
+    "sha256": "fd41dee9908a144f4ad34855b401f4babd8f2c98890c42535a97316214feb1bb",
+    "originalGLBUnchanged": true
+  },
+  "implementation": {
+    "scene": "Brazilian departure airport after garage; existing farewell and boarding preserved",
+    "scale": 1,
+    "floorSourceY": 0.2,
+    "wrapper": {
+      "position": {
+        "x": 30,
+        "y": -0.2,
+        "z": 0
+      },
+      "yawRadians": 1.5707963267948966
+    },
+    "localAdjustments": [
+      "Move only freestanding lounge sign by source X -1.8m, matching its collider",
+      "Close open check-in facade using the existing GLB wall material",
+      "Add one local textured sky backdrop behind the apron; global lighting unchanged"
+    ],
+    "originalParentModelsAndDialoguePreserved": true
+  },
+  "checks": {
+    "typecheckAndProductionBuild": "passed",
+    "focusedUnitTests": 5,
+    "browserFlowBeforeFacadeSkyPolish": {
+      "status": "passed",
+      "garageRouteWaypoints": 6,
+      "airportRouteWaypoints": 9,
+      "farewellLines": 9,
+      "parentIdentityAndSpeakerOnlyJawOpen": "passed",
+      "directCarToAirportFade": "passed",
+      "gateBoardingFade": "passed",
+      "final": {
+        "phase": "playing",
+        "stage": "plane",
+        "mission": "plane-seat",
+        "familyLocation": "airport"
+      }
+    },
+    "finalBuildVisualAndPhysicalCheck": {
+      "status": "passed",
+      "continuousKeyboardWaypoints": 5,
+      "capturesInspected": true,
+      "scenery": {
+        "active": true,
+        "ready": true,
+        "loaded": true,
+        "error": null,
+        "source": "/models/aeroporto_intercambio.glb",
+        "gate": 24,
+        "flight": "AA980",
+        "destination": "Nova York (JFK)",
+        "country": "Brasil",
+        "passengers": 8,
+        "meshes": 288,
+        "materials": 63,
+        "textures": 58,
+        "supplementalMeshes": 2,
+        "checkInFrontageClosed": true,
+        "localSkyBackdrop": true,
+        "lights": 16,
+        "embeddedLights": 14,
+        "animationsActive": 8,
+        "clipNames": [
+          "npc_checkin_01__Idle",
+          "npc_checkin_02__Idle",
+          "npc_embarque_01__Idle",
+          "npc_sentado_01__Pose_Sentado",
+          "npc_sentado_02__Pose_Sentado",
+          "npc_sentado_03__Pose_Sentado",
+          "npc_passageiro_bagagem__Idle",
+          "npc_passageiro_caminhada__Idle"
+        ],
+        "aisleAdjustment": {
+          "node": "sign",
+          "worldOffset": {
+            "x": 0,
+            "y": 0,
+            "z": -1.8
+          }
+        },
+        "animationClock": "game-time",
+        "protagonistMeshes": 0,
+        "reflectionPasses": 0
+      }
+    }
+  },
+  "captures": [
+    "capturas/aeroporto-glb-chegada.png",
+    "capturas/aeroporto-glb-saguao.png",
+    "capturas/aeroporto-glb-lounge.png"
+  ],
+  "errors": [],
+  "consoleErrors": [],
+  "failedAssets": [],
+  "environment": "Chromium/Linux with SwiftShader software rendering; no physical GPU or FPS benchmark.",
+  "limits": [
+    "Focused checkpoint starts after suitcase collection; upstairs and other scene suites were not repeated.",
+    "Full garage-to-plane flow passed before two visual-only supplemental meshes; final build separately checked by walking from check-in to lounge.",
+    "No character voices added."
+  ]
+}

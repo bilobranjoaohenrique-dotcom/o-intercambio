@@ -6,7 +6,7 @@ export const HALL = { minX: .95, maxX: 3.05, startZ: 3.3, stairZ: 7.8, endZ: 12.
 export const STAIRS = { minX: 1.4, maxX: 2.3, startZ: 7.8, endZ: 11.8, topY: 3, bottomY: 0, steps: 18 } as const;
 export const KITCHEN = { minX: -4.8, maxX: 4.8, startZ: 12, endZ: 22.8, floor: 0 } as const;
 export const CHAPTER_ZONES = {
-  airport: { minX: 24, maxX: 36, minZ: -6, maxZ: 6 },
+  airport: { minX: 25.8, maxX: 34.5, minZ: -7.7, maxZ: 15.06 },
   plane: { minX: 52, maxX: 64, minZ: -6, maxZ: 6 },
   car: { minX: 40, maxX: 52, minZ: -6, maxZ: 6 },
   town: { minX: 80, maxX: 92, minZ: -6, maxZ: 6 },

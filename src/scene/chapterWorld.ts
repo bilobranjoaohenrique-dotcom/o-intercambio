@@ -20,8 +20,8 @@ type Zone = 'home' | 'car' | 'airport' | 'plane' | 'town';
 const ZONE_ORIGIN: Record<Exclude<Zone,'home'|'car'>, number> = { airport: 30, plane: 58, town: 86 };
 const CAR_ORIGIN=46;
 
-/** Additional first-chapter sets. Everything is made from original Babylon
- * geometry so the chapter stays self-contained and does not depend on remote assets. */
+/** Additional first-chapter sets. Original geometry and supplied local GLBs
+ * share the existing chapter progression without remote asset dependencies. */
 export function buildChapterWorld(scene: Scene) {
   const materials = new Map<string, StandardMaterial>();
   const mat = (name: string, hex: string, emissive?: string) => {
@@ -153,7 +153,7 @@ export function buildChapterWorld(scene: Scene) {
     // Keep the garage's identity cache from missing meshes appended by GLB load.
     garage.setParentOccupants([...kitchen.parentMeshes], kitchen.parentShadowCasters, location === 'car');
   }
-  const ready = Promise.all([kitchen.ready, garage.ready]).then(() => {
+  const ready = Promise.all([kitchen.ready, garage.ready, airport.ready]).then(() => {
     airport.setParentMeshes(kitchen.parentMeshes);
     setParentsLocation(getParentsLocation());
   });
