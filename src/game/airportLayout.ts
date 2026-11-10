@@ -20,7 +20,7 @@ export const AIRPORT_PARENTS = {
 } as const;
 export const AIRPORT_GATE = airportPoint(15.02, 1.30, 2.12);
 export const AIRPORT_FLIGHT_BOARD = airportPoint(-4.85, 3.71, .186);
-// Waypoints follow the actual passage, then go around the boarding desk.
+// Waypoints follow the actual passage to Gate 24.
 export const AIRPORT_ROUTE = [
   airportPoint(2.3, .20, 3.1), airportPoint(4.8, .20, 3.0), airportPoint(7.0, .20, 3.0),
   airportPoint(7.0, .20, 2.24),
@@ -78,7 +78,6 @@ export const AIRPORT_SOLIDS: readonly Obstacle[] = [
   sourceBox(13.56, 13.9, 0.77, 1.11), // charging-table-0
   sourceBox(11.71, 12.049999999999999, 0.77, 1.11), // charging-table-1
   sourceBox(9.860000000000001, 10.2, 0.77, 1.11), // charging-table-2
-  sourceBox(13.15, 13.93, 1.22, 3.22), // boarding-counter
   sourceBox(10.78, 11.379999999999999, 3.09, 4.05), // boarding-sign-adjusted
   sourceBox(6.87, 7.53, -3.08, -2.14), // checkin-luggage-0
   sourceBox(6.87, 7.53, -2.58, -1.64), // checkin-luggage-1

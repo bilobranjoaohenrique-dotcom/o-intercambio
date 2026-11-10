@@ -90,6 +90,12 @@ export function buildAirport(scene: Scene, parent: TransformNode) {
     // The loader's handedness root is intentionally retained. Meshes and their
     // armatures are separate source roots, so only reparent true roots once.
     for (const node of nodes) if (!node.parent || !imported.has(node.parent as TransformNode)) node.parent = modelRoot;
+    // Remove only the boarding desk and its separate display, keeping the gate signage.
+    for (const name of ['boarding_counter', 'Monitor do balcão', 'Monitor do balcão • moldura']) {
+      const part = nodes.find(node => node.name === name);
+      if (!part) throw Error('Parte do balcão não localizada: ' + name);
+      part.setEnabled(false);
+    }
     for (const mesh of value.meshes) {
       mesh.isPickable = false; mesh.receiveShadows = true;
       mesh.metadata = { ...mesh.metadata, importedAirport: true, source: AIRPORT_MODEL.source };
