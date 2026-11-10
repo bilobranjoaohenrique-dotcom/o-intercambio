@@ -22,6 +22,7 @@
     "test:father": "node tests/father-glb-browser.mjs",
     "test:mother": "node tests/mother-glb-browser.mjs",
     "test:car": "node tests/car-direct-browser.mjs",
+    "test:mouth": "node tests/speech-mouth-browser.mjs",
     "test:plane": "node tests/plane-browser.mjs",
     "verify": "node scripts/verify.mjs"
   },

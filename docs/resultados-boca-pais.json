@@ -1,0 +1,52 @@
+{
+  "status": "passed",
+  "build": "chapter1-plane-cabin-1",
+  "implementation": "Localized runtime JawOpen morph on the original parent meshes; source GLBs, materials and topology unchanged.",
+  "checks": {
+    "geometryUnitTests": 3,
+    "typecheckAndProductionBuild": "passed",
+    "focusedBrowserFlow": "passed",
+    "currentSpeakerOnly": true,
+    "mouthClosesAfterReadingInterval": true,
+    "pauseFreezesInfluence": true
+  },
+  "parents": {
+    "father": {
+      "source": "/models/pai_intercambio.glb",
+      "affectedVertices": 115,
+      "targetMaxDisplacementMetres": 0.01080598764068335,
+      "capturedInfluence": 0.7073762525038733,
+      "capturedDisplacementMetres": 0.0076438990418697585,
+      "closedInfluence": 0,
+      "listenerInfluence": 0
+    },
+    "mother": {
+      "source": "/models/mae_intercambio.glb",
+      "affectedVertices": 171,
+      "targetMaxDisplacementMetres": 0.011829173139967404,
+      "capturedInfluence": 0.6987454872495502,
+      "capturedDisplacementMetres": 0.008265581349445815,
+      "closedInfluence": 0,
+      "listenerInfluence": 0
+    }
+  },
+  "visualReview": "Four actual open/closed WebGL frames inspected; subtle lower-lip/chin movement without evident eye, nose or moustache deformation.",
+  "media": {
+    "video": "capturas/fala-pais-detalhe.mp4",
+    "still": "capturas/fala-pais-detalhe.png",
+    "description": "Real browser recording, cropped to both faces and enlarged 2x using nearest-neighbour sampling; original speed, no generated frames."
+  },
+  "sourceGLBSha256": {
+    "father": "7811eed141e6341ecdd32945a993f3ce1fe678d2d8fe9c5d085896c75c3d91d4",
+    "mother": "959f4cfdb2deaa500fc11df39a5de90f585d5e454a8b3b4ea3babc8880454a3e"
+  },
+  "errors": [],
+  "consoleErrors": [],
+  "failedAssets": [],
+  "limits": [
+    "Moderate lip/jaw deformation; no oral cavity or animated teeth added.",
+    "On-screen text timing; no character voices or phoneme matching.",
+    "Chromium/Linux with SwiftShader software rendering; no physical-GPU or performance benchmark.",
+    "Focused existing airport dialogue checkpoint; house, car and plane flows were not repeated."
+  ]
+}

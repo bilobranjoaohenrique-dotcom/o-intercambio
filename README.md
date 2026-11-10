@@ -73,7 +73,7 @@ A cozinha usa móveis modelados, azulejos florais, cortinas de renda, cerâmica,
 
 A cozinha foi compactada reutilizando os móveis, materiais e iluminação. A área principal tem aproximadamente **7,10 × 5,35 m**; a bancada original de 5,20 m e a circulação dos dois lados da mesa foram preservadas, por isso não se forçou a medida menor da prancha.
 
-Aproxime-se da cadeira da frente e pressione **E — Sentar à mesa**. A câmera desce suavemente, permanece em primeira pessoa e permite olhar para os pais. O pai continua sentado; a mãe usa avental claro e serve café. Os modelos GLB atuais mantêm as poses e o olhar durante as falas em texto; seus arquivos não incluem animação de boca. Nenhuma voz foi acrescentada. Ao terminar a conversa, o protagonista se levanta normalmente e os pais continuam na cozinha. Eles só vão para o carro depois que o protagonista pega a mala no quarto.
+Aproxime-se da cadeira da frente e pressione **E — Sentar à mesa**. A câmera desce suavemente, permanece em primeira pessoa e permite olhar para os pais. O pai continua sentado; a mãe usa avental claro e serve café. Os modelos GLB atuais mantêm as poses e o olhar durante as falas em texto. O jogo acrescenta um movimento localizado de lábios e mandíbula aos arquivos originais, que não possuem controles faciais. Nenhuma voz foi acrescentada. Ao terminar a conversa, o protagonista se levanta normalmente e os pais continuam na cozinha. Eles só vão para o carro depois que o protagonista pega a mala no quarto.
 
 A entrega do café (Prompt Master 06) terminou no objetivo **“Suba ao quarto e busque sua mala”**. A atualização da garagem, descrita abaixo, continua esse objetivo reutilizando a mochila existente. O [Prompt Master 06](docs/PROMPT-MASTER-06-CAFE.md) registra o escopo daquela etapa.
 
@@ -121,7 +121,7 @@ Os registros e as capturas das versões anteriores, que ainda incluíam o banco 
 
 O pai usa o arquivo enviado `pai_intercambio_rigged.glb`, preservado em `public/models/pai_intercambio.glb` (aproximadamente 2,18 MB, 20.029 vértices e 33.000 triângulos). O modelo tem uma malha, três texturas JPEG incorporadas, um esqueleto de 22 ossos e as poses originais `Pose_EmPe`, `Pose_Sentado_Mesa` e `Pose_Dirigindo`. O adaptador mantém o mesmo personagem e suas âncoras, ajustando escala, altura e contato das mãos/pés com os móveis existentes. A mãe e os cenários permanecem iguais.
 
-As três poses são estáticas. O olhar e os pequenos movimentos de cabeça usam o controle existente; **o arquivo não possui animação de boca, morphs faciais ou ciclos de fala/repouso**. Os diálogos continuam por texto. Nenhum material ou malha foi reconstruído, e o GLB é carregado uma única vez para os três locais.
+As três poses são estáticas. O olhar e os pequenos movimentos de cabeça usam o controle existente; **o arquivo original não possui morphs faciais ou ciclos de fala/repouso**. O jogo acrescenta um morph local de boca em tempo de execução; os diálogos continuam por texto. Nenhum material ou malha foi reconstruído, e o GLB é carregado uma única vez para os três locais.
 
 Verificação focal: `node --test --test-isolation=none tests/father-glb.test.mjs`; com a prévia aberta, `INTERCAMBIO_URL=http://localhost:4180 npm run test:father`.
 
@@ -133,13 +133,23 @@ Capturas reais: [cozinha](docs/capturas/novo-pai-glb-cozinha.png), [carro](docs/
 
 A mãe usa o arquivo enviado `personagem_intercambio_rigged.glb`, preservado em `public/models/mae_intercambio.glb` (aproximadamente 2,22 MB, 20.140 vértices e 33.000 triângulos). Mantém suas texturas, materiais e esqueleto de 22 ossos. A cozinha e o aeroporto usam a pose em pé; no carro, ela usa a pose sentada de passageira com as mãos no colo. O bule e o fio de café existentes acompanham a mão na cozinha e ficam ocultos nas outras cenas. As âncoras, os diálogos e a progressão da mala permanecem os mesmos.
 
-O arquivo contém três poses estáticas e não possui animação de boca ou morphs faciais. O olhar e os pequenos movimentos de cabeça reutilizam o controle existente. O modelo e o adaptador do pai foram preservados.
+O arquivo contém três poses estáticas e não possui morphs faciais originais. O jogo acrescenta a deformação local da boca e reutiliza o controle existente de olhar e pequenos movimentos de cabeça. O modelo e o adaptador do pai foram preservados.
 
 Verificação focal: `node --test --test-isolation=none tests/mother-glb.test.mjs`; com a prévia aberta, `INTERCAMBIO_URL=http://localhost:4180 npm run test:mother`.
 
 Passaram TypeScript/build, dois testes do arquivo, um café com ciclo de servir e a conferência das três poses. A mira e o E no corpo da mãe foram confirmados no build final. As correções de inicialização, contato e registro do alvo foram verificadas apenas nas partes afetadas.
 
 As capturas reais das três cenas foram inspecionadas: [cozinha](docs/capturas/nova-mae-glb-cozinha.png), [passageira no carro](docs/capturas/nova-mae-glb-carro.png) e [aeroporto](docs/capturas/nova-mae-glb-aeroporto.png). A roupa original do GLB, incluindo o avental, foi mantida. [Registro breve](docs/resultados-mae-glb.json).
+
+## Movimento da boca dos pais
+
+Durante o intervalo de cada fala em texto, apenas o personagem que está falando move os lábios inferiores e a mandíbula. O ouvinte permanece com a boca em repouso; ao terminar o intervalo ou trocar para a fala do protagonista, os dois controles voltam a zero. A pausa congela o movimento junto com o relógio do jogo.
+
+A deformação `JawOpen` é criada em tempo de execução com máscaras calibradas para os GLBs atuais. Os arquivos originais, os materiais, o corpo e a parte superior do rosto permanecem intactos. É um movimento moderado de lábios/mandíbula, sem cavidade bucal, dentes animados ou correspondência de fonemas. Nenhuma voz ou áudio de diálogo foi adicionado.
+
+Verificação focal: `node --test --test-isolation=none tests/speech-mouth.test.mjs`; com a prévia aberta, `INTERCAMBIO_URL=http://localhost:4180 npm run test:mouth`.
+
+Passaram os três testes de geometria, TypeScript/build e uma verificação curta do diálogo no navegador. As quatro capturas reais de boca ativa/em repouso foram inspecionadas. [Vídeo real com os rostos ampliados](docs/capturas/fala-pais-detalhe.mp4), [captura do vídeo](docs/capturas/fala-pais-detalhe.png) e [registro breve](docs/resultados-boca-pais.json). Chromium/Linux com SwiftShader; sem benchmark de desempenho.
 
 ## Aeroporto — Portão 24
 

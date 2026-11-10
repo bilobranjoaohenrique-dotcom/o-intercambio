@@ -6,6 +6,7 @@ import { LoadAssetContainerAsync } from '@babylonjs/core/Loading/sceneLoader';
 import type { AnimationGroup } from '@babylonjs/core/Animations/animationGroup';
 import type { MorphTarget } from '@babylonjs/core/Morph/morphTarget';
 import '@babylonjs/loaders/glTF';
+import { createSpeechMouth } from './speechMouth';
 
 type Location = 'kitchen' | 'car' | 'airport';
 type RestPose = { node: TransformNode; position: Vector3; rotation: Quaternion; scaling: Vector3 };
@@ -21,13 +22,14 @@ const clamp = (value: number, min = 0, max = 1) => Number.isFinite(value) ? Math
 
 /** Preserve the supplied mesh, materials and three authored poses. The
  * existing limb fitting and look controls adapt its rig to the established
- * furniture; this file does not add facial targets or rewrite the model. */
+ * furniture. A localized runtime mouth morph preserves the supplied GLB. */
 export async function loadImportedMother(scene: Scene, parent: TransformNode) {
   const container = await LoadAssetContainerAsync(SOURCE, scene, {
     pluginExtension: '.glb', pluginOptions: { gltf: { animationStartMode: 0 } },
   });
   const adapter = new TransformNode('MÃE · modelo GLB original', scene);
   adapter.parent = parent; adapter.scaling.setAll(SCALE); adapter.setEnabled(false);
+  const speechMouths: ReturnType<typeof createSpeechMouth>[] = [];
   try {
     const nodes = [...container.transformNodes, ...container.meshes];
     const imported = new Set<TransformNode>(nodes);
@@ -51,6 +53,7 @@ export async function loadImportedMother(scene: Scene, parent: TransformNode) {
     for (const name of Object.values(POSES)) if (!groups.has(name)) throw Error('Pose ausente no modelo da mãe: ' + name);
     const rest: RestPose[] = container.transformNodes.map(node => ({ node, position: node.position.clone(),
       rotation: node.rotationQuaternion?.clone() ?? Quaternion.FromEulerVector(node.rotation), scaling: node.scaling.clone() }));
+    for (const mesh of meshes) speechMouths.push(createSpeechMouth(mesh, 'mother'));
     const jawTargets: MorphTarget[] = [], smileTargets: MorphTarget[] = [], morphNames: string[] = [];
     for (const mesh of meshes) {
       mesh.isPickable = false; mesh.receiveShadows = true; mesh.alwaysSelectAsActiveMesh = true;
@@ -58,7 +61,8 @@ export async function loadImportedMother(scene: Scene, parent: TransformNode) {
       const manager = mesh.morphTargetManager;
       if (!manager) continue;
       // Keep the morph shader shape stable while speech opens/closes the mouth.
-      manager.numMaxInfluencers = Math.max(2, manager.numTargets);
+      manager.optimizeInfluencers = false;
+      manager.numMaxInfluencers = Math.max(1, manager.numTargets);
       for (let index = 0; index < manager.numTargets; index++) {
         const target = manager.getTarget(index); target.influence = 0;
         morphNames.push(mesh.name + ':' + target.name);
@@ -241,7 +245,13 @@ export async function loadImportedMother(scene: Scene, parent: TransformNode) {
       get diagnostics() { return { source: SOURCE, loaded: true, error: null, pose: location,
         animation, frame, deterministicClock: true, clips: [...groups.keys()], materialCount: materials.size,
         textureCount: textures.size, morphs: morphNames, morphWeights: { JawOpen: currentJaw, Smile: currentSmile },
-        facialAnimation: jawTargets.length > 0, poseClips: true, passengerPose: location === 'car',
+        facialAnimation: jawTargets.length > 0,
+        speechMouth: {
+          affectedVertices: speechMouths.reduce((sum, mouth) => sum + mouth.diagnostics.affectedVertices, 0),
+          maxDisplacement: Math.max(0, ...speechMouths.map(mouth => mouth.diagnostics.maxDisplacement)),
+          currentDisplacement: currentJaw * Math.max(0, ...speechMouths.map(mouth => mouth.diagnostics.maxDisplacement)),
+          regions: speechMouths.map(mouth => mouth.diagnostics.region),
+        }, poseClips: true, passengerPose: location === 'car',
         serving, coffeeAttached: Boolean(coffeePot), coffeeFlow: coffeeStream?.isEnabled() ?? false,
         bounds, scale: SCALE, offsetY: adapter.position.y,
         headId: head.uniqueId, meshes: meshes.length,
@@ -251,10 +261,12 @@ export async function loadImportedMother(scene: Scene, parent: TransformNode) {
         if (disposed) return; disposed = true;
         for (const animation of groups.values()) animation.stop(true);
         coffeePot?.setEnabled(false); coffeeStream?.setEnabled(false);
+        for (const mouth of speechMouths) mouth.dispose();
         container.dispose(); adapter.dispose(false, false);
       },
     };
   } catch (error) {
+    for (const mouth of speechMouths) mouth.dispose();
     container.dispose(); adapter.dispose(false, false); throw error;
   }
 }
