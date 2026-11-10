@@ -1,0 +1,72 @@
+{
+  "status": "passed",
+  "source": "carro_intercambio.glb",
+  "runtimeAsset": "public/models/carro_intercambio.glb",
+  "sizeBytes": 1645200,
+  "sha256": "e98c20f42e3861223420da8cea903fdaeaef393ea2c566ce88b9613f63ee7908",
+  "model": {
+    "vertices": 17214,
+    "triangles": 24000,
+    "materials": 1,
+    "textures": 3,
+    "length": 3.8,
+    "width": 1.7399346621031782,
+    "height": 1.4003124468143706,
+    "scale": 0.8940714031761545,
+    "bounds": {
+      "min": {
+        "x": 5.350000006397849,
+        "y": 0,
+        "z": 12.880032671877842
+      },
+      "max": {
+        "x": 9.149999993602151,
+        "y": 1.4003124420991142,
+        "z": 14.619967328122158
+      }
+    },
+    "originalMeshAndMaterialsPreserved": true,
+    "loadedOnce": true
+  },
+  "checks": {
+    "typescriptAndProductionBuild": "passed",
+    "focusedUnitTests": 4,
+    "browser": "passed",
+    "collision": "passed",
+    "blockedBeforeLuggage": true,
+    "directAirportFade": true,
+    "playerInteriorView": false,
+    "cameraStayedOutsideUntilBlack": true,
+    "gateOpeningRequired": false,
+    "legacySaveMigration": {
+      "mission": "airport-farewell",
+      "stage": "airport"
+    }
+  },
+  "transition": {
+    "frameSamples": 30,
+    "stages": [
+      "airport",
+      "home"
+    ],
+    "legacyFrameSamples": 4,
+    "arrival": {
+      "stage": "airport",
+      "mission": "airport-farewell"
+    }
+  },
+  "parents": {
+    "fatherSha256": "7811eed141e6341ecdd32945a993f3ce1fe678d2d8fe9c5d085896c75c3d91d4",
+    "motherSha256": "959f4cfdb2deaa500fc11df39a5de90f585d5e454a8b3b4ea3babc8880454a3e",
+    "airportVisibleCount": 2
+  },
+  "captures": [
+    "capturas/carro-glb-garagem.png"
+  ],
+  "visualInspection": "Captura real aprovada: carro único, proporções e materiais originais, frente para o portão, garagem preservada.",
+  "errors": [],
+  "consoleErrors": [],
+  "failedAssets": [],
+  "scope": "Um percurso curto na garagem, bloqueio sem mala, checkpoint com mala para partida direta e reload de save antigo. Sem repetir quarto/mala, aeroporto/portão 24 ou avião.",
+  "limits": "Chromium/Linux com SwiftShader. Sem benchmark ou teste em GPU física/Windows. Capturas antigas do banco traseiro são históricas da etapa anterior."
+}

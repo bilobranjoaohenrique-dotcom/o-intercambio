@@ -85,11 +85,19 @@ Veja o [relatório da reconstrução com seis capturas reais](docs/RECONSTRUCAO-
 
 ## Garagem da família
 
-A garagem está ligada à passagem lateral do térreo por uma porta interna aberta. Tem aproximadamente **5,70 × 3,80 m**, piso de concreto, paredes pintadas, teto de madeira, portão com grade, luminária, pequena estante, ferramentas e caixas. O hatch original inspirado nos anos 2000 tem quatro rodas, portas, vidros, bancos e volante; não há direção nem física veicular.
+A garagem mantém sua estrutura de aproximadamente **5,70 × 3,80 m**, porta ligada à casa, piso de concreto, teto de madeira, portão, estante, ferramentas e caixas. O carro usa o GLB enviado `carro_intercambio.glb`, carregado uma vez com materiais e texturas originais e escala uniforme para **3,80 × 1,74 × 1,40 m**. Seu espaço de colisão e a circulação existentes foram preservados.
 
-Depois do café, volte ao quarto e use **E — Pegar mala** na mochila existente. O objetivo passa a **“Vá até a garagem. Seus pais estão esperando.”**. Aproxime-se do carro e pressione **E — Entrar no carro**. A sequência é automática: banco traseiro com os pais à frente, motor, abertura das duas folhas do portão e escurecimento até o aeroporto. Antes de pegar a bagagem, a partida permanece bloqueada. O checkpoint conserva essa progressão.
+Depois do café, pegue a mala no quarto e siga **“Vá até o carro para seguir ao aeroporto.”**. Aproxime-se do carro na garagem e pressione **E — Ir para o aeroporto**. A tela escurece por um instante e a próxima cena é a despedida no aeroporto. A câmera permanece fora do carro até a transição. Antes de pegar a mala, a viagem continua bloqueada.
 
-Verificação focal: `node --test --test-isolation=none tests/garage.test.mjs`; com uma prévia aberta, `INTERCAMBIO_URL=http://localhost:4180 npm run test:garage`. Passaram os quatro testes focais, TypeScript/build e um percurso real no Chromium/Linux: entrada, volta ao redor do carro, colisões, bloqueio antes da mala, subida/coleta da bagagem, retorno e embarque. Veja a [garagem no jogo](docs/capturas/garagem-visao-geral.png), o [portão e interior](docs/capturas/garagem-portao.png) e o [registro breve](docs/resultados-garagem.json). Renderização por software SwiftShader; não houve benchmark de FPS nem teste em GPU física/Windows.
+Saves antigos que paravam no banco traseiro agora retomam a despedida no aeroporto, preservando a escolha e a mala. O embarque pelo portão 24 e a cena do avião continuam iguais.
+
+Verificação focal: `node --test --test-isolation=none tests/car-glb.test.mjs tests/car-boarding.test.mjs`; com a prévia aberta, `INTERCAMBIO_URL=http://localhost:4180 npm run test:car`.
+
+As suítes e capturas anteriores que inspecionavam a câmera no banco traseiro ficam como histórico dessa etapa. O fluxo atual é coberto por `test:car`; `test:car-boarding` aponta para essa mesma verificação.
+
+Passaram TypeScript/build, quatro testes focais e o percurso real na garagem: colisão, bloqueio antes da mala, fade direto ao aeroporto e restauração do save antigo. A captura foi inspecionada; os modelos dos pais e os demais ambientes foram preservados. Chromium/Linux com SwiftShader, sem benchmark de desempenho.
+
+[Captura real do novo carro na garagem](docs/capturas/carro-glb-garagem.png) e [registro breve da atualização](docs/resultados-carro-glb.json).
 
 ## Porta principal da cozinha
 
@@ -105,15 +113,9 @@ TypeScript/build e os três testes focais passaram. Uma sessão real confirmou i
 
 ## Pais e despedida
 
-Pai e mãe mantêm suas identidades entre cozinha, carro e aeroporto. O pai agora usa o GLB enviado pelo usuário; a mãe mantém seu modelo, blusa florida, calça marrom e sandálias. O avental e o bule ficam somente na cozinha. Gestos, respiração, olhar e boca acompanham as legendas, sem vozes.
+Pai e mãe usam seus GLBs enviados e mantêm suas identidades, diálogos e posições existentes. Após o café, permanecem na cozinha até o protagonista pegar a mala; depois aguardam a viagem. Interagir com o carro leva diretamente à despedida no aeroporto, sem uma etapa jogável dentro do veículo.
 
-Ao terminar a conversa, o protagonista se levanta e os pais **permanecem na cozinha**, com a missão **“Suba e pegue sua mala”**. Somente ao usar **E — Pegar mala** no quarto eles passam a aguardar no carro estacionado: pai ao volante e mãe no passageiro. Depois siga **“Vá até a garagem. Seus pais estão esperando.”**. Entrar no carro mantém os mesmos pais visíveis durante a abertura do portão, antes da transição automática para a despedida no aeroporto. O checkpoint conserva os pais na cozinha antes da mala e no carro depois dela, sem repetir o café.
-
-Na correção dessa ordem passaram TypeScript/build, **13 testes focais** e uma sessão completa no navegador: fim do diálogo, pais ainda na cozinha, recarga antes da mala, subida/coleta real, descida e entrada no banco traseiro. Os mesmos dois personagens só mudaram de lugar na coleta, enquanto o jogador estava no quarto. As capturas reais [após o diálogo](docs/capturas/pais-na-cozinha-apos-dialogo.png) e [no carro após a mala](docs/capturas/pais-no-carro-depois-da-mala.png) foram inspecionadas; veja o [registro curto](docs/resultados-pais-apos-mala.json). Chromium/Linux com SwiftShader, sem benchmark ou repetição das outras fases.
-
-Na atualização dos modelos passaram TypeScript/build, **13 testes focais** e o percurso real café → mala no quarto → descida → recarga do save → pais no carro → embarque. A troca sob tela opaca manteve as mesmas duas identidades e cabeças, sem duplicação. Após o teste funcional, ajustaram-se somente o comprimento do cabelo e a posição dos olhos; o build e as duas vistas finais foram conferidos novamente. [Pais na cozinha](docs/capturas/pais-cafe-atualizados.png), [pais aguardando no carro](docs/capturas/pais-esperando-no-carro.png) e [registro breve](docs/resultados-pais-despedida.json). Chromium/Linux com SwiftShader, sem benchmark de desempenho ou teste em GPU física/Windows.
-
-A correção do embarque passou TypeScript/build e **13 testes focais**. Uma sessão real verificou caminhada até o carro, os mesmos dois pais durante o embarque, câmera livre, caminhada bloqueada, pausa/retomada, recarga do banco traseiro e partida somente com a segunda interação. A captura revelou pele atravessando o cabelo por trás; a casca foi corrigida e a [vista final dentro do carro](docs/capturas/pais-vista-dentro-carro.png) foi inspecionada no build final. O [registro breve](docs/resultados-embarque-carro.json) descreve a recuperação da espera do teste e da recaptura durante o rebuild. Com uma prévia aberta: `INTERCAMBIO_URL=http://localhost:4180 npm run test:car-boarding`. Chromium/Linux com SwiftShader, sem medição de desempenho.
+Os registros e as capturas das versões anteriores, que ainda incluíam o banco traseiro, permanecem em [pais após a mala](docs/resultados-pais-apos-mala.json), [modelos e despedida](docs/resultados-pais-despedida.json) e [embarque anterior](docs/resultados-embarque-carro.json). O fluxo atual é verificado por `npm run test:car`.
 
 ## Modelo do pai — GLB
 

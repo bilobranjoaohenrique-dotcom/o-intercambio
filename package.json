@@ -17,10 +17,11 @@
     "test:garage": "node tests/garage-browser.mjs",
     "test:laundry": "node tests/laundry-browser.mjs",
     "test:parents": "node tests/parents-departure-browser.mjs",
-    "test:car-boarding": "node tests/car-boarding-browser.mjs",
+    "test:car-boarding": "node tests/car-direct-browser.mjs",
     "test:airport": "node tests/airport-browser.mjs",
     "test:father": "node tests/father-glb-browser.mjs",
     "test:mother": "node tests/mother-glb-browser.mjs",
+    "test:car": "node tests/car-direct-browser.mjs",
     "test:plane": "node tests/plane-browser.mjs",
     "verify": "node scripts/verify.mjs"
   },

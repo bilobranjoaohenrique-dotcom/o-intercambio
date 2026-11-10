@@ -35,8 +35,8 @@ export const missionLabels: Record<ChapterMission, string> = {
   breakfast: 'Desça para tomar café',
   'talk-parents': 'Converse com seus pais',
   'pack-suitcase': 'Suba e pegue sua mala',
-  'enter-car': 'Vá até a garagem. Seus pais estão esperando.',
-  'car-ready': 'Siga viagem com seus pais',
+  'enter-car': 'Vá até o carro para seguir ao aeroporto.',
+  'car-ready': 'A caminho do aeroporto',
   'airport-farewell': 'Despeça-se dos seus pais',
   'airport-gate': 'Dirija-se ao portão de embarque.',
   'plane-seat': 'Aguarde a chegada ao destino.',
@@ -55,6 +55,11 @@ export function createChapterProgress() {
       mission = saved.mission; choice = typeof saved.choice === 'string' ? saved.choice : null;
       completed = Array.isArray(saved.completed) ? saved.completed.filter((x: unknown): x is ChapterMission =>
         typeof x === 'string' && x in missionLabels) : [];
+      // The old back-seat step now resumes directly at the airport.
+      if (mission === 'car-ready') {
+        if (!completed.includes('car-ready')) completed.push('car-ready');
+        mission = 'airport-farewell';
+      }
       // Older saves did not distinguish arriving from completing the goodbye.
       if (mission === 'airport-gate' && !completed.includes('airport-farewell')) mission = 'airport-farewell';
     }

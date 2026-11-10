@@ -208,10 +208,20 @@ export function buildGarage(scene: Scene, parent: TransformNode) {
     occupantMeshes = parentMeshes; occupantsActive = value;
     refreshShadows();
   }
-  void shadows.forceCompilationAsync().then(() => { if (!disposed) refreshShadows(); })
-    .catch(error => console.error('Não foi possível preparar as sombras da garagem.', error));
+  const ready = car.ready.then(async () => {
+    if (disposed) return;
+    for (const mesh of car.meshes) {
+      if (!meshes.includes(mesh)) meshes.push(mesh);
+      for (const light of oldLights) if (!light.excludedMeshes.includes(mesh)) light.excludedMeshes.push(mesh);
+    }
+    for (const light of lights)
+      light.includedOnlyMeshes = [...new Set([...light.includedOnlyMeshes, ...car.meshes])];
+    for (const mesh of car.shadowCasters) shadows.addShadowCaster(mesh);
+    await shadows.forceCompilationAsync();
+    if (!disposed) refreshShadows();
+  });
   return {
-    meshes, targets: [car.target], refreshShadows, setParentOccupants, beginDeparture, resetDeparture, updateDeparture,
+    meshes, targets: [car.target], ready, refreshShadows, setParentOccupants, beginDeparture, resetDeparture, updateDeparture,
     setActive(value: boolean) { active = value; root.setEnabled(value); for (const light of lights) light.setEnabled(value); if (value) refreshShadows(); },
     get diagnostics() { return { version: 'garagem-familia-1', active, bounds: GARAGE, door: GARAGE_DOOR, meshes: meshes.length, parentOccupants: occupantsActive ? 2 : 0,
       gate: { mechanism: 'double-leaf', progress: gateProgress, angle: gateAngle, moving: gateMoving, duration: 1.85, leafIds: gateLeaves.map(leaf => leaf.uniqueId) },
