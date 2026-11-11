@@ -165,11 +165,17 @@ Com a prévia aberta: `INTERCAMBIO_URL=http://localhost:4180 npm run test:airpor
 
 Depois do portão 24, o protagonista aparece sentado junto à janela esquerda em uma cabine 3D. O banco dianteiro tem tela desligada, bandeja fechada, trava e bolso com revista. A janela oval mostra asa, winglet, nuvens em movimento e pôr do sol; há fileiras, bagageiros, luminárias e poucos passageiros. Os pais permanecem no aeroporto.
 
-Use o **mouse** para olhar ao redor, com rotação limitada e caminhada bloqueada. Olhe para a janela e pressione **E — Olhar pela janela** para aproximar a câmera e acompanhar duas reflexões em legenda. **E** retorna ao assento. Depois da reflexão, **E — Avançar para a chegada** permite continuar; a sequência também avança automaticamente após aproximadamente um minuto ativo. Pausar interrompe esse tempo. A transição reutiliza a chegada já existente, sem novos cenários ou vozes.
+Use o **mouse** para olhar ao redor, com rotação limitada e caminhada bloqueada. Olhe para a janela e pressione **E — Olhar pela janela** para aproximar a câmera e acompanhar duas reflexões em legenda. **E** retorna ao assento. Depois da reflexão, **E — Avançar para a chegada** permite continuar; a sequência também avança automaticamente após aproximadamente um minuto ativo. Pausar interrompe esse tempo. A transição leva ao terminal de chegada descrito abaixo; os diálogos continuam somente em texto.
 
 Verificação focal: `node --test --test-isolation=none tests/plane.test.mjs`; com a prévia aberta, `INTERCAMBIO_URL=http://localhost:4180 npm run test:plane`.
 
 Passaram os três testes focais, TypeScript/build e o percurso real portão 24 → cabine → janela/reflexões → retorno ao assento → chegada existente, sem erros de execução ou arquivos. As capturas revelaram ajustes necessários no enquadramento e na cobertura do panorama; após corrigi-los, apenas as vistas afetadas foram conferidas novamente. Capturas reais: [visão do passageiro](docs/capturas/aviao-visao-passageiro.png) e [janela com asa e nuvens](docs/capturas/aviao-janela-asa-nuvens.png). [Registro breve](docs/resultados-aviao.json). Chromium/Linux com SwiftShader; sem benchmark ou repetição das cenas anteriores. A composição segue as referências, com modelos e texturas procedurais próprios.
+
+## Chegada após o avião
+
+O GLB enviado `interior_chegada_ps2_com_npcs.glb`, em `public/models/chegada_intercambio.glb`, substitui a antiga rua de chegada. Daniel, Helen e os seis passageiros sentados usam os modelos, materiais e poses do arquivo. O jogador começa no marker de entrada e percorre o corredor central até os anfitriões; a missão, a fala de boas-vindas e a interação de cartaz permanecem no sistema existente. Os pais continuam no aeroporto brasileiro.
+
+Verificação focal: `node --test --test-isolation=none tests/arrival.test.mjs tests/plane.test.mjs` e, com a prévia aberta, `INTERCAMBIO_URL=http://localhost:4180 npm run test:arrival`. [Entrada real](docs/capturas/chegada-glb-entrada.png), [anfitriões](docs/capturas/chegada-glb-anfitrioes.png) e [registro breve](docs/resultados-chegada-glb.json). Chromium/Linux com SwiftShader, sem benchmark de desempenho.
 
 ## Estrutura
 

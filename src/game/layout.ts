@@ -9,7 +9,7 @@ export const CHAPTER_ZONES = {
   airport: { minX: 25.8, maxX: 34.5, minZ: -7.7, maxZ: 15.06 },
   plane: { minX: 52, maxX: 64, minZ: -6, maxZ: 6 },
   car: { minX: 40, maxX: 52, minZ: -6, maxZ: 6 },
-  town: { minX: 80, maxX: 92, minZ: -6, maxZ: 6 },
+  town: { minX: 78.5, maxX: 93.65, minZ: -19.2, maxZ: -.38 },
 } as const;
 export const DOOR = { hingeX: 1.45, z: 3.3, width: .8, height: 2.1, thickness: .07, openAngle: -Math.PI / 2 } as const;
 export const EYE_HEIGHT = 1.65;

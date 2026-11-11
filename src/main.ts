@@ -18,6 +18,7 @@ import { createBreakfastSeat, breakfastSpeechDuration } from './game/breakfast';
 import { canEnterFamilyCar, isTravelBagTaken, setTravelBagTaken } from './game/garageProgress';
 import { parentsLocationForProgress } from './game/parentsDeparture';
 import { AIRPORT_ARRIVAL } from './game/airportLayout';
+import { ARRIVAL_SPAWN } from './game/arrivalLayout';
 import { canBoardAtAirport, farewellGesture, AIRPORT_FAREWELL_DURATION } from './game/airportProgress';
 import { createPlaneSequence } from './game/planeSequence';
 import { PLANE_LOOK_LIMITS } from './game/planeLayout';
@@ -182,6 +183,7 @@ try {
       if(chapterStage==='airport'){
         camera.rotation.set(AIRPORT_ARRIVAL.pitch,AIRPORT_ARRIVAL.yaw,0);player.adoptCameraPose();
       }
+      if(chapterStage==='town'){camera.rotation.set(ARRIVAL_SPAWN.pitch,ARRIVAL_SPAWN.yaw,0);player.adoptCameraPose();}
       el('objectiveText').textContent=chapter.label;el('objective').hidden=false;el('reticle').hidden=false;
       document.documentElement.style.setProperty('--blur','0px');playingAt=worldTime;
       if(chapter.mission==='airport-farewell')startDialogue(airportGoodbye,[]);
@@ -260,6 +262,7 @@ try {
     if(zone==='airport'){chapterWorld.setParentsLocation('airport');chapterWorld.setParentsFarewell(0);}
     chapterWorld.activate(zone);player.teleport(chapterWorld.teleportPoint(zone),zone==='airport'?AIRPORT_ARRIVAL.yaw:0);
     if(zone==='airport'){camera.rotation.x=AIRPORT_ARRIVAL.pitch;player.adoptCameraPose();}
+    if(zone==='town'){camera.rotation.set(ARRIVAL_SPAWN.pitch,ARRIVAL_SPAWN.yaw,0);player.adoptCameraPose();}
     if(zone==='plane')adoptPlaneSeat();
     audio.setAmbience(zone==='airport'?'airport':zone==='plane'?'plane':'home');
     chapter.advance(mission);el('objectiveText').textContent=chapter.label;el('objectiveState').textContent='NOVA MISSÃO';el('objective').classList.remove('compact');
@@ -384,6 +387,7 @@ try {
     family: chapterWorld.familyDiagnostics,
     carSeat: { occupied: false },
     airport: { scenery: chapterWorld.airportDiagnostics, farewell: { completed: canBoardAtAirport(chapter.mission,chapter.completed), progress:Math.min(1,farewellTime/AIRPORT_FAREWELL_DURATION) } },
+    arrival: { scenery: chapterWorld.arrivalDiagnostics },
     plane: { scenery: chapterWorld.planeDiagnostics, flight:{...planeFlight.diagnostics,subtitle:planeFlight.subtitle} },
   }) });
 

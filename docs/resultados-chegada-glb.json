@@ -1,0 +1,86 @@
+{
+  "status": "passed",
+  "asset": {
+    "file": "public/models/chegada_intercambio.glb",
+    "uploadedName": "interior_chegada_ps2_com_npcs.glb",
+    "bytes": 26395708,
+    "sha256": "d463d86dc8a29ba64984e34ad463f3cc3492ffd8e13a22b08dafa36672357a35",
+    "sourceGLBUnchanged": true
+  },
+  "implementation": [
+    "Replace only the old town arrival set after the plane with the supplied terminal interior",
+    "Use the original source scale, spawn/conversation markers, Daniel, Helen and six seated passengers",
+    "Add measured floor and furniture/host collision footprints; retain host/poster interaction IDs and existing text",
+    "Isolate source lights and sample eight authored idle/seated animations using game time"
+  ],
+  "validation": {
+    "typecheckAndProductionBuild": "passed",
+    "focusedUnitTests": 5,
+    "observedPlaneToArrival": {
+      "existingReflections": [
+        "É estranho... Estou realmente indo.",
+        "Tomara que tudo dê certo."
+      ],
+      "partialFadeObserved": true,
+      "firstArrivalFade": 1,
+      "firstArrivalPosition": {
+        "x": 86,
+        "y": 1.65,
+        "z": -14.8
+      },
+      "originalDiagnosticAssertion": "Initial diagnostic counted six material primitives instead of two hosts; corrected to unique host IDs before final arrival check."
+    },
+    "finalArrivalFlow": {
+      "status": "passed",
+      "walkedWaypoints": 4,
+      "scenery": {
+        "active": true,
+        "ready": true,
+        "loaded": true,
+        "error": null,
+        "source": "/models/chegada_intercambio.glb",
+        "npcs": 8,
+        "hosts": 2,
+        "passengers": 6,
+        "meshes": 79,
+        "materials": 72,
+        "textures": 74,
+        "lights": 10,
+        "embeddedLights": 9,
+        "animationsActive": 8,
+        "clipNames": [
+          "daniel__Idle",
+          "helen__Idle",
+          "npc_sentado_01__Seated_Idle",
+          "npc_sentado_02__Seated_Idle",
+          "npc_sentado_03__Seated_Idle",
+          "npc_sentado_04__Seated_Idle",
+          "npc_sentado_05__Seated_Idle",
+          "npc_sentado_06__Seated_Idle"
+        ],
+        "animationClock": "game-time",
+        "protagonistMeshes": 0
+      },
+      "welcomeText": "Você deve ser nosso novo estudante. Bem-vindo!",
+      "final": {
+        "phase": "ending",
+        "stage": "town",
+        "mission": "complete",
+        "familyLocation": "airport"
+      }
+    }
+  },
+  "captures": [
+    "capturas/chegada-glb-entrada.png",
+    "capturas/chegada-glb-anfitrioes.png"
+  ],
+  "errors": [],
+  "consoleErrors": [],
+  "failedAssets": [],
+  "limits": [
+    "Plane reflections and fade observed before the diagnostic-only host count correction; final find-host fixture verified the corrected build through conversation and chapter completion without replaying the plane.",
+    "The optional back-wall notice interaction was retained but not revisited in the browser.",
+    "Screenshots are real runtime frames; entry capture waits for initial shader warmup.",
+    "Chromium/Linux with SwiftShader software rendering; no physical GPU or performance benchmark."
+  ]
+}

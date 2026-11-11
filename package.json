@@ -25,6 +25,7 @@
     "test:car": "node tests/car-direct-browser.mjs",
     "test:mouth": "node tests/speech-mouth-browser.mjs",
     "test:plane": "node tests/plane-browser.mjs",
+    "test:arrival": "node tests/arrival-glb-browser.mjs",
     "verify": "node scripts/verify.mjs"
   },
   "dependencies": {
