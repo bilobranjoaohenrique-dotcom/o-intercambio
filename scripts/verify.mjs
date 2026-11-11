@@ -29,7 +29,7 @@ try {
   }
   if (!ready) throw Error('A prévia do build não iniciou na porta 4181.');
   // Exercise boarding into the seated cabin, window reflection and arrival.
-  await command([fileURLToPath(new URL('../tests/plane-browser.mjs', import.meta.url))], { INTERCAMBIO_URL: 'http://127.0.0.1:4181' });
+  await command([fileURLToPath(new URL('../tests/plane-glb-browser.mjs', import.meta.url))], { INTERCAMBIO_URL: 'http://127.0.0.1:4181' });
   console.log('O INTERCÂMBIO: TypeScript, testes, build e fluxo real no navegador concluídos. Inspecione as capturas e as medições em /tmp/o-intercambio-*.');
 } catch (error) {
   console.error(error.message); process.exitCode = 1;

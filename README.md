@@ -163,13 +163,13 @@ Com a prévia aberta: `INTERCAMBIO_URL=http://localhost:4180 npm run test:airpor
 
 ## Avião — viagem aos Estados Unidos
 
-Depois do portão 24, o protagonista aparece sentado junto à janela esquerda em uma cabine 3D. O banco dianteiro tem tela desligada, bandeja fechada, trava e bolso com revista. A janela oval mostra asa, winglet, nuvens em movimento e pôr do sol; há fileiras, bagageiros, luminárias e poucos passageiros. Os pais permanecem no aeroporto.
+Depois do portão 24, a cabine usa o arquivo enviado `intercambio_aviao_ps2_leve.blend`, convertido pelo Blender 4.3.2 para `public/models/aviao_intercambio.glb`. Materiais, bancos, fuselagem, asas, céu e duas camadas de nuvens vêm do arquivo. A câmera usa a posição e a projeção do assento original, com um pequeno movimento até a abertura real da janela. Os pais permanecem no aeroporto brasileiro. O enquadramento e o alcance de visão específicos do avião são restaurados ao sair da cabine.
 
 Use o **mouse** para olhar ao redor, com rotação limitada e caminhada bloqueada. Olhe para a janela e pressione **E — Olhar pela janela** para aproximar a câmera e acompanhar duas reflexões em legenda. **E** retorna ao assento. Depois da reflexão, **E — Avançar para a chegada** permite continuar; a sequência também avança automaticamente após aproximadamente um minuto ativo. Pausar interrompe esse tempo. A transição leva ao terminal de chegada descrito abaixo; os diálogos continuam somente em texto.
 
 Verificação focal: `node --test --test-isolation=none tests/plane.test.mjs`; com a prévia aberta, `INTERCAMBIO_URL=http://localhost:4180 npm run test:plane`.
 
-Passaram os três testes focais, TypeScript/build e o percurso real portão 24 → cabine → janela/reflexões → retorno ao assento → chegada existente, sem erros de execução ou arquivos. As capturas revelaram ajustes necessários no enquadramento e na cobertura do panorama; após corrigi-los, apenas as vistas afetadas foram conferidas novamente. Capturas reais: [visão do passageiro](docs/capturas/aviao-visao-passageiro.png) e [janela com asa e nuvens](docs/capturas/aviao-janela-asa-nuvens.png). [Registro breve](docs/resultados-aviao.json). Chromium/Linux com SwiftShader; sem benchmark ou repetição das cenas anteriores. A composição segue as referências, com modelos e texturas procedurais próprios.
+Passaram os três testes focais, TypeScript/build e o percurso real portão 24 → cabine GLB → janela/reflexões → retorno → chegada. A inspeção levou a baixar levemente o olhar inicial e a isolar os outros cenários durante o voo. A versão final foi conferida novamente apenas na cabine e na saída para a chegada, incluindo a restauração da câmera e da visibilidade. Capturas reais: [assento](docs/capturas/aviao-glb-assento.png) e [janela com asa e nuvens](docs/capturas/aviao-glb-janela.png). [Registro breve](docs/resultados-aviao-glb.json). Chromium/Linux com SwiftShader; sem benchmark de GPU física. O teste anterior `plane-browser.mjs` permanece como histórico da cabine procedural.
 
 ## Chegada após o avião
 

@@ -1,0 +1,138 @@
+{
+  "status": "passed",
+  "asset": {
+    "sourceBlend": "intercambio_aviao_ps2_leve.blend",
+    "sourceBytes": 20936616,
+    "exporter": "Blender 4.3.2 built-in glTF exporter",
+    "export": "public/models/aviao_intercambio.glb",
+    "bytes": 30605716,
+    "sha256": "9c38e3dd693dd34b164072cceb2c1e6ae7db848f78fb50de81ca36a25226b087",
+    "sourceBlendUnmodified": true,
+    "geometryDecimated": false,
+    "imagesDownscaled": false,
+    "exportMeshCount": 126,
+    "exportMaterialCount": 40,
+    "embeddedImages": 26
+  },
+  "adaptation": {
+    "camera": "Original seat position and vertical FOV, with resting pitch adjusted to .13 for the front monitor",
+    "window": "Nearest real oval; slight inside lean, original transparent glass retained",
+    "exterior": "Authored wings, sky dome and two cloud planes retained in original scale; subtle cloud UV drift",
+    "projectionScope": "FOV .717541320945, near .035 and far 8000 only in flight; original values restored on exit",
+    "lightingScope": "Imported point powers /1800 and directional power /683 with local mesh lists; no global light edits",
+    "sceneIsolation": "Temporarily disable only foreign enabled meshes during flight and restore them on exit; original house geometry is unchanged"
+  },
+  "validation": {
+    "typecheckAndBuild": "passed",
+    "focusedPlaneUnitTests": 3,
+    "gateToPlaneBeforeVisualCorrections": {
+      "status": "passed",
+      "routeWaypoints": 6,
+      "note": "Real window capture exposed the original global home scenery; the image was rejected and flight isolation was corrected."
+    },
+    "finalCabinToArrival": {
+      "status": "passed",
+      "seat": {
+        "active": true,
+        "ready": true,
+        "loaded": true,
+        "error": null,
+        "source": "/models/aviao_intercambio.glb",
+        "seat": {
+          "position": {
+            "x": 55.42,
+            "y": 1.17,
+            "z": -2
+          },
+          "yaw": 0.04335695,
+          "pitch": 0.13
+        },
+        "window": {
+          "x": 55.098,
+          "y": 1.1,
+          "z": -1.946641
+        },
+        "screenOn": false,
+        "wing": true,
+        "cloudLayers": 2,
+        "cloudTextures": 2,
+        "cloudOffset": 0,
+        "elapsed": 0,
+        "parents": 0,
+        "protagonistBodyMeshes": 0,
+        "knees": 0,
+        "meshes": 168,
+        "materials": 40,
+        "textures": 32,
+        "lights": 14,
+        "embeddedLights": 13,
+        "camera": {
+          "fov": 0.7175413209450974,
+          "minZ": 0.035,
+          "maxZ": 8000
+        },
+        "cameraOverrideActive": true,
+        "outsideMeshesHidden": 142,
+        "foreignMeshesVisible": 0,
+        "reflectionPasses": 0
+      },
+      "final": {
+        "phase": "playing",
+        "stage": "town",
+        "mission": "find-host",
+        "arrival": {
+          "active": true,
+          "ready": true,
+          "loaded": true,
+          "error": null,
+          "source": "/models/chegada_intercambio.glb",
+          "npcs": 8,
+          "hosts": 2,
+          "passengers": 6,
+          "meshes": 79,
+          "materials": 72,
+          "textures": 74,
+          "lights": 10,
+          "embeddedLights": 9,
+          "animationsActive": 8,
+          "clipNames": [
+            "daniel__Idle",
+            "helen__Idle",
+            "npc_sentado_01__Seated_Idle",
+            "npc_sentado_02__Seated_Idle",
+            "npc_sentado_03__Seated_Idle",
+            "npc_sentado_04__Seated_Idle",
+            "npc_sentado_05__Seated_Idle",
+            "npc_sentado_06__Seated_Idle"
+          ],
+          "animationClock": "game-time",
+          "protagonistMeshes": 0
+        },
+        "camera": {
+          "fov": 1.13,
+          "minZ": 0.045,
+          "maxZ": 95
+        },
+        "cameraOverrideActive": false,
+        "outsideMeshesHidden": 0
+      },
+      "reflectionTexts": [
+        "É estranho... Estou realmente indo.",
+        "Tomara que tudo dê certo."
+      ],
+      "capturesInspected": true
+    }
+  },
+  "captures": [
+    "capturas/aviao-glb-assento.png",
+    "capturas/aviao-glb-janela.png"
+  ],
+  "errors": [],
+  "consoleErrors": [],
+  "failedAssets": [],
+  "limits": [
+    "The final check starts at the supported plane-seat checkpoint after the earlier Gate 24 flow; house, car and farewell were not replayed.",
+    "No voices, new flight physics or first-person avatar were added.",
+    "Chromium/Linux with SwiftShader software rendering; no physical GPU or FPS benchmark."
+  ]
+}

@@ -147,7 +147,7 @@ export function buildChapterWorld(scene: Scene) {
     // Keep the garage's identity cache from missing meshes appended by GLB load.
     garage.setParentOccupants([...kitchen.parentMeshes], kitchen.parentShadowCasters, location === 'car');
   }
-  const ready = Promise.all([kitchen.ready, garage.ready, airport.ready, arrival.ready]).then(() => {
+  const ready = Promise.all([kitchen.ready, garage.ready, airport.ready, plane.ready, arrival.ready]).then(() => {
     airport.setParentMeshes(kitchen.parentMeshes);
     setParentsLocation(getParentsLocation());
   });
