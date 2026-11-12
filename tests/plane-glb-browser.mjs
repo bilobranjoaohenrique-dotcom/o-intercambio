@@ -4,12 +4,12 @@ import './register-typescript.mjs';
 const { BASE, launchBrowser, snapshot, assertHealthy, capture, waitFrames, waitPhase,
   lookAt, hold, faceYaw, aimInteraction, pause } = await import('./browser-helpers.mjs');
 const { AIRPORT_GATE, AIRPORT_ROUTE } = await import('../src/game/airportLayout.ts');
-const { PLANE_SEAT, PLANE_WINDOW, PLANE_LOOK_LIMITS, PLANE_CAMERA } = await import('../src/game/planeLayout.ts');
+const { PLANE, PLANE_SEAT, PLANE_WINDOW, PLANE_LOOK_LIMITS, PLANE_CAMERA } = await import('../src/game/planeLayout.ts');
 
 const SAVE = 'o-intercambio.chapter1.checkpoint.v1';
 const cabinOnly = process.env.INTERCAMBIO_CABIN_ONLY === '1';
 const pictures = [], route = [], movement = [], reviewNotes = [];
-let browser, session, initial, baseProjection, seated, windowView, returned, final, boarding, reflection, arrival;
+let browser, session, initial, baseProjection, seated, aisleView, windowView, returned, final, boarding, reflection, arrival;
 const wrap = angle => Math.atan2(Math.sin(angle), Math.cos(angle));
 
 function parentsStayInBrazil(state) {
@@ -17,6 +17,35 @@ function parentsStayInBrazil(state) {
   assert.ok(state.family.parents.every(parent => !parent.visible));
   assert.equal(state.family.airportVisibleCount, 0); assert.equal(state.family.carVisibleCount, 0);
   assert.equal(state.dialogueAudio, false); assert.equal(state.audio.dialogueAudio, false);
+}
+function passengersView(state, visible) {
+  const passengers = state.plane.scenery.passengers;
+  assert.ok(passengers, 'the cabin exposes the imported passenger group');
+  assert.equal(passengers.source, '/models/passageiros_intercambio.glb');
+  assert.equal(passengers.loaded, true); assert.equal(passengers.ready, true); assert.equal(passengers.error, null);
+  assert.equal(passengers.count, 30); assert.equal(passengers.posedCount, 30);
+  assert.equal(passengers.seats.length, 30); assert.equal(passengers.staticSeatedPoses, true);
+  assert.equal(passengers.runningRigAnimations, 0, 'background poses do not run thirty skeletal animations');
+  assert.equal(passengers.visibleCount, visible ? 30 : 0, 'cabin passengers are enabled only during flight');
+  assert.equal(new Set(passengers.seats.map(seat => seat.id)).size, 30);
+  assert.equal(new Set(passengers.seats.map(seat => seat.seatId)).size, 30);
+  for (const seat of passengers.seats) {
+    const { min, max } = seat.bounds;
+    assert.ok([min.x, min.y, min.z, max.x, max.y, max.z, seat.root.x, seat.root.y, seat.root.z].every(Number.isFinite));
+    assert.ok(max.x > min.x && max.y > min.y && max.z > min.z);
+    assert.ok(min.x >= PLANE.minX - .08 && max.x <= PLANE.maxX + .08 &&
+      min.z >= PLANE.minZ - .08 && max.z <= PLANE.maxZ + .08,
+    `${seat.id}: posed body bounds must remain inside the actual aircraft cabin`);
+    assert.ok(seat.footMinY >= PLANE.floor - .08, `${seat.id}: feet must stay above the cabin floor`);
+    assert.ok(seat.headTopY < PLANE.ceiling - .10, `${seat.id}: head must stay below the ceiling`);
+    assert.ok(seat.headTopY - seat.footMinY > .6 && seat.headTopY - seat.footMinY < 1.7,
+      `${seat.id}: the supplied body has plausible seated adult height`);
+    for (const pose of [PLANE_SEAT, PLANE_WINDOW.focusPose]) {
+      const point = pose.position;
+      assert.ok(!(point.x > min.x && point.x < max.x && point.y > min.y && point.y < max.y && point.z > min.z && point.z < max.z),
+        `${seat.id}: the first-person camera cannot be inside a passenger's body bounds`);
+    }
+  }
 }
 function seatedView(state) {
   assert.equal(state.chapterStage, 'plane'); assert.equal(state.chapterMission, 'plane-seat');
@@ -29,7 +58,7 @@ function seatedView(state) {
   assert.equal(model.foreignMeshesVisible, 0, 'other chapter geometry cannot appear beyond the plane windows');
   assert.ok(model.outsideMeshesHidden > 0, 'the live global home scenery is isolated during flight');
   if (model.screenOn !== undefined) assert.equal(model.screenOn, false);
-  if (model.passengers !== undefined) assert.ok(Number.isInteger(model.passengers) && model.passengers >= 0);
+  passengersView(state, true);
   assert.equal(state.audio.ambience, 'plane');
 }
 async function moveToGate(page, point) {
@@ -74,8 +103,8 @@ async function review(page, label) {
   await pause(page);
   const repl = (await import('node:repl')).start({ prompt: `cabin-glb-${label}> ` });
   repl.context.qa = { ...session, browser, snapshot, capture, waitFrames, waitPhase, lookAt,
-    hold, faceYaw, aimInteraction, pause, moveToGate, seatedView, parentsStayInBrazil,
-    observe, stopObservation, pictures, route, movement, reviewNotes, initial, seated, windowView,
+    hold, faceYaw, aimInteraction, pause, moveToGate, seatedView, parentsStayInBrazil, passengersView,
+    observe, stopObservation, pictures, route, movement, reviewNotes, initial, seated, aisleView, windowView,
     returned, boarding, reflection, AIRPORT_GATE, PLANE_SEAT, PLANE_WINDOW, PLANE_LOOK_LIMITS };
   repl.context.continueFlow = () => repl.close();
   await new Promise(resolve => repl.once('exit', resolve));
@@ -141,6 +170,13 @@ try {
   pictures.push(await capture(page, 'aviao-glb-assento')); console.log('CAPTURE', pictures.at(-1).path);
   await review(page, 'assento');
 
+  console.log('CABIN GLB: authored passengers in the aisle view');
+  await faceYaw(page, PLANE_SEAT.yaw + .5, -.05); await waitFrames(page, 3);
+  aisleView = await snapshot(page); seatedView(aisleView);
+  pictures.push(await capture(page, 'aviao-glb-passageiros-corredor')); console.log('CAPTURE', pictures.at(-1).path);
+  await review(page, 'corredor');
+  await faceYaw(page, PLANE_SEAT.yaw, PLANE_SEAT.pitch);
+
   console.log('CABIN GLB: responsive seated look and blocked walking');
   const heldPosition = (await snapshot(page)).position;
   for (const code of ['KeyW', 'KeyA']) {
@@ -189,21 +225,24 @@ try {
   assert.equal(final.arrival.scenery.npcs, 8);
   assert.equal(final.plane.scenery.cameraOverrideActive, false);
   assert.equal(final.plane.scenery.outsideMeshesHidden, 0, 'the saved global mesh states are released on exit');
+  passengersView(final, false);
   assert.deepEqual(final.plane.scenery.camera, baseProjection, 'arrival restores the pre-flight camera projection');
   assert.deepEqual(final.errors, []); assertHealthy(session);
   writeFileSync('/tmp/o-intercambio-plane-glb-results.json', JSON.stringify({ status: 'passed', build: final.build, cabinOnly,
     pictures, route, movement, reviewNotes, boarding, reflection, arrival,
     seat: { position: seated.position, rotation: seated.rotation, scenery: seated.plane.scenery },
+    aisle: { position: aisleView.position, rotation: aisleView.rotation, scenery: aisleView.plane.scenery },
     window: { position: windowView.position, rotation: windowView.rotation, scenery: windowView.plane.scenery },
     returned: { position: returned.position, scenery: returned.plane.scenery },
     final: { phase: final.phase, stage: final.chapterStage, mission: final.chapterMission, arrival: final.arrival.scenery,
       camera: final.plane.scenery.camera, cameraOverrideActive: final.plane.scenery.cameraOverrideActive,
-      outsideMeshesHidden: final.plane.scenery.outsideMeshesHidden },
+      outsideMeshesHidden: final.plane.scenery.outsideMeshesHidden, passengers: final.plane.scenery.passengers },
     errors, consoleErrors, failedAssets: failed,
     coverage: [cabinOnly ? 'existing plane-seat checkpoint; prior Gate 24 flow recorded separately' : 'real Gate 24 boarding into the supplied cabin', 'actual seated and window captures',
       'physical mouse look within limits and blocked walking', 'smooth window focus and both original text reflections',
       'return to the seat and gradual exit into the existing arrival GLB', 'parents remain at the Brazilian airport',
-      'only cabin geometry remains visible in flight; camera projection and saved mesh states are restored on exit'],
+      'only cabin geometry remains visible in flight; camera projection and saved mesh states are restored on exit',
+      'thirty distinct imported seated passengers, plausible physical bounds and no cabin passengers after arrival'],
     limits: ['Captures require actual visual inspection.',
       cabinOnly ? 'Focused plane-seat checkpoint after a separately recorded boarding check; no airport, house, car or farewell replay.' :
         'One focused airport-gate checkpoint; no house, car or farewell replay.',
@@ -215,14 +254,14 @@ try {
   console.error(error);
   if (session) await session.page.screenshot({ path: '/tmp/o-intercambio-plane-glb-failure.png' }).catch(() => {});
   writeFileSync('/tmp/o-intercambio-plane-glb-results.json', JSON.stringify({ status: 'failed', error: String(error),
-    pictures, route, movement, reviewNotes, seated, windowView, returned, boarding, reflection, arrival,
+    pictures, route, movement, reviewNotes, seated, aisleView, windowView, returned, boarding, reflection, arrival,
     state: session ? await snapshot(session.page).catch(() => null) : null,
     errors: session?.errors, consoleErrors: session?.consoleErrors, failedAssets: session?.failed }, null, 2));
   if (session && process.env.INTERCAMBIO_DEBUG === '1') {
     const repl = (await import('node:repl')).start({ prompt: 'cabin-glb-debug> ' });
     repl.context.qa = { ...session, browser, snapshot, capture, waitFrames, waitPhase, lookAt, hold,
-      faceYaw, aimInteraction, pause, moveToGate, seatedView, parentsStayInBrazil, observe, stopObservation,
-      pictures, route, movement, reviewNotes, initial, seated, windowView, returned, boarding, reflection, arrival,
+      faceYaw, aimInteraction, pause, moveToGate, seatedView, parentsStayInBrazil, passengersView, observe, stopObservation,
+      pictures, route, movement, reviewNotes, initial, seated, aisleView, windowView, returned, boarding, reflection, arrival,
       AIRPORT_GATE, PLANE_SEAT, PLANE_WINDOW, PLANE_LOOK_LIMITS };
     repl.context.continueFlow = () => repl.close();
     await new Promise(resolve => repl.once('exit', resolve));

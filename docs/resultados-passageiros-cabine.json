@@ -1,0 +1,89 @@
+{
+  "status": "passed",
+  "asset": {
+    "sourceArchive": "INTERCAMBIO_30_NPCS_PASSAGEIROS.zip",
+    "file": "public/models/passageiros_intercambio.glb",
+    "bytes": 9191520,
+    "sha256": "4c0a5a4b5a1afc8a5429ab9bbe867fa46d34eef777ee3a6b2621b135ac7b55de",
+    "sourceGlbsBytes": 50506920,
+    "actors": 30,
+    "quality": {
+      "geometryDecimated": false,
+      "imagesReencoded": false,
+      "imagesDownscaled": false,
+      "facialMorphTargetsPreserved": true,
+      "sourceCabinPosePreserved": true,
+      "unusedLocomotionClipsOmitted": true
+    },
+    "exactSourcePosedVertices": true,
+    "maxSourcePosePositionDifference": 0
+  },
+  "seating": {
+    "calibration": "Uniform scale .90; supplied cabin pose applied once; subtle root breathing only",
+    "placement": "Measured economy seats; 27 in front and 3 behind; protagonist row and window lean reserved",
+    "cushionContactGapMetres": 0.003972,
+    "footMinY": -0.005000270641968729,
+    "headTopYRange": [
+      1.2326636432444076,
+      1.2586106888369528
+    ]
+  },
+  "validation": {
+    "typecheck": "passed",
+    "productionBuild": "passed",
+    "focusedUnitTests": {
+      "passed": 5,
+      "files": [
+        "tests/cabin-passengers.test.mjs",
+        "tests/plane.test.mjs"
+      ]
+    },
+    "browser": {
+      "checkpoint": "Existing plane-seat checkpoint; prior Gate 24 coverage retained separately",
+      "loadedActors": 30,
+      "seatedPoses": 30,
+      "enabledActorsInCabin": 30,
+      "runningRigClips": 0,
+      "meshes": 60,
+      "skins": 30,
+      "vertices": 453600,
+      "triangles": 732840,
+      "movementAndLook": "Translation remains locked; bounded mouse look exercised",
+      "window": "Smooth focus and return; both existing text reflections observed",
+      "reflections": [
+        "É estranho... Estou realmente indo.",
+        "Tomara que tudo dê certo."
+      ],
+      "arrival": {
+        "stage": "town",
+        "mission": "find-host",
+        "enabledCabinActors": 0,
+        "restoredCamera": {
+          "fov": 1.13,
+          "minZ": 0.045,
+          "maxZ": 95
+        },
+        "cameraOverrideActive": false,
+        "outsideMeshesHidden": 0
+      },
+      "errors": [],
+      "consoleErrors": [],
+      "failedAssets": []
+    },
+    "actualCapturesInspected": [
+      "assento",
+      "corredor",
+      "janela"
+    ]
+  },
+  "captures": [
+    "capturas/aviao-passageiros-assento.png",
+    "capturas/aviao-passageiros-corredor.png",
+    "capturas/aviao-passageiros-janela.png"
+  ],
+  "limits": [
+    "Chromium/Linux with SwiftShader software rendering; no physical GPU or FPS benchmark.",
+    "Only the cabin-to-arrival flow was replayed; house, car, airport farewell and Gate 24 were not replayed.",
+    "Existing cabin geometry, cameras, parents, arrival, missions and dialogue text were preserved; no voices added."
+  ]
+}

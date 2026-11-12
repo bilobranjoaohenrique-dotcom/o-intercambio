@@ -14,6 +14,8 @@ import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import '@babylonjs/loaders/glTF';
 import type { InteractionTarget } from '../game/types';
 import { PLANE_MODEL, PLANE_CAMERA, PLANE_SEAT, PLANE_WINDOW } from '../game/planeLayout';
+import { CABIN_PASSENGER_SEATS } from '../game/cabinPassengerLayout';
+import { loadCabinPassengers } from './cabinPassengers';
 
 /** The supplied Blender cabin, including its original wing and exterior,
  * stays in one local set. The existing first-person flight sequence owns input. */
@@ -39,6 +41,7 @@ export function buildPlane(scene: Scene, parent: TransformNode) {
   ambient.diffuse.set(.83, .85, .94); ambient.groundColor.set(.27, .25, .30); ambient.intensity = .64;
   ambient.includedOnlyMeshes = meshes; ambient.setEnabled(false);
   let container: AssetContainer | null = null, active = false, disposed = false, loaded = false, error: string | null = null;
+  let passengers: Awaited<ReturnType<typeof loadCabinPassengers>> | null = null;
   let materialCount = 0, textureCount = 0, cloudLayers = 0, wing = false, elapsed = 0, cloudOffset = 0;
   let savedCamera: { camera: Camera; fov: number; minZ: number; maxZ: number } | null = null;
   const hiddenOutsideMeshes: AbstractMesh[] = [];
@@ -53,7 +56,7 @@ export function buildPlane(scene: Scene, parent: TransformNode) {
   }
   const ready = LoadAssetContainerAsync(PLANE_MODEL.source, scene, {
     pluginExtension: '.glb', pluginOptions: { gltf: { animationStartMode: 0 } },
-  }).then(value => {
+  }).then(async value => {
     if (disposed) { value.dispose(); return; }
     container = value;
     const nodes = [...value.transformNodes, ...value.meshes], imported = new Set<TransformNode>(nodes);
@@ -68,8 +71,12 @@ export function buildPlane(scene: Scene, parent: TransformNode) {
       if (/^wing_(port|starboard)/.test(mesh.name)) wing = true;
     }
     cloudLayers = cloudNames.size;
+    passengers = await loadCabinPassengers(scene, root, CABIN_PASSENGER_SEATS);
+    if (disposed) { passengers.dispose(); return; }
+    importedMeshes.push(...passengers.meshes);
     meshes.push(...importedMeshes);
-    materialCount = value.materials.length; textureCount = value.textures.length;
+    materialCount = value.materials.length + passengers.materials.length;
+    textureCount = value.textures.length + passengers.diagnostics.textures;
     for (const material of value.materials) {
       if ('maxSimultaneousLights' in material) material.maxSimultaneousLights = 4;
       // Both cloud images and their alpha remain aligned while UVs drift.
@@ -118,11 +125,13 @@ export function buildPlane(scene: Scene, parent: TransformNode) {
       if (!active || !loaded || disposed) return;
       elapsed = time; cloudOffset = (Math.max(0, time) * .003) % 1;
       for (const [texture, base] of cloudTextures) { texture.uOffset = base.u + cloudOffset; texture.vOffset = base.v + time * .0006; }
+      passengers?.animate(time);
     },
     get diagnostics() { return { active, ready: loaded && !error, loaded, error, source: PLANE_MODEL.source,
       seat: PLANE_SEAT, window: PLANE_WINDOW.target, screenOn: false,
       wing, cloudLayers, cloudTextures: cloudTextures.size, cloudOffset, elapsed,
       parents: 0, protagonistBodyMeshes: 0, knees: 0,
+      passengers: passengers?.diagnostics ?? { ready: false, loaded: false, count: 0, posedCount: 0 },
       meshes: importedMeshes.length, materials: materialCount, textures: textureCount,
       lights: embeddedLights.length + 1, embeddedLights: embeddedLights.length,
       camera: scene.activeCamera ? { fov: scene.activeCamera.fov, minZ: scene.activeCamera.minZ, maxZ: scene.activeCamera.maxZ } : null,
@@ -133,7 +142,7 @@ export function buildPlane(scene: Scene, parent: TransformNode) {
     dispose() {
       if (disposed) return; disposed = true; restoreCamera(); restoreOutsideMeshes();
       for (const light of oldLights) light.excludedMeshes = light.excludedMeshes.filter(mesh => !meshes.includes(mesh));
-      container?.dispose(); ambient.dispose(); windowProxy.dispose(); proxyMaterial.dispose(); root.dispose(false, false);
+      passengers?.dispose(); container?.dispose(); ambient.dispose(); windowProxy.dispose(); proxyMaterial.dispose(); root.dispose(false, false);
     },
   };
 }
