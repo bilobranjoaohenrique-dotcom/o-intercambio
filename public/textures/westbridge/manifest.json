@@ -1,0 +1,372 @@
+{
+  "source": "public/models/backups/westbridge-original.glb",
+  "sourceSha256": "1df6a28d7950ae4d022590e598c0812a0c524a3c5a71373a1fea24960ed0c721",
+  "file": "public/models/westbridge.glb",
+  "bytes": 18629436,
+  "sha256": "c26eee992f8141b14a6c30779984adcc62fce45bc9a9742fd61ccf008e04ac2d",
+  "geometry": {
+    "meshes": 105,
+    "nodes": 110,
+    "unchangedGeometryBufferViews": 477,
+    "sha256": "32ee67cd53e9027343650c77218f025c2d2242a2be15fff6d1df7fee73a46268",
+    "binaryPrefixExact": true,
+    "positionsNormalsIndicesUvsAndTransformsExact": true,
+    "onlyPrimitiveMaterialRemap": {
+      "mesh": 103,
+      "primitive": 0,
+      "from": 5,
+      "to": 50,
+      "authoredUvSet": 0
+    }
+  },
+  "materials": 51,
+  "textures": [
+    {
+      "index": 0,
+      "file": "00-Aggregate asphalt.png",
+      "width": 512,
+      "height": 512,
+      "bytes": 200655,
+      "sha256": "a937a457fd61d482c3da5fc0d3b311bd7ca4dcb300004f40b7ff4735435c1b03"
+    },
+    {
+      "index": 1,
+      "file": "01-Driveway concrete.png",
+      "width": 512,
+      "height": 512,
+      "bytes": 170617,
+      "sha256": "8101875ec2a0235959e75c9cdfd2dead1832f9fbbe1f2df178ce06cb8c1d16e6"
+    },
+    {
+      "index": 2,
+      "file": "02-Dry lawn.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 82627,
+      "sha256": "13bc78bc595cca86071778efcdf4e6fa8cbe37642ac75971d66c7cdc75812d62"
+    },
+    {
+      "index": 3,
+      "file": "03-Faded yellow road paint.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 38509,
+      "sha256": "64aa60327dbb24a8adf6e10d44274631a508b5d851e20cb989e097325cef82f8"
+    },
+    {
+      "index": 4,
+      "file": "04-props.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 25024,
+      "sha256": "97337aaa08a77d719f35639c65d31fbf981678429c223279053d50bca39debed"
+    },
+    {
+      "index": 5,
+      "file": "05-Road paint.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 37884,
+      "sha256": "f174122a75dc704e167a58b76588867114749ad23eb8f5ef0b072573e5a4b7e3"
+    },
+    {
+      "index": 6,
+      "file": "06-Weathered cedar.png",
+      "width": 512,
+      "height": 512,
+      "bytes": 113417,
+      "sha256": "901ace42a5e1037cea3cb8b8e24096ff4ea9559e446a77932edcace53c2d1b2a"
+    },
+    {
+      "index": 7,
+      "file": "07-Worn concrete.png",
+      "width": 512,
+      "height": 512,
+      "bytes": 172202,
+      "sha256": "f55cfde34078f060cb2d6f0a95d4d7fd5bd5b53840bdf2cc0c7f0b57e6a005bc"
+    },
+    {
+      "index": 8,
+      "file": "08-BrickTan.png",
+      "width": 512,
+      "height": 512,
+      "bytes": 198143,
+      "sha256": "a00cff758f9abc8cc5ff3e6a9caa7c7aa582c73cdc9daf53e0c7501602ca03b6"
+    },
+    {
+      "index": 9,
+      "file": "09-BrickTanDark.png",
+      "width": 512,
+      "height": 512,
+      "bytes": 197509,
+      "sha256": "a56656b0a51f5d19b926e7736164636d4ca1cce1d8a39f53332c5a69ceda6c3e"
+    },
+    {
+      "index": 10,
+      "file": "10-Cream.png",
+      "width": 512,
+      "height": 512,
+      "bytes": 226579,
+      "sha256": "4e919625073dae3637cae79fc81c5169d883a28fda42c0727e0c653d90ee13b2"
+    },
+    {
+      "index": 11,
+      "file": "11-CreamShade.png",
+      "width": 512,
+      "height": 512,
+      "bytes": 170996,
+      "sha256": "f01b53b0d7eb3e876d15805a5bf2aaf7f3a299deb93edff83430e88702a1e5bf"
+    },
+    {
+      "index": 12,
+      "file": "12-Fire.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 30030,
+      "sha256": "64a1bea44f8e0f24040a9abfdc8682584ae58f2d9c66622aa1817e58b0f98d3f"
+    },
+    {
+      "index": 13,
+      "file": "13-Foliage.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 81384,
+      "sha256": "8931228ac2d48862f9482173ccd27ac33135f6344d707194871cd4ba389407d2"
+    },
+    {
+      "index": 14,
+      "file": "14-FoliageDark.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 74813,
+      "sha256": "4cd60f84da4e123117fe474326b0cd94dccf5d7aeef977fa932792b37d6536b0"
+    },
+    {
+      "index": 15,
+      "file": "15-Garden foliage 0.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 80403,
+      "sha256": "e1241f46bdabacb2ff64a689e13bb2852377febaa4f6306f854de67a1c8d46f1"
+    },
+    {
+      "index": 16,
+      "file": "16-Garden foliage 1.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 82625,
+      "sha256": "5136ff31deddd4144ae4c34824f1a59b94dc36df843bd35be58dc236920cb8f3"
+    },
+    {
+      "index": 17,
+      "file": "17-Garden foliage 2.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 73864,
+      "sha256": "2fa616ac1e8a1120ac03298af465993e1ab9ba935dfeee466fe7f17db1b02722"
+    },
+    {
+      "index": 18,
+      "file": "18-Garden foliage 3.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 90038,
+      "sha256": "9ac4bd7853dabec6d5d26ca087c1e15d9637779de90cb87c61fad399a7c0b6e2"
+    },
+    {
+      "index": 19,
+      "file": "19-Garden foliage 4.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 82321,
+      "sha256": "dede277bd26bb6fcec76fa3b2fbfb0495580c36b7f16c02cfde63402fd7e1313"
+    },
+    {
+      "index": 20,
+      "file": "20-Gold.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 30135,
+      "sha256": "8ffd4d3b2d38938bc6dae8ac0593328f1abc411b759e17bb089dac474f3eaab9"
+    },
+    {
+      "index": 21,
+      "file": "21-Iron.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 29803,
+      "sha256": "3bc82b4a1ed8fa7a4458cc24696b8fe1bd136af36976a8c15dbe0404ce98aae0"
+    },
+    {
+      "index": 22,
+      "file": "22-PaintBlue.png",
+      "width": 512,
+      "height": 512,
+      "bytes": 213535,
+      "sha256": "1243bd72ef8aeea5da0ca47ec0107df99e6c57dc1e61f9eb0157275e15d3d354"
+    },
+    {
+      "index": 23,
+      "file": "23-PaintGreen.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 29750,
+      "sha256": "8eea3b6392050129f82f01743b9246dbdd6727036a4d056b0d16749ef4fef126"
+    },
+    {
+      "index": 24,
+      "file": "24-PaintOrange.png",
+      "width": 512,
+      "height": 512,
+      "bytes": 222903,
+      "sha256": "92aee366e98eae1f1c5635ff14fc92efd18a273ceaf3b133442d0a873c9fb5a0"
+    },
+    {
+      "index": 25,
+      "file": "25-PaintRed.png",
+      "width": 512,
+      "height": 512,
+      "bytes": 223211,
+      "sha256": "4e175ac62dbb90c3267d016b4642daa5119a1f5d068fb0391a41cf5da38c65ee"
+    },
+    {
+      "index": 26,
+      "file": "26-PaintRedDark.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 30041,
+      "sha256": "0f2bf7e9d962a48ba9d36d81a3d9f4e77bfc57069bfa41aeaea2ca0e3678d366"
+    },
+    {
+      "index": 27,
+      "file": "27-PaintYellow.png",
+      "width": 512,
+      "height": 512,
+      "bytes": 235908,
+      "sha256": "8d53cc64c6a2c7a98162c9a07d1107345b77177b57225895caaf0309b0d26459"
+    },
+    {
+      "index": 28,
+      "file": "28-RoofShingle.png",
+      "width": 512,
+      "height": 512,
+      "bytes": 175407,
+      "sha256": "1b1e324a96356bbaaece7f5a3b7820e6e5c467a5155ea9b0358a1ab9a0152c3d"
+    },
+    {
+      "index": 29,
+      "file": "29-Soil.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 39618,
+      "sha256": "668655e18f833e618bab7357c0fcf78978ff926702f90f47d2976ccafcabfb9e"
+    },
+    {
+      "index": 30,
+      "file": "30-Stone.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 47630,
+      "sha256": "162eabc9a9b035ed8646288b0f25b36dbcb00f030f6f6738e8c7f2ca5e1feb4f"
+    },
+    {
+      "index": 31,
+      "file": "31-StoneDark.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 46554,
+      "sha256": "41f7abd0fa208ae0804eded2c85335e6f68e45dd2d8a0fb5260888ef069d2360"
+    },
+    {
+      "index": 32,
+      "file": "32-Water.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 22648,
+      "sha256": "73e63c50db32f90ddde671ccf77f177f40008e07c2d1a6647e9a1ed14a4d93df"
+    },
+    {
+      "index": 33,
+      "file": "33-Wood.png",
+      "width": 512,
+      "height": 512,
+      "bytes": 119420,
+      "sha256": "f782029cb4cd2b0687a551bdd70d2b6858dde97de7550ca7d0dadeb1ff0b566b"
+    },
+    {
+      "index": 34,
+      "file": "34-WoodDark.png",
+      "width": 512,
+      "height": 512,
+      "bytes": 113665,
+      "sha256": "51d09ecc2d98b8bf5340a1d75a70348c109c72e30480be730b6324abf7c7c061"
+    },
+    {
+      "index": 35,
+      "file": "35-Mown lawn.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 81543,
+      "sha256": "f81f30c8ed3808c50224b6b084ef545c0ebc9919719581f126f7e3863e7fc6b4"
+    },
+    {
+      "index": 36,
+      "file": "36-Mulch.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 73088,
+      "sha256": "3a77e96e9933830f4aaa41c4eedaed06a98d571efbfc6af5c6edf3f5b7e492a9"
+    },
+    {
+      "index": 37,
+      "file": "37-Painted fence.png",
+      "width": 512,
+      "height": 512,
+      "bytes": 177768,
+      "sha256": "9022a4fb3e7c8978fa97556328167d86a1e8db4a3ae3ab857b2356803beb31b1"
+    },
+    {
+      "index": 38,
+      "file": "38-SidingBlue.png",
+      "width": 512,
+      "height": 512,
+      "bytes": 207366,
+      "sha256": "3ed10bac7cff70e8609e66943e3a203263db98a3f8cf1d76e8562aa40ced27e2"
+    },
+    {
+      "index": 39,
+      "file": "39-Window glass.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 40316,
+      "sha256": "34c868ee26eb15a4c5d6c96e2921da1b7ab0c39fbbe0ac9c484ed3bf5d9dcc89"
+    },
+    {
+      "index": 40,
+      "file": "40-Hardware coating.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 27763,
+      "sha256": "54c30e509a1a0fd37e6266cc37fb6f3ee4024498e80367eb9ff1f818205e95b5"
+    },
+    {
+      "index": 41,
+      "file": "41-Flower petals.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 26288,
+      "sha256": "fe91b70f3c6763052e50aad89a1624dfcaf1ea38382078dbf18f8aa8aa34d419"
+    },
+    {
+      "index": 42,
+      "file": "42-Tree authored UV atlas.png",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 23881,
+      "sha256": "549c7088ce086cdcf59424784e49a44893672d5a8798dd6019791cc240315f45"
+    }
+  ],
+  "textureRgbaBytesBeforeMipmaps": 28573696,
+  "sourceTextureRgbaBytesBeforeMipmaps": 2555904,
+  "note": "Only material/image payload and one isolated tree material assignment changed. No scene, camera, light, collision or gameplay edits."
+}

@@ -1,0 +1,143 @@
+{
+  "status": "passed",
+  "asset": {
+    "source": "public/models/backups/westbridge-original.glb",
+    "sourceSha256": "1df6a28d7950ae4d022590e598c0812a0c524a3c5a71373a1fea24960ed0c721",
+    "file": "public/models/westbridge.glb",
+    "bytes": 18629436,
+    "sha256": "c26eee992f8141b14a6c30779984adcc62fce45bc9a9742fd61ccf008e04ac2d",
+    "geometry": {
+      "meshes": 105,
+      "nodes": 110,
+      "unchangedGeometryBufferViews": 477,
+      "sha256": "32ee67cd53e9027343650c77218f025c2d2242a2be15fff6d1df7fee73a46268",
+      "binaryPrefixExact": true,
+      "positionsNormalsIndicesUvsAndTransformsExact": true,
+      "onlyPrimitiveMaterialRemap": {
+        "mesh": 103,
+        "primitive": 0,
+        "from": 5,
+        "to": 50,
+        "authoredUvSet": 0
+      }
+    },
+    "materials": 51
+  },
+  "textures": {
+    "count": 43,
+    "externalFolder": "public/textures/westbridge",
+    "embedded": true,
+    "opaque": true,
+    "dimensions": "256/512; authored tree atlas1024",
+    "sourceRgbaBytesBeforeMipmaps": 2555904,
+    "rgbaBytesBeforeMipmaps": 28573696,
+    "sampler": "Original LINEAR / LINEAR_MIPMAP_LINEAR preserved"
+  },
+  "checks": {
+    "typecheckAndBuild": "passed",
+    "focusedUnitTests": 3,
+    "babylonImport": "passed",
+    "actualCapturesInspected": [
+      "rua",
+      "casa",
+      "esquina",
+      "jardim",
+      "bairro"
+    ],
+    "meshCount": 105,
+    "vertices": 337262,
+    "triangles": 137036,
+    "bounds": {
+      "min": {
+        "x": -130,
+        "y": -8.204045241288911,
+        "z": -120.16506813617296
+      },
+      "max": {
+        "x": 130,
+        "y": 16.171169765488486,
+        "z": 115.92149788799946
+      }
+    },
+    "sameFiveCamerasAndReviewLighting": true,
+    "allTexturesReady": true,
+    "errors": [],
+    "consoleErrors": [],
+    "failedAssets": []
+  },
+  "performance": {
+    "environment": "Chromium/Linux ANGLE SwiftShader software rendering",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "original": {
+      "frameIntervalMs": {
+        "samples": 23,
+        "mean": 312.45652173913044,
+        "p95": 614
+      },
+      "renderCpuMs": {
+        "samples": 24,
+        "mean": 1.562500002483527,
+        "p95": 1.800000011920929
+      },
+      "internal": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    "remaster": {
+      "frameIntervalMs": {
+        "samples": 23,
+        "mean": 333.25652173809385,
+        "p95": 596.5
+      },
+      "renderCpuMs": {
+        "samples": 24,
+        "mean": 2.50416665772597,
+        "p95": 5.900000035762787
+      },
+      "internal": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    "frameIntervalMeanChangePercent": 6.656926180702127,
+    "limit": "One short warmed stationary sample per asset; variable software timings, not a physical GPU/FPS or total VRAM benchmark."
+  },
+  "reviewHistory": [
+    "First comparison exposed repetitive painted chips; only seven plank albedos were corrected before final captures.",
+    "The original review page requested a missing favicon; a data-URI icon fixed it and a short original-page load verified zero page/console/network errors. Final captures and checks passed.",
+    "Original five angles/sample were reused unchanged for the final after-only check."
+  ],
+  "scope": "New asset material remaster, reviewed separately in Babylon; no imports into game progression, scene lighting, player camera, collision, missions or existing scenarios were changed.",
+  "sourceLimit": "Uploaded GLB contains no sky, cameras or lights; the same neutral local review rig is used for both assets.",
+  "captures": {
+    "rua": {
+      "before": "capturas/westbridge/antes-rua.png",
+      "after": "capturas/westbridge/depois-rua.png",
+      "comparison": "capturas/westbridge/comparacao-rua.jpg"
+    },
+    "casa": {
+      "before": "capturas/westbridge/antes-casa.png",
+      "after": "capturas/westbridge/depois-casa.png",
+      "comparison": "capturas/westbridge/comparacao-casa.jpg"
+    },
+    "esquina": {
+      "before": "capturas/westbridge/antes-esquina.png",
+      "after": "capturas/westbridge/depois-esquina.png",
+      "comparison": "capturas/westbridge/comparacao-esquina.jpg"
+    },
+    "jardim": {
+      "before": "capturas/westbridge/antes-jardim.png",
+      "after": "capturas/westbridge/depois-jardim.png",
+      "comparison": "capturas/westbridge/comparacao-jardim.jpg"
+    },
+    "bairro": {
+      "before": "capturas/westbridge/antes-bairro.png",
+      "after": "capturas/westbridge/depois-bairro.png",
+      "comparison": "capturas/westbridge/comparacao-bairro.jpg"
+    }
+  }
+}

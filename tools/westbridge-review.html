@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="icon" href="data:," />
+    <title>INTERCÂMBIO — revisão de Westbridge</title>
+    <style>
+      html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#999f97;color:#eee;font:14px system-ui}
+      canvas{display:block;width:100%;height:100%;outline:none}
+      aside{position:absolute;top:12px;left:12px;display:flex;gap:10px;align-items:center;padding:10px;background:#171b1bea;border:1px solid #858578}
+      select{background:#252c2a;color:#fff;border:1px solid #777;padding:5px}
+      #status{position:absolute;left:12px;bottom:12px;padding:8px;background:#171b1bea}
+      body.capture aside,body.capture #status{display:none}
+    </style>
+  </head>
+  <body>
+    <canvas id="review" tabindex="0"></canvas>
+    <aside>
+      <strong>Westbridge · revisão de materiais</strong>
+      <select id="variant"><option value="remaster">Remasterização</option><option value="original">Original</option></select>
+      <select id="view"></select>
+    </aside>
+    <output id="status">Carregando GLB…</output>
+    <script type="module" src="./westbridge-review.ts"></script>
+  </body>
+</html>

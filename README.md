@@ -181,6 +181,12 @@ O GLB enviado `interior_chegada_ps2_com_npcs.glb`, em `public/models/chegada_int
 
 Verificação focal: `node --test --test-isolation=none tests/arrival.test.mjs tests/plane.test.mjs` e, com a prévia aberta, `INTERCAMBIO_URL=http://localhost:4180 npm run test:arrival`. [Entrada real](docs/capturas/chegada-glb-entrada.png), [anfitriões](docs/capturas/chegada-glb-anfitrioes.png) e [registro breve](docs/resultados-chegada-glb.json). Chromium/Linux com SwiftShader, sem benchmark de desempenho.
 
+## Westbridge — materiais PS2
+
+O bairro enviado recebeu uma remasterização exclusivamente de materiais: 43 texturas de 256–1024 px, fachadas e telhados detalhados, vegetação, asfalto/concreto e vidros discretos. As 105 malhas, posições, topologia e UVs foram preservadas; as árvores brancas usam agora uma atribuição local de material com os UVs originais. O arquivo foi validado no Babylon.js em cinco ângulos iguais ao original. Esta entrega de asset não altera as fases conectadas do jogo.
+
+[Pacote para baixar](docs/entregas/Westbridge-remaster.zip), [modelo GLB](public/models/westbridge.glb) e [relatório com cinco comparações reais e custo de renderização](docs/WESTBRIDGE-REMASTER.md). Build e três testes focais passaram; revisão em Chromium/Linux com SwiftShader, sem benchmark de GPU física.
+
 ## Estrutura
 
 - `src/scene/`: quarto/casa e cenários 3D do capítulo.
