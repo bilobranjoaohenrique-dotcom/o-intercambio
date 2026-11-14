@@ -16,6 +16,8 @@ import { RenderTargetTexture } from '@babylonjs/core/Materials/Textures/renderTa
 import { ImageProcessingConfiguration } from '@babylonjs/core/Materials/imageProcessingConfiguration';
 import '@babylonjs/core/Lights/Shadows/shadowGeneratorSceneComponent';
 import type { Settings } from '../game/types';
+import { WB_HOST_PORCH_CLEARANCE } from '../game/westbridgeHouseScale';
+import { WB_PORCH_HEIGHT } from '../game/westbridgeLayout';
 
 export type WestbridgeTime = 'afternoon' | 'night';
 const point = (x: number, y: number, z: number) => new Vector3(500-x,y,z);
@@ -30,7 +32,7 @@ export function createWestbridgeLighting(scene: Scene, parent: TransformNode, in
   // The host facade faces +Z. Light from the street warms that facade and
   // places the static shadow frustum over its real driveway/porch footprint.
   sun.position.set(535,42,40);sun.shadowMinZ=.1;sun.shadowMaxZ=350;sun.shadowFrustumSize=180;
-  const porch=new PointLight('Westbridge · varanda dos anfitriões',point(20.06,2.25,-12.1),scene);
+  const porch=new PointLight('Westbridge · varanda dos anfitriões',point(20.96,WB_PORCH_HEIGHT+WB_HOST_PORCH_CLEARANCE-.11,-12.1),scene);
   // Measured source diffuser centres: X1/X25, Y5.7236, Z4.2624. Emit just
   // below the real housings instead of lighting an empty point between poles.
   const streetA=new PointLight('Westbridge · poste da esquina',point(1,5.65,4.2624),scene);

@@ -1,6 +1,7 @@
 import type { Point2, Point3 } from './layout';
 import { EYE_HEIGHT } from './layout';
 import type { Obstacle } from './types';
+import { WB_HOST_DOOR_BASE, WB_HOUSE_DOOR_HEIGHT } from './westbridgeHouseScale';
 
 /** A container translation isolates the neighbourhood; authored nodes stay intact.
  * Babylon's default glTF handedness root mirrors source X, not source Z. */
@@ -8,7 +9,7 @@ export const WB_ORIGIN_X = 500;
 export const wbPoint = (x: number, y: number, z: number): Point3 => ({ x: WB_ORIGIN_X - x, y, z });
 export const WB_SOURCE = '/models/westbridge.glb';
 export const WB_HOST_ID = 'HOST_FAMILY_HOUSE_DANIEL_HELEN';
-export const WB_HOST_DOOR = wbPoint(20.0565, 1.28, -12.665);
+export const WB_HOST_DOOR = wbPoint(20.0565, WB_HOST_DOOR_BASE + WB_HOUSE_DOOR_HEIGHT / 2, -12.665);
 export const WB_MAILBOX = wbPoint(27.2, 1.12, -5.48);
 export const WB_PORCH_HEIGHT = .371855;
 export const WB_HOST_APPROACH = wbPoint(20.0565, WB_PORCH_HEIGHT + EYE_HEIGHT, -11.7);

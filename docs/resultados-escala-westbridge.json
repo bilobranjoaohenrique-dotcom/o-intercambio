@@ -1,0 +1,894 @@
+{
+  "status": "passed",
+  "baselineCommit": "1171663ea935ca800b216363d6a9da2ed10e7f00",
+  "method": {
+    "before": "Unmodified HEAD source served from isolated git archive with shared unchanged public assets.",
+    "after": "Current corrected source, same source GLB/materials.",
+    "fixedImages": "Running Babylon.js on Vite; HTTP-only test injection sets exact player-camera poses. This hook is not in production.",
+    "movement": "Separate real mouse/W input follows the path from supported parked-car checkpoint to porch and door, then verifies continued wall blocking.",
+    "referenceImage": "Neighbours view represents the matching NORTH house family pair; its exact pose is not inferred from the user photo. Exact equality applies to our before/after pair."
+  },
+  "viewport": {
+    "width": 1280,
+    "height": 720
+  },
+  "views": [
+    {
+      "id": "ranch-street",
+      "before": "docs/capturas/westbridge-escala/antes-ranch-street.png",
+      "after": "docs/capturas/westbridge-escala/depois-ranch-street.png",
+      "camera": {
+        "position": {
+          "x": 515,
+          "y": 1.7765,
+          "z": -4.5
+        },
+        "yaw": 3.141592653589793,
+        "pitch": -0.12,
+        "fov": 1.05
+      },
+      "exactPoseAndFovMatch": true,
+      "eyeHeightAboveLocalGround": 1.634,
+      "beforeSha256": "da4654181f9c6223a348fab51a25973f0b2817ead44a358ce1b22d9d148803cf",
+      "afterSha256": "5c98281f514d6cc164ac162896e829a5d9aa04080416fca0c5fc2462b8ef5792",
+      "texturesReady": true,
+      "foreignMeshesVisible": 0
+    },
+    {
+      "id": "mansion-street",
+      "before": "docs/capturas/westbridge-escala/antes-mansion-street.png",
+      "after": "docs/capturas/westbridge-escala/depois-mansion-street.png",
+      "camera": {
+        "position": {
+          "x": 441,
+          "y": 1.7765,
+          "z": -4.5
+        },
+        "yaw": 3.141592653589793,
+        "pitch": -0.12,
+        "fov": 1.05
+      },
+      "exactPoseAndFovMatch": true,
+      "eyeHeightAboveLocalGround": 1.634,
+      "beforeSha256": "a67260b028db8f1ed853299e0f3506f9fe043df99014ad9b7631ef187b8dcf49",
+      "afterSha256": "f73ddf2b57c09a59186b86a3047cbe1282ccd7a1542348afdf7eb0a92052f74a",
+      "texturesReady": true,
+      "foreignMeshesVisible": 0
+    },
+    {
+      "id": "neighbours",
+      "before": "docs/capturas/westbridge-escala/antes-neighbours.png",
+      "after": "docs/capturas/westbridge-escala/depois-neighbours.png",
+      "camera": {
+        "position": {
+          "x": 490.5,
+          "y": 1.7555,
+          "z": -5.1
+        },
+        "yaw": 0,
+        "pitch": -0.12,
+        "fov": 1.05
+      },
+      "exactPoseAndFovMatch": true,
+      "eyeHeightAboveLocalGround": 1.65,
+      "beforeSha256": "669fa42cdfc815428ff75b4149f0657981d637aa818ecade698a1dc8237d3573",
+      "afterSha256": "199cac24bb6be7d28c29037d4470e611f2f3d0e1701a5a11d0ba4b3fd3f756fb",
+      "texturesReady": true,
+      "foreignMeshesVisible": 0
+    }
+  ],
+  "navigation": {
+    "status": "passed",
+    "movement": [
+      {
+        "action": "real WASD walking",
+        "target": {
+          "x": 479.9435,
+          "y": 1.7765,
+          "z": -7.55
+        },
+        "position": {
+          "x": 479.9063863106549,
+          "y": 1.7764899008839685,
+          "z": -7.553058274900544
+        }
+      },
+      {
+        "action": "real WASD walking",
+        "target": {
+          "x": 479.9435,
+          "y": 1.7765,
+          "z": -10.4
+        },
+        "position": {
+          "x": 479.9480923092609,
+          "y": 1.7765,
+          "z": -10.449107986521565
+        }
+      },
+      {
+        "action": "real WASD walking",
+        "target": {
+          "x": 479.9435,
+          "y": 2.021855,
+          "z": -11.7
+        },
+        "position": {
+          "x": 479.94514031209445,
+          "y": 2.0218105070589174,
+          "z": -11.679104444123272
+        }
+      },
+      {
+        "action": "door reachable by real walking/raycast",
+        "position": {
+          "x": 479.94514031209445,
+          "y": 2.0218549932934424,
+          "z": -11.679104444123272
+        },
+        "interaction": "wb-house-door"
+      },
+      {
+        "action": "house wall blocks real continued W",
+        "blocked": {
+          "x": 479.9392374697611,
+          "y": 2.021855,
+          "z": -12.45539448732385
+        },
+        "stopped": {
+          "x": 479.9381852231707,
+          "y": 2.021855,
+          "z": -12.45539448732385
+        }
+      }
+    ],
+    "errors": [],
+    "consoleErrors": [],
+    "failedAssets": []
+  },
+  "calibration": {
+    "version": "measured-house-proportions-1",
+    "units": "metres",
+    "houses": [
+      {
+        "id": "HOST_FAMILY_HOUSE_DANIEL_HELEN",
+        "family": "host",
+        "xzScale": 1,
+        "bodyScaleY": 1,
+        "components": 254,
+        "changedVertices": 1268,
+        "doors": [
+          {
+            "sourceHeight": 1.7585157454013824,
+            "height": 2.03,
+            "factorY": 1.1543826123300653,
+            "base": 0.40041622519493103
+          }
+        ],
+        "garages": [],
+        "roofComponents": 8,
+        "porchSupports": 6,
+        "sourceBounds": {
+          "min": [
+            14.84000015258789,
+            0.06499999761581421,
+            -19.377880096435547
+          ],
+          "max": [
+            27.15999984741211,
+            8.893220901489258,
+            -10.622119903564453
+          ]
+        },
+        "correctedBounds": {
+          "min": [
+            14.84000015258789,
+            0.06499999761581421,
+            -19.377880096435547
+          ],
+          "max": [
+            27.15999984741211,
+            8.893220901489258,
+            -10.622119903564453
+          ]
+        }
+      },
+      {
+        "id": "south-cozy--57",
+        "family": "cozy",
+        "xzScale": 1,
+        "bodyScaleY": 1,
+        "components": 94,
+        "changedVertices": 711,
+        "doors": [
+          {
+            "sourceHeight": 2.3589040338993073,
+            "height": 2.03,
+            "factorY": 0.8605691333039845,
+            "base": 0.38143834471702576
+          }
+        ],
+        "garages": [],
+        "roofComponents": 0,
+        "porchSupports": 0,
+        "sourceBounds": {
+          "min": [
+            -61.4876708984375,
+            0.06499999761581421,
+            -19.5
+          ],
+          "max": [
+            -52.512332916259766,
+            7.026643753051758,
+            -10.323287963867188
+          ]
+        },
+        "correctedBounds": {
+          "min": [
+            -61.4876708984375,
+            0.06499999761581421,
+            -19.5
+          ],
+          "max": [
+            -52.512332916259766,
+            7.026643753051758,
+            -10.323287963867188
+          ]
+        }
+      },
+      {
+        "id": "south-cozy-3",
+        "family": "cozy",
+        "xzScale": 1,
+        "bodyScaleY": 1,
+        "components": 94,
+        "changedVertices": 669,
+        "doors": [
+          {
+            "sourceHeight": 2.3589040338993073,
+            "height": 2.03,
+            "factorY": 0.8605691333039845,
+            "base": 0.38143834471702576
+          }
+        ],
+        "garages": [],
+        "roofComponents": 0,
+        "porchSupports": 0,
+        "sourceBounds": {
+          "min": [
+            -1.4876713752746582,
+            0.06499999761581421,
+            -19.5
+          ],
+          "max": [
+            7.487667560577393,
+            7.026643753051758,
+            -10.323287963867188
+          ]
+        },
+        "correctedBounds": {
+          "min": [
+            -1.4876713752746582,
+            0.06499999761581421,
+            -19.5
+          ],
+          "max": [
+            7.487667560577393,
+            7.026643753051758,
+            -10.323287963867188
+          ]
+        }
+      },
+      {
+        "id": "north-cozy--21",
+        "family": "cozy",
+        "xzScale": 1,
+        "bodyScaleY": 1,
+        "components": 94,
+        "changedVertices": 676,
+        "doors": [
+          {
+            "sourceHeight": 2.3589040338993073,
+            "height": 2.03,
+            "factorY": 0.8605691333039845,
+            "base": 0.38143834471702576
+          }
+        ],
+        "garages": [],
+        "roofComponents": 0,
+        "porchSupports": 0,
+        "sourceBounds": {
+          "min": [
+            -25.487667083740234,
+            0.06499999761581421,
+            10.323287963867188
+          ],
+          "max": [
+            -16.5123291015625,
+            7.026643753051758,
+            19.5
+          ]
+        },
+        "correctedBounds": {
+          "min": [
+            -25.487667083740234,
+            0.06499999761581421,
+            10.323287963867188
+          ],
+          "max": [
+            -16.5123291015625,
+            7.026643753051758,
+            19.5
+          ]
+        }
+      },
+      {
+        "id": "north-cozy-40",
+        "family": "cozy",
+        "xzScale": 1,
+        "bodyScaleY": 1,
+        "components": 94,
+        "changedVertices": 687,
+        "doors": [
+          {
+            "sourceHeight": 2.3589040338993073,
+            "height": 2.03,
+            "factorY": 0.8605691333039845,
+            "base": 0.38143834471702576
+          }
+        ],
+        "garages": [],
+        "roofComponents": 0,
+        "porchSupports": 0,
+        "sourceBounds": {
+          "min": [
+            35.512332916259766,
+            0.06499999761581421,
+            10.323287963867188
+          ],
+          "max": [
+            44.4876708984375,
+            7.026643753051758,
+            19.5
+          ]
+        },
+        "correctedBounds": {
+          "min": [
+            35.512332916259766,
+            0.06499999761581421,
+            10.323287963867188
+          ],
+          "max": [
+            44.4876708984375,
+            7.026643753051758,
+            19.5
+          ]
+        }
+      },
+      {
+        "id": "south-ranch--45",
+        "family": "ranch",
+        "xzScale": 1,
+        "bodyScaleY": 1.3280178733447054,
+        "components": 95,
+        "changedVertices": 11075,
+        "doors": [
+          {
+            "sourceHeight": 1.3436439633369446,
+            "height": 2.0300126523433137,
+            "factorY": 1.5108263109386286,
+            "base": 0.1597731992342119
+          }
+        ],
+        "garages": [
+          {
+            "sourceHeight": 1.5305083766579628,
+            "height": 2.15,
+            "factorY": 1.404761994635251
+          }
+        ],
+        "roofComponents": 4,
+        "porchSupports": 0,
+        "sourceBounds": {
+          "min": [
+            -51.29999923706055,
+            0.06499999761581421,
+            -31.67966079711914
+          ],
+          "max": [
+            -38.70000076293945,
+            3.6156015396118164,
+            -26.198305130004883
+          ]
+        },
+        "correctedBounds": {
+          "min": [
+            -51.29999923706055,
+            0.06499999761581421,
+            -31.67966079711914
+          ],
+          "max": [
+            -38.70000076293945,
+            4.257796564102173,
+            -26.198305130004883
+          ]
+        }
+      },
+      {
+        "id": "south-ranch--15",
+        "family": "ranch",
+        "xzScale": 1,
+        "bodyScaleY": 1.3280178733447054,
+        "components": 95,
+        "changedVertices": 10830,
+        "doors": [
+          {
+            "sourceHeight": 1.3436439633369446,
+            "height": 2.0300126523433137,
+            "factorY": 1.5108263109386286,
+            "base": 0.1597731992342119
+          }
+        ],
+        "garages": [
+          {
+            "sourceHeight": 1.5305083766579628,
+            "height": 2.15,
+            "factorY": 1.404761994635251
+          }
+        ],
+        "roofComponents": 4,
+        "porchSupports": 0,
+        "sourceBounds": {
+          "min": [
+            -21.299999237060547,
+            0.06499999761581421,
+            -17.67966079711914
+          ],
+          "max": [
+            -8.700000762939453,
+            3.6156015396118164,
+            -12.198304176330566
+          ]
+        },
+        "correctedBounds": {
+          "min": [
+            -21.299999237060547,
+            0.06499999761581421,
+            -17.67966079711914
+          ],
+          "max": [
+            -8.700000762939453,
+            4.257796564102173,
+            -12.198304176330566
+          ]
+        }
+      },
+      {
+        "id": "south-ranch-40",
+        "family": "ranch",
+        "xzScale": 1,
+        "bodyScaleY": 1.3280178733447054,
+        "components": 95,
+        "changedVertices": 11159,
+        "doors": [
+          {
+            "sourceHeight": 1.3436439633369446,
+            "height": 2.0300126523433137,
+            "factorY": 1.5108263109386286,
+            "base": 0.1597731992342119
+          }
+        ],
+        "garages": [
+          {
+            "sourceHeight": 1.5305083766579628,
+            "height": 2.15,
+            "factorY": 1.404761994635251
+          }
+        ],
+        "roofComponents": 4,
+        "porchSupports": 0,
+        "sourceBounds": {
+          "min": [
+            33.70000076293945,
+            0.06499999761581421,
+            -17.67966079711914
+          ],
+          "max": [
+            46.29999923706055,
+            3.6156015396118164,
+            -12.198304176330566
+          ]
+        },
+        "correctedBounds": {
+          "min": [
+            33.70000076293945,
+            0.06499999761581421,
+            -17.67966079711914
+          ],
+          "max": [
+            46.29999923706055,
+            4.257796564102173,
+            -12.198304176330566
+          ]
+        }
+      },
+      {
+        "id": "north-ranch--61",
+        "family": "ranch",
+        "xzScale": 1,
+        "bodyScaleY": 1.3280178733447054,
+        "components": 95,
+        "changedVertices": 11014,
+        "doors": [
+          {
+            "sourceHeight": 1.3436439633369446,
+            "height": 2.0300126523433137,
+            "factorY": 1.5108263109386286,
+            "base": 0.1597731992342119
+          }
+        ],
+        "garages": [
+          {
+            "sourceHeight": 1.5305083766579628,
+            "height": 2.15,
+            "factorY": 1.404761994635251
+          }
+        ],
+        "roofComponents": 4,
+        "porchSupports": 0,
+        "sourceBounds": {
+          "min": [
+            -67.30000305175781,
+            0.06499999761581421,
+            12.198304176330566
+          ],
+          "max": [
+            -54.70000076293945,
+            3.6156015396118164,
+            17.67966079711914
+          ]
+        },
+        "correctedBounds": {
+          "min": [
+            -67.30000305175781,
+            0.06499999761581421,
+            12.198304176330566
+          ],
+          "max": [
+            -54.70000076293945,
+            4.257796564102173,
+            17.67966079711914
+          ]
+        }
+      },
+      {
+        "id": "north-ranch--1",
+        "family": "ranch",
+        "xzScale": 1,
+        "bodyScaleY": 1.3280178733447054,
+        "components": 95,
+        "changedVertices": 10554,
+        "doors": [
+          {
+            "sourceHeight": 1.3436439633369446,
+            "height": 2.0300126523433137,
+            "factorY": 1.5108263109386286,
+            "base": 0.1597731992342119
+          }
+        ],
+        "garages": [
+          {
+            "sourceHeight": 1.5305083766579628,
+            "height": 2.15,
+            "factorY": 1.404761994635251
+          }
+        ],
+        "roofComponents": 4,
+        "porchSupports": 0,
+        "sourceBounds": {
+          "min": [
+            -7.299999713897705,
+            0.06499999761581421,
+            14.198304176330566
+          ],
+          "max": [
+            5.299999713897705,
+            3.6156015396118164,
+            19.67966079711914
+          ]
+        },
+        "correctedBounds": {
+          "min": [
+            -7.299999713897705,
+            0.06499999761581421,
+            14.198304176330566
+          ],
+          "max": [
+            5.299999713897705,
+            4.257796564102173,
+            19.67966079711914
+          ]
+        }
+      },
+      {
+        "id": "north-ranch-60",
+        "family": "ranch",
+        "xzScale": 1,
+        "bodyScaleY": 1.3280178733447054,
+        "components": 95,
+        "changedVertices": 11028,
+        "doors": [
+          {
+            "sourceHeight": 1.3436439633369446,
+            "height": 2.0300126523433137,
+            "factorY": 1.5108263109386286,
+            "base": 0.1597731992342119
+          }
+        ],
+        "garages": [
+          {
+            "sourceHeight": 1.5305083766579628,
+            "height": 2.15,
+            "factorY": 1.404761994635251
+          }
+        ],
+        "roofComponents": 4,
+        "porchSupports": 0,
+        "sourceBounds": {
+          "min": [
+            53.70000076293945,
+            0.06499999761581421,
+            13.198304176330566
+          ],
+          "max": [
+            66.30000305175781,
+            3.6156015396118164,
+            18.67966079711914
+          ]
+        },
+        "correctedBounds": {
+          "min": [
+            53.70000076293945,
+            0.06499999761581421,
+            13.198304176330566
+          ],
+          "max": [
+            66.30000305175781,
+            4.257796564102173,
+            18.67966079711914
+          ]
+        }
+      },
+      {
+        "id": "south-mansion-59",
+        "family": "mansion",
+        "xzScale": 1,
+        "bodyScaleY": 1.6184503338053813,
+        "components": 448,
+        "changedVertices": 14816,
+        "doors": [
+          {
+            "sourceHeight": 1.1350370645523071,
+            "height": 2.0300662916662406,
+            "factorY": 1.7885462555066078,
+            "base": 0.29881387729224657
+          },
+          {
+            "sourceHeight": 1.1350370645523071,
+            "height": 2.0300662916662406,
+            "factorY": 1.7885462555066078,
+            "base": 0.29881387729224657
+          }
+        ],
+        "garages": [],
+        "roofComponents": 14,
+        "porchSupports": 0,
+        "sourceBounds": {
+          "min": [
+            52.84000015258789,
+            0.06499999761581421,
+            -19.97222328186035
+          ],
+          "max": [
+            65.16000366210938,
+            6.453148365020752,
+            -14.416814804077148
+          ]
+        },
+        "correctedBounds": {
+          "min": [
+            52.84000015258789,
+            0.06499999761581421,
+            -19.97222328186035
+          ],
+          "max": [
+            65.16000366210938,
+            9.201108733218202,
+            -14.416814804077148
+          ]
+        }
+      },
+      {
+        "id": "north-mansion--42",
+        "family": "mansion",
+        "xzScale": 1,
+        "bodyScaleY": 1.6184503338053813,
+        "components": 448,
+        "changedVertices": 14758,
+        "doors": [
+          {
+            "sourceHeight": 1.1350370645523071,
+            "height": 2.0300662916662406,
+            "factorY": 1.7885462555066078,
+            "base": 0.29881387729224657
+          },
+          {
+            "sourceHeight": 1.1350370645523071,
+            "height": 2.0300662916662406,
+            "factorY": 1.7885462555066078,
+            "base": 0.29881387729224657
+          }
+        ],
+        "garages": [],
+        "roofComponents": 14,
+        "porchSupports": 0,
+        "sourceBounds": {
+          "min": [
+            -48.15999984741211,
+            0.06499999761581421,
+            14.416814804077148
+          ],
+          "max": [
+            -35.84000015258789,
+            6.453148365020752,
+            19.97222328186035
+          ]
+        },
+        "correctedBounds": {
+          "min": [
+            -48.15999984741211,
+            0.06499999761581421,
+            14.416814804077148
+          ],
+          "max": [
+            -35.84000015258789,
+            9.201108733218202,
+            19.97222328186035
+          ]
+        }
+      },
+      {
+        "id": "north-mansion-20",
+        "family": "mansion",
+        "xzScale": 1,
+        "bodyScaleY": 1.6184503338053813,
+        "components": 448,
+        "changedVertices": 14683,
+        "doors": [
+          {
+            "sourceHeight": 1.1350370645523071,
+            "height": 2.0300662916662406,
+            "factorY": 1.7885462555066078,
+            "base": 0.29881387729224657
+          },
+          {
+            "sourceHeight": 1.1350370645523071,
+            "height": 2.0300662916662406,
+            "factorY": 1.7885462555066078,
+            "base": 0.29881387729224657
+          }
+        ],
+        "garages": [],
+        "roofComponents": 14,
+        "porchSupports": 0,
+        "sourceBounds": {
+          "min": [
+            13.84000015258789,
+            0.06499999761581421,
+            14.416814804077148
+          ],
+          "max": [
+            26.15999984741211,
+            6.453148365020752,
+            19.97222328186035
+          ]
+        },
+        "correctedBounds": {
+          "min": [
+            13.84000015258789,
+            0.06499999761581421,
+            14.416814804077148
+          ],
+          "max": [
+            26.15999984741211,
+            9.201108733218202,
+            19.97222328186035
+          ]
+        }
+      }
+    ],
+    "changedMeshes": 35,
+    "changedVertices": 113928,
+    "sourceAssetUnmodified": true,
+    "sourceNodeTransformsPreserved": true,
+    "topologyPreserved": true,
+    "uvsPreserved": false,
+    "originalUVsPreservedExceptDoorwayReprojection": true,
+    "doorwayUVReprojection": {
+      "selectedVertices": 59,
+      "adjustedVertices": 43,
+      "adjustedCoordinates": 54,
+      "channels": [
+        {
+          "mesh": "South_Lots · Cream.001",
+          "channel": "uv",
+          "selectedVertices": 30,
+          "adjustedVertices": 22,
+          "adjustedCoordinates": 28
+        },
+        {
+          "mesh": "North_Lots · Cream.001",
+          "channel": "uv",
+          "selectedVertices": 29,
+          "adjustedVertices": 21,
+          "adjustedCoordinates": 26
+        }
+      ]
+    },
+    "materialsPreserved": true,
+    "xzPreserved": true,
+    "groundPreserved": true,
+    "roofPitchPreserved": true,
+    "doorHeight": 2.03,
+    "hostPorchClearance": 2.4,
+    "hostPorchRise": 0.2519999999999998
+  },
+  "gpu": {
+    "vendor": "Google Inc. (Google)",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+  },
+  "performanceBenchmarkRun": false,
+  "limits": [
+    "Comparison poses use camera setters only in the test harness; actual controls are verified independently.",
+    "No flight, car-ride or unrelated scene suite repeated.",
+    "No physical GPU/mobile FPS claim."
+  ],
+  "restore": {
+    "tag": "restore/pre-westbridge-house-scale",
+    "commit": "1171663ea935ca800b216363d6a9da2ed10e7f00"
+  },
+  "diagnosis": "The previous house calibration remained uncommitted when the environment became unavailable; origin/main at 1171663 contained no calibration helper or call. This delivery publishes the pending measured correction instead of applying an additional scale.",
+  "checks": {
+    "unit": {
+      "command": "npm test",
+      "passed": 118,
+      "failed": 0
+    },
+    "build": {
+      "command": "npm run build",
+      "typescript": "passed",
+      "vite": "passed",
+      "warning": "main chunk exceeds 500 kB"
+    },
+    "visualInspection": "three final pairs visually inspected in real running Babylon.js"
+  },
+  "sourceAsset": {
+    "path": "public/models/westbridge.glb",
+    "sha256": "c26eee992f8141b14a6c30779984adcc62fce45bc9a9742fd61ccf008e04ac2d",
+    "modified": false
+  },
+  "reference": {
+    "units": "1 Babylon unit approximately 1 metre",
+    "playerEyeHeight": 1.65,
+    "playerBodyRendered": false,
+    "carDimensions": {
+      "width": 1.9460802078,
+      "height": 1.5662199259,
+      "length": 4.2502198219
+    },
+    "carScale": 1,
+    "houseXZScale": 1
+  },
+  "productionBundle": "/assets/index-tFdIadz6.js"
+}

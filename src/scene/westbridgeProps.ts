@@ -9,7 +9,8 @@ import { Color3 } from '@babylonjs/core/Maths/math.color';
 import { Matrix, Quaternion, Vector3 } from '@babylonjs/core/Maths/math.vector';
 import '@babylonjs/core/Meshes/thinInstanceMesh';
 import type { Obstacle } from '../game/types';
-import { WB_BOUNDARY_POINTS } from '../game/westbridgeLayout';
+import { WB_BOUNDARY_POINTS, WB_PORCH_HEIGHT } from '../game/westbridgeLayout';
+import { WB_HOST_PORCH_CLEARANCE } from '../game/westbridgeHouseScale';
 
 const wp=(x:number,y:number,z:number)=>new Vector3(500-x,y,z);
 
@@ -76,8 +77,11 @@ export function buildWestbridgeProps(scene:Scene,parent:TransformNode){
     const drain=box('bueiro junto ao meio-fio',[.72,.018,.38],wp(x,.148,z),grate);drain.metadata.castShadow=false;
   }
   const fixture=register(MeshBuilder.CreateCylinder('varanda · suporte da luminária',{height:.055,diameter:.23,tessellation:12},scene),steel);
-  fixture.position.copyFrom(wp(20.06,2.35,-12.12));
-  const globe=register(MeshBuilder.CreateSphere('varanda · luminária quente',{diameter:.18,segments:12},scene),lamp);globe.position.copyFrom(wp(20.06,2.24,-12.12));
+  const porchCeiling=WB_PORCH_HEIGHT+WB_HOST_PORCH_CLEARANCE;
+  // The enlarged original door trim leaves no central gap for the globe.
+  // Refit the same lamp beside that trim, under the raised porch ceiling.
+  fixture.position.copyFrom(wp(20.96,porchCeiling-.0275,-12.12));
+  const globe=register(MeshBuilder.CreateSphere('varanda · luminária quente',{diameter:.18,segments:12},scene),lamp);globe.position.copyFrom(wp(20.96,porchCeiling-.10,-12.12));
   // The supplied model ends after this residential block. Physical municipal
   // barriers communicate the three street limits rather than an unseen wall.
   const boundaryObstacles:Obstacle[]=[];

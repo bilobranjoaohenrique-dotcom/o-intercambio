@@ -189,6 +189,8 @@ O bairro mantém suas 105 malhas e materiais remasterizados, com carregamento ap
 
 [Relatório da operação e validação jogável](docs/OPERACAO-WESTBRIDGE.md). Para a revisão de iluminação noturna, abra o jogo com `?westbridgeLighting=night`; isso seleciona um preset local de inspeção, sem avançar a história no tempo. A chegada normal usa fim de tarde. Teste focal: `INTERCAMBIO_URL=http://localhost:4188 node tests/westbridge-game-browser.mjs`.
 
+A [correção de escala das casas](docs/ESCALA-CASAS-WESTBRIDGE.md) registra as dimensões medidas por família, os ajustes de altura e as comparações na altura dos olhos. Ruas, lotes, jogador, carro e texturas mantêm suas escalas existentes.
+
 O [pacote de modelos e texturas](docs/entregas/Westbridge-remaster.zip), [GLB](public/models/westbridge.glb) e [relatório da remasterização de materiais](docs/WESTBRIDGE-REMASTER.md) continuam disponíveis como entrega artística separada. As metas de FPS em GPU física e celulares exigem validação no hardware-alvo.
 
 ## Estrutura
