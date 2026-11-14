@@ -6,8 +6,9 @@ registerHooks({ resolve(specifier, context, next) {
   return next(specifier, context);
 } });
 const { KITCHEN_FURNITURE, KITCHEN_AUTHORED_FURNITURE, PARENT_ANCHORS, KITCHEN_SOLIDS,
-  COMPACT_KITCHEN, BREAKFAST_SEAT } = await import('../src/game/kitchenLayout.ts');
-const { HOME_RESUME_POSITION } = await import('../src/game/livingRoomPlacement.ts');
+  COMPACT_KITCHEN, BREAKFAST_SEAT, KITCHEN_ENTRY_DOOR } = await import('../src/game/kitchenLayout.ts');
+const { HOME_RESUME_POSITION, KITCHEN_FRONT_PASSAGE } = await import('../src/game/livingRoomPlacement.ts');
+const { LAUNDRY, LAUNDRY_ROUTE } = await import('../src/game/laundryLayout.ts');
 const { PLAYER_RADIUS, isWalkable, moveWithCollisions, floorHeight } = await import('../src/game/collision.ts');
 const near = (value, target) => assert.ok(Math.abs(value - target) < 1e-7, `${value} ≈ ${target}`);
 function follow(from, targets) {
@@ -26,8 +27,18 @@ function follow(from, targets) {
 }
 
 test('cozinha compacta: preserva medidas dos móveis, pai sentado, mãe em pé e pegadas sólidas', () => {
-  assert.equal(KITCHEN_SOLIDS.length, Object.keys(KITCHEN_FURNITURE).length + Object.keys(PARENT_ANCHORS).length);
-  for (const furniture of Object.values(KITCHEN_FURNITURE)) assert.equal(isWalkable(furniture), false);
+  const fixedFatherChair = KITCHEN_SOLIDS.filter(obstacle => obstacle.x === PARENT_ANCHORS.father.position.x &&
+    obstacle.z === PARENT_ANCHORS.father.position.z && obstacle.enabled === undefined);
+  assert.equal(fixedFatherChair.length, 1, 'the existing father chair remains solid after his body leaves');
+  assert.equal(fixedFatherChair[0].halfWidth, .47 / 2); assert.equal(fixedFatherChair[0].halfDepth, .46 / 2);
+  assert.equal(fixedFatherChair[0].rotation, PARENT_ANCHORS.father.yaw);
+  assert.equal(KITCHEN_SOLIDS.length, Object.keys(KITCHEN_FURNITURE).length + Object.keys(PARENT_ANCHORS).length + fixedFatherChair.length);
+  for (const furniture of Object.values(KITCHEN_FURNITURE)) {
+    assert.equal(isWalkable(furniture), false);
+    assert.ok(KITCHEN_SOLIDS.some(obstacle => obstacle.x === furniture.x && obstacle.z === furniture.z &&
+      obstacle.halfWidth === furniture.width / 2 && obstacle.halfDepth === furniture.depth / 2 &&
+      obstacle.rotation === furniture.rotation), 'each authored furniture footprint is retained');
+  }
   for (const parent of Object.values(PARENT_ANCHORS)) assert.equal(isWalkable(parent.position), false);
   assert.equal(KITCHEN_FURNITURE.table.tabletopY, .80);
   assert.equal(PARENT_ANCHORS.father.seatY, .46);
@@ -68,9 +79,18 @@ test('cozinha compacta: portal da sala conecta até cadeira e ponto de levantar,
 test('cozinha compacta: novas paredes e limites retiram o vazio antigo sem abrir atalhos para fora', () => {
   near(COMPACT_KITCHEN.maxX - COMPACT_KITCHEN.minX, 7.1);
   near(COMPACT_KITCHEN.endZ - COMPACT_KITCHEN.coreStartZ, 5.35);
-  for (const point of [{ x: -4, z: 18 }, { x: 4.4, z: 18 }, { x: 0, z: 22 }, { x: -4, z: 14 }, { x: 3.7, z: 11.94 }])
+  for (const point of [{ x: -4, z: 18 }, { x: LAUNDRY.maxX + .3, z: 18 }, { x: 0, z: 22 }, { x: -4, z: 14 }, { x: 3.7, z: 11.94 }])
     assert.equal(isWalkable(point), false, JSON.stringify(point));
   const stopped = moveWithCollisions({ x: 3.5, z: 15.5 }, 1000, 0);
-  assert.ok(stopped.x <= COMPACT_KITCHEN.maxX - PLAYER_RADIUS + 1e-7);
+  assert.ok(stopped.x > COMPACT_KITCHEN.maxX - PLAYER_RADIUS,
+    'the approved front passage extends beyond the compact kitchen footprint');
+  assert.ok(stopped.x <= KITCHEN_FRONT_PASSAGE.maxX - PLAYER_RADIUS + 1e-7);
   assert.ok(isWalkable(stopped));
+  follow(LAUNDRY_ROUTE.kitchen, [LAUNDRY_ROUTE.entrance, LAUNDRY_ROUTE.center,
+    LAUNDRY_ROUTE.entrance, LAUNDRY_ROUTE.kitchen]);
+  assert.equal(isWalkable(KITCHEN_ENTRY_DOOR), false, 'the separately added front door stays physically closed');
+  assert.ok(isWalkable(KITCHEN_ENTRY_DOOR.approach));
+  const entryStop = moveWithCollisions(KITCHEN_ENTRY_DOOR.approach, 0, -1000);
+  assert.ok(isWalkable(entryStop));
+  assert.ok(entryStop.z >= KITCHEN_ENTRY_DOOR.z + KITCHEN_ENTRY_DOOR.depth / 2 + PLAYER_RADIUS - 1e-7);
 });

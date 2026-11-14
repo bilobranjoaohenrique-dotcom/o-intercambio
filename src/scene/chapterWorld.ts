@@ -14,12 +14,15 @@ import { buildArrival } from './arrival';
 import { ARRIVAL_SPAWN } from '../game/arrivalLayout';
 import { AIRPORT_ARRIVAL } from '../game/airportLayout';
 import { buildPlane } from './plane';
+import { buildWestbridge } from './westbridge';
+import { buildWestbridgeVehicle } from './westbridgeVehicle';
+import { westbridgeNavigation } from '../game/westbridgeNavigation';
+import { WB_WALK_SPAWN } from '../game/westbridgeLayout';
 import { PLANE_SEAT } from '../game/planeLayout';
 import type { Point3 } from '../game/layout';
 import { getParentsLocation, setParentsLocationState, type ParentsLocation } from '../game/parentsDeparture';
 
-type Zone = 'home' | 'car' | 'airport' | 'plane' | 'town';
-const ZONE_ORIGIN: Record<Exclude<Zone,'home'|'car'>, number> = { airport: 30, plane: 58, town: 86 };
+type Zone = 'home' | 'car' | 'airport' | 'plane' | 'town' | 'westbridge';
 const CAR_ORIGIN=46;
 
 /** Additional first-chapter sets. Original geometry and supplied local GLBs
@@ -128,8 +131,27 @@ export function buildChapterWorld(scene: Scene) {
   const arrival=buildArrival(scene,arrivalRoot);
   meshes.set('town',arrival.meshes);targets.push(...arrival.targets);
 
+  // The approved neighborhood is not part of the startup asset barrier. Its
+  // own container, lighting and navigation are activated only after the hosts.
+  const westbridge=buildWestbridge(scene);
+  roots.set('westbridge',westbridge.root); meshes.set('westbridge',westbridge.meshes);
+  targets.push(...westbridge.targets);
+  let westbridgeVehicle:ReturnType<typeof buildWestbridgeVehicle>|null=null;
+  let preparingWestbridge:Promise<void>|null=null;
+  function prepareWestbridge(){
+    if(!preparingWestbridge)preparingWestbridge=(async()=>{
+      await westbridge.ensureReady();
+      westbridgeVehicle=buildWestbridgeVehicle(scene,westbridge.root);
+      await westbridgeVehicle.ready;
+    })();
+    return preparingWestbridge;
+  }
+
   let activeZone:Zone='home';
   function activate(zone:Zone) {
+    if(activeZone==='westbridge'&&zone!=='westbridge'){
+      arrival.setHostVehicleSeats(null);westbridgeVehicle?.setInteriorView(false);
+    }
     activeZone=zone;
     for(const [key,root]of roots) root.setEnabled(key===zone);
     kitchen.setActive(zone==='home');
@@ -138,6 +160,11 @@ export function buildChapterWorld(scene: Scene) {
     airport.setActive(zone==='airport');
     plane.setActive(zone==='plane');
     arrival.setActive(zone==='town');
+    westbridge.setActive(zone==='westbridge');
+    if(zone==='westbridge'&&westbridgeVehicle){
+      arrival.setHostVehicleSeats(westbridgeVehicle.hostSeats);
+      westbridge.setExtraMeshes([...westbridgeVehicle.meshes,...arrival.vehicleHostMeshes]);
+    }
   }
   activate('home');
   function setParentsLocation(location: ParentsLocation) {
@@ -154,19 +181,31 @@ export function buildChapterWorld(scene: Scene) {
   return {
     targets, ready,
     activate,
+    prepareWestbridge,
+    westbridgeNavigation,
+    get westbridgeObstacles(){
+      const car=westbridgeVehicle?.diagnostics;
+      return car&&!car.interiorView?[...westbridge.obstacles,{x:car.position.x,z:car.position.z,
+        halfWidth:car.localBounds.width/2,halfDepth:car.localBounds.length/2,rotation:car.yaw}]:westbridge.obstacles;
+    },
+    get westbridgeVehicle(){return westbridgeVehicle;},
+    setQuality(quality:'low'|'balanced'|'high'){westbridge.setQuality(quality);},
+    setWestbridgeTimeOfDay(value:'afternoon'|'night'){westbridge.setTimeOfDay(value);},
+    refreshWestbridgeLighting(){if(westbridgeVehicle)westbridge.setExtraMeshes([...westbridgeVehicle.meshes,...arrival.vehicleHostMeshes]);},
     setParentsLocation,
     setParentsFarewell(amount:number){kitchen.setParentsFarewell(amount);},
     beginGarageDeparture(){garage.beginDeparture();},
     resetGarageDeparture(){garage.resetDeparture();},
     updateGarageDeparture(seconds:number){garage.updateDeparture(seconds);},
     teleportPoint(zone:Exclude<Zone,'home'>) {
-      return zone==='car'?{x:CAR_ORIGIN,y:1.65,z:-3}:zone==='airport'?AIRPORT_ARRIVAL.position:zone==='plane'?PLANE_SEAT.position:ARRIVAL_SPAWN.position;
+      return zone==='car'?{x:CAR_ORIGIN,y:1.65,z:-3}:zone==='airport'?AIRPORT_ARRIVAL.position:zone==='plane'?PLANE_SEAT.position:zone==='westbridge'?WB_WALK_SPAWN:ARRIVAL_SPAWN.position;
     },
     animate(time:number,speaker?:string,observer?:Point3,text?:string) {
       if(activeZone==='home') kitchen.animate(time,speaker,observer,text);
       if(activeZone==='airport'){airport.animate(time);kitchen.animateParents(time,speaker,observer,text);}
       if(activeZone==='plane')plane.animate(time);
       if(activeZone==='town')arrival.animate(time);
+      if(activeZone==='westbridge'){westbridge.animate(time);arrival.animateVehicleHosts(time);}
     },
     get kitchenDiagnostics(){return {active:activeZone==='home',meshes:kitchen.meshes.length,...kitchen.diagnostics};},
     get garageDiagnostics(){return garage.diagnostics;},
@@ -174,6 +213,7 @@ export function buildChapterWorld(scene: Scene) {
     get airportDiagnostics(){return airport.diagnostics;},
     get planeDiagnostics(){return plane.diagnostics;},
     get arrivalDiagnostics(){return arrival.diagnostics;},
+    get westbridgeDiagnostics(){return {scenery:westbridge.diagnostics,vehicle:westbridgeVehicle?.diagnostics??{loaded:false},hosts:arrival.vehicleHostDiagnostics};},
     get familyDiagnostics(){
       const parents = kitchen.diagnostics.parents;
       return { location: getParentsLocation(), parents, actorCount: parents.length,
@@ -181,6 +221,6 @@ export function buildChapterWorld(scene: Scene) {
         carVisibleCount: parents.filter(actor => actor.visible && actor.location === 'car').length,
         airportVisibleCount: parents.filter(actor => actor.visible && actor.location === 'airport').length };
     },
-    dispose(){laundry.dispose();garage.dispose();kitchen.dispose();airport.dispose();plane.dispose();arrival.dispose();for(const root of roots.values())root.dispose(false,false);for(const material of materials.values())material.dispose();for(const texture of textures)texture.dispose();}
+    dispose(){arrival.setHostVehicleSeats(null);westbridgeVehicle?.dispose();westbridge.dispose();laundry.dispose();garage.dispose();kitchen.dispose();airport.dispose();plane.dispose();arrival.dispose();for(const root of roots.values())root.dispose(false,false);for(const material of materials.values())material.dispose();for(const texture of textures)texture.dispose();}
   };
 }

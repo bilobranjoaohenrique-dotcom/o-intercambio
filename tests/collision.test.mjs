@@ -7,6 +7,7 @@ registerHooks({ resolve(specifier, context, next) {
 } });
 const { ROOM, HALL, STAIRS, DOOR, FURNITURE, STANDING_POSE } = await import('../src/game/layout.ts');
 const { HALLWAY } = await import('../src/game/hallwayLayout.ts');
+const { LAUNDRY, LAUNDRY_ROUTE } = await import('../src/game/laundryLayout.ts');
 const { PLAYER_RADIUS, floorHeight, staticObstacles, isWalkable, moveWithCollisions,
   circleOverlapsObstacle, reachedBreakfast } = await import('../src/game/collision.ts');
 const { movementVector, approachVelocity, WALK_SPEED, RUN_SPEED } = await import('../src/game/player.ts');
@@ -26,8 +27,11 @@ test('física: pose final é caminhável e paredes/móveis usam as medidas do la
   for (const point of [{ x: ROOM.minX + .1, z: 0 }, { x: ROOM.maxX - .1, z: 2 },
     { x: 0, z: ROOM.minZ + .1 }, { x: -1, z: ROOM.maxZ - .1 },
     { x: HALL.minX + .1, z: 5 }, { x: HALL.maxX - .1, z: 9 },
-    { x: 4.7, z: 17 }, { x: 0, z: 6 }, { x: NaN, z: 0 }])
+    { x: LAUNDRY.maxX + .3, z: 17 }, { x: 0, z: 6 }, { x: NaN, z: 0 }])
     assert.equal(isWalkable(point), false, `no floor escape at ${JSON.stringify(point)}`);
+  assert.ok(isWalkable({ x: 4.7, z: 17 }), 'the approved laundry now occupies this formerly exterior point');
+  assert.ok(isWalkable(LAUNDRY_ROUTE.entrance), 'the kitchen/laundry aperture is real connected floor');
+  near(floorHeight({ x: 4.7, z: 17 }), LAUNDRY.floor);
   assert.equal(isWalkable({ x: doorCenter, z: DOOR.z }), true, 'the static wall leaves a physical doorway');
   assert.equal(isWalkable({ x: 2, z: HALL.endZ - .1 }), true, 'the stair landing now opens into the kitchen');
   assert.equal(isWalkable({ x: 2, z: 14 }), true, 'the kitchen floor is connected to the stair landing');

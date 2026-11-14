@@ -1,0 +1,467 @@
+{
+  "status": "passed-with-documented-limits",
+  "build": "chapter1-westbridge-playable-1",
+  "restore": {
+    "tag": "restore/pre-westbridge-playable",
+    "commit": "6cefec047d5f8f95a463b5edbf0dbb37e0e865aa"
+  },
+  "checks": {
+    "unit": {
+      "command": "npm test",
+      "passed": 117,
+      "failed": 0
+    },
+    "build": {
+      "command": "npm run build",
+      "typescript": "passed",
+      "vite": "passed",
+      "warning": "main chunk exceeds 500 kB"
+    },
+    "browser": {
+      "status": "passed",
+      "method": "real input, segmented validation with retained terminal and drive evidence; final walking/night/replay continuation, then fresh visual captures and final nonvisual save check",
+      "oneUninterruptedFinalRun": false,
+      "coverage": [
+        "existing terminal welcome continues into Westbridge only after being dismissed",
+        "lazy supplied neighbourhood loading",
+        "real rear-seat look, locked translation, paused route and continuous drive to the home",
+        "parked exit, physical walking, fence and house collisions",
+        "walking checkpoint reload and actual night preset",
+        "door interaction ends the chapter and replay restores the original home",
+        "text-only dialogue, master volume and audio pause"
+      ],
+      "errors": [],
+      "consoleErrors": [],
+      "failedAssets": [],
+      "continuousDrive": {
+        "visibleSamples": 939,
+        "maxAdjacentDisplacement": 0.4305659097295802,
+        "maxAdjacentHeadingDelta": 0.06788174106455891
+      },
+      "parkedDrive": {
+        "active": true,
+        "occupied": true,
+        "elapsed": 32,
+        "duration": 32,
+        "position": {
+          "x": 475.1000000000001,
+          "y": 0.14399999999999996,
+          "z": -8.7
+        },
+        "yaw": -3.141592653589794,
+        "speed": 0,
+        "progress": 1,
+        "distance": 91.85472031063341,
+        "totalDistance": 91.85472031063341,
+        "parked": true,
+        "rearSeatWorld": {
+          "x": 474.7200000000001,
+          "y": 1.3439999999999999,
+          "z": -7.959999999999999
+        },
+        "lookOffset": -0.8503999999999992,
+        "pitch": 0.025400000000000006,
+        "canExit": true
+      },
+      "parkedAudioVehicle": {
+        "speed": 0,
+        "running": false,
+        "position": {
+          "x": 475.1000000000001,
+          "y": 0.14399999999999996,
+          "z": -8.7
+        }
+      },
+      "parkedEngineGain": 0,
+      "pausePreservesDrive": true,
+      "exit": {
+        "position": {
+          "x": 477.35,
+          "y": 1.7094999999999998,
+          "z": -7.55
+        },
+        "mission": "westbridge-explore"
+      },
+      "collisionProbes": [
+        {
+          "label": "closed front fence",
+          "before": {
+            "x": 483.6283774482483,
+            "y": 1.6349799948669468,
+            "z": -5.884418613343311
+          },
+          "blocked": {
+            "x": 483.5943582647225,
+            "y": 1.7088555052125356,
+            "z": -6.776854354114422
+          },
+          "stopped": {
+            "x": 483.5902464424607,
+            "y": 1.7023986505898812,
+            "z": -6.776854354114422
+          }
+        },
+        {
+          "label": "house front wall",
+          "before": {
+            "x": 479.94402629235225,
+            "y": 2.0218301549633946,
+            "z": -11.677778541213636
+          },
+          "blocked": {
+            "x": 479.94402629235225,
+            "y": 2.021855000137852,
+            "z": -12.447778541213639
+          },
+          "stopped": {
+            "x": 479.94402629235225,
+            "y": 2.021855000002632,
+            "z": -12.447778541213639
+          }
+        },
+        {
+          "label": "parked car side",
+          "before": {
+            "x": 477.35,
+            "y": 1.7094999999999998,
+            "z": -7.55
+          },
+          "blocked": {
+            "x": 476.30000075137895,
+            "y": 1.7947252656606025,
+            "z": -7.553391585654529
+          },
+          "stopped": {
+            "x": 476.30000075137895,
+            "y": 1.8003869893296605,
+            "z": -7.553801512170794
+          }
+        }
+      ],
+      "mutedMasterTarget": 0,
+      "reloaded": {
+        "mission": "westbridge-explore",
+        "position": {
+          "x": 477.35,
+          "y": 1.7094999999999998,
+          "z": -7.55
+        },
+        "timeOfDay": "night"
+      },
+      "entry": {
+        "mission": "complete",
+        "phase": "ending"
+      },
+      "replay": {
+        "stage": "home",
+        "mission": "breakfast",
+        "hostLocation": "terminal",
+        "camera": {
+          "fov": 1.13,
+          "minZ": 0.045,
+          "maxZ": 95
+        },
+        "westbridgeActive": false,
+        "westbridgeAudioSources": 0
+      },
+      "limits": [
+        "The complete 32-second route, pause, parked engine and actual E exit were proved in the retained ride segment; the final exterior/night checks resume its saved walking checkpoint. The parked interior luminance gate was unsuitable for dark seatbacks, so final photo 3 is an exterior view.",
+        "Real screenshots require visual inspection. No camera or clock setters were used.",
+        "Chromium/Linux SwiftShader software rendering; not a physical GPU or mobile benchmark."
+      ]
+    },
+    "finalSaveCheck": {
+      "status": "passed",
+      "productionModule": "/assets/index-MsnVZgCD.js",
+      "captureBuild": "/assets/index-CRb6sNMh.js",
+      "fixture": {
+        "mission": "westbridge-explore",
+        "choice": "nervous",
+        "completed": [
+          "find-host",
+          "westbridge-ride"
+        ]
+      },
+      "saved": {
+        "mission": "westbridge-explore",
+        "choice": "nervous",
+        "completed": [
+          "find-host",
+          "westbridge-ride"
+        ]
+      },
+      "phase": "playing",
+      "stage": "westbridge",
+      "position": {
+        "x": 477.35,
+        "y": 1.7094999999999998,
+        "z": -7.55
+      },
+      "drive": {
+        "active": false,
+        "occupied": false,
+        "elapsed": 32,
+        "duration": 32,
+        "position": {
+          "x": 475.1000000000001,
+          "y": 0.14399999999999996,
+          "z": -8.7
+        },
+        "yaw": -3.141592653589794,
+        "speed": 0,
+        "progress": 1,
+        "distance": 91.85472031063341,
+        "totalDistance": 91.85472031063341,
+        "parked": true,
+        "rearSeatWorld": {
+          "x": 474.7200000000001,
+          "y": 1.3439999999999999,
+          "z": -7.959999999999999
+        },
+        "lookOffset": 6.432490598706546e-16,
+        "pitch": 0,
+        "canExit": false
+      },
+      "errors": [],
+      "consoleErrors": [],
+      "failedAssets": [],
+      "limits": [
+        "Only nonvisual checkpoint idempotence was checked in this final bundle; route, physical collision and five rendered views have separate records. No walking, driving, camera setters or captures were performed."
+      ]
+    }
+  },
+  "captures": {
+    "status": "capture-only-passed",
+    "visuallyInspected": true,
+    "source": "real running Babylon.js; not AI generated",
+    "visualBundle": "/assets/index-CRb6sNMh.js",
+    "finalBundle": "/assets/index-MsnVZgCD.js",
+    "difference": "Only nonvisual active-checkpoint idempotence guard; final save check explicitly tested the new bundle.",
+    "images": [
+      {
+        "file": "docs/capturas/westbridge-jogavel/banco-traseiro.png",
+        "sha256": "2621fcca7d217861ba526a85e8df5b64a15a26559f0a3567812daf593ba218e9",
+        "viewport": {
+          "width": 1280,
+          "height": 720
+        },
+        "internal": {
+          "width": 914,
+          "height": 514
+        },
+        "position": {
+          "x": 562.5451655346037,
+          "y": 1.234,
+          "z": -1.2200000000000002
+        },
+        "rotation": {
+          "yaw": -1.8907963267948966,
+          "pitch": 0.035,
+          "roll": 0
+        },
+        "bundle": "/assets/index-CRb6sNMh.js",
+        "texturesReady": true,
+        "foreignMeshesVisible": 0,
+        "lighting": "afternoon",
+        "interiorFill": 0.32
+      },
+      {
+        "file": "docs/capturas/westbridge-jogavel/janela.png",
+        "sha256": "d45d4debc6b922fb9bcbf551c77f6ad9c7c99c801e37bbb54c1cf061367bcec9",
+        "viewport": {
+          "width": 1280,
+          "height": 720
+        },
+        "internal": {
+          "width": 914,
+          "height": 514
+        },
+        "position": {
+          "x": 560.8587874655227,
+          "y": 1.234,
+          "z": -1.2200000000000002
+        },
+        "rotation": {
+          "yaw": -2.4211963267948966,
+          "pitch": 0.02540000000000002,
+          "roll": 0
+        },
+        "bundle": "/assets/index-CRb6sNMh.js",
+        "texturesReady": true,
+        "foreignMeshesVisible": 0,
+        "lighting": "afternoon",
+        "interiorFill": 0.32
+      },
+      {
+        "file": "docs/capturas/westbridge-jogavel/estacionado.png",
+        "sha256": "2d9debd68c8a7ae99fbdbeb7d8dc954df935d8206073dffee67c205e125d23e8",
+        "viewport": {
+          "width": 1280,
+          "height": 720
+        },
+        "internal": {
+          "width": 914,
+          "height": 514
+        },
+        "position": {
+          "x": 472.2981478118673,
+          "y": 1.7555000032378258,
+          "z": -4.807014865000983
+        },
+        "rotation": {
+          "yaw": 2.5199926535897896,
+          "pitch": -0.004799999999999985,
+          "roll": 0
+        },
+        "bundle": "/assets/index-CRb6sNMh.js",
+        "texturesReady": true,
+        "foreignMeshesVisible": 0,
+        "lighting": "afternoon",
+        "interiorFill": 0
+      },
+      {
+        "file": "docs/capturas/westbridge-jogavel/casa-tarde.png",
+        "sha256": "703eb49bfb6e74788a177e256de7246ba114bfd032157646094d375b2e301fa5",
+        "viewport": {
+          "width": 1280,
+          "height": 720
+        },
+        "internal": {
+          "width": 914,
+          "height": 514
+        },
+        "position": {
+          "x": 479.92716103299614,
+          "y": 1.7764999983481473,
+          "z": -4.504719857023528
+        },
+        "rotation": {
+          "yaw": 3.13919265358979,
+          "pitch": -0.16319999999999998,
+          "roll": 0
+        },
+        "bundle": "/assets/index-CRb6sNMh.js",
+        "texturesReady": true,
+        "foreignMeshesVisible": 0,
+        "lighting": "afternoon",
+        "interiorFill": 0
+      },
+      {
+        "file": "docs/capturas/westbridge-jogavel/casa-noite.png",
+        "sha256": "1f83b0276e8e64a2054890410f3932c06f373baab6b5467dfcd642abbb864f92",
+        "viewport": {
+          "width": 1280,
+          "height": 720
+        },
+        "internal": {
+          "width": 914,
+          "height": 514
+        },
+        "position": {
+          "x": 479.9410608471944,
+          "y": 1.7764999744985328,
+          "z": -4.463109190281584
+        },
+        "rotation": {
+          "yaw": 3.1391926535897903,
+          "pitch": -0.16319999999999998,
+          "roll": 0
+        },
+        "bundle": "/assets/index-CRb6sNMh.js",
+        "texturesReady": true,
+        "foreignMeshesVisible": 0,
+        "lighting": "night",
+        "interiorFill": 0
+      }
+    ],
+    "errors": [],
+    "consoleErrors": [],
+    "failedAssets": []
+  },
+  "performance": {
+    "method": "30 RAF intervals after 5 warm frames; callbacks record timestamps only, metadata read afterwards",
+    "samples": 30,
+    "meanFrameMs": 469.4266666666663,
+    "p95FrameMs": 849.8999999999942,
+    "measuredFps": 2.1302581872923017,
+    "intervals": [
+      450,
+      449.8999999999942,
+      466.6000000000058,
+      900.0999999999913,
+      416.6000000000058,
+      33.30000000000291,
+      466.6999999999971,
+      416.59999999999127,
+      483.3000000000029,
+      833.4000000000087,
+      66.59999999999127,
+      466.6000000000058,
+      516.6999999999971,
+      516.6000000000058,
+      416.6999999999971,
+      516.6999999999971,
+      499.8999999999942,
+      500,
+      516.7000000000116,
+      849.8999999999942,
+      500,
+      66.69999999999709,
+      433.1999999999971,
+      433.40000000000873,
+      450,
+      533.3000000000029,
+      483.29999999998836,
+      899.9000000000087,
+      416.6999999999971,
+      83.39999999999418
+    ],
+    "internal": {
+      "width": 914,
+      "height": 514
+    },
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "profile": "balanced",
+    "preset": "night",
+    "gpu": {
+      "vendor": "Google Inc. (Google)",
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+    },
+    "position": {
+      "x": 479.9410608471944,
+      "y": 1.7765,
+      "z": -4.463109190281584
+    },
+    "productionModule": "/assets/index-CRb6sNMh.js",
+    "environment": "Chromium/Linux SwiftShader software rendering; not a physical GPU/mobile benchmark",
+    "desktop60FpsValidated": false,
+    "mobile30FpsValidated": false
+  },
+  "sourceAssets": [
+    {
+      "path": "public/models/westbridge.glb",
+      "bytes": 18629436,
+      "sha256": "c26eee992f8141b14a6c30779984adcc62fce45bc9a9742fd61ccf008e04ac2d",
+      "modified": false
+    },
+    {
+      "path": "public/models/carro_intercambio.glb",
+      "bytes": 1645200,
+      "sha256": "e98c20f42e3861223420da8cea903fdaeaef393ea2c566ce88b9613f63ee7908",
+      "modified": false
+    }
+  ],
+  "limits": [
+    "New audio is original provisional procedural synthesis; no voices or speech. Human mix/listening review remains.",
+    "Seated host poses are reused/retargeted; no steering-hand IK. Helen is present but occluded in delivered rear-seat images.",
+    "Host-house interior and new narrative beyond its entrance are not implemented.",
+    "Static scenery shadow maps; moving vehicle/hosts receive shadows without extra dynamic caster passes.",
+    "Selective loading added to Westbridge; earlier scenes retain their existing loading strategy.",
+    "Original home/airport/flight flows were not all replayed in browser during this task; their unit suite and restart restoration passed.",
+    "Physical GPU and mobile performance remain unverified; software benchmark is not a hardware estimate."
+  ]
+}

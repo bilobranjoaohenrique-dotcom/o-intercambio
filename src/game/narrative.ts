@@ -30,7 +30,7 @@ export const airportGoodbye: StoryBeat[] = [
 
 export type ChapterMission =
   | 'breakfast' | 'talk-parents' | 'pack-suitcase' | 'enter-car' | 'car-ready' | 'airport-farewell' | 'airport-gate'
-  | 'plane-seat' | 'find-host' | 'complete';
+  | 'plane-seat' | 'find-host' | 'westbridge-ride' | 'westbridge-explore' | 'complete';
 export const missionLabels: Record<ChapterMission, string> = {
   breakfast: 'Desça para tomar café',
   'talk-parents': 'Converse com seus pais',
@@ -41,6 +41,8 @@ export const missionLabels: Record<ChapterMission, string> = {
   'airport-gate': 'Dirija-se ao portão de embarque.',
   'plane-seat': 'Aguarde a chegada ao destino.',
   'find-host': 'Encontre sua família anfitriã',
+  'westbridge-ride': 'Acompanhe a viagem até Westbridge',
+  'westbridge-explore': 'Siga até a entrada da casa de Daniel e Helen',
   complete: 'Capítulo 1 concluído',
 };
 
@@ -51,7 +53,7 @@ export function createChapterProgress() {
   let completed: ChapterMission[] = [];
   try {
     const saved = JSON.parse(localStorage.getItem(SAVE_KEY) ?? 'null');
-    if (saved && ['breakfast','talk-parents','pack-suitcase','enter-car','car-ready','airport-farewell','airport-gate','plane-seat','find-host'].includes(saved.mission)) {
+    if (saved && ['breakfast','talk-parents','pack-suitcase','enter-car','car-ready','airport-farewell','airport-gate','plane-seat','find-host','westbridge-ride','westbridge-explore','complete'].includes(saved.mission)) {
       mission = saved.mission; choice = typeof saved.choice === 'string' ? saved.choice : null;
       completed = Array.isArray(saved.completed) ? saved.completed.filter((x: unknown): x is ChapterMission =>
         typeof x === 'string' && x in missionLabels) : [];
@@ -62,6 +64,9 @@ export function createChapterProgress() {
       }
       // Older saves did not distinguish arriving from completing the goodbye.
       if (mission === 'airport-gate' && !completed.includes('airport-farewell')) mission = 'airport-farewell';
+      // The old chapter ended immediately after the terminal welcome. Continue
+      // those saves at the new journey instead of discarding the whole morning.
+      if (mission === 'complete' && completed.includes('find-host') && !completed.includes('westbridge-explore')) mission = 'westbridge-ride';
     }
   } catch { /* A blocked or malformed save starts a new chapter. */ }
   function save() {
@@ -71,6 +76,9 @@ export function createChapterProgress() {
     get mission() { return mission; }, get choice() { return choice; }, get completed() { return [...completed]; },
     get label() { return missionLabels[mission]; },
     advance(next: ChapterMission) {
+      // Restoring an active step may persist its normalized checkpoint, but
+      // must not mark that very step complete before its interaction occurs.
+      if(next===mission){save();return mission;}
       if (mission !== 'complete' && !completed.includes(mission)) completed.push(mission);
       mission = next; save();
       return mission;

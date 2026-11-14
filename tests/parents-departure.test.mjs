@@ -62,7 +62,7 @@ test('despedida: falas finais e missões correspondem à mala e ao carro', () =>
     { speaker: 'PAI', text: 'E vê se não esquece o passaporte!' },
   ]);
   assert.equal(missionLabels['pack-suitcase'], 'Suba e pegue sua mala');
-  assert.equal(missionLabels['enter-car'], 'Vá até a garagem. Seus pais estão esperando.');
+  assert.equal(missionLabels['enter-car'], 'Vá até o carro para seguir ao aeroporto.');
   assert.equal(canEnterFamilyCar('enter-car', ['breakfast', 'talk-parents']), false,
     'parents waiting in the car do not replace the suitcase requirement');
 });

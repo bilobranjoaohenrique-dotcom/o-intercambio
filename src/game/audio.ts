@@ -1,7 +1,8 @@
 import type { Settings } from './types';
+import { createWestbridgeAudio, footstepSound, normalizeVehicleMotion, type FootstepSurface, type VehicleMotion } from './westbridgeAudio';
 
-export type AudioCue = 'cloth' | 'bed' | 'foot' | 'door' | 'handle' | 'objective' | 'engine' | 'garageGate' | 'tv';
-type AmbienceArea = 'home' | 'airport' | 'plane';
+export type AudioCue = 'cloth' | 'bed' | 'foot' | 'door' | 'handle' | 'objective' | 'engine' | 'garageGate' | 'tv' | 'carDoor';
+type AmbienceArea = 'home' | 'airport' | 'plane' | 'westbridge' | 'westbridge-car';
 type Point = { x:number;y:number;z:number };
 const clamp=(n:number,a:number,b:number)=>Math.max(a,Math.min(b,n));
 const valid=(p:Point)=>[p.x,p.y,p.z].every(Number.isFinite);
@@ -20,6 +21,10 @@ export function createAudio(settings:()=>Settings) {
   let ambience:AmbienceArea='home',homeWindGain:GainNode|null=null;
   const airportSources=new Set<AudioScheduledSourceNode>(),airportTransients=new Set<AudioScheduledSourceNode>();
   let airportNodes:AudioNode[]=[];
+  let westbridge:ReturnType<typeof createWestbridgeAudio>|null=null;
+  let vehicleMotion:VehicleMotion={speed:0,running:false,position:{x:475.1,y:.3,z:-8.7}};
+  let lastFootstepSurface:FootstepSurface|null=null;
+  const isWestbridge=()=>ambience==='westbridge'||ambience==='westbridge-car';
   // The television shares this context, master volume and procedural buffer.
   // Its source is created only while requested, and never contains speech.
   let televisionRequested=false,televisionUnavailable=false,televisionPosition:Point|null=null;
@@ -44,6 +49,7 @@ export function createAudio(settings:()=>Settings) {
       const low=context.createBiquadFilter();low.type='lowpass';low.frequency.value=390;
       const gain=context.createGain();gain.gain.value=ambience==='home'?.022:0;homeWindGain=gain;
       wind.connect(low);low.connect(gain);gain.connect(master);wind.start();persistent.add(wind);
+      westbridge=createWestbridgeAudio(context,master,noise);westbridge.pause(paused);westbridge.setVehicleMotion(vehicleMotion);
       timer=setInterval(ambient,2100);setVolume();syncTelevision();syncAmbience();
     }catch{disabled=true;}
   }
@@ -86,6 +92,8 @@ export function createAudio(settings:()=>Settings) {
   }
   function syncAmbience(){
     if(context&&homeWindGain)homeWindGain.gain.setTargetAtTime(ambience==='home'?.022:0,context.currentTime,.12);
+    westbridge?.setArea(isWestbridge()?ambience as 'westbridge'|'westbridge-car':null);
+    if(isWestbridge()){stopAirportAmbience();return;}
     if(ambience==='home'){stopAirportAmbience();return;}
     if(disposed||disabled||paused||!unlocked||!context||!master||!noise||airportSources.size)return;
     try{
@@ -110,6 +118,7 @@ export function createAudio(settings:()=>Settings) {
   }
   function ambient(){
     if(!context||paused||disposed||context.state!=='running')return;
+    if(isWestbridge()){westbridge?.tick();return;}
     if(ambience==='plane'){
       if(random()<.22)rustle(.22,.008,600);
       return;
@@ -205,19 +214,37 @@ export function createAudio(settings:()=>Settings) {
       tone(1260,780,.065,.012);rustle(.09,.024,3200,.16);
     }
     if(cue==='tv'){tone(1560,760,.045,.012);rustle(.055,.016,3400);}
+    if(cue==='carDoor'){rustle(.18,.047,1100);tone(88,49,.19,.031,0,'triangle');}
+  }
+  function playSurfaceFootstep(surface:FootstepSurface,running=false){
+    if(!unlocked||paused||disposed||!context||context.state!=='running')return;
+    const profile=footstepSound(surface,running);lastFootstepSurface=surface;
+    rustle(profile.duration,profile.noise,profile.cutoff);
+    tone(profile.thud+random()*8,profile.thud*.53,.085,profile.body,0,'triangle');
+  }
+  function setVehicleMotion(value:VehicleMotion){
+    if(disposed)return;
+    vehicleMotion=normalizeVehicleMotion(value,vehicleMotion);westbridge?.setVehicleMotion(vehicleMotion);
   }
   function unlock(){if(disposed)return;unlocked=true;graph();if(context&&!paused)void context.resume().then(()=>{setVolume();syncTelevision();syncAmbience();}).catch(()=>undefined);}
   function pause(value:boolean){
-    paused=value;if(!context)return;setVolume();updateTelevisionLevel();
+    paused=value;westbridge?.pause(value);if(!context)return;setVolume();updateTelevisionLevel();
     if(value)void context.suspend().catch(()=>undefined);
     else if(unlocked)void context.resume().then(()=>{setVolume();syncTelevision();syncAmbience();}).catch(()=>undefined);
   }
-  function reset(){ambience='home';syncAmbience();televisionRequested=false;stopTelevision();for(const source of transient){try{source.stop();}catch{/* already ended */}}transient.clear();}
+  function reset(){westbridge?.reset();vehicleMotion={speed:0,running:false,position:{x:475.1,y:.3,z:-8.7}};lastFootstepSurface=null;ambience='home';syncAmbience();televisionRequested=false;stopTelevision();for(const source of transient){try{source.stop();}catch{/* already ended */}}transient.clear();}
   return{
-    unlock,play,pause,reset,setTelevision,setAmbience,
+    unlock,play,pause,reset,setTelevision,setAmbience,setVehicleMotion,playSurfaceFootstep,
     fadeAmbienceOut(seconds:number){if(context&&master){master.gain.cancelScheduledValues(context.currentTime);master.gain.setTargetAtTime(.0001,context.currentTime,Math.max(.03,seconds/3));}},
-    updateListener(camera:{position:Point;globalPosition?:Point}){const point=camera.globalPosition??camera.position;if(valid(point))listener=copyPoint(point);setVolume();updateTelevisionLevel();},
-    get diagnostics(){return{supported:!disabled,unlocked,paused,state:context?.state??'not-created',ambience,listener:copyPoint(listener),dialogueAudio:false,transientSources:transient.size,television:televisionDiagnostics()};},
-    dispose(){if(disposed)return;disposed=true;reset();if(timer)clearInterval(timer);for(const source of persistent){try{source.stop();}catch{/* stopped */}}persistent.clear();void context?.close().catch(()=>undefined);master?.disconnect();},
+    updateListener(camera:{position:Point;globalPosition?:Point;rotation?:Point}){
+      const point=camera.globalPosition??camera.position;if(valid(point))listener=copyPoint(point);
+      const angles=camera.rotation;
+      const direction=angles&&valid(angles)?{x:Math.sin(angles.y)*Math.cos(angles.x),y:-Math.sin(angles.x),z:Math.cos(angles.y)*Math.cos(angles.x)}:undefined;
+      westbridge?.updateListener(listener,direction);setVolume();updateTelevisionLevel();
+    },
+    get diagnostics(){return{supported:!disabled,unlocked,paused,state:context?.state??'not-created',ambience,listener:copyPoint(listener),dialogueAudio:false,
+      masterGainTarget:Math.max(0,lastVolume),transientSources:transient.size,television:televisionDiagnostics(),
+      westbridge:westbridge?{...westbridge.diagnostics,lastFootstepSurface}:null};},
+    dispose(){if(disposed)return;disposed=true;reset();westbridge?.dispose();if(timer)clearInterval(timer);for(const source of persistent){try{source.stop();}catch{/* stopped */}}persistent.clear();void context?.close().catch(()=>undefined);master?.disconnect();},
   };
 }

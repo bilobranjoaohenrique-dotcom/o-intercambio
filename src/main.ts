@@ -22,6 +22,8 @@ import { ARRIVAL_SPAWN } from './game/arrivalLayout';
 import { canBoardAtAirport, farewellGesture, AIRPORT_FAREWELL_DURATION } from './game/airportProgress';
 import { createPlaneSequence } from './game/planeSequence';
 import { PLANE_LOOK_LIMITS } from './game/planeLayout';
+import { createWestbridgeDrive } from './game/westbridgeDrive';
+import { WB_WALK_SPAWN } from './game/westbridgeLayout';
 import type { Settings } from './game/types';
 import { buildChapterWorld } from './scene/chapterWorld';
 import { createChapterProgress, createDialogue, breakfastConversation, breakfastChoices, schoolClue, airportGoodbye, type StoryBeat, type StoryChoice } from './game/narrative';
@@ -46,8 +48,8 @@ const objective = createBreakfastObjective();
 const chapter = createChapterProgress();
 const dialogue = createDialogue();
 let selectedChoice: StoryChoice | null = null;
-let chapterStage: 'home'|'airport'|'plane'|'town'='home';
-let transitionKind: 'arrival'|'garage-airport'|'airport-boarding'|'plane-exit'='arrival';
+let chapterStage: 'home'|'airport'|'plane'|'town'|'westbridge'='home';
+let transitionKind: 'arrival'|'garage-airport'|'airport-boarding'|'plane-exit'|'westbridge-entry'|'westbridge-exit'='arrival';
 let farewellTime=0;
 let pendingAirportDialogue=false;
 let freshStartRequested=false;
@@ -82,6 +84,8 @@ try {
     onTelevisionClick: () => audio.play('tv'),
   });
   const chapterWorld = buildChapterWorld(scene);
+  let westbridgeDrive:ReturnType<typeof createWestbridgeDrive>|null=null;
+  let westbridgePrepared=false, westbridgeResumeWalking=false;
   let characterAssetsReady = false;
   void chapterWorld.ready.then(() => { characterAssetsReady = true; }).catch(error => {
     const message = String(error?.message ?? error);recordError(message);
@@ -94,7 +98,10 @@ try {
   for (const mesh of door.target.meshes) environment.shadowGenerator.addShadowCaster(mesh);
   environment.addDoorMeshes(door.target.meshes);
   const interactions = createInteractions(scene, camera, [door.target, ...environment.targets, ...chapterWorld.targets]);
-  const player = createPlayer(canvas, camera, () => settings, () => [door.collider()], () => audio.play('foot'));
+  const player = createPlayer(canvas, camera, () => settings, () => chapterStage==='westbridge'?chapterWorld.westbridgeObstacles:[door.collider()], running => {
+    if(chapterStage==='westbridge')audio.playSurfaceFootstep(chapterWorld.westbridgeNavigation.surfaceAt(player.position),running);
+    else audio.play('foot');
+  });
   const breakfast = createBreakfastSeat(camera, player, BREAKFAST_SEAT);
   const planeFlight = createPlaneSequence(camera, player);
   player.setActive(false);
@@ -103,6 +110,7 @@ try {
     const scale = settings.quality === 'low' ? 2.2 : settings.quality === 'high' ? 1 : 1.4;
     engine.setHardwareScalingLevel(scale);
     engine.resize();
+    chapterWorld.setQuality(settings.quality);
     el('grainLayer').hidden = !settings.grain;
     el('perf').hidden = !settings.performance;
     el<HTMLInputElement>('sensitivity').value = String(settings.sensitivity);
@@ -129,6 +137,7 @@ try {
 
   function releaseMouse() { if (document.pointerLockElement === canvas) document.exitPointerLock(); }
   function isInPlane() { return chapterStage==='plane'; }
+  function isInsideWestbridgeCar(){return chapterStage==='westbridge'&&!!westbridgeDrive?.diagnostics.occupied;}
   function adoptPlaneSeat() {
     planeFlight.enter();player.setLookLimits(PLANE_LOOK_LIMITS);player.setMovementEnabled(false);
     el('controlsHint').textContent='Mouse · Olhar ao redor | Olhe para a janela à esquerda e pressione E';
@@ -146,11 +155,13 @@ try {
     if (phase !== 'paused') return;
     el<HTMLDialogElement>('pauseMenu').close(); phase = beforePause; last = performance.now();
     audio.pause(false); player.setActive(phase === 'playing' && (!dialogue.active || breakfast.state === 'seated'));
-    player.setMovementEnabled(phase==='playing'&&breakfast.state === 'standing'&&!isInPlane()&&!dialogue.active&&chapter.mission!=='airport-farewell');
+    player.setMovementEnabled(phase==='playing'&&breakfast.state === 'standing'&&!isInPlane()&&!isInsideWestbridgeCar()&&!dialogue.active&&chapter.mission!=='airport-farewell');
     if ((phase === 'playing' && (!dialogue.active || breakfast.state === 'seated') && !dialogue.choices.length) || phase === 'opening') player.requestPointerLock();
   }
   function beginScene() {
     if (!ready) return;
+    westbridgeDrive?.stop();westbridgeDrive=null;
+    camera.fov=1.13;camera.minZ=.045;
     el<HTMLDialogElement>('pauseMenu').close();
     if(freshStartRequested||chapter.mission==='complete')chapter.reset();
     freshStartRequested=false;
@@ -187,6 +198,9 @@ try {
       el('objectiveText').textContent=chapter.label;el('objective').hidden=false;el('reticle').hidden=false;
       document.documentElement.style.setProperty('--blur','0px');playingAt=worldTime;
       if(chapter.mission==='airport-farewell')startDialogue(airportGoodbye,[]);
+      if(chapter.mission==='westbridge-ride'||chapter.mission==='westbridge-explore'){
+        el('sceneFade').style.opacity='1';beginWestbridge(chapter.mission==='westbridge-explore');
+      }
     }
     canvas.focus({ preventScroll: true }); player.requestPointerLock();
   }
@@ -249,7 +263,7 @@ try {
       phase='farewell';farewellTime=0;player.setActive(false);player.clearInput();interactions.clear();releaseMouse();
       el('reticle').hidden=true;el('interaction').hidden=true;return;
     }
-    if(chapterStage==='town'&&chapter.mission==='find-host'){chapter.advance('complete');finishScene();return;}
+    if(chapterStage==='town'&&chapter.mission==='find-host'){beginWestbridge(false);return;}
     player.setActive(true);player.setMovementEnabled(breakfast.state==='standing'&&!isInPlane());
     el('reticle').hidden=false;player.requestPointerLock();
   }
@@ -278,6 +292,44 @@ try {
     el('interaction').hidden=true;el('reticle').hidden=true;el('examine').hidden=true;
     el('sceneFade').style.opacity='0';audio.play('engine');audio.fadeAmbienceOut(.65);
   }
+  function beginWestbridge(walking:boolean){
+    westbridgeResumeWalking=walking;westbridgePrepared=false;
+    phase='transition';transitionKind='westbridge-entry';transitionTime=0;
+    player.setActive(false);player.clearInput();interactions.clear();releaseMouse();
+    el('interaction').hidden=true;el('reticle').hidden=true;el('dialogueBox').hidden=true;
+    chapter.advance(walking?'westbridge-explore':'westbridge-ride');
+    el('objectiveText').textContent=chapter.label;el('objectiveState').textContent='NOVA MISSÃO';
+    audio.fadeAmbienceOut(.6);
+    void chapterWorld.prepareWestbridge().then(()=>{westbridgePrepared=true;}).catch(reason=>{
+      const message='Não foi possível preparar Westbridge: '+String(reason?.message??reason);
+      recordError(message);el('fatal').hidden=false;el('fatalMessage').textContent=message;
+    });
+  }
+  function enterWestbridge(){
+    const vehicle=chapterWorld.westbridgeVehicle;
+    if(!vehicle)throw Error('O carro de Westbridge ainda não está pronto.');
+    chapterStage='westbridge';document.body.dataset.chapterStage=chapterStage;
+    chapterWorld.setWestbridgeTimeOfDay(new URLSearchParams(location.search).get('westbridgeLighting')==='night'?'night':'afternoon');
+    chapterWorld.activate('westbridge');
+    player.setNavigation(chapterWorld.westbridgeNavigation);
+    westbridgeDrive=createWestbridgeDrive(camera,player,vehicle);
+    westbridgeDrive.enter(westbridgeResumeWalking);
+    chapterWorld.refreshWestbridgeLighting();
+    camera.fov=.98;
+    if(westbridgeResumeWalking){
+      westbridgeDrive.exit();player.teleport(WB_WALK_SPAWN,Math.PI);player.setMovementEnabled(true);camera.fov=1.05;
+    }
+    audio.setAmbience(westbridgeResumeWalking?'westbridge':'westbridge-car');
+    el('controlsHint').textContent=westbridgeResumeWalking?'WASD · Caminhar | Mouse · Olhar | E · Interagir':'Mouse · Olhar pelas janelas | E · Sair quando o carro estacionar';
+    transitionKind='arrival';transitionTime=0;el('sceneFade').style.opacity='1';
+  }
+  function exitWestbridgeCar(){
+    if(!westbridgeDrive?.canExit)return;
+    phase='transition';transitionKind='westbridge-exit';transitionTime=0;
+    player.setActive(false);player.clearInput();releaseMouse();interactions.clear();
+    el('interaction').hidden=true;el('reticle').hidden=true;
+    audio.play('carDoor');
+  }
   function changePlaneView() {
     const changed=planeFlight.state==='window'?planeFlight.returnToSeat():planeFlight.observe();
     if(!changed)return;
@@ -291,6 +343,7 @@ try {
   }
   function activateInteraction() {
     if (phase !== 'playing'||dialogue.active) return;
+    if(isInsideWestbridgeCar()){exitWestbridgeCar();return;}
     if(isInPlane()){
       if(planeFlight.state==='window'){changePlaneView();return;}
       if(interactions.activate()?.id==='plane-window'){changePlaneView();return;}
@@ -300,6 +353,9 @@ try {
     if(breakfast.state==='seated'){breakfast.stand();interactions.clear();return;}
     if(breakfast.state!=='standing')return;
     const result = interactions.activate();
+    if(result?.id==='wb-house-door'&&chapter.mission==='westbridge-explore'){
+      chapter.advance('complete');finishScene();return;
+    }
     if(result?.id==='breakfast-chair'&&chapter.mission==='talk-parents'){
       const distance=Math.hypot(player.position.x-BREAKFAST_SEAT.approach.x,player.position.z-BREAKFAST_SEAT.approach.z);
       if(distance<=1.1){selectedChoice=null;breakfast.sit();interactions.clear();}
@@ -369,7 +425,7 @@ try {
   });
 
   Object.defineProperty(window, '__INTERCAMBIO__', { configurable: true, get: () => ({
-    build:'chapter1-plane-cabin-1',phase, introTime, duration: OPENING_DURATION, mission: objective.state, chapterMission: chapter.mission, chapterStage, dialogue: dialogue.active,
+    build:'chapter1-westbridge-playable-1',phase, introTime, duration: OPENING_DURATION, mission: objective.state, chapterMission: chapter.mission, chapterStage, dialogue: dialogue.active,
     position: { x: camera.position.x, y: camera.position.y, z: camera.position.z },
     rotation: { yaw: camera.rotation.y, pitch: camera.rotation.x, roll: camera.rotation.z },
     horizonTilt: camera.getDirection(Vector3.Right()).y,
@@ -389,6 +445,7 @@ try {
     airport: { scenery: chapterWorld.airportDiagnostics, farewell: { completed: canBoardAtAirport(chapter.mission,chapter.completed), progress:Math.min(1,farewellTime/AIRPORT_FAREWELL_DURATION) } },
     arrival: { scenery: chapterWorld.arrivalDiagnostics },
     plane: { scenery: chapterWorld.planeDiagnostics, flight:{...planeFlight.diagnostics,subtitle:planeFlight.subtitle} },
+    westbridge:{...chapterWorld.westbridgeDiagnostics,drive:westbridgeDrive?.diagnostics??null,navigation:{enabled:chapterStage==='westbridge'&&!isInsideWestbridgeCar()}},
   }) });
 
   engine.runRenderLoop(() => {
@@ -417,6 +474,11 @@ try {
       door.update(dt, player.position);
       if (Math.abs(door.angle - previousDoorAngle) > 1e-7) environment.refreshShadows();
       player.update(dt);
+      if(isInsideWestbridgeCar())westbridgeDrive?.update(dt);
+      if(chapterStage==='westbridge'&&westbridgeDrive){
+        const drive=westbridgeDrive.diagnostics;
+        audio.setVehicleMotion({speed:drive.speed,running:isInsideWestbridgeCar()&&!westbridgeDrive.canExit,position:drive.position});
+      }
       const seatEvent=breakfast.update(dt);
       if(seatEvent==='seated')startDialogue(breakfastConversation,breakfastChoices);
       const target = dialogue.active||breakfast.state!=='standing'?null:interactions.update();
@@ -429,6 +491,10 @@ try {
         el('interaction').hidden=!(windowTarget||planeFlight.state==='window'||planeFlight.canContinue);
         el('interactionText').textContent=planeFlight.state==='window'?'Voltar ao assento':windowTarget?'Olhar pela janela':'Avançar para a chegada';
         if(planeFlight.autoContinue)leavePlane();
+      }
+      if(isInsideWestbridgeCar()){
+        el('interaction').hidden=!westbridgeDrive?.canExit;
+        el('interactionText').textContent='Sair do carro';
       }
       el('objective').classList.toggle('compact', worldTime - playingAt > 5);
       el('controlsHint').hidden = isInPlane()?planeFlight.diagnostics.reflectionElapsed!==null:dialogue.active||chapterStage==='airport'||worldTime - playingAt > 9;
@@ -448,6 +514,18 @@ try {
       } else if(transitionKind==='plane-exit'){
         el('sceneFade').style.opacity=String(Math.min(1,transitionTime/.8));
         if(transitionTime>=.8)travelTo('town','find-host');
+      } else if(transitionKind==='westbridge-entry'){
+        el('sceneFade').style.opacity=String(Math.min(1,transitionTime/.65));
+        if(transitionTime>=.65&&westbridgePrepared)enterWestbridge();
+      } else if(transitionKind==='westbridge-exit'){
+        el('sceneFade').style.opacity=String(Math.min(1,transitionTime/.3));
+        if(transitionTime>=.3){
+          westbridgeDrive?.exit();player.teleport(WB_WALK_SPAWN,Math.PI);player.setNavigation(chapterWorld.westbridgeNavigation);
+          player.setMovementEnabled(true);camera.fov=1.05;
+          chapter.advance('westbridge-explore');audio.setAmbience('westbridge');
+          el('objectiveText').textContent=chapter.label;el('objectiveState').textContent='NOVA MISSÃO';el('objective').classList.remove('compact');
+          el('controlsHint').innerHTML=normalControlsHint;transitionKind='arrival';transitionTime=0;
+        }
       } else {
       if(!scene.isReady()){transitionTime=0;el('sceneFade').style.opacity='1';}
       else {
@@ -487,7 +565,7 @@ try {
     audio.updateListener(camera);
     scene.render(); frameCount++;
     canvas.dataset.phase = phase; canvas.dataset.frames = String(frameCount);
-    if (ready && (phase === 'opening' || phase === 'playing') && !document.hidden && frameMs > 0 && frameMs < 500) {
+    if (ready && (phase === 'opening' || phase === 'playing') && !document.hidden && frameMs > 0 && Number.isFinite(frameMs)) {
       samples.push(frameMs); if (samples.length > 600) samples.shift();
     }
     if (now - lastStats >= 500 && samples.length) {

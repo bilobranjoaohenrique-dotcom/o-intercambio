@@ -5,7 +5,7 @@ registerHooks({ resolve(specifier, context, next) {
   if (context.parentURL?.endsWith('.ts') && specifier.startsWith('.') && !/\.[a-z]+$/.test(specifier)) specifier += '.ts';
   return next(specifier, context);
 } });
-const { createPlayer, LOOK_RADIANS_PER_PIXEL } = await import('../src/game/player.ts');
+const { createPlayer, movementVector, LOOK_RADIANS_PER_PIXEL, WALK_SPEED } = await import('../src/game/player.ts');
 const { STANDING_POSE, BED_POSE } = await import('../src/game/layout.ts');
 const vector = point => ({ ...point, set(x, y, z) { this.x = x; this.y = y; this.z = z; } });
 const pose = camera => ({ position: { x: camera.position.x, y: camera.position.y, z: camera.position.z },
@@ -26,6 +26,69 @@ function fixture() {
   return { document, canvas, camera, settings, player, get footsteps() { return footsteps; } };
 }
 const advance = (player, seconds) => { for (let i = 0; i < seconds * 60; i++) player.update(1 / 60); };
+
+test('player: W and D follow the real Babylon left-handed camera at all four cardinal headings', async () => {
+  const { NullEngine } = await import('@babylonjs/core/Engines/nullEngine.js');
+  const { Scene } = await import('@babylonjs/core/scene.js');
+  const { UniversalCamera } = await import('@babylonjs/core/Cameras/universalCamera.js');
+  const { Vector3 } = await import('@babylonjs/core/Maths/math.vector.js');
+  const engine = new NullEngine(), scene = new Scene(engine);
+  const camera = new UniversalCamera('movement contract', new Vector3(0, 1.65, 0), scene);
+  try {
+    assert.equal(scene.useRightHandedSystem, false);
+    for (const yaw of [0, Math.PI / 2, Math.PI, -Math.PI / 2]) {
+      camera.rotation.set(0, yaw, 0); camera.computeWorldMatrix();
+      for (const [forward, right, direction] of [[1, 0, Vector3.Forward()], [0, 1, Vector3.Right()]]) {
+        const expected = camera.getDirection(direction).scale(WALK_SPEED);
+        const actual = movementVector(forward, right, yaw, WALK_SPEED);
+        assert.ok(Math.abs(actual.x - expected.x) < 1e-6, `X follows camera at ${yaw}`);
+        assert.ok(Math.abs(actual.z - expected.z) < 1e-6, `Z follows camera at ${yaw}`);
+      }
+    }
+  } finally { scene.dispose(); engine.dispose(); }
+});
+
+test('player: a region can supply floor/collision navigation and release it without moving the camera', () => {
+  const { document, camera, player } = fixture();
+  let calls = 0;
+  const navigation = {
+    move(point, dx, dz) { calls++; return { x: Math.min(101, point.x + dx), z: point.z + dz }; },
+    floorHeight() { return 2; },
+  };
+  player.teleport({ x: 100, y: 3.65, z: 100 }, Math.PI / 2);
+  player.setNavigation(navigation); player.activateFromCamera();
+  document.dispatchEvent(event('keydown', { code: 'KeyW' })); advance(player, 1);
+  assert.ok(calls > 0); assert.equal(camera.position.x, 101, 'region wall stops the existing controller');
+  assert.ok(Math.abs(camera.position.z - 100) < 1e-6);
+  assert.ok(Math.abs(camera.position.y - 3.65) < 1e-6, 'region floor supplies the standing height');
+  const beforeRelease = pose(camera); player.setNavigation(null);
+  assert.deepEqual(pose(camera), beforeRelease, 'changing providers cannot teleport the player');
+  const callsAfterRelease = calls; advance(player, .2);
+  assert.equal(calls, callsAfterRelease, 'null restores the original navigation provider');
+  assert.equal(camera.position.x, beforeRelease.position.x, 'provider changes clear held keys and velocity');
+  player.dispose();
+});
+
+test('player: a moving seat retains mouse-look and an unlocked drag gesture', () => {
+  const { document, canvas, camera, player } = fixture();
+  canvas.requestPointerLock = undefined; player.activateFromCamera(); player.setMovementEnabled(false);
+  canvas.dispatchEvent(event('pointerdown', { button: 0, pointerId: 1, clientX: 100, clientY: 100 }));
+  document.dispatchEvent(event('mousemove', { clientX: 140, clientY: 110 }));
+  const lookedYaw = camera.rotation.y, lookedPitch = camera.rotation.x;
+  assert.equal(player.applyExternalMotion({ x: 100, y: 1.2, z: 101 }, .3), true);
+  assert.equal(camera.rotation.y, lookedYaw + .3); assert.equal(camera.rotation.x, lookedPitch);
+  assert.deepEqual(player.position, { x: 100, y: 1.2, z: 101 });
+  document.dispatchEvent(event('mousemove', { clientX: 150, clientY: 110 }));
+  assert.ok(Math.abs(camera.rotation.y - (lookedYaw + .3 + 10 * LOOK_RADIANS_PER_PIXEL)) < 1e-9,
+    'external movement cannot clear the in-progress fallback drag');
+  const seated = pose(camera);
+  assert.equal(player.applyExternalMotion({ x: NaN, y: 0, z: 0 }, 0), false);
+  assert.deepEqual(pose(camera), seated);
+  player.setMovementEnabled(true); const standing = pose(camera);
+  assert.equal(player.applyExternalMotion({ x: 50, y: 2, z: 50 }, .1), false);
+  assert.deepEqual(pose(camera), standing, 'a moving seat cannot override walking controls');
+  player.dispose();
+});
 
 test('player: abertura e pausa não movem a câmera; ativação adota a pose final sem teleporte', () => {
   const { document, camera, player } = fixture();

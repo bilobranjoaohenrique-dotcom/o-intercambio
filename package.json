@@ -26,6 +26,7 @@
     "test:mouth": "node tests/speech-mouth-browser.mjs",
     "test:plane": "node tests/plane-glb-browser.mjs",
     "test:arrival": "node tests/arrival-glb-browser.mjs",
+    "test:westbridge": "node tests/westbridge-game-browser.mjs",
     "verify": "node scripts/verify.mjs"
   },
   "dependencies": {

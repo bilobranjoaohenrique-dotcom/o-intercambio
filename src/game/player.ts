@@ -9,6 +9,11 @@ export const WALK_SPEED = 2.1;
 export const RUN_SPEED = 3.25;
 const MAX_PITCH = 1.43;
 const MOVEMENT_CODES = new Set(['KeyW', 'KeyA', 'KeyS', 'KeyD', 'ShiftLeft', 'ShiftRight']);
+export type PlayerNavigation = {
+  move: typeof moveWithCollisions;
+  floorHeight: typeof floorHeight;
+};
+const DEFAULT_NAVIGATION: PlayerNavigation = { move: moveWithCollisions, floorHeight };
 
 /** Normalized local input in Babylon's left-handed XZ plane. */
 export function movementVector(forward: number, right: number, yaw: number, speed: number): Point2 {
@@ -37,6 +42,7 @@ export function createPlayer(canvas: HTMLCanvasElement, camera: UniversalCamera,
   let active = false, disposed = false;
   let movementEnabled = true;
   let lookLimits: LookLimits | null = null;
+  let navigation: PlayerNavigation = DEFAULT_NAVIGATION;
   let position: Point2 = { x: camera.position.x, z: camera.position.z };
   let velocity: Point2 = { x: 0, z: 0 };
   let yaw = camera.rotation.y, pitch = camera.rotation.x, eyeY = camera.position.y;
@@ -136,8 +142,25 @@ export function createPlayer(canvas: HTMLCanvasElement, camera: UniversalCamera,
     adoptCameraPose();
   }
   function setLookLimits(limits: LookLimits | null){lookLimits=limits;}
+  function setNavigation(next: PlayerNavigation | null) {
+    if (disposed) return;
+    navigation = next ?? DEFAULT_NAVIGATION;
+    // Retain the current pose, but not held movement from another region's
+    // floor and collision provider.
+    adoptCameraPose();
+  }
+  function applyExternalMotion(point: Point3, yawDelta: number) {
+    if (disposed || movementEnabled || ![point.x, point.y, point.z, yawDelta].every(Number.isFinite)) return false;
+    // A moving seat translates the existing controller and turns its heading,
+    // retaining the player's local look and any unlocked drag gesture.
+    position = { x: point.x, z: point.z }; eyeY = point.y; yaw += yawDelta;
+    camera.position.set(point.x, point.y, point.z);
+    camera.rotation.y = yaw; camera.rotation.x = pitch;
+    return true;
+  }
   function reset() {
     setActive(false);
+    navigation = DEFAULT_NAVIGATION;
     movementEnabled = true;
     lookLimits = null;
     position = { x: STANDING_POSE.position.x, z: STANDING_POSE.position.z };
@@ -166,13 +189,13 @@ export function createPlayer(canvas: HTMLCanvasElement, camera: UniversalCamera,
     const target = movementVector(Number(keys.has('KeyW')) - Number(keys.has('KeyS')),
       Number(keys.has('KeyD')) - Number(keys.has('KeyA')), yaw, running ? RUN_SPEED : WALK_SPEED);
     velocity = approachVelocity(velocity, target, dt);
-    const next = moveWithCollisions(position, velocity.x * dt, velocity.z * dt, getDynamicObstacles());
+    const next = navigation.move(position, velocity.x * dt, velocity.z * dt, getDynamicObstacles());
     const travelled = Math.hypot(next.x - position.x, next.z - position.z);
     if (Math.abs(next.x - position.x) < 1e-6 && Math.abs(velocity.x) > .01) velocity.x = 0;
     if (Math.abs(next.z - position.z) < 1e-6 && Math.abs(velocity.z) > .01) velocity.z = 0;
     position = next;
     const smoothing = 1 - Math.exp(-22 * dt);
-    eyeY += (floorHeight(position) + EYE_HEIGHT - eyeY) * smoothing;
+    eyeY += (navigation.floorHeight(position) + EYE_HEIGHT - eyeY) * smoothing;
     bobPhase += travelled * 7.5;
     const desiredBob = readSettings().headBob && travelled > .0001 ? Math.sin(bobPhase) * .008 : 0;
     bob += (desiredBob - bob) * (1 - Math.exp(-16 * dt));
@@ -196,7 +219,7 @@ export function createPlayer(canvas: HTMLCanvasElement, camera: UniversalCamera,
     canvas.removeEventListener('pointerdown', pointerDown);
     window?.removeEventListener('blur', clearInput);
   }
-  return { update, setActive, activateFromCamera, adoptCameraPose, setMovementEnabled, setLookLimits, reset, teleport, requestPointerLock, clearInput, dispose,
+  return { update, setActive, activateFromCamera, adoptCameraPose, setMovementEnabled, setLookLimits, setNavigation, applyExternalMotion, reset, teleport, requestPointerLock, clearInput, dispose,
     get enabled() { return active && !disposed; },
     get position(): Point3 { return { x: camera.position.x, y: camera.position.y, z: camera.position.z }; } };
 }

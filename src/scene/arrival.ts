@@ -13,6 +13,7 @@ import type { Light } from '@babylonjs/core/Lights/light';
 import '@babylonjs/loaders/glTF';
 import type { InteractionTarget } from '../game/types';
 import { ARRIVAL_MODEL, ARRIVAL_HOST, ARRIVAL_POSTER } from '../game/arrivalLayout';
+import { createArrivalVehicleHosts, type HostVehicleSeats } from './arrivalVehicleHosts';
 
 /** The supplied arrivals interior owns its scenery, hosts and six passengers.
  * Keep their authored metre scale, materials, rigs and seated poses together. */
@@ -28,6 +29,7 @@ export function buildArrival(scene: Scene, parent: TransformNode) {
   const hostIds = new Set<string>();
   let container: AssetContainer | null = null, active = false, disposed = false, loaded = false, error: string | null = null;
   let materialCount = 0, textureCount = 0, npcCount = 0;
+  let vehicleHosts: ReturnType<typeof createArrivalVehicleHosts> | null = null;
   const proxyMaterial = new StandardMaterial('chegada · áreas de interação invisíveis', scene);
   proxyMaterial.disableLighting = true;
   function proxy(id: string, width: number, height: number, depth: number, point: { x: number; y: number; z: number }) {
@@ -102,13 +104,21 @@ export function buildArrival(scene: Scene, parent: TransformNode) {
         Vector3.DistanceSquared(center, (b as PointLight).getAbsolutePosition())).slice(0, 3);
       for (const light of closest) light.includedOnlyMeshes.push(mesh);
     }
-    ambient.includedOnlyMeshes = meshes; loaded = true;
+    ambient.includedOnlyMeshes = meshes;
+    vehicleHosts = createArrivalVehicleHosts(scene, value); loaded = true;
   }).catch(reason => {
     error = String(reason?.message ?? reason); throw reason;
   });
 
   return {
     meshes, targets, ready,
+    setHostVehicleSeats(seats: HostVehicleSeats | null) {
+      if (!vehicleHosts) { if (seats) throw Error('A família anfitriã ainda não terminou de carregar.'); return; }
+      vehicleHosts.setSeats(seats);
+    },
+    get vehicleHostMeshes() { return vehicleHosts?.meshes ?? []; },
+    get vehicleHostDiagnostics() { return vehicleHosts?.diagnostics ?? { count: 0, seated: 0, ids: [], location: 'terminal' }; },
+    animateVehicleHosts(time: number) { vehicleHosts?.animate(time); },
     setActive(value: boolean) {
       active = value; root.setEnabled(value);
       for (const light of [ambient, ...embeddedLights]) light.setEnabled(value);
@@ -128,6 +138,7 @@ export function buildArrival(scene: Scene, parent: TransformNode) {
       animationClock: 'game-time', protagonistMeshes: 0 }; },
     dispose() {
       if (disposed) return; disposed = true;
+      vehicleHosts?.dispose();
       for (const light of oldLights) light.excludedMeshes = light.excludedMeshes.filter(mesh => !meshes.includes(mesh));
       for (const group of selectedClips) group.stop(true);
       container?.dispose(); ambient.dispose();

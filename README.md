@@ -181,11 +181,15 @@ O GLB enviado `interior_chegada_ps2_com_npcs.glb`, em `public/models/chegada_int
 
 Verificação focal: `node --test --test-isolation=none tests/arrival.test.mjs tests/plane.test.mjs` e, com a prévia aberta, `INTERCAMBIO_URL=http://localhost:4180 npm run test:arrival`. [Entrada real](docs/capturas/chegada-glb-entrada.png), [anfitriões](docs/capturas/chegada-glb-anfitrioes.png) e [registro breve](docs/resultados-chegada-glb.json). Chromium/Linux com SwiftShader, sem benchmark de desempenho.
 
-## Westbridge — materiais PS2
+## Westbridge — chegada e exploração
 
-O bairro enviado recebeu uma remasterização exclusivamente de materiais: 43 texturas de 256–1024 px, fachadas e telhados detalhados, vegetação, asfalto/concreto e vidros discretos. As 105 malhas, posições, topologia e UVs foram preservadas; as árvores brancas usam agora uma atribuição local de material com os UVs originais. O arquivo foi validado no Babylon.js em cinco ângulos iguais ao original. Esta entrega de asset não altera as fases conectadas do jogo.
+Depois da fala de boas-vindas no terminal, o capítulo continua no banco traseiro do carro dos anfitriões. O percurso pelas ruas, a curva para a garagem e a frenagem usam o bairro real. O mouse permite olhar durante a viagem; **E — Sair do carro** é liberado após estacionar. A pé, use **WASD**, mouse e **E** para seguir pelo caminho até a entrada da casa azul de Daniel e Helen. O capítulo termina nessa chegada, sem criar o interior da residência.
 
-[Pacote para baixar](docs/entregas/Westbridge-remaster.zip), [modelo GLB](public/models/westbridge.glb) e [relatório com cinco comparações reais e custo de renderização](docs/WESTBRIDGE-REMASTER.md). Build e três testes focais passaram; revisão em Chromium/Linux com SwiftShader, sem benchmark de GPU física.
+O bairro mantém suas 105 malhas e materiais remasterizados, com carregamento após a recepção, céu e luzes locais de fim de tarde, sombras por qualidade, navegação própria, decoração e sons ambientais não verbais. Daniel e Helen reutilizam os atores do terminal. O exterior original do carro foi preservado; o arquivo enviado não continha interior, que foi criado separadamente para a vista em primeira pessoa. O checkpoint permite retomar a viagem ou a exploração; a escolha da conversa com os pais é preservada. Saves antigos que encerravam no terminal continuam até Westbridge.
+
+[Relatório da operação e validação jogável](docs/OPERACAO-WESTBRIDGE.md). Para a revisão de iluminação noturna, abra o jogo com `?westbridgeLighting=night`; isso seleciona um preset local de inspeção, sem avançar a história no tempo. A chegada normal usa fim de tarde. Teste focal: `INTERCAMBIO_URL=http://localhost:4188 node tests/westbridge-game-browser.mjs`.
+
+O [pacote de modelos e texturas](docs/entregas/Westbridge-remaster.zip), [GLB](public/models/westbridge.glb) e [relatório da remasterização de materiais](docs/WESTBRIDGE-REMASTER.md) continuam disponíveis como entrega artística separada. As metas de FPS em GPU física e celulares exigem validação no hardware-alvo.
 
 ## Estrutura
 

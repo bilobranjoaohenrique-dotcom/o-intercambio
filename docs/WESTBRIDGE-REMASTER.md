@@ -32,7 +32,7 @@ Permanecem os mesmos **110 nodes, 105 malhas, 337.262 vértices e 137.036 triân
 
 O backup tem SHA-256 `1df6a28d7950ae4d022590e598c0812a0c524a3c5a71373a1fea24960ed0c721`. O hash do arquivo final e de cada PNG estão no manifesto. O GLB pode ser remontado deterministicamente com `python scripts/remaster-westbridge.py`, sem reexportar pelo Blender.
 
-Westbridge ainda não fazia parte das fases conectadas do projeto. Esta tarefa entrega o modelo remasterizado e sua revisão no Babylon.js; a progressão, as colisões, a câmera e a iluminação dos cenários existentes permanecem nos arquivos anteriores. O GLB enviado não contém céu, luzes ou câmeras: as capturas usam um fundo neutro e um rig de revisão local idêntico no antes/depois. Pequenos traços de junção visíveis na fachada lateral também aparecem no original; sua geometria foi preservada.
+No momento desta remasterização, Westbridge ainda não fazia parte das fases conectadas do projeto. Esta entrega artística contém o modelo e sua revisão no Babylon.js; a integração jogável posterior está descrita em [Operação Westbridge](OPERACAO-WESTBRIDGE.md). O GLB enviado não contém céu, luzes ou câmeras: as capturas desta comparação usam um fundo neutro e um rig de revisão local idêntico no antes/depois. Pequenos traços de junção visíveis na fachada lateral também aparecem no original; sua geometria foi preservada.
 
 ## Cinco ângulos reais
 
