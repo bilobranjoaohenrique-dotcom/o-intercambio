@@ -30,7 +30,8 @@ export const airportGoodbye: StoryBeat[] = [
 
 export type ChapterMission =
   | 'breakfast' | 'talk-parents' | 'pack-suitcase' | 'enter-car' | 'car-ready' | 'airport-farewell' | 'airport-gate'
-  | 'plane-seat' | 'find-host' | 'westbridge-ride' | 'westbridge-explore' | 'complete';
+  | 'plane-seat' | 'find-host' | 'westbridge-ride' | 'westbridge-explore' | 'host-house-explore' | 'complete';
+export type HostHouseLocation = 'inside' | 'outside';
 export const missionLabels: Record<ChapterMission, string> = {
   breakfast: 'Desça para tomar café',
   'talk-parents': 'Converse com seus pais',
@@ -43,6 +44,7 @@ export const missionLabels: Record<ChapterMission, string> = {
   'find-host': 'Encontre sua família anfitriã',
   'westbridge-ride': 'Acompanhe a viagem até Westbridge',
   'westbridge-explore': 'Siga até a entrada da casa de Daniel e Helen',
+  'host-house-explore': 'Explore a casa de Daniel e Helen',
   complete: 'Capítulo 1 concluído',
 };
 
@@ -51,10 +53,12 @@ export function createChapterProgress() {
   let mission: ChapterMission = 'breakfast';
   let choice: string | null = null;
   let completed: ChapterMission[] = [];
+  let hostHouseLocation: HostHouseLocation = 'inside';
   try {
     const saved = JSON.parse(localStorage.getItem(SAVE_KEY) ?? 'null');
-    if (saved && ['breakfast','talk-parents','pack-suitcase','enter-car','car-ready','airport-farewell','airport-gate','plane-seat','find-host','westbridge-ride','westbridge-explore','complete'].includes(saved.mission)) {
+    if (saved && ['breakfast','talk-parents','pack-suitcase','enter-car','car-ready','airport-farewell','airport-gate','plane-seat','find-host','westbridge-ride','westbridge-explore','host-house-explore','complete'].includes(saved.mission)) {
       mission = saved.mission; choice = typeof saved.choice === 'string' ? saved.choice : null;
+      hostHouseLocation = saved.hostHouseLocation === 'outside' ? 'outside' : 'inside';
       completed = Array.isArray(saved.completed) ? saved.completed.filter((x: unknown): x is ChapterMission =>
         typeof x === 'string' && x in missionLabels) : [];
       // The old back-seat step now resumes directly at the airport.
@@ -67,14 +71,21 @@ export function createChapterProgress() {
       // The old chapter ended immediately after the terminal welcome. Continue
       // those saves at the new journey instead of discarding the whole morning.
       if (mission === 'complete' && completed.includes('find-host') && !completed.includes('westbridge-explore')) mission = 'westbridge-ride';
+      // The old playable neighbourhood ended at this door. Resume those saves
+      // outside the same entrance, ready to explore the supplied house.
+      if (mission === 'complete' && completed.includes('westbridge-explore') && !completed.includes('host-house-explore')) {
+        mission = 'host-house-explore'; hostHouseLocation = 'outside';
+      }
     }
   } catch { /* A blocked or malformed save starts a new chapter. */ }
   function save() {
-    try { localStorage.setItem(SAVE_KEY, JSON.stringify({ mission, choice, completed })); } catch { /* Session remains playable. */ }
+    try { localStorage.setItem(SAVE_KEY, JSON.stringify({ mission, choice, completed, hostHouseLocation })); } catch { /* Session remains playable. */ }
   }
   return {
     get mission() { return mission; }, get choice() { return choice; }, get completed() { return [...completed]; },
     get label() { return missionLabels[mission]; },
+    get hostHouseLocation() { return hostHouseLocation; },
+    setHostHouseLocation(value: HostHouseLocation) { hostHouseLocation = value; save(); },
     advance(next: ChapterMission) {
       // Restoring an active step may persist its normalized checkpoint, but
       // must not mark that very step complete before its interaction occurs.
@@ -84,7 +95,7 @@ export function createChapterProgress() {
       return mission;
     },
     select(value: string) { choice = value; save(); },
-    reset() { mission = 'breakfast'; choice = null; completed = []; try { localStorage.removeItem(SAVE_KEY); } catch { /* no-op */ } },
+    reset() { mission = 'breakfast'; choice = null; completed = []; hostHouseLocation = 'inside'; try { localStorage.removeItem(SAVE_KEY); } catch { /* no-op */ } },
   };
 }
 

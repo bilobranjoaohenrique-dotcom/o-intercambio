@@ -306,13 +306,19 @@ try {
   performanceSample=await stationaryPerformance(page);
   for(const point of WB_WALK_ROUTE.slice(1))await move(page,point);
   await aimInteraction(page,'wb-house-door',WB_HOST_DOOR);await page.keyboard.press('KeyE');
-  await page.waitForFunction(()=>window.__INTERCAMBIO__.chapterMission==='complete',null,{timeout:45000});
-  final=await snapshot(page);assert.equal(final.chapterStage,'westbridge');parentsRemainInBrazil(final);
-  await waitPhase(page,'complete');await page.locator('#replay').click();await waitPhase(page,'opening');await waitFrames(page,3);
+  await page.waitForFunction(()=>window.__INTERCAMBIO__.phase==='playing'&&
+    window.__INTERCAMBIO__.chapterStage==='host-house'&&window.__INTERCAMBIO__.hostHouse.ready&&
+    window.__INTERCAMBIO__.hostHouse.allTexturesReady,null,{timeout:180000});
+  final=await snapshot(page);assert.equal(final.chapterMission,'host-house-explore');parentsRemainInBrazil(final);
+  assert.equal(final.hostHouse.active,true);assert.equal(final.hostHouse.location,'inside');
+  assert.equal(final.hostHouse.source,'/models/daniel_helen_house.glb');
+  assert.equal(final.hostHouse.foreignMeshesVisible,0,'the supplied interior hides the other sets locally');
+  await pause(page);await page.locator('#restart').click();await waitPhase(page,'opening');await waitFrames(page,3);
   restart=await snapshot(page);assert.equal(restart.chapterStage,'home');assert.equal(restart.westbridge.scenery.active,false);
-  assert.deepEqual(restart.plane.scenery.camera,baseProjection,'leaving Westbridge restores the earlier camera projection');
+  assert.equal(restart.hostHouse.active,false);
+  assert.deepEqual(restart.plane.scenery.camera,baseProjection,'leaving the host house restores the earlier camera projection');
   assert.equal(restart.family.location,'kitchen');assert.equal(restart.audio.westbridge.activeSources,0);
-  assert.equal(restart.westbridge.hosts.location,'terminal','the same hosts return to their original terminal hierarchy on replay');
+  assert.equal(restart.westbridge.hosts.location,'terminal','the same hosts retain their original terminal hierarchy on restart');
   assert.deepEqual(restart.errors,[]);assertHealthy(session);
   writeFileSync('/tmp/o-intercambio-westbridge-game-results.json',JSON.stringify({status:'passed',build:final.build,
     pictures,route,movement,reviewNotes,terminal,welcome,seated,parked,walking,resumed,final,restart,
@@ -321,12 +327,12 @@ try {
     errors,consoleErrors,failedAssets:failed,
     coverage:['existing terminal welcome continues into Westbridge only after being dismissed','lazy supplied neighbourhood loading',
       'real rear-seat look, locked translation, paused route and continuous drive to the home','parked exit, physical walking, fence and house collisions',
-      'walking checkpoint reload and actual night preset','door interaction ends the chapter and replay restores the original home',
+      'walking checkpoint reload and actual night preset','door interaction enters the supplied host house and pause-menu restart restores the original home',
       'text-only dialogue, master volume and audio pause'],
     limits:[reusedRide?'The complete 32-second route, pause, parked engine and actual E exit were proved in the retained ride segment; the final exterior/night checks resume its saved walking checkpoint. The parked interior luminance gate was unsuitable for dark seatbacks, so final photo 3 is an exterior view.':reusedTerminal?'Terminal welcome and lazy-load evidence comes from the initial focal run; the corrected final ride starts at its supported checkpoint.':'Starts from the supported terminal find-host checkpoint; the house, Brazilian airport and flight were not replayed.',
       'Real screenshots require visual inspection. No camera or clock setters were used.',
       'Chromium/Linux SwiftShader software rendering; not a physical GPU or mobile benchmark.']},null,2));
-  console.log('PASS WESTBRIDGE GAME: terminal welcome → drive → park → walk → door, checkpoint/night/replay.');
+  console.log('PASS WESTBRIDGE GAME: terminal welcome → drive → park → walk → host house, checkpoint/night/restart.');
 } catch(error) {
   console.error(error);
   if(session)await session.page.screenshot({path:'/tmp/o-intercambio-westbridge-game-failure.png'}).catch(()=>{});

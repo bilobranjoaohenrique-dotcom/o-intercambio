@@ -1,0 +1,1791 @@
+{
+  "status": "passed",
+  "build": "chapter1-host-house-interior-1",
+  "asset": {
+    "source": "Daniel_Helen.glb",
+    "path": "public/models/daniel_helen_house.glb",
+    "bytes": 6225960,
+    "sha256": "cc90714d6ef97962ba4d0c3808323af01fa6a0a91fb6e045ea16d4d71b52d462",
+    "sourceAssetUnmodified": true,
+    "footprintMetres": [
+      10,
+      12
+    ],
+    "floorYMetres": [
+      0.39,
+      3.84
+    ],
+    "stairSteps": 18,
+    "gltfMeshes": 539,
+    "runtimeMeshes": 559,
+    "materials": 166,
+    "textures": 59,
+    "embeddedLights": 9,
+    "activeEmbeddedLights": [
+      "Day_janela_quarto",
+      "Day_janela_sala",
+      "Always_jantar",
+      "Always_cozinha",
+      "Always_banheiro"
+    ],
+    "animationGroups": 6,
+    "runningAnimations": 0,
+    "npcs": 0,
+    "adjustments": [
+      {
+        "name": "furn_hosts_wardrobe_0",
+        "sourceZDelta": 1.45
+      },
+      {
+        "name": "furn_hosts_wardrobe_1",
+        "sourceZDelta": 1.45
+      },
+      {
+        "name": "furn_hosts_wardrobe_2",
+        "sourceZDelta": 1.45
+      }
+    ],
+    "portalMeshes": 6
+  },
+  "validation": {
+    "unitTests": {
+      "passed": 129,
+      "failed": 0,
+      "command": "npm test"
+    },
+    "productionBuild": {
+      "command": "npm run build",
+      "passed": true,
+      "warning": "Existing main bundle exceeds 500 kB"
+    },
+    "browser": {
+      "method": "Real Babylon.js game; supported checkpoints seed the route, then mouse/WASD/E drive all movement and transitions. No camera, position or clock setters.",
+      "checks": [
+        "real exterior-door E loads the supplied house without ending the chapter",
+        "real walking visits living room and kitchen, climbs the supplied staircase and reaches the player bedroom",
+        "pause freezes movement inside the house",
+        "reload restores the hall; E exits to the existing neighbourhood without completing house exploration",
+        "outside checkpoint reload and real-door reentry preserve the story choice and parked car",
+        "restart restores the Brazilian bedroom, earlier navigation/visibility, camera projection and family state"
+      ],
+      "movementSamples": [
+        {
+          "action": "real W walking",
+          "region": "westbridge",
+          "target": {
+            "x": 479.9435,
+            "y": 1.7765,
+            "z": -7.55
+          },
+          "position": {
+            "x": 479.9407981460264,
+            "y": 1.7764899008839685,
+            "z": -7.553099442720901
+          },
+          "navigation": {
+            "enabled": false,
+            "elevation": 0.39,
+            "level": "ground",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "westbridge",
+          "target": {
+            "x": 479.9435,
+            "y": 1.7765,
+            "z": -10.4
+          },
+          "position": {
+            "x": 479.94770200339974,
+            "y": 1.7765,
+            "z": -10.429701158138164
+          },
+          "navigation": {
+            "enabled": false,
+            "elevation": 0.39,
+            "level": "ground",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "westbridge",
+          "target": {
+            "x": 479.9435,
+            "y": 2.021855,
+            "z": -11.7
+          },
+          "position": {
+            "x": 479.9446623103174,
+            "y": 2.0218222338569087,
+            "z": -11.69623751051724
+          },
+          "navigation": {
+            "enabled": false,
+            "elevation": 0.39,
+            "level": "ground",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 751.5,
+            "y": 2.04,
+            "z": 37
+          },
+          "position": {
+            "x": 751.5,
+            "y": 2.04,
+            "z": 37
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 0.39,
+            "level": "ground",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 749.3,
+            "y": 2.04,
+            "z": 37
+          },
+          "position": {
+            "x": 749.3249999999998,
+            "y": 2.04,
+            "z": 37
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 0.39,
+            "level": "ground",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 749.3,
+            "y": 2.04,
+            "z": 38.5
+          },
+          "position": {
+            "x": 749.2971971758983,
+            "y": 2.04,
+            "z": 38.54474981889366
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 0.39,
+            "level": "ground",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 749.28,
+            "y": 2.04,
+            "z": 39
+          },
+          "position": {
+            "x": 749.2776021154863,
+            "y": 2.04,
+            "z": 39.03936182199051
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 0.39,
+            "level": "ground",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 750.6,
+            "y": 2.04,
+            "z": 39
+          },
+          "position": {
+            "x": 750.6120482201019,
+            "y": 2.04,
+            "z": 39.00090933343207
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 0.39,
+            "level": "ground",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "sofa blocks continued real W",
+          "solid": "sofa_red.001",
+          "blocked": {
+            "x": 750.5968069050249,
+            "y": 2.04,
+            "z": 39.50836819273567
+          },
+          "stopped": {
+            "x": 750.5910212111874,
+            "y": 2.04,
+            "z": 39.50836819273567
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 750.6,
+            "y": 2.04,
+            "z": 39
+          },
+          "position": {
+            "x": 750.5951809804616,
+            "y": 2.04,
+            "z": 39.013385671509326
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 0.39,
+            "level": "ground",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 749.28,
+            "y": 2.04,
+            "z": 39
+          },
+          "position": {
+            "x": 749.2602770993087,
+            "y": 2.04,
+            "z": 38.9973660559866
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 0.39,
+            "level": "ground",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 749.3,
+            "y": 2.04,
+            "z": 38.5
+          },
+          "position": {
+            "x": 749.2988497733845,
+            "y": 2.04,
+            "z": 38.50387122438792
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 0.39,
+            "level": "ground",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 749.3,
+            "y": 2.04,
+            "z": 37
+          },
+          "position": {
+            "x": 749.2970014489282,
+            "y": 2.04,
+            "z": 36.958872329988054
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 0.39,
+            "level": "ground",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 749.3,
+            "y": 2.04,
+            "z": 35.4
+          },
+          "position": {
+            "x": 749.2988611235824,
+            "y": 2.04,
+            "z": 35.41387344920848
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 0.39,
+            "level": "ground",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 748.2,
+            "y": 2.04,
+            "z": 34.7
+          },
+          "position": {
+            "x": 748.1810143366632,
+            "y": 2.04,
+            "z": 34.68404911351225
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 0.39,
+            "level": "ground",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 747.7,
+            "y": 2.04,
+            "z": 33.5
+          },
+          "position": {
+            "x": 747.7172296592316,
+            "y": 2.04,
+            "z": 33.548012134999205
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 0.39,
+            "level": "ground",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 746.5,
+            "y": 2.04,
+            "z": 33.5
+          },
+          "position": {
+            "x": 746.525514875673,
+            "y": 2.04,
+            "z": 33.499363174498605
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 0.39,
+            "level": "ground",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 744.8,
+            "y": 2.04,
+            "z": 33.7
+          },
+          "position": {
+            "x": 744.8050942290866,
+            "y": 2.04,
+            "z": 33.69843705223614
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 0.39,
+            "level": "ground",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 745.5,
+            "y": 2.04,
+            "z": 34.8
+          },
+          "position": {
+            "x": 745.5146843344602,
+            "y": 2.04,
+            "z": 34.82923627506765
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 0.39,
+            "level": "ground",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 745.5,
+            "y": 2.04,
+            "z": 36.3
+          },
+          "position": {
+            "x": 745.4993895833854,
+            "y": 2.04,
+            "z": 36.24584371065023
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 0.39,
+            "level": "ground",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 747.55,
+            "y": 2.04,
+            "z": 36.3
+          },
+          "position": {
+            "x": 747.5685316101685,
+            "y": 2.04,
+            "z": 36.30543626891177
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 0.39,
+            "level": "ground",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 747.55,
+            "y": 2.04,
+            "z": 37.475
+          },
+          "position": {
+            "x": 747.5479882923909,
+            "y": 2.04,
+            "z": 37.44684141180507
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 0.39,
+            "level": "ground",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 747.2,
+            "y": 2.04,
+            "z": 37.475
+          },
+          "position": {
+            "x": 747.1592108179515,
+            "y": 2.2104293946472193,
+            "z": 37.4776971303805
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 0.5816666666666667,
+            "level": "stairs",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 743.05,
+            "y": 5.49,
+            "z": 37.475
+          },
+          "position": {
+            "x": 743.0217727338041,
+            "y": 5.489089579158271,
+            "z": 37.467767259913266
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 3.84,
+            "level": "upper",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 742.65,
+            "y": 5.49,
+            "z": 37.475
+          },
+          "position": {
+            "x": 742.6041911743058,
+            "y": 5.489999999539912,
+            "z": 37.475785811199415
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 3.84,
+            "level": "upper",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 742.65,
+            "y": 5.49,
+            "z": 36.3
+          },
+          "position": {
+            "x": 742.6460356521865,
+            "y": 5.49,
+            "z": 36.35156428513307
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 3.84,
+            "level": "upper",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 747.5,
+            "y": 5.49,
+            "z": 36.3
+          },
+          "position": {
+            "x": 747.4458141312401,
+            "y": 5.49,
+            "z": 36.30544973177606
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 3.84,
+            "level": "upper",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 749.375,
+            "y": 5.49,
+            "z": 36.9
+          },
+          "position": {
+            "x": 749.3230545983604,
+            "y": 5.49,
+            "z": 36.88613314690261
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 3.84,
+            "level": "upper",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 749.375,
+            "y": 5.49,
+            "z": 38.5
+          },
+          "position": {
+            "x": 749.372553231754,
+            "y": 5.49,
+            "z": 38.53539052078092
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 3.84,
+            "level": "upper",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 749.4,
+            "y": 5.49,
+            "z": 40.4
+          },
+          "position": {
+            "x": 749.397524192908,
+            "y": 5.49,
+            "z": 40.4264938241461
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 3.84,
+            "level": "upper",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 749.4,
+            "y": 5.49,
+            "z": 40.4
+          },
+          "position": {
+            "x": 749.397524192908,
+            "y": 5.49,
+            "z": 40.4264938241461
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 3.84,
+            "level": "upper",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 749.375,
+            "y": 5.49,
+            "z": 38.5
+          },
+          "position": {
+            "x": 749.3762809531823,
+            "y": 5.49,
+            "z": 38.46160865580519
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 3.84,
+            "level": "upper",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 749.375,
+            "y": 5.49,
+            "z": 36.9
+          },
+          "position": {
+            "x": 749.3781179274437,
+            "y": 5.49,
+            "z": 36.916609747868435
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 3.84,
+            "level": "upper",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 747.5,
+            "y": 5.49,
+            "z": 36.3
+          },
+          "position": {
+            "x": 747.5396370618264,
+            "y": 5.49,
+            "z": 36.3138789918054
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 3.84,
+            "level": "upper",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 742.65,
+            "y": 5.49,
+            "z": 36.3
+          },
+          "position": {
+            "x": 742.6511384207157,
+            "y": 5.49,
+            "z": 36.30214657254057
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 3.84,
+            "level": "upper",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 742.65,
+            "y": 5.49,
+            "z": 37.475
+          },
+          "position": {
+            "x": 742.6497925533931,
+            "y": 5.49,
+            "z": 37.42714576749193
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 3.84,
+            "level": "upper",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 743.05,
+            "y": 5.49,
+            "z": 37.475
+          },
+          "position": {
+            "x": 743.0403281549911,
+            "y": 5.49,
+            "z": 37.47423338074393
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 3.84,
+            "level": "upper",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 747.2,
+            "y": 2.04,
+            "z": 37.475
+          },
+          "position": {
+            "x": 747.2103162188079,
+            "y": 2.234312785135483,
+            "z": 37.48421073669382
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 0.5816666666666667,
+            "level": "stairs",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 747.55,
+            "y": 2.04,
+            "z": 37.475
+          },
+          "position": {
+            "x": 747.4952168525003,
+            "y": 2.0407832994890787,
+            "z": 37.47668551765408
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 0.39,
+            "level": "ground",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 747.55,
+            "y": 2.04,
+            "z": 36.3
+          },
+          "position": {
+            "x": 747.5478352517517,
+            "y": 2.04,
+            "z": 36.352916722901334
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 0.39,
+            "level": "ground",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 745.5,
+            "y": 2.04,
+            "z": 36.3
+          },
+          "position": {
+            "x": 745.4784313831374,
+            "y": 2.04,
+            "z": 36.30324149204409
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 0.39,
+            "level": "ground",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 745.5,
+            "y": 2.04,
+            "z": 34.8
+          },
+          "position": {
+            "x": 745.5025882160905,
+            "y": 2.04,
+            "z": 34.753757466053976
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 0.39,
+            "level": "ground",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 744.8,
+            "y": 2.04,
+            "z": 33.7
+          },
+          "position": {
+            "x": 744.8232301040389,
+            "y": 2.04,
+            "z": 33.73735122643337
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 0.39,
+            "level": "ground",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 746.5,
+            "y": 2.04,
+            "z": 33.5
+          },
+          "position": {
+            "x": 746.4572684899247,
+            "y": 2.04,
+            "z": 33.508400241602324
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 0.39,
+            "level": "ground",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 747.7,
+            "y": 2.04,
+            "z": 33.5
+          },
+          "position": {
+            "x": 747.6456747574522,
+            "y": 2.04,
+            "z": 33.502687116986976
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 0.39,
+            "level": "ground",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 748.2,
+            "y": 2.04,
+            "z": 34.7
+          },
+          "position": {
+            "x": 748.1828974877361,
+            "y": 2.04,
+            "z": 34.66423909210553
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 0.39,
+            "level": "ground",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 749.3,
+            "y": 2.04,
+            "z": 35.4
+          },
+          "position": {
+            "x": 749.2972336546411,
+            "y": 2.04,
+            "z": 35.39941247786381
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 0.39,
+            "level": "ground",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 749.3,
+            "y": 2.04,
+            "z": 37
+          },
+          "position": {
+            "x": 749.2992197149514,
+            "y": 2.04,
+            "z": 37.04941128257986
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 0.39,
+            "level": "ground",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "host-house",
+          "target": {
+            "x": 751.5,
+            "y": 2.04,
+            "z": 37
+          },
+          "position": {
+            "x": 751.5413162210367,
+            "y": 2.04,
+            "z": 37.00095798586969
+          },
+          "navigation": {
+            "enabled": true,
+            "elevation": 0.39,
+            "level": "ground",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "closed exit blocks continued real W",
+          "blocked": {
+            "x": 751.6463159167827,
+            "y": 2.04,
+            "z": 36.9988473469432
+          },
+          "stopped": {
+            "x": 751.6463159167827,
+            "y": 2.04,
+            "z": 36.99785404909483
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "westbridge",
+          "target": {
+            "x": 479.9435,
+            "y": 1.7765,
+            "z": -7.55
+          },
+          "position": {
+            "x": 479.9234840784284,
+            "y": 1.776484861398107,
+            "z": -7.553078729428023
+          },
+          "navigation": {
+            "enabled": false,
+            "elevation": 0.39,
+            "level": "ground",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "westbridge",
+          "target": {
+            "x": 479.9435,
+            "y": 1.7765,
+            "z": -10.4
+          },
+          "position": {
+            "x": 479.9439246482518,
+            "y": 1.7765,
+            "z": -10.391997703035356
+          },
+          "navigation": {
+            "enabled": false,
+            "elevation": 0.39,
+            "level": "ground",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        },
+        {
+          "action": "real W walking",
+          "region": "westbridge",
+          "target": {
+            "x": 479.9435,
+            "y": 2.021855,
+            "z": -11.7
+          },
+          "position": {
+            "x": 479.9439246482518,
+            "y": 2.0218068813172976,
+            "z": -11.668197703035363
+          },
+          "navigation": {
+            "enabled": false,
+            "elevation": 0.39,
+            "level": "ground",
+            "stairSteps": 18,
+            "bodyHeight": 1.78,
+            "maxStep": 0.22
+          }
+        }
+      ],
+      "states": {
+        "entry": {
+          "phase": "playing",
+          "stage": "host-house",
+          "mission": "host-house-explore",
+          "objectiveState": "pending",
+          "position": {
+            "x": 751.5,
+            "y": 2.04,
+            "z": 37
+          },
+          "house": {
+            "active": true,
+            "ready": true,
+            "location": "inside",
+            "navigation": {
+              "enabled": true,
+              "elevation": 0.39,
+              "level": "ground",
+              "stairSteps": 18,
+              "bodyHeight": 1.78,
+              "maxStep": 0.22
+            },
+            "foreignMeshesVisible": 0,
+            "camera": {
+              "fov": 1.05,
+              "minZ": 0.045,
+              "maxZ": 180
+            }
+          },
+          "parents": {
+            "location": "airport",
+            "visible": [
+              {
+                "speaker": "MÃE",
+                "visible": false,
+                "location": "airport"
+              },
+              {
+                "speaker": "PAI",
+                "visible": false,
+                "location": "airport"
+              }
+            ]
+          },
+          "westbridge": {
+            "active": false,
+            "carPosition": {
+              "x": 475.1000000000001,
+              "y": 0.14399999999999996,
+              "z": -8.7
+            },
+            "drive": null
+          },
+          "audio": {
+            "ambience": "home",
+            "westbridgeActiveSources": 0,
+            "dialogueAudio": false
+          }
+        },
+        "resumedInside": {
+          "phase": "playing",
+          "stage": "host-house",
+          "mission": "host-house-explore",
+          "objectiveState": "pending",
+          "position": {
+            "x": 751.5,
+            "y": 2.04,
+            "z": 37
+          },
+          "house": {
+            "active": true,
+            "ready": true,
+            "location": "inside",
+            "navigation": {
+              "enabled": true,
+              "elevation": 0.39,
+              "level": "ground",
+              "stairSteps": 18,
+              "bodyHeight": 1.78,
+              "maxStep": 0.22
+            },
+            "foreignMeshesVisible": 0,
+            "camera": {
+              "fov": 1.05,
+              "minZ": 0.045,
+              "maxZ": 180
+            }
+          },
+          "parents": {
+            "location": "airport",
+            "visible": [
+              {
+                "speaker": "MÃE",
+                "visible": false,
+                "location": "airport"
+              },
+              {
+                "speaker": "PAI",
+                "visible": false,
+                "location": "airport"
+              }
+            ]
+          },
+          "westbridge": {
+            "active": false,
+            "carPosition": null,
+            "drive": null
+          },
+          "audio": {
+            "ambience": "home",
+            "westbridgeActiveSources": 0,
+            "dialogueAudio": false
+          }
+        },
+        "outside": {
+          "phase": "playing",
+          "stage": "westbridge",
+          "mission": "host-house-explore",
+          "objectiveState": "pending",
+          "position": {
+            "x": 479.9435,
+            "y": 2.021855,
+            "z": -11.7
+          },
+          "house": {
+            "active": false,
+            "ready": true,
+            "location": "outside",
+            "navigation": {
+              "enabled": false,
+              "elevation": 0.39,
+              "level": "ground",
+              "stairSteps": 18,
+              "bodyHeight": 1.78,
+              "maxStep": 0.22
+            },
+            "foreignMeshesVisible": null,
+            "camera": {
+              "fov": 1.05,
+              "minZ": 0.045,
+              "maxZ": 500
+            }
+          },
+          "parents": {
+            "location": "airport",
+            "visible": [
+              {
+                "speaker": "MÃE",
+                "visible": false,
+                "location": "airport"
+              },
+              {
+                "speaker": "PAI",
+                "visible": false,
+                "location": "airport"
+              }
+            ]
+          },
+          "westbridge": {
+            "active": true,
+            "carPosition": {
+              "x": 475.1000000000001,
+              "y": 0.14399999999999996,
+              "z": -8.7
+            },
+            "drive": {
+              "active": false,
+              "occupied": false,
+              "elapsed": 32,
+              "duration": 32,
+              "position": {
+                "x": 475.1000000000001,
+                "y": 0.14399999999999996,
+                "z": -8.7
+              },
+              "yaw": -3.141592653589794,
+              "speed": 0,
+              "progress": 1,
+              "distance": 91.85472031063341,
+              "totalDistance": 91.85472031063341,
+              "parked": true,
+              "rearSeatWorld": {
+                "x": 474.7200000000001,
+                "y": 1.3439999999999999,
+                "z": -7.959999999999999
+              },
+              "lookOffset": -3.1415926535897927,
+              "pitch": 0,
+              "canExit": false
+            }
+          },
+          "audio": {
+            "ambience": "westbridge",
+            "westbridgeActiveSources": 6,
+            "dialogueAudio": false
+          }
+        },
+        "resumedOutside": {
+          "phase": "playing",
+          "stage": "westbridge",
+          "mission": "host-house-explore",
+          "objectiveState": "pending",
+          "position": {
+            "x": 477.35,
+            "y": 1.7094999999999998,
+            "z": -7.55
+          },
+          "house": {
+            "active": false,
+            "ready": false,
+            "location": "outside",
+            "navigation": {
+              "enabled": false,
+              "elevation": 0.39,
+              "level": "ground",
+              "stairSteps": 18,
+              "bodyHeight": 1.78,
+              "maxStep": 0.22
+            },
+            "foreignMeshesVisible": null,
+            "camera": {
+              "fov": 1.05,
+              "minZ": 0.045,
+              "maxZ": 500
+            }
+          },
+          "parents": {
+            "location": "airport",
+            "visible": [
+              {
+                "speaker": "MÃE",
+                "visible": false,
+                "location": "airport"
+              },
+              {
+                "speaker": "PAI",
+                "visible": false,
+                "location": "airport"
+              }
+            ]
+          },
+          "westbridge": {
+            "active": true,
+            "carPosition": {
+              "x": 475.1000000000001,
+              "y": 0.14399999999999996,
+              "z": -8.7
+            },
+            "drive": {
+              "active": false,
+              "occupied": false,
+              "elapsed": 32,
+              "duration": 32,
+              "position": {
+                "x": 475.1000000000001,
+                "y": 0.14399999999999996,
+                "z": -8.7
+              },
+              "yaw": -3.141592653589794,
+              "speed": 0,
+              "progress": 1,
+              "distance": 91.85472031063341,
+              "totalDistance": 91.85472031063341,
+              "parked": true,
+              "rearSeatWorld": {
+                "x": 474.7200000000001,
+                "y": 1.3439999999999999,
+                "z": -7.959999999999999
+              },
+              "lookOffset": 6.432490598706546e-16,
+              "pitch": 0,
+              "canExit": false
+            }
+          },
+          "audio": {
+            "ambience": "westbridge",
+            "westbridgeActiveSources": 6,
+            "dialogueAudio": false
+          }
+        },
+        "reentered": {
+          "phase": "playing",
+          "stage": "host-house",
+          "mission": "host-house-explore",
+          "objectiveState": "pending",
+          "position": {
+            "x": 751.5,
+            "y": 2.04,
+            "z": 37
+          },
+          "house": {
+            "active": true,
+            "ready": true,
+            "location": "inside",
+            "navigation": {
+              "enabled": true,
+              "elevation": 0.39,
+              "level": "ground",
+              "stairSteps": 18,
+              "bodyHeight": 1.78,
+              "maxStep": 0.22
+            },
+            "foreignMeshesVisible": 0,
+            "camera": {
+              "fov": 1.05,
+              "minZ": 0.045,
+              "maxZ": 180
+            }
+          },
+          "parents": {
+            "location": "airport",
+            "visible": [
+              {
+                "speaker": "MÃE",
+                "visible": false,
+                "location": "airport"
+              },
+              {
+                "speaker": "PAI",
+                "visible": false,
+                "location": "airport"
+              }
+            ]
+          },
+          "westbridge": {
+            "active": false,
+            "carPosition": {
+              "x": 475.1000000000001,
+              "y": 0.14399999999999996,
+              "z": -8.7
+            },
+            "drive": null
+          },
+          "audio": {
+            "ambience": "home",
+            "westbridgeActiveSources": 0,
+            "dialogueAudio": false
+          }
+        },
+        "restart": {
+          "phase": "opening",
+          "stage": "home",
+          "mission": "breakfast",
+          "objectiveState": "pending",
+          "position": {
+            "x": 2.51,
+            "y": 3.82,
+            "z": -0.1
+          },
+          "house": {
+            "active": false,
+            "ready": true,
+            "location": "inside",
+            "navigation": {
+              "enabled": false,
+              "elevation": 0.39,
+              "level": "ground",
+              "stairSteps": 18,
+              "bodyHeight": 1.78,
+              "maxStep": 0.22
+            },
+            "foreignMeshesVisible": null,
+            "camera": {
+              "fov": 1.13,
+              "minZ": 0.045,
+              "maxZ": 95
+            }
+          },
+          "parents": {
+            "location": "kitchen",
+            "visible": [
+              {
+                "speaker": "MÃE",
+                "visible": true,
+                "location": "kitchen"
+              },
+              {
+                "speaker": "PAI",
+                "visible": true,
+                "location": "kitchen"
+              }
+            ]
+          },
+          "westbridge": {
+            "active": false,
+            "carPosition": {
+              "x": 475.1000000000001,
+              "y": 0.14399999999999996,
+              "z": -8.7
+            },
+            "drive": null
+          },
+          "audio": {
+            "ambience": "home",
+            "westbridgeActiveSources": 0,
+            "dialogueAudio": false
+          }
+        },
+        "paused": {
+          "phase": "paused",
+          "stage": "host-house",
+          "mission": "host-house-explore",
+          "objectiveState": "pending",
+          "position": {
+            "x": 749.397524192908,
+            "y": 5.49,
+            "z": 40.4264938241461
+          },
+          "house": {
+            "active": true,
+            "ready": true,
+            "location": "inside",
+            "navigation": {
+              "enabled": true,
+              "elevation": 3.84,
+              "level": "upper",
+              "stairSteps": 18,
+              "bodyHeight": 1.78,
+              "maxStep": 0.22
+            },
+            "foreignMeshesVisible": 0,
+            "camera": {
+              "fov": 1.05,
+              "minZ": 0.045,
+              "maxZ": 180
+            }
+          },
+          "parents": {
+            "location": "airport",
+            "visible": [
+              {
+                "speaker": "MÃE",
+                "visible": false,
+                "location": "airport"
+              },
+              {
+                "speaker": "PAI",
+                "visible": false,
+                "location": "airport"
+              }
+            ]
+          },
+          "westbridge": {
+            "active": false,
+            "carPosition": {
+              "x": 475.1000000000001,
+              "y": 0.14399999999999996,
+              "z": -8.7
+            },
+            "drive": null
+          },
+          "audio": {
+            "ambience": "home",
+            "westbridgeActiveSources": 0,
+            "dialogueAudio": false
+          }
+        }
+      },
+      "checkpointChoice": "nervous, preserved across reloads and reentry by browser assertions",
+      "lazyAssetRequests": [
+        "http://127.0.0.1:5188/models/daniel_helen_house.glb",
+        "http://127.0.0.1:5188/models/daniel_helen_house.glb",
+        "http://127.0.0.1:5188/models/daniel_helen_house.glb"
+      ],
+      "errors": [],
+      "consoleErrors": [],
+      "failedAssets": [],
+      "gpu": {
+        "vendor": "Google Inc. (Google)",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "limits": [
+        "The previous home, Brazilian airport, flight and 32-second car trip were not repeated.",
+        "Chromium/Linux SwiftShader software renderer; this is functional and visual QA, not a physical GPU/mobile FPS benchmark."
+      ]
+    }
+  },
+  "captures": {
+    "pictures": [
+      {
+        "room": "hall",
+        "path": "docs/capturas/casa-anfitrioes/hall.png",
+        "method": "real-controls-walkthrough",
+        "sha256": "d561ebc5a01bb7176acf72ff58bc04075a0112d8693001e99db2322f2a42add4"
+      },
+      {
+        "room": "sala",
+        "path": "docs/capturas/casa-anfitrioes/sala.png",
+        "method": "final-framing",
+        "sha256": "23551519f0cac5d588daa00a377bf2847b5d863312084656741603d05e96e969",
+        "position": {
+          "x": 749.28,
+          "y": 2.04,
+          "z": 39
+        },
+        "rotation": {
+          "yaw": 0.11379200714372581,
+          "pitch": 0.2401114565375269,
+          "roll": 0
+        },
+        "navigation": {
+          "enabled": true,
+          "elevation": 0.39,
+          "level": "ground",
+          "stairSteps": 18,
+          "bodyHeight": 1.78,
+          "maxStep": 0.22
+        },
+        "allTexturesReady": true,
+        "foreignMeshesVisible": 0,
+        "assertionsPassed": [
+          "phase=playing",
+          "pause menu hidden"
+        ]
+      },
+      {
+        "room": "cozinha",
+        "path": "docs/capturas/casa-anfitrioes/cozinha.png",
+        "method": "real-controls-walkthrough",
+        "sha256": "074b87269714135d381c2efea13cba09569eaf1388d2e36fe45e9a5e67786e7a"
+      },
+      {
+        "room": "quarto",
+        "path": "docs/capturas/casa-anfitrioes/quarto.png",
+        "method": "final-framing",
+        "sha256": "7359a07331158ced1b364dbf0f617e90cfd85914475173eacae38e2327f381d5",
+        "position": {
+          "x": 749.375,
+          "y": 5.49,
+          "z": 38.5
+        },
+        "rotation": {
+          "yaw": -0.07937831455955284,
+          "pitch": 0.3437486377198758,
+          "roll": 0
+        },
+        "navigation": {
+          "enabled": true,
+          "elevation": 3.84,
+          "level": "upper",
+          "stairSteps": 18,
+          "bodyHeight": 1.78,
+          "maxStep": 0.22
+        },
+        "allTexturesReady": true,
+        "foreignMeshesVisible": 0,
+        "assertionsPassed": [
+          "phase=playing",
+          "pause menu hidden"
+        ]
+      }
+    ],
+    "finalFramingMethod": "Real running Babylon.js. Test-only Vite HTTP interception fixes final room composition after a background-colour-only change. Walking/entry/exit/checkpoints have separate real-input results; this capture does not prove controls. No setters are added to production.",
+    "finalVisualStatus": "passed",
+    "finalVisualErrors": [],
+    "finalVisualConsoleErrors": [],
+    "finalVisualFailedAssets": [],
+    "changeAfterControlWalkthrough": "Only house clearColor changed to [.69,.70,.65,1] to match the Westbridge afternoon visible through native windows. Final production build includes this change. Hall/kitchen captures retain original walkthrough frames; living room/bedroom recaptured in final build state using test-only framing.",
+    "inspected": true
+  },
+  "restore": {
+    "tag": "restore/pre-host-house-interior",
+    "commit": "00e16f6f6420cbd21d14832bf983a4ce029710a7"
+  },
+  "productionBundle": [
+    "/assets/index-D3rAknBa.js"
+  ]
+}

@@ -44,7 +44,7 @@ export function buildWestbridge(scene:Scene,options:{quality?:Settings['quality'
   const door=proxy('Westbridge · entrada de Daniel e Helen',new Vector3(WB_HOST_DOOR.x,WB_HOST_DOOR.y,-12.60),[.93,WB_HOUSE_DOOR_HEIGHT,.055]);
   const mailbox=proxy('Westbridge · caixa de correio dos anfitriões',wp(27.2,1.12,-5.48),[.35,.36,.53]);
   const targets:InteractionTarget[]=[
-    {id:'wb-house-door',meshes:[door],label:()=> 'Porta da casa dos anfitriões',execute:()=>undefined},
+    {id:'wb-house-door',meshes:[door],label:()=> 'Entrar na casa dos anfitriões',execute:()=>undefined},
     {id:'wb-mailbox',meshes:[mailbox],label:()=> 'Examinar caixa de correio',execute:()=> 'A caixa de correio fica junto à entrada da garagem.'},
   ];
   function allMeshes(){return [...meshes,...extras];}

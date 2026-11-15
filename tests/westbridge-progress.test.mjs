@@ -17,7 +17,9 @@ test('Westbridge: an old terminal-ending save continues the journey without disc
     progress.advance('westbridge-explore');
     const restored=createChapterProgress();assert.equal(restored.mission,'westbridge-explore');
     assert.equal(restored.choice,'nervous');assert.ok(restored.completed.includes('westbridge-ride'));
-    restored.advance('complete');assert.equal(createChapterProgress().mission,'complete');
+    restored.advance('complete');
+    const continued=createChapterProgress();
+    assert.equal(continued.mission,'host-house-explore');assert.equal(continued.hostHouseLocation,'outside');
   });
 });
 test('Westbridge: both new checkpoints keep the protagonist parents at their Brazilian airport',()=>{

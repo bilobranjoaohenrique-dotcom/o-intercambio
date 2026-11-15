@@ -27,6 +27,7 @@
     "test:plane": "node tests/plane-glb-browser.mjs",
     "test:arrival": "node tests/arrival-glb-browser.mjs",
     "test:westbridge": "node tests/westbridge-game-browser.mjs",
+    "test:host-house": "node tests/host-house-browser.mjs",
     "verify": "node scripts/verify.mjs"
   },
   "dependencies": {
