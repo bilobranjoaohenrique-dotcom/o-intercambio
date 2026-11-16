@@ -88,3 +88,20 @@ test('host house: bounded invalid input and nonverbal step surfaces do not leak 
  assert.equal(nav.surfaceAt(l.HOST_HOUSE_ROOM_POINTS.living),'wood');assert.equal(nav.surfaceAt(l.HOST_HOUSE_ROOM_POINTS.kitchen),'concrete');
  assert.equal(nav.isWalkable(l.hhPoint(53,0,27)),false,'the separate garage has no authored internal opening and is not connected by an invisible portal');
 });
+
+test('host house renovation: new guest furniture blocks passage through it while the room approach stays open',()=>{
+ const nav=createHostHouseNavigation();nav.reset('upper');
+ const approach=l.hhPoint(50.4,0,34.15);assert.ok(nav.isWalkable(approach));
+ const bed=l.HOST_HOUSE_SOLIDS.find(s=>s.name==='Guest_bed');assert.ok(bed);
+ const stopped=nav.move(approach,0,-3);
+ assert.equal(circleOverlapsObstacle(stopped,bed),false);
+ assert.ok(stopped.z>=bed.z+bed.halfDepth+PLAYER_RADIUS-.001,'the actual new bed stops the player at its foot');
+ const route=follow(nav,l.HOST_HOUSE_ROOM_POINTS.upperFrontRoom,[l.hhPoint(51.1,0,34.4),l.hhPoint(51.1,0,33.5)]);
+ assert.ok(nav.isWalkable(route.position),'guest bed and writing table leave the centre route free');
+ nav.reset('ground');const hutch=l.HOST_HOUSE_SOLIDS.find(s=>s.name==='dining_hutch');assert.ok(hutch);
+ const diningApproach=l.hhPoint(51.7,0,32.2);assert.ok(nav.isWalkable(diningApproach));
+ const end=nav.move(diningApproach,0,-2);
+ assert.equal(circleOverlapsObstacle(end,hutch),false);
+ assert.ok(end.z>hutch.z+hutch.halfDepth,'new wall hutch cannot be walked through');
+ assert.ok(!l.HOST_HOUSE_SOLIDS.some(s=>s.name==='bookcase_tall.002'),'removed overlapping laundry shelf leaves no invisible blocker');
+});

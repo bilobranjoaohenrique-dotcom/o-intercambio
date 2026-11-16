@@ -195,6 +195,7 @@ export function buildChapterWorld(scene: Scene) {
     activate,
     prepareWestbridge,
     prepareHostHouse:()=>hostHouse.ensureReady(),
+    setHostHouseLightingMode:(mode:'day'|'night')=>hostHouse.setLightingMode(mode),
     hostHouseNavigation,
     westbridgeNavigation,
     get westbridgeObstacles(){

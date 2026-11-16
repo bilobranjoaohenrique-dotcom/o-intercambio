@@ -1,8 +1,9 @@
 import type { Point2, Point3 } from './layout';
 import { EYE_HEIGHT } from './layout';
 import type { Obstacle } from './types';
+import { HOST_HOUSE_RENOVATED_FURNITURE } from './hostHouseRenovationLayout';
 
-export const HOST_HOUSE_SOURCE = '/models/daniel_helen_house.glb';
+export const HOST_HOUSE_SOURCE = '/models/daniel_helen_house_renovated.glb';
 export const HOST_HOUSE_ORIGIN_X = 800;
 /** Keep the supplied glTF metre scale and its native handedness conversion. */
 export const hhPoint = (x:number,y:number,z:number):Point3 => ({x:HOST_HOUSE_ORIGIN_X-x,y,z});
@@ -152,7 +153,9 @@ const measured:readonly (readonly [number,number,number,number,number,number,str
   [51.017668,51.482332,4.421939,4.855342,39.506507,39.630947,"furn_player_chair_Chair_Back"],
   [52.778674,56.88133,1.423521,4.746479,38.006001,38.074001,"Corrimao_carvalho"],
 ];
-export const HOST_HOUSE_SOLIDS:readonly HhSolid[]=measured.map(([minX,maxX,minY,maxY,minZ,maxZ,name])=>({
+// Replaced facing/overlap errors must not leave an invisible old blocker.
+const replacedSolids = new Set(['Fixture_Washer_Body','Fixture_Washer_Bottle','Fixture_Dryer_Body','Fixture_Toilet_Body','bookcase_tall.002','bookcase_tall']);
+export const HOST_HOUSE_SOLIDS:readonly HhSolid[]=[...measured.filter(s=>!replacedSolids.has(s[6])),...HOST_HOUSE_RENOVATED_FURNITURE].map(([minX,maxX,minY,maxY,minZ,maxZ,name])=>({
   x:800-(minX+maxX)/2,z:(minZ+maxZ)/2,halfWidth:(maxX-minX)/2,halfDepth:(maxZ-minZ)/2,minY,maxY,name,
 }));
 const eye=(x:number,z:number,upper=false)=>hhPoint(x,(upper?HOST_HOUSE_UPPER:HOST_HOUSE_GROUND)+EYE_HEIGHT,z);

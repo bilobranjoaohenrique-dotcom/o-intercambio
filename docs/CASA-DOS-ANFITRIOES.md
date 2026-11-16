@@ -1,5 +1,7 @@
 # Interior da casa de Daniel e Helen
 
+> A versão ativa foi aprimorada sobre este interior restaurado, preservando a arquitetura e a integração descritas abaixo. O jogo agora carrega `daniel_helen_house_renovated.glb`; o original permanece intacto. Veja a [reforma visual e seus limites](REFORMA-CASA-DANIEL-HELEN.md). As contagens e capturas desta página registram a integração anterior à reforma.
+
 Modelo anterior restaurado a pedido do usuário, retomando a integração de `126fa55` e retirando o A01 da versão ativa. Foram recuperados o interior, a iluminação, os materiais e a fachada anteriores. A ligação original pela porta, com transição curta, foi mantida; não foi feita uma nova reforma exterior nesta restauração.
 
 Verificação da restauração: build e 129 testes aprovados, caminhada focal, colisão do sofá, saída e reentrada reais. [Sala restaurada](capturas/casa-anfitrioes-restaurada/sala.png), [hall](capturas/casa-anfitrioes-restaurada/hall.png) e [registro](resultados-restauracao-casa-anfitrioes.json).

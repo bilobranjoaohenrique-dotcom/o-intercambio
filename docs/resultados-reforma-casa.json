@@ -1,0 +1,4614 @@
+{
+  "build": "chapter1-host-house-renovated-1",
+  "unitTests": {
+    "passed": 130,
+    "failed": 0
+  },
+  "buildPassed": true,
+  "circulation": {
+    "passed": true,
+    "method": "Real keyboard W, mouse look and E interactions. Only initial fixture camera placement; all room/stair travel uses real controls and existing navigation.",
+    "rooms": [
+      "hall",
+      "sala",
+      "jantar",
+      "cozinha",
+      "lavanderia",
+      "lavabo",
+      "escada-subida",
+      "quarto-daniel-helen",
+      "banheiro",
+      "corredor-superior",
+      "quarto-extra",
+      "quarto-protagonista",
+      "escada-descida"
+    ],
+    "sofaCollision": {
+      "first": {
+        "x": 750.6036655858295,
+        "y": 2.04,
+        "z": 39.509282406108206
+      },
+      "second": {
+        "x": 750.6150072872235,
+        "y": 2.04,
+        "z": 39.509282406108206
+      }
+    },
+    "unreachable": [
+      "The original static garage has no exported internal doorway or navigation. It was visually captured, not walked."
+    ],
+    "errors": [],
+    "consoleErrors": [],
+    "failedAssets": []
+  },
+  "realWalkingPoints": 72,
+  "geometryAudit": {
+    "method": "Read-only glTF JSON/accessor world bounds comparison with float64 node transforms; no Blender import, no browser or test rerun. Architecture selection by original structural/window/stair/garage names.",
+    "source": {
+      "path": "public/models/daniel_helen_house.glb",
+      "sha256": "cc90714d6ef97962ba4d0c3808323af01fa6a0a91fb6e045ea16d4d71b52d462",
+      "bytes": 6225960
+    },
+    "renovated": {
+      "path": "public/models/daniel_helen_house_renovated.glb",
+      "sha256": "d92c3573a8f412fb65aca26596baba0664aaf18f2a57d2dd4e2af4dd0e346af7",
+      "bytes": 14532848
+    },
+    "architecture": {
+      "checked": 112,
+      "allPresent": true,
+      "boundsPreserved": true,
+      "maxDeltaMetres": 0,
+      "toleranceMetres": 0.0001,
+      "comparisons": [
+        {
+          "name": "back_ext_0",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              57.93,
+              0.39,
+              31.0
+            ],
+            "max": [
+              58.07,
+              3.49,
+              43.0
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              57.93,
+              0.39,
+              31.0
+            ],
+            "max": [
+              58.07,
+              3.49,
+              43.0
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "back_ext_1",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              57.93,
+              3.84,
+              31.0
+            ],
+            "max": [
+              58.07,
+              6.94,
+              43.0
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              57.93,
+              3.84,
+              31.0
+            ],
+            "max": [
+              58.07,
+              6.94,
+              43.0
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "back_window_0_-4",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              57.869999,
+              1.275,
+              40.325001
+            ],
+            "max": [
+              57.950001,
+              2.625,
+              41.674999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              57.869999,
+              1.275,
+              40.325001
+            ],
+            "max": [
+              57.950001,
+              2.625,
+              41.674999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "back_window_0_4",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              57.869999,
+              1.275,
+              32.325001
+            ],
+            "max": [
+              57.950001,
+              2.625,
+              33.674999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              57.869999,
+              1.275,
+              32.325001
+            ],
+            "max": [
+              57.950001,
+              2.625,
+              33.674999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "back_window_1_-4",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              57.869999,
+              4.725,
+              40.325001
+            ],
+            "max": [
+              57.950001,
+              6.075,
+              41.674999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              57.869999,
+              4.725,
+              40.325001
+            ],
+            "max": [
+              57.950001,
+              6.075,
+              41.674999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "back_window_1_4",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              57.869999,
+              4.725,
+              32.325001
+            ],
+            "max": [
+              57.950001,
+              6.075,
+              33.674999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              57.869999,
+              4.725,
+              32.325001
+            ],
+            "max": [
+              57.950001,
+              6.075,
+              33.674999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Entrada_degrau_01",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              52.779999,
+              0.389667,
+              36.920002
+            ],
+            "max": [
+              53.007,
+              0.581667,
+              38.029999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              52.779999,
+              0.389667,
+              36.920002
+            ],
+            "max": [
+              53.007,
+              0.581667,
+              38.029999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Entrada_degrau_02",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              53.007,
+              0.581333,
+              36.920002
+            ],
+            "max": [
+              53.234001,
+              0.773333,
+              38.029999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              53.007,
+              0.581333,
+              36.920002
+            ],
+            "max": [
+              53.234001,
+              0.773333,
+              38.029999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Entrada_degrau_03",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              53.234001,
+              0.773,
+              36.920002
+            ],
+            "max": [
+              53.460999,
+              0.965,
+              38.029999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              53.234001,
+              0.773,
+              36.920002
+            ],
+            "max": [
+              53.460999,
+              0.965,
+              38.029999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Entrada_degrau_04",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              53.460999,
+              0.964667,
+              36.920002
+            ],
+            "max": [
+              53.688,
+              1.156667,
+              38.029999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              53.460999,
+              0.964667,
+              36.920002
+            ],
+            "max": [
+              53.688,
+              1.156667,
+              38.029999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Entrada_degrau_05",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              53.688,
+              1.156333,
+              36.920002
+            ],
+            "max": [
+              53.915001,
+              1.348333,
+              38.029999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              53.688,
+              1.156333,
+              36.920002
+            ],
+            "max": [
+              53.915001,
+              1.348333,
+              38.029999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Entrada_degrau_06",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              53.915001,
+              1.348,
+              36.920002
+            ],
+            "max": [
+              54.141998,
+              1.54,
+              38.029999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              53.915001,
+              1.348,
+              36.920002
+            ],
+            "max": [
+              54.141998,
+              1.54,
+              38.029999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Entrada_degrau_07",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              54.141998,
+              1.539667,
+              36.920002
+            ],
+            "max": [
+              54.368999,
+              1.731667,
+              38.029999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              54.141998,
+              1.539667,
+              36.920002
+            ],
+            "max": [
+              54.368999,
+              1.731667,
+              38.029999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Entrada_degrau_08",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              54.368999,
+              1.731333,
+              36.920002
+            ],
+            "max": [
+              54.596001,
+              1.923333,
+              38.029999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              54.368999,
+              1.731333,
+              36.920002
+            ],
+            "max": [
+              54.596001,
+              1.923333,
+              38.029999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Entrada_degrau_09",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              54.596001,
+              1.923,
+              36.920002
+            ],
+            "max": [
+              54.823002,
+              2.115,
+              38.029999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              54.596001,
+              1.923,
+              36.920002
+            ],
+            "max": [
+              54.823002,
+              2.115,
+              38.029999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Entrada_degrau_10",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              54.823002,
+              2.114667,
+              36.920002
+            ],
+            "max": [
+              55.049999,
+              2.306667,
+              38.029999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              54.823002,
+              2.114667,
+              36.920002
+            ],
+            "max": [
+              55.049999,
+              2.306667,
+              38.029999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Entrada_degrau_11",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              55.049999,
+              2.306333,
+              36.920002
+            ],
+            "max": [
+              55.277,
+              2.498333,
+              38.029999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              55.049999,
+              2.306333,
+              36.920002
+            ],
+            "max": [
+              55.277,
+              2.498333,
+              38.029999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Entrada_degrau_12",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              55.277,
+              2.498,
+              36.920002
+            ],
+            "max": [
+              55.504002,
+              2.69,
+              38.029999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              55.277,
+              2.498,
+              36.920002
+            ],
+            "max": [
+              55.504002,
+              2.69,
+              38.029999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Entrada_degrau_13",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              55.504002,
+              2.689667,
+              36.920002
+            ],
+            "max": [
+              55.730999,
+              2.881667,
+              38.029999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              55.504002,
+              2.689667,
+              36.920002
+            ],
+            "max": [
+              55.730999,
+              2.881667,
+              38.029999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Entrada_degrau_14",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              55.730999,
+              2.881333,
+              36.920002
+            ],
+            "max": [
+              55.958,
+              3.073333,
+              38.029999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              55.730999,
+              2.881333,
+              36.920002
+            ],
+            "max": [
+              55.958,
+              3.073333,
+              38.029999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Entrada_degrau_15",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              55.958,
+              3.073,
+              36.920002
+            ],
+            "max": [
+              56.185001,
+              3.265,
+              38.029999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              55.958,
+              3.073,
+              36.920002
+            ],
+            "max": [
+              56.185001,
+              3.265,
+              38.029999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Entrada_degrau_16",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              56.185001,
+              3.264667,
+              36.920002
+            ],
+            "max": [
+              56.411999,
+              3.456667,
+              38.029999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              56.185001,
+              3.264667,
+              36.920002
+            ],
+            "max": [
+              56.411999,
+              3.456667,
+              38.029999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Entrada_degrau_17",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              56.411999,
+              3.456333,
+              36.920002
+            ],
+            "max": [
+              56.639,
+              3.648333,
+              38.029999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              56.411999,
+              3.456333,
+              36.920002
+            ],
+            "max": [
+              56.639,
+              3.648333,
+              38.029999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Entrada_degrau_18",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              56.639,
+              3.648,
+              36.920002
+            ],
+            "max": [
+              56.866001,
+              3.84,
+              38.029999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              56.639,
+              3.648,
+              36.920002
+            ],
+            "max": [
+              56.866001,
+              3.84,
+              38.029999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "garage_back",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              57.775002,
+              0.15,
+              24.25
+            ],
+            "max": [
+              57.924999,
+              3.95,
+              30.75
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              57.775002,
+              0.15,
+              24.25
+            ],
+            "max": [
+              57.924999,
+              3.95,
+              30.75
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "garage_door",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              48.779999,
+              0.125,
+              25.15
+            ],
+            "max": [
+              48.919998,
+              3.275,
+              29.85
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              48.779999,
+              0.125,
+              25.15
+            ],
+            "max": [
+              48.919998,
+              3.275,
+              29.85
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "garage_floor",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              48.900002,
+              0.125,
+              24.25
+            ],
+            "max": [
+              57.900002,
+              0.355,
+              30.75
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              48.900002,
+              0.125,
+              24.25
+            ],
+            "max": [
+              57.900002,
+              0.355,
+              30.75
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "garage_roof",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              48.700001,
+              4.03,
+              24.1
+            ],
+            "max": [
+              58.099998,
+              4.27,
+              30.9
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              48.700001,
+              4.03,
+              24.1
+            ],
+            "max": [
+              58.099998,
+              4.27,
+              30.9
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "garage_side",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              48.900002,
+              0.15,
+              24.225
+            ],
+            "max": [
+              57.900002,
+              3.95,
+              24.375
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              48.900002,
+              0.15,
+              24.225
+            ],
+            "max": [
+              57.900002,
+              3.95,
+              24.375
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "ground_cross_left_a",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              52.93,
+              0.39,
+              41.375
+            ],
+            "max": [
+              53.07,
+              3.49,
+              43.0
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              52.93,
+              0.39,
+              41.375
+            ],
+            "max": [
+              53.07,
+              3.49,
+              43.0
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "ground_cross_left_b",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              52.93,
+              0.39,
+              38.200001
+            ],
+            "max": [
+              53.07,
+              3.49,
+              40.224998
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              52.93,
+              0.39,
+              38.200001
+            ],
+            "max": [
+              53.07,
+              3.49,
+              40.224998
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "ground_cross_left_lintel",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              52.93,
+              2.59,
+              40.224998
+            ],
+            "max": [
+              53.07,
+              3.49,
+              41.375
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              52.93,
+              2.59,
+              40.224998
+            ],
+            "max": [
+              53.07,
+              3.49,
+              41.375
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "ground_cross_right_a",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              52.93,
+              0.39,
+              34.099998
+            ],
+            "max": [
+              53.07,
+              3.49,
+              35.799999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              52.93,
+              0.39,
+              34.099998
+            ],
+            "max": [
+              53.07,
+              3.49,
+              35.799999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "ground_cross_right_b",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              52.93,
+              0.39,
+              31.0
+            ],
+            "max": [
+              53.07,
+              3.49,
+              32.900002
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              52.93,
+              0.39,
+              31.0
+            ],
+            "max": [
+              53.07,
+              3.49,
+              32.900002
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "ground_cross_right_lintel",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              52.93,
+              2.59,
+              32.900002
+            ],
+            "max": [
+              53.07,
+              3.49,
+              34.099998
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              52.93,
+              2.59,
+              32.900002
+            ],
+            "max": [
+              53.07,
+              3.49,
+              34.099998
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "ground_foyer_partition_-1.2_a",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              48.0,
+              0.39,
+              38.130001
+            ],
+            "max": [
+              50.150002,
+              3.49,
+              38.27
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              48.0,
+              0.39,
+              38.130001
+            ],
+            "max": [
+              50.150002,
+              3.49,
+              38.27
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "ground_foyer_partition_-1.2_b",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              51.25,
+              0.39,
+              38.130001
+            ],
+            "max": [
+              53.0,
+              3.49,
+              38.27
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              51.25,
+              0.39,
+              38.130001
+            ],
+            "max": [
+              53.0,
+              3.49,
+              38.27
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "ground_foyer_partition_-1.2_lintel",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              50.150002,
+              2.59,
+              38.130001
+            ],
+            "max": [
+              51.25,
+              3.49,
+              38.27
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              50.150002,
+              2.59,
+              38.130001
+            ],
+            "max": [
+              51.25,
+              3.49,
+              38.27
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "ground_foyer_partition_1.2_a",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              48.0,
+              0.39,
+              35.73
+            ],
+            "max": [
+              50.150002,
+              3.49,
+              35.869999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              48.0,
+              0.39,
+              35.73
+            ],
+            "max": [
+              50.150002,
+              3.49,
+              35.869999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "ground_foyer_partition_1.2_b",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              51.25,
+              0.39,
+              35.73
+            ],
+            "max": [
+              53.0,
+              3.49,
+              35.869999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              51.25,
+              0.39,
+              35.73
+            ],
+            "max": [
+              53.0,
+              3.49,
+              35.869999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "ground_foyer_partition_1.2_lintel",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              50.150002,
+              2.59,
+              35.73
+            ],
+            "max": [
+              51.25,
+              3.49,
+              35.869999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              50.150002,
+              2.59,
+              35.73
+            ],
+            "max": [
+              51.25,
+              3.49,
+              35.869999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "ground_kitchen_tile",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              53.0,
+              0.34,
+              31.0
+            ],
+            "max": [
+              58.0,
+              0.39,
+              35.799999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              53.0,
+              0.34,
+              31.0
+            ],
+            "max": [
+              58.0,
+              0.39,
+              35.799999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "ground_stairs_floor",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              53.0,
+              0.34,
+              35.799999
+            ],
+            "max": [
+              58.0,
+              0.39,
+              38.200001
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              53.0,
+              0.34,
+              35.799999
+            ],
+            "max": [
+              58.0,
+              0.39,
+              38.200001
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "ground_stairs_partition_-1.2_a",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              53.0,
+              0.39,
+              38.130001
+            ],
+            "max": [
+              53.900002,
+              3.49,
+              38.27
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              53.0,
+              0.39,
+              38.130001
+            ],
+            "max": [
+              53.900002,
+              3.49,
+              38.27
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "ground_stairs_partition_-1.2_b",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              55.099998,
+              0.39,
+              38.130001
+            ],
+            "max": [
+              58.0,
+              3.49,
+              38.27
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              55.099998,
+              0.39,
+              38.130001
+            ],
+            "max": [
+              58.0,
+              3.49,
+              38.27
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "ground_stairs_partition_-1.2_lintel",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              53.900002,
+              2.59,
+              38.130001
+            ],
+            "max": [
+              55.099998,
+              3.49,
+              38.27
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              53.900002,
+              2.59,
+              38.130001
+            ],
+            "max": [
+              55.099998,
+              3.49,
+              38.27
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "ground_stairs_partition_1.2_a",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              53.0,
+              0.39,
+              35.73
+            ],
+            "max": [
+              53.900002,
+              3.49,
+              35.869999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              53.0,
+              0.39,
+              35.73
+            ],
+            "max": [
+              53.900002,
+              3.49,
+              35.869999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "ground_stairs_partition_1.2_b",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              55.099998,
+              0.39,
+              35.73
+            ],
+            "max": [
+              58.0,
+              3.49,
+              35.869999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              55.099998,
+              0.39,
+              35.73
+            ],
+            "max": [
+              58.0,
+              3.49,
+              35.869999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "ground_stairs_partition_1.2_lintel",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              53.900002,
+              2.59,
+              35.73
+            ],
+            "max": [
+              55.099998,
+              3.49,
+              35.869999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              53.900002,
+              2.59,
+              35.73
+            ],
+            "max": [
+              55.099998,
+              3.49,
+              35.869999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "ground_utility_tile",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              53.0,
+              0.34,
+              38.200001
+            ],
+            "max": [
+              58.0,
+              0.39,
+              43.0
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              53.0,
+              0.34,
+              38.200001
+            ],
+            "max": [
+              58.0,
+              0.39,
+              43.0
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "ground_wood_floor",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              48.0,
+              0.34,
+              31.0
+            ],
+            "max": [
+              53.0,
+              0.39,
+              43.0
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              48.0,
+              0.34,
+              31.0
+            ],
+            "max": [
+              53.0,
+              0.39,
+              43.0
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "left_ext_0",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              48.0,
+              0.39,
+              42.93
+            ],
+            "max": [
+              58.0,
+              3.49,
+              43.07
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              48.0,
+              0.39,
+              42.93
+            ],
+            "max": [
+              58.0,
+              3.49,
+              43.07
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "left_ext_1",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              48.0,
+              3.84,
+              42.93
+            ],
+            "max": [
+              58.0,
+              6.94,
+              43.07
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              48.0,
+              3.84,
+              42.93
+            ],
+            "max": [
+              58.0,
+              6.94,
+              43.07
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Patamar_superior",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              56.866001,
+              3.61,
+              35.799999
+            ],
+            "max": [
+              58.0,
+              3.84,
+              38.200001
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              56.866001,
+              3.61,
+              35.799999
+            ],
+            "max": [
+              58.0,
+              3.84,
+              38.200001
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "right_ext_0",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              48.0,
+              0.39,
+              30.93
+            ],
+            "max": [
+              58.0,
+              3.49,
+              31.07
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              48.0,
+              0.39,
+              30.93
+            ],
+            "max": [
+              58.0,
+              3.49,
+              31.07
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "right_ext_1",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              48.0,
+              3.84,
+              30.93
+            ],
+            "max": [
+              58.0,
+              6.94,
+              31.07
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              48.0,
+              3.84,
+              30.93
+            ],
+            "max": [
+              58.0,
+              6.94,
+              31.07
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "upper_hall_front",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              48.0,
+              3.61,
+              35.799999
+            ],
+            "max": [
+              53.0,
+              3.83,
+              38.200001
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              48.0,
+              3.61,
+              35.799999
+            ],
+            "max": [
+              53.0,
+              3.83,
+              38.200001
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "upper_left",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              48.0,
+              3.61,
+              38.200001
+            ],
+            "max": [
+              58.0,
+              3.83,
+              43.0
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              48.0,
+              3.61,
+              38.200001
+            ],
+            "max": [
+              58.0,
+              3.83,
+              43.0
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "upper_left_rooms_a",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              52.93,
+              3.84,
+              41.299999
+            ],
+            "max": [
+              53.07,
+              6.94,
+              43.0
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              52.93,
+              3.84,
+              41.299999
+            ],
+            "max": [
+              53.07,
+              6.94,
+              43.0
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "upper_left_rooms_b",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              52.93,
+              3.84,
+              38.200001
+            ],
+            "max": [
+              53.07,
+              6.94,
+              40.299999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              52.93,
+              3.84,
+              38.200001
+            ],
+            "max": [
+              53.07,
+              6.94,
+              40.299999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "upper_left_rooms_lintel",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              52.93,
+              6.04,
+              40.299999
+            ],
+            "max": [
+              53.07,
+              6.94,
+              41.299999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              52.93,
+              6.04,
+              40.299999
+            ],
+            "max": [
+              53.07,
+              6.94,
+              41.299999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "upper_right",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              48.0,
+              3.61,
+              31.0
+            ],
+            "max": [
+              58.0,
+              3.83,
+              35.799999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              48.0,
+              3.61,
+              31.0
+            ],
+            "max": [
+              58.0,
+              3.83,
+              35.799999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "upper_right_rooms_a",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              52.93,
+              3.84,
+              33.799999
+            ],
+            "max": [
+              53.07,
+              6.94,
+              35.799999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              52.93,
+              3.84,
+              33.799999
+            ],
+            "max": [
+              53.07,
+              6.94,
+              35.799999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "upper_right_rooms_b",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              52.93,
+              3.84,
+              31.0
+            ],
+            "max": [
+              53.07,
+              6.94,
+              32.799999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              52.93,
+              3.84,
+              31.0
+            ],
+            "max": [
+              53.07,
+              6.94,
+              32.799999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "upper_right_rooms_lintel",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              52.93,
+              6.04,
+              32.799999
+            ],
+            "max": [
+              53.07,
+              6.94,
+              33.799999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              52.93,
+              6.04,
+              32.799999
+            ],
+            "max": [
+              53.07,
+              6.94,
+              33.799999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Wall_upper_left_0",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              47.999999,
+              3.84,
+              38.135001
+            ],
+            "max": [
+              50.099999,
+              6.94,
+              38.265001
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              47.999999,
+              3.84,
+              38.135001
+            ],
+            "max": [
+              50.099999,
+              6.94,
+              38.265001
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Lintel_upper_left_0",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              50.1,
+              5.99,
+              38.135001
+            ],
+            "max": [
+              51.15,
+              6.94,
+              38.265001
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              50.1,
+              5.99,
+              38.135001
+            ],
+            "max": [
+              51.15,
+              6.94,
+              38.265001
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Wall_upper_left_1",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              51.149999,
+              3.84,
+              38.135001
+            ],
+            "max": [
+              56.879999,
+              6.94,
+              38.265001
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              51.149999,
+              3.84,
+              38.135001
+            ],
+            "max": [
+              56.879999,
+              6.94,
+              38.265001
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Lintel_upper_left_1",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              56.879998,
+              5.99,
+              38.135001
+            ],
+            "max": [
+              57.819998,
+              6.94,
+              38.265001
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              56.879998,
+              5.99,
+              38.135001
+            ],
+            "max": [
+              57.819998,
+              6.94,
+              38.265001
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Wall_upper_left_end",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              57.82,
+              3.84,
+              38.135001
+            ],
+            "max": [
+              58.0,
+              6.94,
+              38.265001
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              57.82,
+              3.84,
+              38.135001
+            ],
+            "max": [
+              58.0,
+              6.94,
+              38.265001
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Wall_upper_right_0",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              47.999999,
+              3.84,
+              35.734999
+            ],
+            "max": [
+              50.099999,
+              6.94,
+              35.864999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              47.999999,
+              3.84,
+              35.734999
+            ],
+            "max": [
+              50.099999,
+              6.94,
+              35.864999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Lintel_upper_right_0",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              50.1,
+              5.99,
+              35.734999
+            ],
+            "max": [
+              51.15,
+              6.94,
+              35.864999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              50.1,
+              5.99,
+              35.734999
+            ],
+            "max": [
+              51.15,
+              6.94,
+              35.864999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Wall_upper_right_1",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              51.15,
+              3.84,
+              35.734999
+            ],
+            "max": [
+              55.35,
+              6.94,
+              35.864999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              51.15,
+              3.84,
+              35.734999
+            ],
+            "max": [
+              55.35,
+              6.94,
+              35.864999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Lintel_upper_right_1",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              55.350002,
+              5.99,
+              35.734999
+            ],
+            "max": [
+              56.450002,
+              6.94,
+              35.864999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              55.350002,
+              5.99,
+              35.734999
+            ],
+            "max": [
+              56.450002,
+              6.94,
+              35.864999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Wall_upper_right_end",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              56.449998,
+              3.84,
+              35.734999
+            ],
+            "max": [
+              57.999998,
+              6.94,
+              35.864999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              56.449998,
+              3.84,
+              35.734999
+            ],
+            "max": [
+              57.999998,
+              6.94,
+              35.864999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Wall_bedroom_divider_A",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              52.93,
+              3.84,
+              40.299999
+            ],
+            "max": [
+              53.07,
+              6.94,
+              41.299999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              52.93,
+              3.84,
+              40.299999
+            ],
+            "max": [
+              53.07,
+              6.94,
+              41.299999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Wall_bedroom_divider_B",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              52.93,
+              3.84,
+              32.799999
+            ],
+            "max": [
+              53.07,
+              6.94,
+              33.799999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              52.93,
+              3.84,
+              32.799999
+            ],
+            "max": [
+              53.07,
+              6.94,
+              33.799999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Gallery_upper",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              52.999999,
+              3.61,
+              35.800001
+            ],
+            "max": [
+              56.865999,
+              3.84,
+              36.820001
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              52.999999,
+              3.61,
+              35.800001
+            ],
+            "max": [
+              56.865999,
+              3.84,
+              36.820001
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Wall_guard_upper",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              53.0,
+              3.84,
+              36.75
+            ],
+            "max": [
+              56.86,
+              4.84,
+              36.82
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              53.0,
+              3.84,
+              36.75
+            ],
+            "max": [
+              56.86,
+              4.84,
+              36.82
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Wall_guard_front",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              52.94,
+              3.84,
+              36.82
+            ],
+            "max": [
+              53.02,
+              4.84,
+              38.18
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              52.94,
+              3.84,
+              36.82
+            ],
+            "max": [
+              53.02,
+              4.84,
+              38.18
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Wall_powder_divider",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              55.65,
+              0.39,
+              39.98
+            ],
+            "max": [
+              55.78,
+              3.49,
+              42.95
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              55.65,
+              0.39,
+              39.98
+            ],
+            "max": [
+              55.78,
+              3.49,
+              42.95
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Wall_powder_0",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              55.649998,
+              0.39,
+              39.975001
+            ],
+            "max": [
+              56.049998,
+              3.49,
+              40.105001
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              55.649998,
+              0.39,
+              39.975001
+            ],
+            "max": [
+              56.049998,
+              3.49,
+              40.105001
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Lintel_powder_0",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              56.05,
+              2.54,
+              39.975001
+            ],
+            "max": [
+              56.95,
+              3.49,
+              40.105001
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              56.05,
+              2.54,
+              39.975001
+            ],
+            "max": [
+              56.95,
+              3.49,
+              40.105001
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Wall_powder_end",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              56.950002,
+              0.39,
+              39.975001
+            ],
+            "max": [
+              57.960002,
+              3.49,
+              40.105001
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              56.950002,
+              0.39,
+              39.975001
+            ],
+            "max": [
+              57.960002,
+              3.49,
+              40.105001
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Ceiling_ground_front",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              47.999999,
+              3.49,
+              31.0
+            ],
+            "max": [
+              52.779999,
+              3.61,
+              43.0
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              47.999999,
+              3.49,
+              31.0
+            ],
+            "max": [
+              52.779999,
+              3.61,
+              43.0
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Ceiling_ground_left",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              52.779999,
+              3.49,
+              38.199998
+            ],
+            "max": [
+              57.999999,
+              3.61,
+              42.999999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              52.779999,
+              3.49,
+              38.199998
+            ],
+            "max": [
+              57.999999,
+              3.61,
+              42.999999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Ceiling_ground_right",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              52.779999,
+              3.49,
+              31.0
+            ],
+            "max": [
+              57.999999,
+              3.61,
+              36.82
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              52.779999,
+              3.49,
+              31.0
+            ],
+            "max": [
+              57.999999,
+              3.61,
+              36.82
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Ceiling_upper",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              48.0,
+              6.94,
+              31.0
+            ],
+            "max": [
+              58.0,
+              7.06,
+              43.0
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              48.0,
+              6.94,
+              31.0
+            ],
+            "max": [
+              58.0,
+              7.06,
+              43.0
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Wall_front_ground_0",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              47.999999,
+              0.39,
+              31.000001
+            ],
+            "max": [
+              48.129999,
+              3.49,
+              36.175002
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              47.999999,
+              0.39,
+              31.000001
+            ],
+            "max": [
+              48.129999,
+              3.49,
+              36.175002
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Wall_front_ground_1_head",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              47.999999,
+              2.375,
+              36.175
+            ],
+            "max": [
+              48.129999,
+              3.49,
+              37.825
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              47.999999,
+              2.375,
+              36.175
+            ],
+            "max": [
+              48.129999,
+              3.49,
+              37.825
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Wall_front_ground_2",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              47.999999,
+              0.39,
+              37.824999
+            ],
+            "max": [
+              48.129999,
+              3.49,
+              40.274999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              47.999999,
+              0.39,
+              37.824999
+            ],
+            "max": [
+              48.129999,
+              3.49,
+              40.274999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Wall_front_ground_3_sill",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              47.999999,
+              0.39,
+              40.275
+            ],
+            "max": [
+              48.129999,
+              1.225,
+              41.725
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              47.999999,
+              0.39,
+              40.275
+            ],
+            "max": [
+              48.129999,
+              1.225,
+              41.725
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Wall_front_ground_3_head",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              47.999999,
+              2.775,
+              40.275
+            ],
+            "max": [
+              48.129999,
+              3.49,
+              41.725
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              47.999999,
+              2.775,
+              40.275
+            ],
+            "max": [
+              48.129999,
+              3.49,
+              41.725
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Window_ground_3_sill",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              47.999999,
+              1.175,
+              40.275
+            ],
+            "max": [
+              48.239999,
+              1.225,
+              41.725
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              47.999999,
+              1.175,
+              40.275
+            ],
+            "max": [
+              48.239999,
+              1.225,
+              41.725
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Window_ground_3_center",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              48.000001,
+              1.225,
+              40.975
+            ],
+            "max": [
+              48.120001,
+              2.775,
+              41.025
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              48.000001,
+              1.225,
+              40.975
+            ],
+            "max": [
+              48.120001,
+              2.775,
+              41.025
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Wall_front_ground_4",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              47.999999,
+              0.39,
+              41.724999
+            ],
+            "max": [
+              48.129999,
+              3.49,
+              42.999999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              47.999999,
+              0.39,
+              41.724999
+            ],
+            "max": [
+              48.129999,
+              3.49,
+              42.999999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Wall_front_upper_0",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              47.999999,
+              3.84,
+              31.000001
+            ],
+            "max": [
+              48.129999,
+              6.94,
+              32.275001
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              47.999999,
+              3.84,
+              31.000001
+            ],
+            "max": [
+              48.129999,
+              6.94,
+              32.275001
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Wall_front_upper_1_sill",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              47.999999,
+              3.84,
+              32.275
+            ],
+            "max": [
+              48.129999,
+              4.675,
+              33.725
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              47.999999,
+              3.84,
+              32.275
+            ],
+            "max": [
+              48.129999,
+              4.675,
+              33.725
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Wall_front_upper_1_head",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              47.999999,
+              6.225,
+              32.275
+            ],
+            "max": [
+              48.129999,
+              6.94,
+              33.725
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              47.999999,
+              6.225,
+              32.275
+            ],
+            "max": [
+              48.129999,
+              6.94,
+              33.725
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Window_upper_1_sill",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              47.999999,
+              4.625,
+              32.275
+            ],
+            "max": [
+              48.239999,
+              4.675,
+              33.725
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              47.999999,
+              4.625,
+              32.275
+            ],
+            "max": [
+              48.239999,
+              4.675,
+              33.725
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Window_upper_1_center",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              48.000001,
+              4.675,
+              32.975
+            ],
+            "max": [
+              48.120001,
+              6.225,
+              33.025
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              48.000001,
+              4.675,
+              32.975
+            ],
+            "max": [
+              48.120001,
+              6.225,
+              33.025
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Wall_front_upper_2",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              47.999999,
+              3.84,
+              33.725
+            ],
+            "max": [
+              48.129999,
+              6.94,
+              36.275
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              47.999999,
+              3.84,
+              33.725
+            ],
+            "max": [
+              48.129999,
+              6.94,
+              36.275
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Wall_front_upper_3_sill",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              47.999999,
+              3.84,
+              36.275
+            ],
+            "max": [
+              48.129999,
+              4.675,
+              37.725
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              47.999999,
+              3.84,
+              36.275
+            ],
+            "max": [
+              48.129999,
+              4.675,
+              37.725
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Wall_front_upper_3_head",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              47.999999,
+              6.225,
+              36.275
+            ],
+            "max": [
+              48.129999,
+              6.94,
+              37.725
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              47.999999,
+              6.225,
+              36.275
+            ],
+            "max": [
+              48.129999,
+              6.94,
+              37.725
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Window_upper_3_sill",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              47.999999,
+              4.625,
+              36.275
+            ],
+            "max": [
+              48.239999,
+              4.675,
+              37.725
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              47.999999,
+              4.625,
+              36.275
+            ],
+            "max": [
+              48.239999,
+              4.675,
+              37.725
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Window_upper_3_center",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              48.000001,
+              4.675,
+              36.975
+            ],
+            "max": [
+              48.120001,
+              6.225,
+              37.025
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              48.000001,
+              4.675,
+              36.975
+            ],
+            "max": [
+              48.120001,
+              6.225,
+              37.025
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Wall_front_upper_4",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              47.999999,
+              3.84,
+              37.725
+            ],
+            "max": [
+              48.129999,
+              6.94,
+              40.275
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              47.999999,
+              3.84,
+              37.725
+            ],
+            "max": [
+              48.129999,
+              6.94,
+              40.275
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Wall_front_upper_5_sill",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              47.999999,
+              3.84,
+              40.275
+            ],
+            "max": [
+              48.129999,
+              4.675,
+              41.725
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              47.999999,
+              3.84,
+              40.275
+            ],
+            "max": [
+              48.129999,
+              4.675,
+              41.725
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Wall_front_upper_5_head",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              47.999999,
+              6.225,
+              40.275
+            ],
+            "max": [
+              48.129999,
+              6.94,
+              41.725
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              47.999999,
+              6.225,
+              40.275
+            ],
+            "max": [
+              48.129999,
+              6.94,
+              41.725
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Window_upper_5_sill",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              47.999999,
+              4.625,
+              40.275
+            ],
+            "max": [
+              48.239999,
+              4.675,
+              41.725
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              47.999999,
+              4.625,
+              40.275
+            ],
+            "max": [
+              48.239999,
+              4.675,
+              41.725
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Window_upper_5_center",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              48.000001,
+              4.675,
+              40.975
+            ],
+            "max": [
+              48.120001,
+              6.225,
+              41.025
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              48.000001,
+              4.675,
+              40.975
+            ],
+            "max": [
+              48.120001,
+              6.225,
+              41.025
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        },
+        {
+          "name": "Wall_front_upper_6",
+          "present": true,
+          "originalBounds": {
+            "min": [
+              47.999999,
+              3.84,
+              41.724999
+            ],
+            "max": [
+              48.129999,
+              6.94,
+              42.999999
+            ]
+          },
+          "renovatedBounds": {
+            "min": [
+              47.999999,
+              3.84,
+              41.724999
+            ],
+            "max": [
+              48.129999,
+              6.94,
+              42.999999
+            ]
+          },
+          "maxDeltaMetres": 0.0
+        }
+      ]
+    },
+    "geometry": {
+      "gltfAccessorVertices": 332190,
+      "gltfTriangles": 189528,
+      "blenderPreExportVertices": 178360,
+      "blenderVsGltfNote": "glTF vertex accessors split vertices for UVs/normals/material boundaries. Use actual runtime counters for performance."
+    },
+    "wardrobe": {
+      "sourceBoundsUnchanged": true,
+      "runtimeClearanceAdjustmentExactlyOnce": true,
+      "nodes": [
+        {
+          "name": "furn_hosts_wardrobe_0",
+          "originalBounds": {
+            "min": [
+              56.709999,
+              3.86,
+              38.315
+            ],
+            "max": [
+              57.790001,
+              5.93,
+              38.9572
+            ]
+          },
+          "renovatedSourceBounds": {
+            "min": [
+              56.709999,
+              3.86,
+              38.315
+            ],
+            "max": [
+              57.790001,
+              5.93,
+              38.9572
+            ]
+          },
+          "maxDeltaMetres": 0.0,
+          "runtimeSourceDelta": [
+            0,
+            0,
+            1.45
+          ],
+          "adjustmentAppliedExactlyOnceByLoader": true
+        },
+        {
+          "name": "furn_hosts_wardrobe_1",
+          "originalBounds": {
+            "min": [
+              56.755001,
+              3.95,
+              38.314
+            ],
+            "max": [
+              57.244999,
+              5.83,
+              38.36
+            ]
+          },
+          "renovatedSourceBounds": {
+            "min": [
+              56.755001,
+              3.95,
+              38.314
+            ],
+            "max": [
+              57.244999,
+              5.83,
+              38.36
+            ]
+          },
+          "maxDeltaMetres": 0.0,
+          "runtimeSourceDelta": [
+            0,
+            0,
+            1.45
+          ],
+          "adjustmentAppliedExactlyOnceByLoader": true
+        },
+        {
+          "name": "furn_hosts_wardrobe_2",
+          "originalBounds": {
+            "min": [
+              57.255001,
+              3.95,
+              38.314
+            ],
+            "max": [
+              57.744999,
+              5.83,
+              38.36
+            ]
+          },
+          "renovatedSourceBounds": {
+            "min": [
+              57.255001,
+              3.95,
+              38.314
+            ],
+            "max": [
+              57.744999,
+              5.83,
+              38.36
+            ]
+          },
+          "maxDeltaMetres": 0.0,
+          "runtimeSourceDelta": [
+            0,
+            0,
+            1.45
+          ],
+          "adjustmentAppliedExactlyOnceByLoader": true
+        }
+      ]
+    },
+    "mirrors": {
+      "expected": 3,
+      "found": 3,
+      "missing": [],
+      "nodes": [
+        {
+          "name": "REN_service_bath_mirror",
+          "present": true,
+          "min": [
+            55.325001,
+            5.035,
+            31.273001
+          ],
+          "max": [
+            56.075001,
+            5.865,
+            31.287001
+          ],
+          "frontNormalSourceZ": 1
+        },
+        {
+          "name": "REN_service_powder_mirror",
+          "present": true,
+          "min": [
+            57.2,
+            1.44,
+            42.843998
+          ],
+          "max": [
+            57.76,
+            2.14,
+            42.855998
+          ],
+          "frontNormalSourceZ": -1
+        },
+        {
+          "name": "REN_Hosts_dresser_mirror",
+          "present": true,
+          "min": [
+            57.150001,
+            4.735,
+            42.462002
+          ],
+          "max": [
+            57.750001,
+            5.365,
+            42.462002
+          ],
+          "frontNormalSourceZ": -1
+        }
+      ]
+    },
+    "colliders": {
+      "additional": 9,
+      "boundsMatchBuildReport": true,
+      "entries": [
+        {
+          "name": "Hosts_right_nightstand",
+          "min": [
+            55.341,
+            3.86,
+            39.998
+          ],
+          "max": [
+            55.739,
+            4.986,
+            40.502
+          ]
+        },
+        {
+          "name": "Guest_bed",
+          "min": [
+            48.95,
+            3.84,
+            31.86
+          ],
+          "max": [
+            51.055,
+            5.05,
+            32.94
+          ]
+        },
+        {
+          "name": "Guest_writing_table",
+          "min": [
+            51.8,
+            3.84,
+            34.36
+          ],
+          "max": [
+            52.6,
+            4.592,
+            35.0
+          ]
+        },
+        {
+          "name": "dining_hutch",
+          "min": [
+            50.96,
+            0.41,
+            31.27
+          ],
+          "max": [
+            52.14,
+            1.28,
+            31.6
+          ]
+        },
+        {
+          "name": "service_powder_toilet",
+          "min": [
+            56.019,
+            0.39,
+            42.05
+          ],
+          "max": [
+            56.541,
+            1.26,
+            42.95
+          ]
+        },
+        {
+          "name": "service_washer_front",
+          "min": [
+            54.02,
+            0.39,
+            42.1
+          ],
+          "max": [
+            54.68,
+            1.49,
+            42.83
+          ]
+        },
+        {
+          "name": "service_dryer_front",
+          "min": [
+            54.86,
+            0.39,
+            42.1
+          ],
+          "max": [
+            55.52,
+            1.38,
+            42.83
+          ]
+        },
+        {
+          "name": "Guest_bookcase",
+          "min": [
+            51.587253,
+            3.84,
+            31.3525
+          ],
+          "max": [
+            52.292753,
+            5.3955,
+            31.62025
+          ]
+        },
+        {
+          "name": "Laundry_hamper",
+          "min": [
+            53.14,
+            0.39,
+            41.4
+          ],
+          "max": [
+            53.64,
+            1.0,
+            41.9
+          ]
+        }
+      ]
+    },
+    "scope": {
+      "missionsAndDialoguesUnchanged": true,
+      "characterNodesAdded": false,
+      "existingFacadeAndWestbridgePreserved": true,
+      "existingSeparateInteriorAndDoorFadePreserved": true,
+      "garageStillDecorativeWithoutInventedInternalDoor": true,
+      "unusedSourceObjectAnimationsRemoved": {
+        "before": 6,
+        "after": 0,
+        "previouslyPlayed": false
+      }
+    },
+    "runtimeCodeReview": {
+      "fogClearColorExposureContrastCameraRestoredOnExit": true,
+      "localLightingDeactivatesWithHouse": true,
+      "mirrorsDeactivatedAndDisposedLocally": true,
+      "missingMirrorNodeBlocker": false,
+      "blockingRegressionFound": false
+    },
+    "verificationLimit": "Static/code audit only; runtime circulation, actual rendering and timing belong to separate QA report."
+  },
+  "before": [
+    {
+      "view": "01-sala-geral",
+      "batch": "antes",
+      "hostHouse": {
+        "active": true,
+        "loaded": true,
+        "ready": true,
+        "loading": false,
+        "error": null,
+        "source": "/models/daniel_helen_house.glb",
+        "origin": {
+          "x": 800,
+          "y": 0,
+          "z": 0
+        },
+        "sourceAssetUnmodified": true,
+        "sourceGeometryPreserved": true,
+        "sourceNodeTransformsPreserved": false,
+        "approvedAdjustments": [
+          {
+            "name": "furn_hosts_wardrobe_0",
+            "sourceZDelta": 1.45
+          },
+          {
+            "name": "furn_hosts_wardrobe_1",
+            "sourceZDelta": 1.45
+          },
+          {
+            "name": "furn_hosts_wardrobe_2",
+            "sourceZDelta": 1.45
+          }
+        ],
+        "sourceMaterialsPreserved": true,
+        "sourceUVsPreserved": true,
+        "meshes": 559,
+        "portalMeshes": 6,
+        "materials": 166,
+        "textures": 59,
+        "allTexturesReady": true,
+        "lights": 10,
+        "embeddedLights": 9,
+        "activeEmbeddedLights": [
+          "Day_janela_quarto",
+          "Day_janela_sala",
+          "Always_jantar",
+          "Always_cozinha",
+          "Always_banheiro"
+        ],
+        "animationGroups": 6,
+        "runningAnimations": 0,
+        "camera": {
+          "fov": 1.08,
+          "minZ": 0.045,
+          "maxZ": 180
+        },
+        "npcs": 0,
+        "foreignMeshesHidden": 142,
+        "foreignMeshesVisible": 0,
+        "exit": {
+          "position": {
+            "x": 751.89,
+            "y": 1.3825,
+            "z": 37
+          },
+          "size": [
+            0.055,
+            1.985,
+            1.65
+          ]
+        },
+        "location": "inside",
+        "navigation": {
+          "enabled": true,
+          "elevation": 0.39,
+          "level": "ground",
+          "stairSteps": 18,
+          "bodyHeight": 1.78,
+          "maxStep": 0.22
+        }
+      },
+      "reportedPerf": {
+        "frames": 173,
+        "meanFrameMs": 294.4,
+        "p95FrameMs": 502.2,
+        "fps": 3.4
+      },
+      "renderer": {
+        "vendor": "Google Inc. (Google)",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "internal": {
+        "width": 914,
+        "height": 514
+      },
+      "frames": 30,
+      "meanFrameMs": 277.44000000059606,
+      "p95FrameMs": 414.40000000596046,
+      "measuredFps": 3.6043829296347014,
+      "meanDrawCalls": 92,
+      "activeMeshes": 93,
+      "activeIndices": 43074,
+      "totalSceneVertices": 2029412,
+      "modelResources": [
+        {
+          "name": "http://127.0.0.1:5194/models/daniel_helen_house.glb",
+          "duration": 97,
+          "transferSize": 6226260,
+          "encodedBodySize": 6225960,
+          "decodedBodySize": 6225960
+        }
+      ]
+    },
+    {
+      "view": "07-quarto-protagonista-geral",
+      "batch": "antes",
+      "hostHouse": {
+        "active": true,
+        "loaded": true,
+        "ready": true,
+        "loading": false,
+        "error": null,
+        "source": "/models/daniel_helen_house.glb",
+        "origin": {
+          "x": 800,
+          "y": 0,
+          "z": 0
+        },
+        "sourceAssetUnmodified": true,
+        "sourceGeometryPreserved": true,
+        "sourceNodeTransformsPreserved": false,
+        "approvedAdjustments": [
+          {
+            "name": "furn_hosts_wardrobe_0",
+            "sourceZDelta": 1.45
+          },
+          {
+            "name": "furn_hosts_wardrobe_1",
+            "sourceZDelta": 1.45
+          },
+          {
+            "name": "furn_hosts_wardrobe_2",
+            "sourceZDelta": 1.45
+          }
+        ],
+        "sourceMaterialsPreserved": true,
+        "sourceUVsPreserved": true,
+        "meshes": 559,
+        "portalMeshes": 6,
+        "materials": 166,
+        "textures": 59,
+        "allTexturesReady": true,
+        "lights": 10,
+        "embeddedLights": 9,
+        "activeEmbeddedLights": [
+          "Day_janela_quarto",
+          "Day_janela_sala",
+          "Always_jantar",
+          "Always_cozinha",
+          "Always_banheiro"
+        ],
+        "animationGroups": 6,
+        "runningAnimations": 0,
+        "camera": {
+          "fov": 1.08,
+          "minZ": 0.045,
+          "maxZ": 180
+        },
+        "npcs": 0,
+        "foreignMeshesHidden": 142,
+        "foreignMeshesVisible": 0,
+        "exit": {
+          "position": {
+            "x": 751.89,
+            "y": 1.3825,
+            "z": 37
+          },
+          "size": [
+            0.055,
+            1.985,
+            1.65
+          ]
+        },
+        "location": "inside",
+        "navigation": {
+          "enabled": true,
+          "elevation": 3.84,
+          "level": "upper",
+          "stairSteps": 18,
+          "bodyHeight": 1.78,
+          "maxStep": 0.22
+        }
+      },
+      "reportedPerf": {
+        "frames": 226,
+        "meanFrameMs": 307.3,
+        "p95FrameMs": 547.3,
+        "fps": 3.3
+      },
+      "renderer": {
+        "vendor": "Google Inc. (Google)",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "internal": {
+        "width": 914,
+        "height": 514
+      },
+      "frames": 30,
+      "meanFrameMs": 328.9166666666667,
+      "p95FrameMs": 615.5,
+      "measuredFps": 3.0402837598175827,
+      "meanDrawCalls": 199,
+      "activeMeshes": 202,
+      "activeIndices": 66894,
+      "totalSceneVertices": 2029412,
+      "modelResources": [
+        {
+          "name": "http://127.0.0.1:5194/models/daniel_helen_house.glb",
+          "duration": 97,
+          "transferSize": 6226260,
+          "encodedBodySize": 6225960,
+          "decodedBodySize": 6225960
+        }
+      ]
+    },
+    {
+      "view": "03-cozinha",
+      "batch": "antes",
+      "hostHouse": {
+        "active": true,
+        "loaded": true,
+        "ready": true,
+        "loading": false,
+        "error": null,
+        "source": "/models/daniel_helen_house.glb",
+        "origin": {
+          "x": 800,
+          "y": 0,
+          "z": 0
+        },
+        "sourceAssetUnmodified": true,
+        "sourceGeometryPreserved": true,
+        "sourceNodeTransformsPreserved": false,
+        "approvedAdjustments": [
+          {
+            "name": "furn_hosts_wardrobe_0",
+            "sourceZDelta": 1.45
+          },
+          {
+            "name": "furn_hosts_wardrobe_1",
+            "sourceZDelta": 1.45
+          },
+          {
+            "name": "furn_hosts_wardrobe_2",
+            "sourceZDelta": 1.45
+          }
+        ],
+        "sourceMaterialsPreserved": true,
+        "sourceUVsPreserved": true,
+        "meshes": 559,
+        "portalMeshes": 6,
+        "materials": 166,
+        "textures": 59,
+        "allTexturesReady": true,
+        "lights": 10,
+        "embeddedLights": 9,
+        "activeEmbeddedLights": [
+          "Day_janela_quarto",
+          "Day_janela_sala",
+          "Always_jantar",
+          "Always_cozinha",
+          "Always_banheiro"
+        ],
+        "animationGroups": 6,
+        "runningAnimations": 0,
+        "camera": {
+          "fov": 1.1,
+          "minZ": 0.045,
+          "maxZ": 180
+        },
+        "npcs": 0,
+        "foreignMeshesHidden": 142,
+        "foreignMeshesVisible": 0,
+        "exit": {
+          "position": {
+            "x": 751.89,
+            "y": 1.3825,
+            "z": 37
+          },
+          "size": [
+            0.055,
+            1.985,
+            1.65
+          ]
+        },
+        "location": "inside",
+        "navigation": {
+          "enabled": true,
+          "elevation": 0.39,
+          "level": "ground",
+          "stairSteps": 18,
+          "bodyHeight": 1.78,
+          "maxStep": 0.22
+        }
+      },
+      "reportedPerf": {
+        "frames": 280,
+        "meanFrameMs": 286.7,
+        "p95FrameMs": 504.1,
+        "fps": 3.5
+      },
+      "renderer": {
+        "vendor": "Google Inc. (Google)",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "internal": {
+        "width": 914,
+        "height": 514
+      },
+      "frames": 30,
+      "meanFrameMs": 218.963333333532,
+      "p95FrameMs": 405,
+      "measuredFps": 4.56697468373286,
+      "meanDrawCalls": 69,
+      "activeMeshes": 69,
+      "activeIndices": 23514,
+      "totalSceneVertices": 2029412,
+      "modelResources": [
+        {
+          "name": "http://127.0.0.1:5194/models/daniel_helen_house.glb",
+          "duration": 97,
+          "transferSize": 6226260,
+          "encodedBodySize": 6225960,
+          "decodedBodySize": 6225960
+        }
+      ]
+    }
+  ],
+  "after": [
+    {
+      "view": "01-sala-geral",
+      "batch": "depois",
+      "hostHouse": {
+        "active": true,
+        "loaded": true,
+        "ready": true,
+        "loading": false,
+        "error": null,
+        "source": "/models/daniel_helen_house_renovated.glb",
+        "origin": {
+          "x": 800,
+          "y": 0,
+          "z": 0
+        },
+        "sourceAssetUnmodified": false,
+        "sourceGeometryPreserved": false,
+        "nativeArchitecturePreserved": true,
+        "sourceNodeTransformsPreserved": false,
+        "approvedAdjustments": [
+          {
+            "name": "furn_hosts_wardrobe_0",
+            "sourceZDelta": 1.45
+          },
+          {
+            "name": "furn_hosts_wardrobe_1",
+            "sourceZDelta": 1.45
+          },
+          {
+            "name": "furn_hosts_wardrobe_2",
+            "sourceZDelta": 1.45
+          }
+        ],
+        "sourceMaterialsPreserved": false,
+        "sourceUVsPreserved": false,
+        "renovation": true,
+        "meshes": 583,
+        "portalMeshes": 6,
+        "materials": 166,
+        "textures": 81,
+        "allTexturesReady": true,
+        "lights": 21,
+        "embeddedLights": 9,
+        "lighting": {
+          "active": true,
+          "mode": "day",
+          "maxLightsPerMesh": 4,
+          "roomAndFloorMasks": true,
+          "ambientIntensity": 0.36,
+          "activeLights": [
+            "Day_janela_quarto",
+            "Day_janela_sala",
+            "Night_abajur_quarto",
+            "Night_abajur_sala",
+            "Night_corredor",
+            "Always_jantar",
+            "Always_cozinha",
+            "Night_anfitrioes",
+            "Always_banheiro",
+            "Daniel e Helen · plafon da entrada",
+            "Daniel e Helen · luz da área de serviço",
+            "Daniel e Helen · plafon do lavabo",
+            "Daniel e Helen · garagem · lâmpada de teto",
+            "Daniel e Helen · quarto de hóspedes · abajur",
+            "Daniel e Helen · quarto dos anfitriões · abajur direito",
+            "Daniel e Helen · corredor superior · entrada",
+            "Daniel e Helen · luz sob o exaustor",
+            "Daniel e Helen · sol pela janela da sala",
+            "Daniel e Helen · sol pela janela do estudante",
+            "Daniel e Helen · sol pela janela da cozinha"
+          ],
+          "embeddedLights": 9,
+          "addedLights": 12,
+          "cachedShadowMaps": [
+            {
+              "size": 768,
+              "refreshRate": 0,
+              "casters": 111
+            },
+            {
+              "size": 768,
+              "refreshRate": 0,
+              "casters": 128
+            },
+            {
+              "size": 512,
+              "refreshRate": 0,
+              "casters": 47
+            }
+          ],
+          "backdropMaterials": 39,
+          "glowingFixtureMaterials": 2
+        },
+        "mirrors": {
+          "active": true,
+          "textureSize": 256,
+          "cached": true,
+          "roomsOnly": true,
+          "mirrors": [
+            {
+              "name": "REN_service_bath_mirror",
+              "planeZ": 31.287400686861574,
+              "normalZ": 1,
+              "roomMeshes": 46,
+              "updating": false,
+              "renders": 37
+            },
+            {
+              "name": "REN_service_powder_mirror",
+              "planeZ": 42.84359847406894,
+              "normalZ": -1,
+              "roomMeshes": 31,
+              "updating": false,
+              "renders": 37
+            },
+            {
+              "name": "REN_Hosts_dresser_mirror",
+              "planeZ": 42.461601774310274,
+              "normalZ": -1,
+              "roomMeshes": 53,
+              "updating": false,
+              "renders": 35
+            }
+          ],
+          "missing": []
+        },
+        "activeEmbeddedLights": [
+          "Day_janela_quarto",
+          "Day_janela_sala",
+          "Night_abajur_quarto",
+          "Night_abajur_sala",
+          "Night_corredor",
+          "Always_jantar",
+          "Always_cozinha",
+          "Night_anfitrioes",
+          "Always_banheiro"
+        ],
+        "animationGroups": 0,
+        "runningAnimations": 0,
+        "camera": {
+          "fov": 1.08,
+          "minZ": 0.045,
+          "maxZ": 180
+        },
+        "npcs": 0,
+        "foreignMeshesHidden": 142,
+        "foreignMeshesVisible": 0,
+        "exit": {
+          "position": {
+            "x": 751.89,
+            "y": 1.3825,
+            "z": 37
+          },
+          "size": [
+            0.055,
+            1.985,
+            1.65
+          ]
+        },
+        "location": "inside",
+        "navigation": {
+          "enabled": true,
+          "elevation": 0.39,
+          "level": "ground",
+          "stairSteps": 18,
+          "bodyHeight": 1.78,
+          "maxStep": 0.22
+        }
+      },
+      "reportedPerf": {
+        "frames": 785,
+        "meanFrameMs": 326.6,
+        "p95FrameMs": 590.8,
+        "fps": 3.1
+      },
+      "renderer": {
+        "vendor": "Google Inc. (Google)",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "internal": {
+        "width": 914,
+        "height": 514
+      },
+      "frames": 30,
+      "meanFrameMs": 206.5933333337307,
+      "p95FrameMs": 334.10000002384186,
+      "measuredFps": 4.840427248369147,
+      "meanDrawCalls": 115,
+      "activeMeshes": 115,
+      "activeIndices": 197712,
+      "totalSceneVertices": 2212204,
+      "modelResources": [
+        {
+          "name": "http://127.0.0.1:5194/models/daniel_helen_house_renovated.glb",
+          "duration": 199.59999999403954,
+          "transferSize": 14533148,
+          "encodedBodySize": 14532848,
+          "decodedBodySize": 14532848
+        }
+      ]
+    },
+    {
+      "view": "07-quarto-protagonista-geral",
+      "batch": "depois",
+      "hostHouse": {
+        "active": true,
+        "loaded": true,
+        "ready": true,
+        "loading": false,
+        "error": null,
+        "source": "/models/daniel_helen_house_renovated.glb",
+        "origin": {
+          "x": 800,
+          "y": 0,
+          "z": 0
+        },
+        "sourceAssetUnmodified": false,
+        "sourceGeometryPreserved": false,
+        "nativeArchitecturePreserved": true,
+        "sourceNodeTransformsPreserved": false,
+        "approvedAdjustments": [
+          {
+            "name": "furn_hosts_wardrobe_0",
+            "sourceZDelta": 1.45
+          },
+          {
+            "name": "furn_hosts_wardrobe_1",
+            "sourceZDelta": 1.45
+          },
+          {
+            "name": "furn_hosts_wardrobe_2",
+            "sourceZDelta": 1.45
+          }
+        ],
+        "sourceMaterialsPreserved": false,
+        "sourceUVsPreserved": false,
+        "renovation": true,
+        "meshes": 583,
+        "portalMeshes": 6,
+        "materials": 166,
+        "textures": 81,
+        "allTexturesReady": true,
+        "lights": 21,
+        "embeddedLights": 9,
+        "lighting": {
+          "active": true,
+          "mode": "day",
+          "maxLightsPerMesh": 4,
+          "roomAndFloorMasks": true,
+          "ambientIntensity": 0.36,
+          "activeLights": [
+            "Day_janela_quarto",
+            "Day_janela_sala",
+            "Night_abajur_quarto",
+            "Night_abajur_sala",
+            "Night_corredor",
+            "Always_jantar",
+            "Always_cozinha",
+            "Night_anfitrioes",
+            "Always_banheiro",
+            "Daniel e Helen · plafon da entrada",
+            "Daniel e Helen · luz da área de serviço",
+            "Daniel e Helen · plafon do lavabo",
+            "Daniel e Helen · garagem · lâmpada de teto",
+            "Daniel e Helen · quarto de hóspedes · abajur",
+            "Daniel e Helen · quarto dos anfitriões · abajur direito",
+            "Daniel e Helen · corredor superior · entrada",
+            "Daniel e Helen · luz sob o exaustor",
+            "Daniel e Helen · sol pela janela da sala",
+            "Daniel e Helen · sol pela janela do estudante",
+            "Daniel e Helen · sol pela janela da cozinha"
+          ],
+          "embeddedLights": 9,
+          "addedLights": 12,
+          "cachedShadowMaps": [
+            {
+              "size": 768,
+              "refreshRate": 0,
+              "casters": 111
+            },
+            {
+              "size": 768,
+              "refreshRate": 0,
+              "casters": 128
+            },
+            {
+              "size": 512,
+              "refreshRate": 0,
+              "casters": 47
+            }
+          ],
+          "backdropMaterials": 39,
+          "glowingFixtureMaterials": 2
+        },
+        "mirrors": {
+          "active": true,
+          "textureSize": 256,
+          "cached": true,
+          "roomsOnly": true,
+          "mirrors": [
+            {
+              "name": "REN_service_bath_mirror",
+              "planeZ": 31.287400686861574,
+              "normalZ": 1,
+              "roomMeshes": 46,
+              "updating": false,
+              "renders": 37
+            },
+            {
+              "name": "REN_service_powder_mirror",
+              "planeZ": 42.84359847406894,
+              "normalZ": -1,
+              "roomMeshes": 31,
+              "updating": false,
+              "renders": 37
+            },
+            {
+              "name": "REN_Hosts_dresser_mirror",
+              "planeZ": 42.461601774310274,
+              "normalZ": -1,
+              "roomMeshes": 53,
+              "updating": false,
+              "renders": 35
+            }
+          ],
+          "missing": []
+        },
+        "activeEmbeddedLights": [
+          "Day_janela_quarto",
+          "Day_janela_sala",
+          "Night_abajur_quarto",
+          "Night_abajur_sala",
+          "Night_corredor",
+          "Always_jantar",
+          "Always_cozinha",
+          "Night_anfitrioes",
+          "Always_banheiro"
+        ],
+        "animationGroups": 0,
+        "runningAnimations": 0,
+        "camera": {
+          "fov": 1.08,
+          "minZ": 0.045,
+          "maxZ": 180
+        },
+        "npcs": 0,
+        "foreignMeshesHidden": 142,
+        "foreignMeshesVisible": 0,
+        "exit": {
+          "position": {
+            "x": 751.89,
+            "y": 1.3825,
+            "z": 37
+          },
+          "size": [
+            0.055,
+            1.985,
+            1.65
+          ]
+        },
+        "location": "inside",
+        "navigation": {
+          "enabled": true,
+          "elevation": 3.84,
+          "level": "upper",
+          "stairSteps": 18,
+          "bodyHeight": 1.78,
+          "maxStep": 0.22
+        }
+      },
+      "reportedPerf": {
+        "frames": 838,
+        "meanFrameMs": 324.6,
+        "p95FrameMs": 590.8,
+        "fps": 3.1
+      },
+      "renderer": {
+        "vendor": "Google Inc. (Google)",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "internal": {
+        "width": 914,
+        "height": 514
+      },
+      "frames": 30,
+      "meanFrameMs": 321.6433333337307,
+      "p95FrameMs": 489.10000002384186,
+      "measuredFps": 3.1090338159206303,
+      "meanDrawCalls": 242,
+      "activeMeshes": 242,
+      "activeIndices": 254670,
+      "totalSceneVertices": 2212204,
+      "modelResources": [
+        {
+          "name": "http://127.0.0.1:5194/models/daniel_helen_house_renovated.glb",
+          "duration": 199.59999999403954,
+          "transferSize": 14533148,
+          "encodedBodySize": 14532848,
+          "decodedBodySize": 14532848
+        }
+      ]
+    },
+    {
+      "view": "03-cozinha",
+      "batch": "depois",
+      "hostHouse": {
+        "active": true,
+        "loaded": true,
+        "ready": true,
+        "loading": false,
+        "error": null,
+        "source": "/models/daniel_helen_house_renovated.glb",
+        "origin": {
+          "x": 800,
+          "y": 0,
+          "z": 0
+        },
+        "sourceAssetUnmodified": false,
+        "sourceGeometryPreserved": false,
+        "nativeArchitecturePreserved": true,
+        "sourceNodeTransformsPreserved": false,
+        "approvedAdjustments": [
+          {
+            "name": "furn_hosts_wardrobe_0",
+            "sourceZDelta": 1.45
+          },
+          {
+            "name": "furn_hosts_wardrobe_1",
+            "sourceZDelta": 1.45
+          },
+          {
+            "name": "furn_hosts_wardrobe_2",
+            "sourceZDelta": 1.45
+          }
+        ],
+        "sourceMaterialsPreserved": false,
+        "sourceUVsPreserved": false,
+        "renovation": true,
+        "meshes": 583,
+        "portalMeshes": 6,
+        "materials": 166,
+        "textures": 81,
+        "allTexturesReady": true,
+        "lights": 21,
+        "embeddedLights": 9,
+        "lighting": {
+          "active": true,
+          "mode": "day",
+          "maxLightsPerMesh": 4,
+          "roomAndFloorMasks": true,
+          "ambientIntensity": 0.36,
+          "activeLights": [
+            "Day_janela_quarto",
+            "Day_janela_sala",
+            "Night_abajur_quarto",
+            "Night_abajur_sala",
+            "Night_corredor",
+            "Always_jantar",
+            "Always_cozinha",
+            "Night_anfitrioes",
+            "Always_banheiro",
+            "Daniel e Helen · plafon da entrada",
+            "Daniel e Helen · luz da área de serviço",
+            "Daniel e Helen · plafon do lavabo",
+            "Daniel e Helen · garagem · lâmpada de teto",
+            "Daniel e Helen · quarto de hóspedes · abajur",
+            "Daniel e Helen · quarto dos anfitriões · abajur direito",
+            "Daniel e Helen · corredor superior · entrada",
+            "Daniel e Helen · luz sob o exaustor",
+            "Daniel e Helen · sol pela janela da sala",
+            "Daniel e Helen · sol pela janela do estudante",
+            "Daniel e Helen · sol pela janela da cozinha"
+          ],
+          "embeddedLights": 9,
+          "addedLights": 12,
+          "cachedShadowMaps": [
+            {
+              "size": 768,
+              "refreshRate": 0,
+              "casters": 111
+            },
+            {
+              "size": 768,
+              "refreshRate": 0,
+              "casters": 128
+            },
+            {
+              "size": 512,
+              "refreshRate": 0,
+              "casters": 47
+            }
+          ],
+          "backdropMaterials": 39,
+          "glowingFixtureMaterials": 2
+        },
+        "mirrors": {
+          "active": true,
+          "textureSize": 256,
+          "cached": true,
+          "roomsOnly": true,
+          "mirrors": [
+            {
+              "name": "REN_service_bath_mirror",
+              "planeZ": 31.287400686861574,
+              "normalZ": 1,
+              "roomMeshes": 46,
+              "updating": false,
+              "renders": 37
+            },
+            {
+              "name": "REN_service_powder_mirror",
+              "planeZ": 42.84359847406894,
+              "normalZ": -1,
+              "roomMeshes": 31,
+              "updating": false,
+              "renders": 37
+            },
+            {
+              "name": "REN_Hosts_dresser_mirror",
+              "planeZ": 42.461601774310274,
+              "normalZ": -1,
+              "roomMeshes": 53,
+              "updating": false,
+              "renders": 35
+            }
+          ],
+          "missing": []
+        },
+        "activeEmbeddedLights": [
+          "Day_janela_quarto",
+          "Day_janela_sala",
+          "Night_abajur_quarto",
+          "Night_abajur_sala",
+          "Night_corredor",
+          "Always_jantar",
+          "Always_cozinha",
+          "Night_anfitrioes",
+          "Always_banheiro"
+        ],
+        "animationGroups": 0,
+        "runningAnimations": 0,
+        "camera": {
+          "fov": 1.1,
+          "minZ": 0.045,
+          "maxZ": 180
+        },
+        "npcs": 0,
+        "foreignMeshesHidden": 142,
+        "foreignMeshesVisible": 0,
+        "exit": {
+          "position": {
+            "x": 751.89,
+            "y": 1.3825,
+            "z": 37
+          },
+          "size": [
+            0.055,
+            1.985,
+            1.65
+          ]
+        },
+        "location": "inside",
+        "navigation": {
+          "enabled": true,
+          "elevation": 0.39,
+          "level": "ground",
+          "stairSteps": 18,
+          "bodyHeight": 1.78,
+          "maxStep": 0.22
+        }
+      },
+      "reportedPerf": {
+        "frames": 892,
+        "meanFrameMs": 317,
+        "p95FrameMs": 589.4,
+        "fps": 3.2
+      },
+      "renderer": {
+        "vendor": "Google Inc. (Google)",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "internal": {
+        "width": 914,
+        "height": 514
+      },
+      "frames": 30,
+      "meanFrameMs": 271.1800000001987,
+      "p95FrameMs": 486.90000000596046,
+      "measuredFps": 3.687587580202328,
+      "meanDrawCalls": 74,
+      "activeMeshes": 74,
+      "activeIndices": 147402,
+      "totalSceneVertices": 2212204,
+      "modelResources": [
+        {
+          "name": "http://127.0.0.1:5194/models/daniel_helen_house_renovated.glb",
+          "duration": 199.59999999403954,
+          "transferSize": 14533148,
+          "encodedBodySize": 14532848,
+          "decodedBodySize": 14532848
+        }
+      ]
+    }
+  ],
+  "nightReentry": {
+    "passed": true,
+    "method": "Pixel comparison of real same-camera night screenshots before and after real E exit/reentry. No image edits.",
+    "before": "noite/01-sala-geral.png",
+    "after": "noite/16-sala-reentrada-noite.png",
+    "meanAbsoluteDifferenceRGB": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "identicalPixels": true
+  },
+  "mirrorsCache": {
+    "passed": true,
+    "frames": 8,
+    "offRoomStationary": true,
+    "delta": [
+      {
+        "name": "REN_service_bath_mirror",
+        "before": 37,
+        "after": 37,
+        "additional": 0,
+        "updating": false
+      },
+      {
+        "name": "REN_service_powder_mirror",
+        "before": 37,
+        "after": 37,
+        "additional": 0,
+        "updating": false
+      },
+      {
+        "name": "REN_Hosts_dresser_mirror",
+        "before": 35,
+        "after": 35,
+        "additional": 0,
+        "updating": false
+      }
+    ]
+  }
+}

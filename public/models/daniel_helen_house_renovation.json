@@ -1,0 +1,384 @@
+{
+  "source": "public/models/daniel_helen_house.glb",
+  "sourceSha256": "cc90714d6ef97962ba4d0c3808323af01fa6a0a91fb6e045ea16d4d71b52d462",
+  "output": "public/models/daniel_helen_house_renovated.glb",
+  "bytes": 14532848,
+  "outputSha256": "d92c3573a8f412fb65aca26596baba0664aaf18f2a57d2dd4e2af4dd0e346af7",
+  "nativeArchitectureChecked": 80,
+  "nativeArchitectureBoundsPreserved": true,
+  "structuralFinishFixes": [
+    {
+      "name": "five_photos_image_0",
+      "change": "photo surface brought in front of wall"
+    },
+    {
+      "name": "five_photos_image_1",
+      "change": "photo surface brought in front of wall"
+    },
+    {
+      "name": "five_photos_image_2",
+      "change": "photo surface brought in front of wall"
+    },
+    {
+      "name": "five_photos_image_3",
+      "change": "photo surface brought in front of wall"
+    },
+    {
+      "name": "five_photos_image_4",
+      "change": "photo surface brought in front of wall"
+    },
+    {
+      "name": "upper_left_rooms_a",
+      "change": "wall finish corrected from floor wood to plaster"
+    },
+    {
+      "name": "upper_left_rooms_b",
+      "change": "wall finish corrected from floor wood to plaster"
+    },
+    {
+      "name": "upper_left_rooms_lintel",
+      "change": "wall finish corrected from floor wood to plaster"
+    },
+    {
+      "name": "upper_right_rooms_a",
+      "change": "wall finish corrected from floor wood to plaster"
+    },
+    {
+      "name": "upper_right_rooms_b",
+      "change": "wall finish corrected from floor wood to plaster"
+    },
+    {
+      "name": "upper_right_rooms_lintel",
+      "change": "wall finish corrected from floor wood to plaster"
+    },
+    {
+      "name": "Wall_bedroom_divider_A",
+      "change": "wall finish corrected from floor wood to plaster"
+    },
+    {
+      "name": "Wall_bedroom_divider_B",
+      "change": "wall finish corrected from floor wood to plaster"
+    }
+  ],
+  "runtimeImageCorrections": [
+    "Actual cabinet/basin clearance",
+    "Upper bathroom mirror in front of tile",
+    "Even stair riser offset",
+    "Portraits clear of glass",
+    "Guest bookshelf access",
+    "CRT proportions"
+  ],
+  "removedFurnitureMeshes": [
+    "Armario alto moldura",
+    "Armario alto moldura.001",
+    "Armario alto painel",
+    "Armario alto painel.001",
+    "Armario frontal cozinha",
+    "Armario frontal cozinha.001",
+    "Armario moldura madeira",
+    "Armario moldura madeira.001",
+    "Armario moldura madeira.002",
+    "Armario painel rebaixado",
+    "Armario painel rebaixado.001",
+    "Armario painel rebaixado.002",
+    "Armario pega",
+    "Armario pega.001",
+    "Banheiro_cortina",
+    "Banheiro_varao",
+    "CRT indicador",
+    "CRT tela bege",
+    "Coifa caixa",
+    "Coifa filtro",
+    "Corrimao_carvalho",
+    "Cozinha_bancada",
+    "Cozinha_faixa_azulejos",
+    "Cozinha_rejunte",
+    "Detalhes_cozinha_00",
+    "Detalhes_cozinha_01",
+    "Detalhes_cozinha_02",
+    "Detalhes_cozinha_04",
+    "Detalhes_cozinha_05",
+    "Detalhes_cozinha_06",
+    "Fixture_Bed_Blanket",
+    "Fixture_Bed_BlanketStripe",
+    "Fixture_Bed_Duvet",
+    "Fixture_Bed_DuvetFold",
+    "Fixture_Bed_Frame",
+    "Fixture_Bed_Headboard",
+    "Fixture_Bed_HeadboardPanel",
+    "Fixture_Bed_Leg_LB",
+    "Fixture_Bed_Leg_LF",
+    "Fixture_Bed_Leg_RB",
+    "Fixture_Bed_Leg_RF",
+    "Fixture_Bed_Mattress",
+    "Fixture_Bed_Pillow_1",
+    "Fixture_Bed_Pillow_2",
+    "Fixture_Dresser_Body",
+    "Fixture_Dresser_Drawer_1",
+    "Fixture_Dresser_Drawer_2",
+    "Fixture_Dresser_Drawer_3",
+    "Fixture_Dresser_Knob_1_0",
+    "Fixture_Dresser_Knob_1_1",
+    "Fixture_Dresser_Knob_2_0",
+    "Fixture_Dresser_Knob_2_1",
+    "Fixture_Dresser_Knob_3_0",
+    "Fixture_Dresser_Knob_3_1",
+    "Fixture_Dresser_Leg-1-1",
+    "Fixture_Dresser_Leg-11",
+    "Fixture_Dresser_Leg1-1",
+    "Fixture_Dresser_Leg11",
+    "Fixture_Dresser_Mirror",
+    "Fixture_Dresser_MirrorFrame",
+    "Fixture_Dresser_MirrorPost_-1",
+    "Fixture_Dresser_MirrorPost_1",
+    "Fixture_Dresser_Top",
+    "Jantar_arranjo_folha",
+    "Jantar_arranjo_folha.001",
+    "Jantar_arranjo_folha.002",
+    "Jantar_arranjo_folha.003",
+    "Jantar_arranjo_folha.004",
+    "Jantar_arranjo_folha.005",
+    "Jantar_arranjo_folha.006",
+    "Jantar_arranjo_vaso",
+    "Luminaria_banheiro",
+    "Luminaria_corredor",
+    "Luminaria_hall",
+    "Luminaria_jantar",
+    "Manta dobrada casal",
+    "Manta xadrez ajustada à cama",
+    "Mural de cortiça",
+    "Plafon jantar aro",
+    "Plafon jantar vidro",
+    "Puxador armário",
+    "Puxador armário.001",
+    "Puxador gaveta",
+    "Puxador gaveta.001",
+    "Puxador gaveta.002",
+    "Vaso bancada cozinha_folha",
+    "Vaso bancada cozinha_folha.001",
+    "Vaso bancada cozinha_folha.002",
+    "Vaso bancada cozinha_folha.003",
+    "Vaso bancada cozinha_folha.004",
+    "Vaso bancada cozinha_folha.005",
+    "Vaso bancada cozinha_folha.006",
+    "Vaso bancada cozinha_vaso",
+    "Vaso banheiro_folha",
+    "Vaso banheiro_folha.001",
+    "Vaso banheiro_folha.002",
+    "Vaso banheiro_folha.003",
+    "Vaso banheiro_folha.004",
+    "Vaso banheiro_folha.005",
+    "Vaso banheiro_folha.006",
+    "Vaso banheiro_vaso",
+    "armchair_red.001",
+    "bath_mirror",
+    "bath_tub",
+    "bed_single_oak.001",
+    "bookcase_tall.002",
+    "bookcase_tall.003",
+    "can_soup",
+    "cereal_corn",
+    "chair_ladder_pine.001",
+    "chair_ladder_pine.002",
+    "chair_ladder_pine.003",
+    "chair_ladder_pine.004",
+    "coffee_table_oak.001",
+    "computer_monitor",
+    "computer_screen",
+    "five_photos_image_0",
+    "five_photos_image_1",
+    "five_photos_image_2",
+    "five_photos_image_3",
+    "five_photos_image_4",
+    "furn_bath_sink_0",
+    "furn_bath_sink_1",
+    "furn_cozinha_balcao_auxiliar",
+    "furn_cozinha_balcao_auxiliar.001",
+    "furn_cozinha_balcao_tampo",
+    "furn_cozinha_balcao_tampo.001",
+    "furn_dining_chair_0_reused",
+    "furn_dining_chair_1_reused",
+    "furn_dining_chair_2_reused",
+    "furn_dining_chair_3_reused",
+    "furn_dining_table_0",
+    "furn_fridge_PSX_fridge_white",
+    "furn_fridge_PSX_fridge_white_door",
+    "furn_garagem_estante",
+    "furn_kitchen_cabinet_0_0",
+    "furn_kitchen_cabinet_0_1",
+    "furn_kitchen_cabinet_1_0",
+    "furn_kitchen_cabinet_1_1",
+    "furn_kitchen_cabinet_2_0",
+    "furn_kitchen_cabinet_2_1",
+    "furn_lavabo_pia",
+    "furn_player_desk_0",
+    "furn_sala_rack",
+    "furn_sala_rack_friso",
+    "furn_sala_rack_friso.001",
+    "furn_sala_rack_porta",
+    "furn_sala_rack_porta.001",
+    "furn_sala_rack_puxador",
+    "furn_sala_rack_puxador.001",
+    "furn_sala_rack_tampo",
+    "furn_sala_tv_tv",
+    "furn_sala_tv_tv_knob",
+    "furn_sink_PSX_sink_unit_white",
+    "furn_sink_PSX_sink_unit_white_door",
+    "furn_stove_PSX_stove_white",
+    "furn_stove_PSX_stove_white_door",
+    "furn_utility_bookcase_reused",
+    "furn_wall_cabinet_0_0",
+    "furn_wall_cabinet_0_1",
+    "furn_wall_cabinet_1_0",
+    "furn_wall_cabinet_1_1",
+    "kettle_stove",
+    "kettle_stove_lid",
+    "mug",
+    "mug.002",
+    "nightstand_oak.001",
+    "nightstand_oak.002",
+    "nightstand_oak_drawer.001",
+    "nightstand_oak_drawer.002",
+    "plate",
+    "plate.001",
+    "seren5_bottle",
+    "seren5_cap",
+    "sink_unit_white",
+    "sink_unit_white_door",
+    "sofa_red.001",
+    "table_lamp_jar",
+    "table_lamp_jar.001",
+    "wall_cabinet_white",
+    "wall_cabinet_white_door",
+    "Ímã geladeira",
+    "Ímã geladeira.001"
+  ],
+  "newObjectsBeforeBatching": 1462,
+  "roomMaterialBatches": 134,
+  "meshObjects": 577,
+  "vertices": 178360,
+  "triangles": 189528,
+  "additionalColliders": [
+    {
+      "name": "Hosts_right_nightstand",
+      "min": [
+        55.341,
+        3.86,
+        39.998
+      ],
+      "max": [
+        55.739,
+        4.986,
+        40.502
+      ]
+    },
+    {
+      "name": "Guest_bed",
+      "min": [
+        48.95,
+        3.84,
+        31.86
+      ],
+      "max": [
+        51.055,
+        5.05,
+        32.94
+      ]
+    },
+    {
+      "name": "Guest_writing_table",
+      "min": [
+        51.8,
+        3.84,
+        34.36
+      ],
+      "max": [
+        52.6,
+        4.592,
+        35.0
+      ]
+    },
+    {
+      "name": "dining_hutch",
+      "min": [
+        50.96,
+        0.41,
+        31.27
+      ],
+      "max": [
+        52.14,
+        1.28,
+        31.6
+      ]
+    },
+    {
+      "name": "service_powder_toilet",
+      "min": [
+        56.019,
+        0.39,
+        42.05
+      ],
+      "max": [
+        56.541,
+        1.26,
+        42.95
+      ]
+    },
+    {
+      "name": "service_washer_front",
+      "min": [
+        54.02,
+        0.39,
+        42.1
+      ],
+      "max": [
+        54.68,
+        1.49,
+        42.83
+      ]
+    },
+    {
+      "name": "service_dryer_front",
+      "min": [
+        54.86,
+        0.39,
+        42.1
+      ],
+      "max": [
+        55.52,
+        1.38,
+        42.83
+      ]
+    },
+    {
+      "name": "Guest_bookcase",
+      "min": [
+        51.587253,
+        3.84,
+        31.3525
+      ],
+      "max": [
+        52.292753,
+        5.3955,
+        31.62025
+      ]
+    },
+    {
+      "name": "Laundry_hamper",
+      "min": [
+        53.14,
+        0.39,
+        41.4
+      ],
+      "max": [
+        53.64,
+        1.0,
+        41.9
+      ]
+    }
+  ],
+  "knownLimits": [
+    "Existing isolated interior / exterior floorplan mismatch preserved; entrance still uses original short fade.",
+    "Existing static garage has no internal doorway; no invented access or external architecture change."
+  ]
+}

@@ -3,28 +3,27 @@ import type { AssetContainer } from '@babylonjs/core/assetContainer';
 import type { AbstractMesh } from '@babylonjs/core/Meshes/abstractMesh';
 import type { Material } from '@babylonjs/core/Materials/material';
 import type { Light } from '@babylonjs/core/Lights/light';
-import { PointLight } from '@babylonjs/core/Lights/pointLight';
-import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight';
 import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder';
 import { TransformNode } from '@babylonjs/core/Meshes/transformNode';
 import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial';
 import { LoadAssetContainerAsync } from '@babylonjs/core/Loading/sceneLoader';
 import { Color3, Color4 } from '@babylonjs/core/Maths/math.color';
-import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import { ImageProcessingConfiguration } from '@babylonjs/core/Materials/imageProcessingConfiguration';
 import '@babylonjs/loaders/glTF';
+import { createHostHouseLighting, type HostHouseLightMode } from './hostHouseLighting';
+import { createHostHouseMirrors } from './hostHouseMirrors';
 import type { InteractionTarget } from '../game/types';
 import { hhPoint, HOST_HOUSE_SOURCE, HOST_HOUSE_ORIGIN_X, HOST_HOUSE_NODE_ADJUSTMENTS,
   HOST_HOUSE_EXIT, HOST_HOUSE_EXIT_SIZE } from '../game/hostHouseLayout';
 
-/** The supplied furnished house is streamed on demand. The original texture,
- * topology and metre scale remain intact; only the blocking wardrobe moves. */
+/** The renovated furnished house is streamed on demand. Native architecture,
+ * metre scale and navigation remain intact; furniture and finishes are refined. */
 export function buildHostHouse(scene: Scene) {
   const root = new TransformNode('Daniel e Helen · interior fornecido', scene); root.setEnabled(false);
   const modelRoot = new TransformNode('Daniel e Helen · origem do GLB', scene);
   modelRoot.parent = root; modelRoot.position.x = HOST_HOUSE_ORIGIN_X;
   const meshes: AbstractMesh[] = [], importedMeshes: AbstractMesh[] = [], portalMeshes: AbstractMesh[] = [];
-  const foreignLights = new Set<Light>(), hiddenForeign: AbstractMesh[] = [];
+  const hiddenForeign: AbstractMesh[] = [];
   const embeddedLights: Light[] = [];
   const approvedAdjustments: { name: string; sourceZDelta: number }[] = [];
   let container: AssetContainer | null = null, loading: Promise<void> | null = null;
@@ -40,43 +39,16 @@ export function buildHostHouse(scene: Scene) {
   const exitMeshes: AbstractMesh[] = [exit];
   const targets: InteractionTarget[] = [{ id: 'host-house-exit', meshes: exitMeshes,
     label: () => 'Sair para Westbridge', execute: () => undefined }];
-  const ambient = new HemisphericLight('Daniel e Helen · claridade interna', new Vector3(0, 1, 0), scene);
-  ambient.intensity = .62; ambient.diffuse.set(.96, .94, .88); ambient.groundColor.set(.33, .31, .28);
-  ambient.setEnabled(false);
+  let lighting: ReturnType<typeof createHostHouseLighting> | null = null;
+  let lightingMode: HostHouseLightMode = 'day';
+  let mirrors: ReturnType<typeof createHostHouseMirrors> | null = null;
   let saved: { fogMode: number; fogColor: Color3; fogStart: number; fogEnd: number; fogDensity: number;
     clearColor: Color4; exposure: number; contrast: number; toneMappingEnabled: boolean; toneMappingType: number;
     camera: typeof scene.activeCamera; maxZ: number } | null = null;
 
-  function bindLights() {
-    const own = new Set<Light>([ambient, ...embeddedLights]);
-    for (const light of scene.lights) if (!own.has(light)) {
-      foreignLights.add(light);
-      light.excludedMeshes = light.excludedMeshes.filter(mesh => !meshes.includes(mesh));
-      light.excludedMeshes.push(...meshes);
-    }
-    ambient.includedOnlyMeshes = [...meshes];
-    for (const light of embeddedLights) light.includedOnlyMeshes = [];
-    const dayLights = embeddedLights.filter(light => /^(Day_|Always_)/.test(light.name));
-    for (const light of dayLights) {
-      if (light.parent) light.parent.computeWorldMatrix(true);
-      if (light instanceof PointLight) light.computeTransformedInformation();
-    }
-    for (const mesh of meshes) {
-      mesh.computeWorldMatrix(true);
-      const center = mesh.getBoundingInfo().boundingBox.centerWorld;
-      const closest = [...dayLights].sort((a, b) => {
-        const ap = a instanceof PointLight ? a.getAbsolutePosition() : Vector3.Zero();
-        const bp = b instanceof PointLight ? b.getAbsolutePosition() : Vector3.Zero();
-        return Vector3.DistanceSquared(center, ap) - Vector3.DistanceSquared(center, bp);
-      }).slice(0, 3);
-      for (const light of closest) light.includedOnlyMeshes.push(mesh);
-    }
-    ambient.setEnabled(active);
-    for (const light of embeddedLights) light.setEnabled(active && /^(Day_|Always_)/.test(light.name));
-  }
   function makePortalBacking(asset: AssetContainer) {
-    const wood = asset.materials.find(material => material.name === 'WoodDark') ?? asset.materials.find(material => /WoodDark/.test(material.name));
-    const metal = asset.materials.find(material => material.name === 'Metal');
+    const wood = asset.materials.find(material => material.name === 'HH_wood_dark') ?? asset.materials.find(material => /WoodDark/.test(material.name));
+    const metal = asset.materials.find(material => material.name === 'HH_metal' || material.name === 'Metal');
     if (!wood || !metal) throw Error('Os materiais nativos da porta da casa não foram localizados.');
     function part(name: string, size: [number, number, number], x: number, y: number, z: number, material: Material) {
       const mesh = MeshBuilder.CreateBox(name, { width: size[0], height: size[1], depth: size[2] }, scene);
@@ -106,13 +78,13 @@ export function buildHostHouse(scene: Scene) {
       active = true; root.setEnabled(true);
       // WindowView contains the supplied street geometry but no sky dome.
       // Match Westbridge's afternoon background through the native windows.
-      scene.fogMode = 0; scene.clearColor = new Color4(.69, .70, .65, 1);
-      p.exposure = 1.02; p.contrast = 1.02; p.toneMappingEnabled = true;
+      scene.fogMode = 0; scene.clearColor = lightingMode === 'day' ? new Color4(.69, .70, .65, 1) : new Color4(.055, .075, .12, 1);
+      p.exposure = lightingMode === 'day' ? 1.02 : 1.08; p.contrast = 1.02; p.toneMappingEnabled = true;
       p.toneMappingType = ImageProcessingConfiguration.TONEMAPPING_ACES;
       if (scene.activeCamera) scene.activeCamera.maxZ = 180;
-      bindLights();
+      lighting?.setActive(true); mirrors?.setActive(true);
     } else {
-      active = false; root.setEnabled(false); ambient.setEnabled(false);
+      active = false; root.setEnabled(false); lighting?.setActive(false); mirrors?.setActive(false);
       for (const light of embeddedLights) light.setEnabled(false);
       if (saved) {
         scene.fogMode = saved.fogMode; scene.fogColor = saved.fogColor; scene.fogStart = saved.fogStart;
@@ -153,19 +125,29 @@ export function buildHostHouse(scene: Scene) {
       for (const material of asset.materials) if ('maxSimultaneousLights' in material) material.maxSimultaneousLights = 4;
       for (const clip of asset.animationGroups) clip.stop(true);
       for (const light of asset.lights) { light.setEnabled(false); embeddedLights.push(light); }
-      makePortalBacking(asset); bindLights(); loaded = true;
+      makePortalBacking(asset); lighting = createHostHouseLighting(scene, { meshes, embeddedLights });
+      lighting.setMode(lightingMode); lighting.setActive(active);
+      mirrors = createHostHouseMirrors(scene, { meshes }); mirrors.setActive(active); loaded = true;
     }).catch(reason => { error = String(reason?.message ?? reason); throw Error('Não foi possível carregar a casa de Daniel e Helen: ' + error); });
     return loading;
   }
   return {
     root, meshes, targets, ensureReady, setActive,
+    setLightingMode(mode: HostHouseLightMode) {
+      lightingMode = mode; lighting?.setMode(mode);
+      if (active) {
+        scene.clearColor = mode === 'day' ? new Color4(.69, .70, .65, 1) : new Color4(.055, .075, .12, 1);
+        scene.imageProcessingConfiguration.exposure = mode === 'day' ? 1.02 : 1.08;
+      }
+    },
     get diagnostics() { return { active, loaded, ready: loaded && !error, loading: !!loading && !loaded, error,
       source: HOST_HOUSE_SOURCE, origin: { x: HOST_HOUSE_ORIGIN_X, y: 0, z: 0 },
-      sourceAssetUnmodified: true, sourceGeometryPreserved: true, sourceNodeTransformsPreserved: false,
-      approvedAdjustments, sourceMaterialsPreserved: true, sourceUVsPreserved: true,
+      sourceAssetUnmodified: false, sourceGeometryPreserved: false, nativeArchitecturePreserved: true, sourceNodeTransformsPreserved: false,
+      approvedAdjustments, sourceMaterialsPreserved: false, sourceUVsPreserved: false, renovation: true,
       meshes: importedMeshes.length, portalMeshes: portalMeshes.length, materials: container?.materials.length ?? 0,
       textures: container?.textures.length ?? 0, allTexturesReady: container?.textures.every(texture => texture.isReady()) ?? false,
-      lights: embeddedLights.length + 1, embeddedLights: embeddedLights.length,
+      lights: embeddedLights.length + (lighting?.diagnostics.addedLights ?? 0), embeddedLights: embeddedLights.length,
+      lighting: lighting?.diagnostics ?? null, mirrors: mirrors?.diagnostics ?? null,
       activeEmbeddedLights: embeddedLights.filter(light => light.isEnabled()).map(light => light.name),
       animationGroups: container?.animationGroups.length ?? 0,
       runningAnimations: container?.animationGroups.filter(clip => clip.isPlaying).length ?? 0,
@@ -176,8 +158,7 @@ export function buildHostHouse(scene: Scene) {
     }; },
     dispose() {
       if (disposed) return; setActive(false); disposed = true;
-      for (const light of foreignLights) light.excludedMeshes = light.excludedMeshes.filter(mesh => !meshes.includes(mesh));
-      container?.dispose(); ambient.dispose(); proxyMaterial.dispose(); root.dispose(false, false);
+      mirrors?.dispose(); lighting?.dispose(); container?.dispose(); proxyMaterial.dispose(); root.dispose(false, false);
     },
   };
 }
