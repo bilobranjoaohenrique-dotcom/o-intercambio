@@ -305,14 +305,16 @@ try {
   await lookAt(page,wbPoint(20.0565,3.5,-15));await take(page,'westbridge-house-night');
   performanceSample=await stationaryPerformance(page);
   for(const point of WB_WALK_ROUTE.slice(1))await move(page,point);
-  await aimInteraction(page,'wb-house-door',WB_HOST_DOOR);await page.keyboard.press('KeyE');
+  await aimInteraction(page,'wb-house-door',WB_HOST_DOOR);const beforeHouseDoor=await snapshot(page);await page.keyboard.press('KeyE');
   await page.waitForFunction(()=>window.__INTERCAMBIO__.phase==='playing'&&
     window.__INTERCAMBIO__.chapterStage==='host-house'&&window.__INTERCAMBIO__.hostHouse.ready&&
     window.__INTERCAMBIO__.hostHouse.allTexturesReady,null,{timeout:180000});
   final=await snapshot(page);assert.equal(final.chapterMission,'host-house-explore');parentsRemainInBrazil(final);
-  assert.equal(final.hostHouse.active,true);assert.equal(final.hostHouse.location,'inside');
-  assert.equal(final.hostHouse.source,'/models/daniel_helen_house.glb');
-  assert.equal(final.hostHouse.foreignMeshesVisible,0,'the supplied interior hides the other sets locally');
+  assert.equal(final.hostHouse.active,true);assert.equal(final.hostHouse.location,'outside');
+  assert.equal(final.hostHouse.doorOpen,true);
+  assert.ok(distance(final.position,beforeHouseDoor.position)<.03,'opening the original door retains the actual porch position');
+  assert.equal(final.hostHouse.source,'/models/daniel_helen_house_a01.glb');
+  assert.equal(final.hostHouse.foreignMeshesVisible,0,'the fitted house permits its own neighbourhood but hides earlier sets');
   await pause(page);await page.locator('#restart').click();await waitPhase(page,'opening');await waitFrames(page,3);
   restart=await snapshot(page);assert.equal(restart.chapterStage,'home');assert.equal(restart.westbridge.scenery.active,false);
   assert.equal(restart.hostHouse.active,false);

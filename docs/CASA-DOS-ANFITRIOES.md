@@ -1,5 +1,7 @@
 # Interior da casa de Daniel e Helen
 
+Registro da integração anterior (commit `126fa55`). A versão atual utiliza a [planta A01 encaixada na fachada](CASA-DOS-ANFITRIOES-A01.md).
+
 O arquivo fornecido `Daniel_Helen.glb` está integrado pela porta da casa azul de Westbridge. E permite entrar, explorar os dois andares e voltar ao bairro pela porta interna. A entrada não encerra mais o capítulo; o objetivo funcional passa a ser explorar a casa, sem acrescentar falas ou acontecimentos.
 
 ## Modelo e ligação com o bairro

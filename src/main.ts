@@ -23,7 +23,7 @@ import { canBoardAtAirport, farewellGesture, AIRPORT_FAREWELL_DURATION } from '.
 import { createPlaneSequence } from './game/planeSequence';
 import { PLANE_LOOK_LIMITS } from './game/planeLayout';
 import { createWestbridgeDrive } from './game/westbridgeDrive';
-import { WB_WALK_SPAWN, WB_HOST_APPROACH } from './game/westbridgeLayout';
+import { WB_WALK_SPAWN, WB_HOST_DOOR } from './game/westbridgeLayout';
 import { HOST_HOUSE_SPAWN, HOST_HOUSE_YAW } from './game/hostHouseLayout';
 import type { Settings } from './game/types';
 import { buildChapterWorld } from './scene/chapterWorld';
@@ -50,7 +50,7 @@ const chapter = createChapterProgress();
 const dialogue = createDialogue();
 let selectedChoice: StoryChoice | null = null;
 let chapterStage: 'home'|'airport'|'plane'|'town'|'westbridge'|'host-house'='home';
-let transitionKind: 'arrival'|'garage-airport'|'airport-boarding'|'plane-exit'|'westbridge-entry'|'westbridge-exit'|'host-house-entry'|'host-house-exit'='arrival';
+let transitionKind: 'arrival'|'garage-airport'|'airport-boarding'|'plane-exit'|'westbridge-entry'|'westbridge-exit'|'host-house-entry'='arrival';
 let farewellTime=0;
 let pendingAirportDialogue=false;
 let freshStartRequested=false;
@@ -87,7 +87,7 @@ try {
   const chapterWorld = buildChapterWorld(scene);
   let westbridgeDrive:ReturnType<typeof createWestbridgeDrive>|null=null;
   let westbridgePrepared=false, westbridgeResumeWalking=false;
-  let hostHousePrepared=false,hostHouseExitPrepared=false;
+  let hostHousePrepared=false,hostHouseResumeFromSave=false;
   let characterAssetsReady = false;
   void chapterWorld.ready.then(() => { characterAssetsReady = true; }).catch(error => {
     const message = String(error?.message ?? error);recordError(message);
@@ -100,7 +100,7 @@ try {
   for (const mesh of door.target.meshes) environment.shadowGenerator.addShadowCaster(mesh);
   environment.addDoorMeshes(door.target.meshes);
   const interactions = createInteractions(scene, camera, [door.target, ...environment.targets, ...chapterWorld.targets]);
-  const player = createPlayer(canvas, camera, () => settings, () => chapterStage==='westbridge'?chapterWorld.westbridgeObstacles:chapterStage==='host-house'?[]:[door.collider()], running => {
+  const player = createPlayer(canvas, camera, () => settings, () => chapterStage==='westbridge'?chapterWorld.westbridgeObstacles:chapterStage==='host-house'?chapterWorld.hostHouseObstacles:[door.collider()], running => {
     if(chapterStage==='westbridge')audio.playSurfaceFootstep(chapterWorld.westbridgeNavigation.surfaceAt(player.position),running);
     else if(chapterStage==='host-house')audio.playSurfaceFootstep(chapterWorld.hostHouseNavigation.surfaceAt(player.position),running);
     else audio.play('foot');
@@ -206,7 +206,7 @@ try {
       }
       if(chapter.mission==='host-house-explore'){
         el('sceneFade').style.opacity='1';
-        if(chapter.hostHouseLocation==='outside')beginWestbridge(true,true);else beginHostHouse();
+        if(chapter.hostHouseLocation==='outside')beginWestbridge(true,true);else beginHostHouse(true);
       }
     }
     canvas.focus({ preventScroll: true }); player.requestPointerLock();
@@ -337,48 +337,45 @@ try {
     el('interaction').hidden=true;el('reticle').hidden=true;
     audio.play('carDoor');
   }
-  function beginHostHouse(){
+  function beginHostHouse(resuming=false){
+    hostHouseResumeFromSave=resuming;
+    chapter.advance('host-house-explore');
+    chapter.setHostHouseLocation(resuming?'inside':'outside');
+    el('objectiveText').textContent=chapter.label;el('objectiveState').textContent='NOVA MISSÃO';
+    if(!resuming&&chapterWorld.hostHouseDiagnostics.ready){enterHostHouse();return;}
     hostHousePrepared=false;phase='transition';transitionKind='host-house-entry';transitionTime=0;
     player.setActive(false);player.clearInput();interactions.clear();releaseMouse();
     el('interaction').hidden=true;el('reticle').hidden=true;el('examine').hidden=true;
-    chapter.advance('host-house-explore');chapter.setHostHouseLocation('inside');
-    el('objectiveText').textContent=chapter.label;el('objectiveState').textContent='NOVA MISSÃO';
-    audio.play('door');audio.fadeAmbienceOut(.4);
     void chapterWorld.prepareHostHouse().then(()=>{hostHousePrepared=true;}).catch(reason=>{
       const message='Não foi possível carregar a casa dos anfitriões: '+String(reason?.message??reason);
       recordError(message);el('fatal').hidden=false;el('fatalMessage').textContent=message;
     });
   }
   function enterHostHouse(){
+    const arriving=phase==='transition';
     westbridgeDrive?.stop();westbridgeDrive=null;
-    chapterWorld.activate('host-house');chapterStage='host-house';document.body.dataset.chapterStage=chapterStage;
-    chapterWorld.hostHouseNavigation.reset();player.setNavigation(chapterWorld.hostHouseNavigation);
-    player.setLookLimits(null);player.teleport(HOST_HOUSE_SPAWN,HOST_HOUSE_YAW);player.setMovementEnabled(true);
-    camera.fov=1.05;audio.setAmbience('home');
-    el('controlsHint').innerHTML=normalControlsHint;el('objectiveText').textContent=chapter.label;
-    el('objective').classList.remove('compact');
-    transitionKind='arrival';transitionTime=0;el('sceneFade').style.opacity='1';
-  }
-  function leaveHostHouse(){
-    hostHouseExitPrepared=false;phase='transition';transitionKind='host-house-exit';transitionTime=0;
-    player.setActive(false);player.clearInput();interactions.clear();releaseMouse();
-    el('interaction').hidden=true;el('reticle').hidden=true;audio.play('door');audio.fadeAmbienceOut(.35);
-    void chapterWorld.prepareWestbridge().then(()=>{hostHouseExitPrepared=true;}).catch(reason=>{
-      const message='Não foi possível voltar a Westbridge: '+String(reason?.message??reason);
-      recordError(message);el('fatal').hidden=false;el('fatalMessage').textContent=message;
-    });
-  }
-  function returnToWestbridge(){
-    const vehicle=chapterWorld.westbridgeVehicle;
-    if(!vehicle)throw Error('O carro de Westbridge ainda não está pronto.');
     chapterWorld.setWestbridgeTimeOfDay(new URLSearchParams(location.search).get('westbridgeLighting')==='night'?'night':'afternoon');
-    chapterWorld.activate('westbridge');chapterStage='westbridge';document.body.dataset.chapterStage=chapterStage;
-    player.setNavigation(chapterWorld.westbridgeNavigation);
-    westbridgeDrive=createWestbridgeDrive(camera,player,vehicle);westbridgeDrive.enter(true);westbridgeDrive.exit();
-    chapterWorld.refreshWestbridgeLighting();player.setLookLimits(null);player.teleport(WB_HOST_APPROACH,0);player.setMovementEnabled(true);
-    chapter.setHostHouseLocation('outside');camera.fov=1.05;audio.setAmbience('westbridge');
+    chapterWorld.activate('host-house');chapterStage='host-house';document.body.dataset.chapterStage=chapterStage;
+    chapterWorld.hostHouseNavigation.reset('ground',hostHouseResumeFromSave?undefined:player.position);player.setNavigation(chapterWorld.hostHouseNavigation);
+    player.setLookLimits(null);
+    // Only a saved inside checkpoint adopts the hall pose. Opening the front
+    // door from Westbridge retains the actual player position and mouse look.
+    if(hostHouseResumeFromSave)player.teleport(HOST_HOUSE_SPAWN,HOST_HOUSE_YAW);
+    chapterWorld.setHostHouseDoorOpen(true);audio.play('door');
+    player.setMovementEnabled(true);camera.fov=1.05;
+    audio.setAmbience(hostHouseResumeFromSave?'home':'westbridge');
     el('controlsHint').innerHTML=normalControlsHint;el('objectiveText').textContent=chapter.label;
-    transitionKind='arrival';transitionTime=0;el('sceneFade').style.opacity='1';
+    el('objective').classList.remove('compact');interactions.clear();
+    if(arriving){transitionKind='arrival';transitionTime=0;el('sceneFade').style.opacity='1';}
+  }
+  function toggleHostHouseDoor(){
+    if(chapterWorld.hostHouseDoorOpen){
+      // Avoid closing the leaf around a player crossing its threshold.
+      if(Math.hypot(player.position.x-WB_HOST_DOOR.x,player.position.z-WB_HOST_DOOR.z)<.75){
+        el('examine').textContent='Afaste-se um pouco da porta.';examineUntil=worldTime+2;el('examine').hidden=false;return;
+      }
+    }
+    chapterWorld.setHostHouseDoorOpen(!chapterWorld.hostHouseDoorOpen);audio.play('door');interactions.clear();
   }
   function changePlaneView() {
     const changed=planeFlight.state==='window'?planeFlight.returnToSeat():planeFlight.observe();
@@ -404,9 +401,9 @@ try {
     if(breakfast.state!=='standing')return;
     const result = interactions.activate();
     if(result?.id==='wb-house-door'&&(chapter.mission==='westbridge-explore'||chapter.mission==='host-house-explore')){
-      beginHostHouse();return;
+      if(chapterStage==='host-house')toggleHostHouseDoor();else beginHostHouse();return;
     }
-    if(result?.id==='host-house-exit'&&chapterStage==='host-house'){leaveHostHouse();return;}
+    if(result?.id==='host-house-exit'&&chapterStage==='host-house'){toggleHostHouseDoor();return;}
     if(result?.id==='breakfast-chair'&&chapter.mission==='talk-parents'){
       const distance=Math.hypot(player.position.x-BREAKFAST_SEAT.approach.x,player.position.z-BREAKFAST_SEAT.approach.z);
       if(distance<=1.1){selectedChoice=null;breakfast.sit();interactions.clear();}
@@ -476,7 +473,7 @@ try {
   });
 
   Object.defineProperty(window, '__INTERCAMBIO__', { configurable: true, get: () => ({
-    build:'chapter1-host-house-interior-1',phase, introTime, duration: OPENING_DURATION, mission: objective.state, chapterMission: chapter.mission, chapterStage, dialogue: dialogue.active,
+    build:'chapter1-host-house-a01-2',phase, introTime, duration: OPENING_DURATION, mission: objective.state, chapterMission: chapter.mission, chapterStage, dialogue: dialogue.active,
     position: { x: camera.position.x, y: camera.position.y, z: camera.position.z },
     rotation: { yaw: camera.rotation.y, pitch: camera.rotation.x, roll: camera.rotation.z },
     horizonTilt: camera.getDirection(Vector3.Right()).y,
@@ -497,7 +494,7 @@ try {
     arrival: { scenery: chapterWorld.arrivalDiagnostics },
     plane: { scenery: chapterWorld.planeDiagnostics, flight:{...planeFlight.diagnostics,subtitle:planeFlight.subtitle} },
     westbridge:{...chapterWorld.westbridgeDiagnostics,drive:westbridgeDrive?.diagnostics??null,navigation:{enabled:chapterStage==='westbridge'&&!isInsideWestbridgeCar()}},
-    hostHouse:{...chapterWorld.hostHouseDiagnostics,location:chapter.hostHouseLocation,navigation:{enabled:chapterStage==='host-house',...chapterWorld.hostHouseNavigation.diagnostics}},
+    hostHouse:{...chapterWorld.hostHouseDiagnostics,doorOpen:chapterWorld.hostHouseDoorOpen,location:chapter.hostHouseLocation,navigation:{enabled:chapterStage==='host-house',...chapterWorld.hostHouseNavigation.diagnostics}},
   }) });
 
   engine.runRenderLoop(() => {
@@ -526,6 +523,10 @@ try {
       door.update(dt, player.position);
       if (Math.abs(door.angle - previousDoorAngle) > 1e-7) environment.refreshShadows();
       player.update(dt);
+      if(chapterStage==='host-house'){
+        const location=chapterWorld.hostHouseNavigation.containsInterior(player.position)?'inside':'outside';
+        if(location!==chapter.hostHouseLocation){chapter.setHostHouseLocation(location);audio.setAmbience(location==='inside'?'home':'westbridge');}
+      }
       if(isInsideWestbridgeCar())westbridgeDrive?.update(dt);
       if(chapterStage==='westbridge'&&westbridgeDrive){
         const drive=westbridgeDrive.diagnostics;
@@ -572,9 +573,6 @@ try {
       } else if(transitionKind==='host-house-entry'){
         el('sceneFade').style.opacity=String(Math.min(1,transitionTime/.4));
         if(transitionTime>=.4&&hostHousePrepared)enterHostHouse();
-      } else if(transitionKind==='host-house-exit'){
-        el('sceneFade').style.opacity=String(Math.min(1,transitionTime/.35));
-        if(transitionTime>=.35&&hostHouseExitPrepared)returnToWestbridge();
       } else if(transitionKind==='westbridge-exit'){
         el('sceneFade').style.opacity=String(Math.min(1,transitionTime/.3));
         if(transitionTime>=.3){

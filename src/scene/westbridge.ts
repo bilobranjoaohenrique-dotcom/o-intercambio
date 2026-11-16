@@ -14,6 +14,7 @@ import type { InteractionTarget, Settings } from '../game/types';
 import { createWestbridgeLighting, type WestbridgeTime } from './westbridgeLighting';
 import { buildWestbridgeProps } from './westbridgeProps';
 import { applyWestbridgeHouseScale } from './westbridgeHouseScale';
+import { applyWestbridgeHostOpenings } from './westbridgeHostOpenings';
 import { WB_HOST_DOOR } from '../game/westbridgeLayout';
 import { WB_HOUSE_DOOR_HEIGHT } from '../game/westbridgeHouseScale';
 
@@ -33,6 +34,7 @@ export function buildWestbridge(scene:Scene,options:{quality?:Settings['quality'
   let quality:Settings['quality']=options.quality??'balanced',timeOfDay:WestbridgeTime='afternoon';
   let container:AssetContainer|null=null,lighting:ReturnType<typeof createWestbridgeLighting>|null=null,props:ReturnType<typeof buildWestbridgeProps>|null=null;
   let houseScale:ReturnType<typeof applyWestbridgeHouseScale>|null=null;
+  let hostOpenings:ReturnType<typeof applyWestbridgeHostOpenings>|null=null,frontDoorRequested=false;
   const hiddenForeign:AbstractMesh[]=[];
   const proxyMaterial=new StandardMaterial('Westbridge · referências invisíveis de interação',scene);proxyMaterial.disableLighting=true;
   function proxy(name:string,position:Vector3,size:[number,number,number]){
@@ -44,7 +46,7 @@ export function buildWestbridge(scene:Scene,options:{quality?:Settings['quality'
   const door=proxy('Westbridge · entrada de Daniel e Helen',new Vector3(WB_HOST_DOOR.x,WB_HOST_DOOR.y,-12.60),[.93,WB_HOUSE_DOOR_HEIGHT,.055]);
   const mailbox=proxy('Westbridge · caixa de correio dos anfitriões',wp(27.2,1.12,-5.48),[.35,.36,.53]);
   const targets:InteractionTarget[]=[
-    {id:'wb-house-door',meshes:[door],label:()=> 'Entrar na casa dos anfitriões',execute:()=>undefined},
+    {id:'wb-house-door',meshes:[door],label:()=> frontDoorRequested?'Fechar porta':'Entrar na casa dos anfitriões',execute:()=>undefined},
     {id:'wb-mailbox',meshes:[mailbox],label:()=> 'Examinar caixa de correio',execute:()=> 'A caixa de correio fica junto à entrada da garagem.'},
   ];
   function allMeshes(){return [...meshes,...extras];}
@@ -79,10 +81,13 @@ export function buildWestbridge(scene:Scene,options:{quality?:Settings['quality'
       for(const node of nodes)if(node.name.includes('HOST_FAMILY_HOUSE_DANIEL_HELEN'))node.metadata={...node.metadata,hostFamilyHouse:true,landmark:'HOST_FAMILY_HOUSE_DANIEL_HELEN'};
       for(const mesh of asset.meshes)mesh.computeWorldMatrix(true);
       houseScale=applyWestbridgeHouseScale(asset.meshes,ORIGIN_X);
-      for(const mesh of asset.meshes){
+      hostOpenings=applyWestbridgeHostOpenings(asset.meshes,ORIGIN_X);
+      hostOpenings.setFrontDoorOpen(frontDoorRequested);ownMaterials.push(...hostOpenings.ownMaterials);
+      targets[0].meshes.push(...hostOpenings.frontDoorMeshes);
+      for(const mesh of [...asset.meshes,...hostOpenings.frontDoorMeshes]){
         if(!mesh.getTotalVertices())continue;
         mesh.isPickable=true;mesh.receiveShadows=true;
-        mesh.metadata={...mesh.metadata,importedWestbridge:true,source:SOURCE,castShadow:!/Aggregate asphalt|concrete|lawn|road paint|Soil|Mulch|Water/i.test(mesh.name)};
+        mesh.metadata={...mesh.metadata,importedWestbridge:true,source:SOURCE,castShadow:mesh.metadata?.hostHouseGlass!==true&&!/Aggregate asphalt|concrete|lawn|road paint|Soil|Mulch|Water/i.test(mesh.name)};
         importedMeshes.push(mesh);mesh.computeWorldMatrix(true);
         if(/WindowGlow/.test(mesh.name)&&mesh.material instanceof PBRMaterial){
           const clone=mesh.material.clone(mesh.name+' · iluminação residencial local');
@@ -108,12 +113,16 @@ export function buildWestbridge(scene:Scene,options:{quality?:Settings['quality'
     },
     setQuality(value:Settings['quality']){quality=value;lighting?.setQuality(value);},
     setTimeOfDay(value:WestbridgeTime){timeOfDay=value;lighting?.setTimeOfDay(value);applyWindows();},
+    setFrontDoorOpen(value:boolean){frontDoorRequested=value;hostOpenings?.setFrontDoorOpen(value);lighting?.refreshShadows();},
+    get frontDoorOpen(){return hostOpenings?.frontDoorOpen??frontDoorRequested;},
+    get frontDoorCollider(){return hostOpenings?.frontDoorCollider??null;},
     refreshShadows(){lighting?.refreshShadows();},
     animate(_time:number){/* Static sky, windows and shadow map need no per-frame rebuild. */},
     get obstacles(){return props?.obstacles??[];},
     get diagnostics(){return{active,loaded,ready:loaded&&!error,loading:!!loading&&!loaded,error,source:SOURCE,
       origin:{x:ORIGIN_X,y:0,z:0},sourceNodeTransformsPreserved:true,sourceGeometryPreserved:false,
-      sourceAssetUnmodified:true,sourceTopologyPreserved:true,houseScale,
+      sourceAssetUnmodified:true,sourceTopologyPreserved:false,topologyPreservedExceptHostOpenings:true,houseScale,
+      hostOpenings:hostOpenings?{...hostOpenings.diagnostics,frontDoorOpen:hostOpenings.frontDoorOpen,frontDoorCollider:hostOpenings.frontDoorCollider}:null,
       importedMeshes:importedMeshes.length,vertices:importedMeshes.reduce((sum,mesh)=>sum+mesh.getTotalVertices(),0),
       triangles:importedMeshes.reduce((sum,mesh)=>sum+mesh.getTotalIndices()/3,0),
       materials:container?.materials.length??0,textures:container?.textures.length??0,
