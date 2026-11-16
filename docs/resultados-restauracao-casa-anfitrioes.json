@@ -1,0 +1,291 @@
+{
+  "status": "passed",
+  "restoredFrom": "126fa553616a356f1ff0bc017734af680b691fbf",
+  "reverted": "df48549f0f3e900ce5262d315fe140f531694af0",
+  "source": {
+    "path": "public/models/daniel_helen_house.glb",
+    "bytes": 6225960,
+    "sha256": "cc90714d6ef97962ba4d0c3808323af01fa6a0a91fb6e045ea16d4d71b52d462"
+  },
+  "method": "Legal checkpoint seeds old interior; real mouse/W/E movement and transitions. 960x540 low controls; 1280x720 images. Chromium Linux SwiftShader; functional visual QA only.",
+  "checks": [
+    "old house source ready and all textures ready at legal inside checkpoint",
+    "real walking from hall through doorway to restored living room",
+    "sofa blocks continued real W",
+    "real E exit returns to Westbridge with parked car and active exploration mission",
+    "short real outside walk and real E door reenter old house preserving choice and mission"
+  ],
+  "movement": [
+    {
+      "type": "real W",
+      "target": {
+        "x": 749.3,
+        "y": 2.04,
+        "z": 37
+      },
+      "position": {
+        "x": 749.4299999999998,
+        "y": 2.04,
+        "z": 37
+      }
+    },
+    {
+      "type": "real W",
+      "target": {
+        "x": 749.3,
+        "y": 2.04,
+        "z": 38.5
+      },
+      "position": {
+        "x": 749.3132083968054,
+        "y": 2.04,
+        "z": 38.32988146893738
+      }
+    },
+    {
+      "type": "real W",
+      "target": {
+        "x": 749.28,
+        "y": 2.04,
+        "z": 39
+      },
+      "position": {
+        "x": 749.282663435818,
+        "y": 2.04,
+        "z": 38.92135479014135
+      }
+    },
+    {
+      "type": "real W",
+      "target": {
+        "x": 750.6,
+        "y": 2.04,
+        "z": 39
+      },
+      "position": {
+        "x": 750.462754283105,
+        "y": 2.04,
+        "z": 38.99223662933727
+      }
+    },
+    {
+      "type": "sofa collider",
+      "blocked": {
+        "x": 750.6174579325193,
+        "y": 2.04,
+        "z": 39.51160824440576
+      },
+      "stopped": {
+        "x": 750.6552712502406,
+        "y": 2.04,
+        "z": 39.51160824440576
+      }
+    },
+    {
+      "type": "real W",
+      "target": {
+        "x": 750.6,
+        "y": 2.04,
+        "z": 39
+      },
+      "position": {
+        "x": 750.6127692649015,
+        "y": 2.04,
+        "z": 39.12393108330104
+      }
+    },
+    {
+      "type": "real W",
+      "target": {
+        "x": 749.28,
+        "y": 2.04,
+        "z": 39
+      },
+      "position": {
+        "x": 749.3881533227868,
+        "y": 2.04,
+        "z": 39.008971114978614
+      }
+    },
+    {
+      "type": "real W",
+      "target": {
+        "x": 749.3,
+        "y": 2.04,
+        "z": 38.5
+      },
+      "position": {
+        "x": 749.3164159946728,
+        "y": 2.04,
+        "z": 38.59502383336274
+      }
+    },
+    {
+      "type": "real W",
+      "target": {
+        "x": 749.3,
+        "y": 2.04,
+        "z": 37
+      },
+      "position": {
+        "x": 749.3008695861089,
+        "y": 2.04,
+        "z": 37.15510775623154
+      }
+    },
+    {
+      "type": "real W",
+      "target": {
+        "x": 751.5,
+        "y": 2.04,
+        "z": 37
+      },
+      "position": {
+        "x": 751.3763314195626,
+        "y": 2.04,
+        "z": 37.01040658870952
+      }
+    },
+    {
+      "type": "real W",
+      "target": {
+        "x": 479.9435,
+        "y": 2.021855,
+        "z": -11.36
+      },
+      "position": {
+        "x": 479.9435,
+        "y": 2.021855,
+        "z": -11.483098239955673
+      }
+    },
+    {
+      "type": "real W",
+      "target": {
+        "x": 479.9435,
+        "y": 2.021855,
+        "z": -11.7
+      },
+      "position": {
+        "x": 479.9435,
+        "y": 2.021855,
+        "z": -11.483098239955673
+      }
+    }
+  ],
+  "states": {
+    "entry": {
+      "build": "chapter1-host-house-restored-1",
+      "phase": "playing",
+      "stage": "host-house",
+      "mission": "host-house-explore",
+      "position": {
+        "x": 751.5,
+        "y": 2.04,
+        "z": 37
+      },
+      "house": {
+        "source": "/models/daniel_helen_house.glb",
+        "active": true,
+        "ready": true,
+        "location": "inside",
+        "meshes": 559,
+        "materials": 166,
+        "textures": 59,
+        "allTexturesReady": true,
+        "foreignMeshesVisible": 0,
+        "navigation": {
+          "enabled": true,
+          "elevation": 0.39,
+          "level": "ground",
+          "stairSteps": 18,
+          "bodyHeight": 1.78,
+          "maxStep": 0.22
+        }
+      },
+      "westbridgeActive": false,
+      "familyLocation": "airport"
+    },
+    "outside": {
+      "build": "chapter1-host-house-restored-1",
+      "phase": "playing",
+      "stage": "westbridge",
+      "mission": "host-house-explore",
+      "position": {
+        "x": 479.9435,
+        "y": 2.021855,
+        "z": -11.7
+      },
+      "house": {
+        "source": "/models/daniel_helen_house.glb",
+        "active": false,
+        "ready": true,
+        "location": "outside",
+        "meshes": 559,
+        "materials": 166,
+        "textures": 59,
+        "allTexturesReady": true,
+        "foreignMeshesVisible": null,
+        "navigation": {
+          "enabled": false,
+          "elevation": 0.39,
+          "level": "ground",
+          "stairSteps": 18,
+          "bodyHeight": 1.78,
+          "maxStep": 0.22
+        }
+      },
+      "westbridgeActive": true,
+      "familyLocation": "airport"
+    },
+    "reentered": {
+      "build": "chapter1-host-house-restored-1",
+      "phase": "playing",
+      "stage": "host-house",
+      "mission": "host-house-explore",
+      "position": {
+        "x": 751.5,
+        "y": 2.04,
+        "z": 37
+      },
+      "house": {
+        "source": "/models/daniel_helen_house.glb",
+        "active": true,
+        "ready": true,
+        "location": "inside",
+        "meshes": 559,
+        "materials": 166,
+        "textures": 59,
+        "allTexturesReady": true,
+        "foreignMeshesVisible": 0,
+        "navigation": {
+          "enabled": true,
+          "elevation": 0.39,
+          "level": "ground",
+          "stairSteps": 18,
+          "bodyHeight": 1.78,
+          "maxStep": 0.22
+        }
+      },
+      "westbridgeActive": false,
+      "familyLocation": "airport"
+    }
+  },
+  "unitTests": {
+    "passed": 129,
+    "failed": 0
+  },
+  "build": "passed",
+  "pictures": [
+    "docs/capturas/casa-anfitrioes-restaurada/sala.png",
+    "docs/capturas/casa-anfitrioes-restaurada/hall.png"
+  ],
+  "errors": [],
+  "consoleErrors": [],
+  "failedAssets": [],
+  "limits": [
+    "Focused restoration check; the earlier verified full 18-step tour and prior airport/flight/car scenes were not replayed.",
+    "SwiftShader software renderer; no physical GPU/mobile FPS benchmark.",
+    "The original door transition is restored. The original interior and facade still have different floor plans."
+  ]
+}

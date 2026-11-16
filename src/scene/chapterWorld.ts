@@ -144,8 +144,6 @@ export function buildChapterWorld(scene: Scene) {
   function prepareWestbridge(){
     if(!preparingWestbridge)preparingWestbridge=(async()=>{
       await westbridge.ensureReady();
-      // Fill the opened window reveals before the neighbourhood is shown.
-      await hostHouse.ensureReady();
       westbridgeVehicle=buildWestbridgeVehicle(scene,westbridge.root);
       await westbridgeVehicle.ready;
     })();
@@ -153,33 +151,29 @@ export function buildChapterWorld(scene: Scene) {
   }
 
   const hostHouse=buildHostHouse(scene);
-  hostHouse.root.parent=westbridge.root;
   roots.set('host-house',hostHouse.root);meshes.set('host-house',hostHouse.meshes);
   targets.push(...hostHouse.targets);
-  hostHouse.targets.forEach(target=>target.label=()=>westbridge.frontDoorOpen?'Fechar porta':'Abrir porta');
 
   let activeZone:Zone='home';
   function activate(zone:Zone) {
-    const neighbourhood=zone==='westbridge'||zone==='host-house';
-    const wasNeighbourhood=activeZone==='westbridge'||activeZone==='host-house';
-    // The fitted interior and exterior share a world origin and remain visible
-    // together. Restore local lights before restoring the outdoor scene state.
-    if(wasNeighbourhood&&!neighbourhood){
-      hostHouse.setActive(false);westbridge.setFrontDoorOpen(false);
+    if(activeZone==='westbridge'&&zone!=='westbridge'){
       westbridge.setActive(false);
       arrival.setHostVehicleSeats(null);westbridgeVehicle?.setInteriorView(false);
     }
+    // Restore the previous region's masks and scene state before the next
+    // region captures them. Reversing this order can reveal unrelated sets.
+    if(activeZone==='host-house'&&zone!=='host-house')hostHouse.setActive(false);
     activeZone=zone;
-    for(const [key,root]of roots)root.setEnabled(key==='westbridge'||key==='host-house'?neighbourhood:key===zone);
+    for(const [key,root]of roots) root.setEnabled(key===zone);
     kitchen.setActive(zone==='home');
     garage.setActive(zone==='home');
     laundry.setActive(zone==='home');
     airport.setActive(zone==='airport');
     plane.setActive(zone==='plane');
     arrival.setActive(zone==='town');
-    westbridge.setActive(neighbourhood);
-    hostHouse.setActive(neighbourhood);
-    if(neighbourhood&&westbridgeVehicle){
+    westbridge.setActive(zone==='westbridge');
+    hostHouse.setActive(zone==='host-house');
+    if(zone==='westbridge'&&westbridgeVehicle){
       arrival.setHostVehicleSeats(westbridgeVehicle.hostSeats);
       westbridge.setExtraMeshes([...westbridgeVehicle.meshes,...arrival.vehicleHostMeshes]);
     }
@@ -200,20 +194,13 @@ export function buildChapterWorld(scene: Scene) {
     targets, ready,
     activate,
     prepareWestbridge,
-    prepareHostHouse:()=>prepareWestbridge(),
-    setHostHouseDoorOpen(value:boolean){westbridge.setFrontDoorOpen(value);westbridge.refreshShadows();},
-    get hostHouseDoorOpen(){return westbridge.frontDoorOpen;},
-    get hostHouseDoorCollider(){return westbridge.frontDoorCollider;},
+    prepareHostHouse:()=>hostHouse.ensureReady(),
     hostHouseNavigation,
     westbridgeNavigation,
     get westbridgeObstacles(){
       const car=westbridgeVehicle?.diagnostics;
       return car&&!car.interiorView?[...westbridge.obstacles,{x:car.position.x,z:car.position.z,
         halfWidth:car.localBounds.width/2,halfDepth:car.localBounds.length/2,rotation:car.yaw}]:westbridge.obstacles;
-    },
-    get hostHouseObstacles(){
-      const leaf=westbridge.frontDoorCollider;
-      return leaf?[...this.westbridgeObstacles,leaf]:this.westbridgeObstacles;
     },
     get westbridgeVehicle(){return westbridgeVehicle;},
     setQuality(quality:'low'|'balanced'|'high'){westbridge.setQuality(quality);},
@@ -232,7 +219,7 @@ export function buildChapterWorld(scene: Scene) {
       if(activeZone==='airport'){airport.animate(time);kitchen.animateParents(time,speaker,observer,text);}
       if(activeZone==='plane')plane.animate(time);
       if(activeZone==='town')arrival.animate(time);
-      if(activeZone==='westbridge'||activeZone==='host-house'){westbridge.animate(time);arrival.animateVehicleHosts(time);}
+      if(activeZone==='westbridge'){westbridge.animate(time);arrival.animateVehicleHosts(time);}
     },
     get kitchenDiagnostics(){return {active:activeZone==='home',meshes:kitchen.meshes.length,...kitchen.diagnostics};},
     get garageDiagnostics(){return garage.diagnostics;},

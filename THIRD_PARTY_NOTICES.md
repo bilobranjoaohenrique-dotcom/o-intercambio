@@ -68,13 +68,3 @@ A imagem principal e a prancha multivista fornecidas pelo usuário são referên
 | Clique de chave e ruído eletrônico da televisão | Síntese local no sistema Web Audio já usado pelo jogo; sem gravações externas | `src/game/audio.ts` |
 
 As texturas desta sala têm entre 64 e 256 pixels por dimensão, com reutilização de materiais e sem carregamento de pacotes externos. O ruído da TV é não verbal; nenhum diálogo, voz, TTS, narração ou música licenciada foi adicionado. O [relatório da sala](docs/RECONSTRUCAO-SALA.md) separa o estado da implementação, as verificações e as capturas reais de execução.
-
-## Interior A01 da casa de Daniel e Helen
-
-O arquivo `public/models/daniel_helen_house_a01.glb` foi fornecido pelo usuário no pacote Casa_Daniel_Helen_A01_para_Codex.zip. O pacote identifica os seguintes recursos reutilizados:
-
-- **PSX Furniture Free by heyheythere** — https://heyheythere.itch.io/psx-furniture-free — **CC BY 4.0**. Mobiliário integrado e adaptado à planta A01. [Licença completa](public/licenses/host-house-a01/LICENSE-PSX-Furniture.txt).
-- **Shuriken Studio** — elementos de mobiliário, conforme a licença incluída no pacote. [Licença](public/licenses/host-house-a01/LICENSE-Shuriken.txt).
-- **Imersa Studios, Small Town Buildings Free** — textura de piso, conforme a procedência informada no pacote. [Licença](public/licenses/host-house-a01/LICENSE-Imersa.txt).
-
-O arquivo fornecido é preservado. Ajustes de encaixe da garagem e colisões são aplicados na integração em runtime. Os recursos são utilizados dentro do jogo; o arquivo editável e os kits de origem não fazem parte da distribuição do jogo.

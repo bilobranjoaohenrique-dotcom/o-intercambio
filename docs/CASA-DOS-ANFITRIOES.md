@@ -1,6 +1,8 @@
 # Interior da casa de Daniel e Helen
 
-Registro da integração anterior (commit `126fa55`). A versão atual utiliza a [planta A01 encaixada na fachada](CASA-DOS-ANFITRIOES-A01.md).
+Modelo anterior restaurado a pedido do usuário, retomando a integração de `126fa55` e retirando o A01 da versão ativa. Foram recuperados o interior, a iluminação, os materiais e a fachada anteriores. A ligação original pela porta, com transição curta, foi mantida; não foi feita uma nova reforma exterior nesta restauração.
+
+Verificação da restauração: build e 129 testes aprovados, caminhada focal, colisão do sofá, saída e reentrada reais. [Sala restaurada](capturas/casa-anfitrioes-restaurada/sala.png), [hall](capturas/casa-anfitrioes-restaurada/hall.png) e [registro](resultados-restauracao-casa-anfitrioes.json).
 
 O arquivo fornecido `Daniel_Helen.glb` está integrado pela porta da casa azul de Westbridge. E permite entrar, explorar os dois andares e voltar ao bairro pela porta interna. A entrada não encerra mais o capítulo; o objetivo funcional passa a ser explorar a casa, sem acrescentar falas ou acontecimentos.
 
