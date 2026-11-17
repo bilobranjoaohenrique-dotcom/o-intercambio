@@ -1,6 +1,6 @@
 # Interior da casa de Daniel e Helen
 
-> A versão ativa foi aprimorada sobre este interior restaurado, preservando a arquitetura e a integração descritas abaixo. O jogo agora carrega `daniel_helen_house_renovated.glb`; o original permanece intacto. Veja a [reforma visual e seus limites](REFORMA-CASA-DANIEL-HELEN.md). As contagens e capturas desta página registram a integração anterior à reforma.
+> A versão ativa usa `daniel_helen_house_renovated.glb`; o original permanece intacto. Veja a [revisão definitiva e seus limites](CASA-DEFINITIVA-DANIEL-HELEN.md), incluindo os vãos reais, a vista de Westbridge e a porta fechada do porão. As contagens e capturas desta página registram a restauração anterior às reformas.
 
 Modelo anterior restaurado a pedido do usuário, retomando a integração de `126fa55` e retirando o A01 da versão ativa. Foram recuperados o interior, a iluminação, os materiais e a fachada anteriores. A ligação original pela porta, com transição curta, foi mantida; não foi feita uma nova reforma exterior nesta restauração.
 
@@ -12,7 +12,7 @@ O arquivo fornecido `Daniel_Helen.glb` está integrado pela porta da casa azul d
 
 Fonte: [daniel_helen_house.glb](../public/models/daniel_helen_house.glb), 6.225.960 bytes, SHA-256 `cc90714d6ef97962ba4d0c3808323af01fa6a0a91fb6e045ea16d4d71b52d462`. O arquivo é uma cópia byte a byte do upload. A casa tem aproximadamente 10 × 12 m, pisos em Y=0,39/3,84 m e 18 degraus. A escala nativa, geometria, texturas e materiais são mantidos.
 
-A planta interna difere da fachada aprovada. Para preservar ambas, o interior ocupa um setor próprio e a ligação usa uma transição curta na porta, com carregamento do GLB apenas ao entrar. Não é uma passagem contínua pelo mesmo vão físico. O cenário externo embutido `WindowView` continua aparecendo pelas janelas; ele não é interpretado como piso navegável.
+A planta interna difere da fachada aprovada. Para preservar ambas, o interior ocupa um setor próprio e a ligação usa uma transição curta na porta, com carregamento do GLB apenas ao entrar. Não é uma passagem contínua pelo mesmo vão físico. Na restauração aqui registrada, o cenário externo embutido `WindowView` aparecia pelas janelas, sem funcionar como piso navegável; a [revisão definitiva](CASA-DEFINITIVA-DANIEL-HELEN.md) retirou esse cenário e usa geometria real de Westbridge em um referencial rígido.
 
 O Babylon expande as 539 malhas declaradas para 559 malhas renderizáveis, por causa dos múltiplos primitives. Foram importados 166 materiais, 59 texturas e nove luzes. As luzes `Day_`/`Always_` e uma luz ambiente local iluminam o interior; os estados globais de iluminação, visibilidade e câmera são restaurados ao sair. As seis animações de objetos permanecem paradas, sem disparar movimentos de móveis ao carregar.
 

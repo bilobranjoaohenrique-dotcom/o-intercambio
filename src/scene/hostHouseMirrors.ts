@@ -8,6 +8,7 @@ import { Texture } from '@babylonjs/core/Materials/Textures/texture';
 import { Color3, Color4 } from '@babylonjs/core/Maths/math.color';
 import { Plane } from '@babylonjs/core/Maths/math.plane';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
+import { Frustum } from '@babylonjs/core/Maths/math.frustum';
 import { HOST_HOUSE_ORIGIN_X } from '../game/hostHouseLayout';
 
 type Bounds = readonly [number, number, number, number, number, number];
@@ -44,7 +45,15 @@ function inside(position: Vector3, room: Bounds) {
  * Camera motion refreshes only the visible mirror in its own room. A stationary
  * view reuses its texture, with no reflection probes or full-scene cube passes.
  */
-export function createHostHouseMirrors(scene: Scene, options: { meshes: readonly AbstractMesh[] }) {
+export function createHostHouseMirrors(scene: Scene, options: {
+  meshes: readonly AbstractMesh[];
+  exteriorMeshes?: readonly AbstractMesh[];
+}) {
+  // These clones use the actual Westbridge geometry and its scoped outdoor
+  // lights. Their ordinary reflected frustum supplies real views through glass
+  // in the same cached room pass; no separate outdoor render target is needed.
+  const exterior = (options.exteriorMeshes ?? []).filter(mesh =>
+    mesh.metadata?.hostHouseExterior === true && mesh.getTotalVertices() > 0);
   const surfaces = new Set(options.meshes.filter(mesh => SPECS.some(spec => mesh.name === spec.name)));
   const entries = SPECS.flatMap(spec => {
     const mesh = options.meshes.find(candidate => candidate.name === spec.name && candidate.getTotalVertices() > 0);
@@ -57,18 +66,29 @@ export function createHostHouseMirrors(scene: Scene, options: { meshes: readonly
     const texture = new RoomMirrorTexture(spec.name + ' · reflexo 256', 256, scene, false,
       undefined, Texture.BILINEAR_SAMPLINGMODE);
     texture.refreshRate = RenderTargetTexture.REFRESHRATE_RENDER_ONCE;
-    texture.level = .91; texture.samples = 1; texture.clearColor = new Color4(.065, .067, .068, 1);
+    texture.level = .97; texture.samples = 1; texture.clearColor = new Color4(.18, .18, .17, 1);
     // Reflection is unchanged by negating a plane. For clipping, Babylon must
     // retain the room/camera side of the glass (negative signed distance).
     texture.mirrorPlane = new Plane(0, 0, -spec.normalZ, spec.normalZ * planeZ);
-    texture.renderList = options.meshes.filter(candidate => {
+    texture.renderList = [...options.meshes.filter(candidate => {
       if (!candidate.getTotalVertices() || surfaces.has(candidate) ||
+        candidate.metadata?.hostHouseExterior === true ||
         /WindowView_|proxy|interação|saída para Westbridge/i.test(candidate.name)) return false;
       return overlaps(bounds(candidate), spec.room);
-    });
+    }), ...exterior];
+    // Explicit render lists bypass both ordinary frustum and layer-mask
+    // checks. The mirror installs its reflected matrix before this callback;
+    // retain all room meshes and cull only exterior bounds in that true view.
+    texture.forceLayerMaskCheck = false;
+    texture.getCustomRenderList = (_pass, list, length) => {
+      if (!list) return null;
+      const planes = Frustum.GetPlanes(scene.getTransformMatrix());
+      return list.slice(0, length).filter(candidate =>
+        candidate.metadata?.hostHouseExterior !== true || candidate.isInFrustum(planes));
+    };
     const material = new StandardMaterial(spec.name + ' · prata do espelho', scene);
-    material.diffuseColor = new Color3(.035, .039, .041);
-    material.specularColor = new Color3(.22, .23, .24); material.specularPower = 96;
+    material.diffuseColor = new Color3(.018, .020, .021);
+    material.specularColor = new Color3(.09, .095, .10); material.specularPower = 96;
     material.reflectionTexture = texture; material.backFaceCulling = false;
     material.maxSimultaneousLights = 4;
     const original: Material | null = mesh.material; mesh.material = material;
@@ -89,16 +109,20 @@ export function createHostHouseMirrors(scene: Scene, options: { meshes: readonly
     // A day/night preview changes the house's clear color/exposure. Its mirror
     // must reflect that lighting even when the comparison camera stays fixed.
     const p = scene.imageProcessingConfiguration, c = scene.clearColor;
-    const nextEnvironment = `${c.r},${c.g},${c.b},${p.exposure},${p.contrast}`;
+    const engine = scene.getEngine();
+    const nextEnvironment = `${c.r},${c.g},${c.b},${p.exposure},${p.contrast},${camera.fov},${engine.getRenderWidth()},${engine.getRenderHeight()}`;
     if (nextEnvironment !== environment) {
       environment = nextEnvironment;
-      for (const entry of entries) entry.lastPosition = null;
+      for (const entry of entries) {
+        entry.texture.clearColor.copyFrom(c);
+        entry.lastPosition = null;
+      }
     }
     for (const entry of entries) {
-      const toMirror = entry.center.subtract(position);
       const onFront = (position.z - entry.planeZ) * entry.spec.normalZ > .035;
-      const facing = Vector3.Dot(direction, toMirror.normalize()) > .08;
-      entry.texture.permitted = inside(position, entry.spec.room) && onFront && facing && camera.isInFrustum(entry.mesh);
+      // Frustum intersection already tests visibility. A second test against
+      // the mirror's centre incorrectly rejected glass visible at screen edges.
+      entry.texture.permitted = inside(position, entry.spec.room) && onFront && camera.isInFrustum(entry.mesh);
       if (!entry.texture.permitted) continue;
       const moved = !entry.lastPosition || Vector3.DistanceSquared(position, entry.lastPosition) > .03 ** 2;
       const turned = !entry.lastDirection || Vector3.Dot(direction, entry.lastDirection) < rotationThreshold;
@@ -119,6 +143,7 @@ export function createHostHouseMirrors(scene: Scene, options: { meshes: readonly
     },
     get diagnostics() {
       return { active, textureSize: 256, cached: true, roomsOnly: true,
+        realExteriorMeshes: exterior.length,
         mirrors: entries.map(entry => ({ name: entry.spec.name, planeZ: entry.planeZ,
           normalZ: entry.spec.normalZ, roomMeshes: entry.texture.renderList?.length ?? 0,
           updating: entry.texture.permitted, renders: entry.renders() })),

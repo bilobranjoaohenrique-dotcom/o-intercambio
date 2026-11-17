@@ -67,7 +67,9 @@ export function createHostHouseLighting(scene: Scene, options: {
   meshes: readonly AbstractMesh[];
   embeddedLights: readonly Light[];
 }) {
-  const meshes = [...options.meshes];
+  // Real Westbridge view clones have their own outdoor lighting. Keeping them
+  // out of this set also protects them if a caller passes a combined mesh list.
+  const meshes = options.meshes.filter(mesh => mesh.metadata?.hostHouseExterior !== true);
   const native = [...options.embeddedLights];
   const locals: LocalLight[] = [];
   const created: Light[] = [];
@@ -146,6 +148,9 @@ export function createHostHouseLighting(scene: Scene, options: {
   practical('quarto dos anfitriões · abajur direito', ['hosts'], 55.54, 4.83, 40.25, .7, 2.6, 3.4);
   practical('corredor superior · entrada', ['upperHall'], 50.5, 6.55, 36.3, 1.4, 2.8, 4.6);
   practical('luz sob o exaustor', ['kitchen'], 55.65, 1.87, 31.48, .38, .65, 1.7);
+  practical('luz da bancada da pia', ['kitchen'], 54.35, 1.87, 31.60, .35, .55, 1.7);
+  practical('arandela do espelho do banheiro', ['bathroom'], 55.70, 6.08, 31.29, 1.2, 1.65, 3.2);
+  practical('arandela do espelho do lavabo', ['powder'], 57.48, 2.27, 42.75, .65, .95, 2.6);
 
   function windowLight(name: string, rooms: Room[], position: Vector3, target: Vector3,
     day: number, size: number) {
@@ -177,9 +182,9 @@ export function createHostHouseLighting(scene: Scene, options: {
   }
   windowLight('janela da sala', ['living'], point(47.52, 2.75, 40.82), point(51.6, .55, 41.2), 18, 768);
   windowLight('janela do estudante', ['player'], point(47.52, 6.20, 40.82), point(51.6, 4.0, 41.2), 18, 768);
-  // The supplied rear window is inset in the opaque rear wall. Put the soft
-  // window source on its inner face, without cutting or moving that wall.
-  windowLight('janela da cozinha', ['kitchen'], point(57.75, 2.5, 33.0), point(54.7, .65, 33.8), 12, 512);
+  // The kitchen's real rear opening now transmits daylight. Put the soft
+  // window source outside the opening, clear of the retained frame and glazing.
+  windowLight('janela da cozinha', ['kitchen'], point(58.55, 2.7, 33.0), point(54.7, .65, 33.8), 12, 512);
 
   // Night changes are confined to the decorative street seen through the
   // supplied windows. Shared interior materials retain their original colors.

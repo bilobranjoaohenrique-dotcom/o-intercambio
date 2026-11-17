@@ -73,12 +73,48 @@ export const HOST_HOUSE_RENOVATED_FURNITURE = [
     "Guest_bookcase"
   ],
   [
-    53.14,
-    53.64,
+    53.13,
+    53.65,
     0.39,
-    1.0,
-    41.4,
-    41.9,
+    1.05,
+    41.39,
+    41.91,
     "Laundry_hamper"
+  ],
+  [
+    57.964,
+    58.015,
+    0.39,
+    2.49,
+    36.55,
+    37.45,
+    "HH_basement_door_closed"
+  ],
+  [
+    48.31,
+    48.8,
+    3.84,
+    4.54,
+    31.35,
+    31.83,
+    "Def_guest_nightstand"
+  ],
+  [
+    52.23,
+    52.75,
+    3.84,
+    4.946,
+    31.84,
+    32.76,
+    "Def_guest_dresser"
+  ],
+  [
+    48.745,
+    49.29,
+    3.84,
+    4.954,
+    34.647,
+    35.173,
+    "Def_guest_reading_chair"
   ]
 ] as const;

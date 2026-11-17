@@ -1,5 +1,6 @@
 """Reproducible full GLB renovation. Run: blender -b -t 2 --python .../build.py
-Native house shell, openings, WindowView, stairs and dimensions are retained.
+Native footprint and stairs are retained; window openings are finished and the
+obsolete embedded street is replaced at runtime by the real Westbridge view.
 The supplied original remains available, byte for byte, for rollback/comparison.
 """
 import bpy, sys, json, hashlib, math
@@ -53,7 +54,8 @@ for name in ('ground_kitchen_tile','ground_utility_tile'):
 # geometry, wall boundaries or existing stair tread profile.
 # (Furniture is supplied by the dedicated room modules.)
 import bedrooms_living,kitchen_dining,architecture_service,electronics,finishing
-for module in (bedrooms_living,kitchen_dining,architecture_service,electronics,finishing):
+import definitive_architecture,definitive_furnishings,definitive_services
+for module in (bedrooms_living,kitchen_dining,architecture_service,electronics,finishing,definitive_architecture,definitive_furnishings,definitive_services):
  before=len(ctx.objects);module.build(ctx)
  print('BUILT',module.__name__,len(ctx.objects)-before,flush=True)
 bpy.context.view_layer.update()
@@ -70,7 +72,7 @@ def room_for(obj):
  return floor+'_'+r
 batches=defaultdict(list)
 for obj in ctx.objects:
- if obj.name in bpy.data.objects and obj.type=='MESH' and not ('mirror' in obj.name.lower() and 'frame' not in obj.name.lower()):
+ if obj.name in bpy.data.objects and obj.type=='MESH' and not obj.get('hostHouseNoBatch',False) and not ('mirror' in obj.name.lower() and 'frame' not in obj.name.lower()):
   key=(room_for(obj),tuple(m.name if m else '' for m in obj.data.materials))
   batches[key].append(obj)
 batch_count=0
@@ -105,12 +107,15 @@ report={
  'outputSha256':hashlib.sha256(OUTPUT.read_bytes()).hexdigest(),
  'nativeArchitectureChecked':len(structural),'nativeArchitectureBoundsPreserved':True,
  'structuralFinishFixes':structural_fixes,
+ 'definitiveArchitecture':getattr(ctx,'definitive_architecture_report',{}),
+ 'definitiveFurnishings':getattr(ctx,'definitive_furnishings_report',{}),
+ 'definitiveServices':getattr(ctx,'definitive_services_report',{}),
  'runtimeImageCorrections':['Actual cabinet/basin clearance','Upper bathroom mirror in front of tile','Even stair riser offset','Portraits clear of glass','Guest bookshelf access','CRT proportions'],'removedFurnitureMeshes':sorted(set(ctx.removed)),
  'newObjectsBeforeBatching':len(ctx.objects),'roomMaterialBatches':batch_count,
  'meshObjects':len(meshes),'vertices':sum(len(o.data.vertices) for o in meshes),
  'triangles':sum(sum(len(p.vertices)-2 for p in o.data.polygons) for o in meshes),
  'additionalColliders':ctx.colliders,
- 'knownLimits':['Existing isolated interior / exterior floorplan mismatch preserved; entrance still uses original short fade.',
+ 'knownLimits':['Interior retains the original door fade. Actual Westbridge geometry is mapped rigidly to the measured front door; physical interior/exterior floorplan dimensions remain different.',
  'Existing static garage has no internal doorway; no invented access or external architecture change.'],
 }
 (ROOT/'public/models/daniel_helen_house_renovation.json').write_text(json.dumps(report,indent=2,ensure_ascii=False)+'\n')

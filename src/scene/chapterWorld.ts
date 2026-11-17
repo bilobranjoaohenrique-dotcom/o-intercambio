@@ -18,6 +18,7 @@ import { buildWestbridge } from './westbridge';
 import { buildWestbridgeVehicle } from './westbridgeVehicle';
 import { westbridgeNavigation } from '../game/westbridgeNavigation';
 import { WB_WALK_SPAWN } from '../game/westbridgeLayout';
+import { sampleWestbridgeDrive, WB_DRIVE_SECONDS } from '../game/westbridgeDrive';
 import { buildHostHouse } from './hostHouse';
 import { hostHouseNavigation } from '../game/hostHouseNavigation';
 import { HOST_HOUSE_SPAWN } from '../game/hostHouseLayout';
@@ -150,7 +151,7 @@ export function buildChapterWorld(scene: Scene) {
     return preparingWestbridge;
   }
 
-  const hostHouse=buildHostHouse(scene);
+  const hostHouse=buildHostHouse(scene,{exteriorSource:()=>westbridge.getHostHouseExteriorSource()});
   roots.set('host-house',hostHouse.root);meshes.set('host-house',hostHouse.meshes);
   targets.push(...hostHouse.targets);
 
@@ -194,7 +195,14 @@ export function buildChapterWorld(scene: Scene) {
     targets, ready,
     activate,
     prepareWestbridge,
-    prepareHostHouse:()=>hostHouse.ensureReady(),
+    prepareHostHouse:async()=>{
+      await prepareWestbridge();
+      // Restoring an inside checkpoint must show the same parked family car.
+      westbridgeVehicle?.setPose(sampleWestbridgeDrive(WB_DRIVE_SECONDS));
+      westbridgeVehicle?.setInteriorView(false);
+      if (westbridgeVehicle) westbridge.setExtraMeshes([...westbridgeVehicle.meshes]);
+      await hostHouse.ensureReady();
+    },
     setHostHouseLightingMode:(mode:'day'|'night')=>hostHouse.setLightingMode(mode),
     hostHouseNavigation,
     westbridgeNavigation,

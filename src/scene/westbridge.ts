@@ -16,6 +16,7 @@ import { buildWestbridgeProps } from './westbridgeProps';
 import { applyWestbridgeHouseScale } from './westbridgeHouseScale';
 import { WB_HOST_DOOR } from '../game/westbridgeLayout';
 import { WB_HOUSE_DOOR_HEIGHT } from '../game/westbridgeHouseScale';
+import type { HostHouseWestbridgeSource } from './hostHouseWestbridgeView';
 
 const SOURCE='/models/westbridge.glb',ORIGIN_X=500;
 const wp=(x:number,y:number,z:number)=>new Vector3(ORIGIN_X-x,y,z);
@@ -101,6 +102,14 @@ export function buildWestbridge(scene:Scene,options:{quality?:Settings['quality'
   }
   return{
     root,meshes,targets,ensureReady,setActive,
+    /** Runtime geometry after the measured house corrections, not a second GLB
+     * or an invented vista. Call only after ensureReady has completed. */
+    getHostHouseExteriorSource():HostHouseWestbridgeSource{
+      if(!loaded||!lighting)throw new Error('Westbridge precisa estar pronto antes das vistas da casa.');
+      return{meshes:[...meshes,...extras.filter(mesh=>mesh.metadata?.originalCarExterior===true)],sky:lighting.sky,
+        windows:windows.map(window=>({material:window.material,day:window.day.clone(),host:window.host})),
+        timeOfDay,source:SOURCE,originX:ORIGIN_X,houseScale};
+    },
     setExtraMeshes(values:AbstractMesh[]){
       const previous=new Set(extras);for(const light of oldLights)light.excludedMeshes=light.excludedMeshes.filter(mesh=>!previous.has(mesh));
       extras.length=0;extras.push(...values);for(const mesh of extras)mesh.receiveShadows=mesh.metadata?.westbridgeInterior!==true;

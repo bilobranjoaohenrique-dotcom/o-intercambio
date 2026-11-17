@@ -1,5 +1,7 @@
 # Reforma visual da casa de Daniel e Helen
 
+> Registro da primeira reforma. A [revisão definitiva ativa](CASA-DEFINITIVA-DANIEL-HELEN.md) acrescenta as correções posteriores, oito janelas com vidro e a vista real de Westbridge; as contagens e verificações abaixo pertencem à etapa anterior.
+
 Implementação sobre o interior restaurado utilizado pelo jogo, preservando a fachada, a planta, os pisos, as janelas, as portas e os 18 degraus. Branch de trabalho: `feat/host-house-visual-renovation`, criada a partir de `f009dbf`. O GLB original continua disponível sem alteração para restauração.
 
 ## Fonte e construção
@@ -38,7 +40,7 @@ Os modos diurno e noturno pertencem somente ao interior; não criam relógio, mi
 
 ## Limites preservados
 
-1. A planta interna original tem cerca de 10 × 12 m e continua diferente da fachada azul. A ligação usa o setor próprio e a transição curta existentes. Não foi afirmada correspondência física entre todas as janelas internas e externas; os cartões de janela posteriores e o cenário `WindowView` foram preservados.
+1. A planta interna original tem cerca de 10 × 12 m e continua diferente da fachada azul. A ligação usa o setor próprio e a transição curta existentes. Nesta primeira etapa, os cartões posteriores e o cenário `WindowView` foram preservados; a [revisão definitiva](CASA-DEFINITIVA-DANIEL-HELEN.md) os substitui por vãos reais e geometria do bairro mapeada rigidamente, mantendo explícita a diferença das plantas.
 2. A garagem original é um volume decorativo sem porta interna exportada e fora da navegação. Recebeu acabamento visual; não foi inventado um acesso através de uma parede. Sua captura usa enquadramento de inspeção no jogo, não um percurso do jogador até ela.
 3. Os valores de desempenho são do Chromium com SwiftShader em Linux, com resolução interna 914 × 514 e perfil balanced. Não representam FPS de GPU física ou celular.
 

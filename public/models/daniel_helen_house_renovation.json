@@ -2,8 +2,8 @@
   "source": "public/models/daniel_helen_house.glb",
   "sourceSha256": "cc90714d6ef97962ba4d0c3808323af01fa6a0a91fb6e045ea16d4d71b52d462",
   "output": "public/models/daniel_helen_house_renovated.glb",
-  "bytes": 14532848,
-  "outputSha256": "d92c3573a8f412fb65aca26596baba0664aaf18f2a57d2dd4e2af4dd0e346af7",
+  "bytes": 13616548,
+  "outputSha256": "bdebcb16853c05f97d89750f137953e1cfd8e21cae3e6c09a2e7e95ff1c904cc",
   "nativeArchitectureChecked": 80,
   "nativeArchitectureBoundsPreserved": true,
   "structuralFinishFixes": [
@@ -60,6 +60,380 @@
       "change": "wall finish corrected from floor wood to plaster"
     }
   ],
+  "definitiveArchitecture": {
+    "changedNativeShellMeshes": [
+      "back_ext_0",
+      "back_ext_1"
+    ],
+    "nativeShellOuterBoundsPreserved": true,
+    "preservedNativeStairsAndCirculation": true,
+    "removedOpaqueRearWindowCards": [
+      "back_window_0_-4",
+      "back_window_0_4",
+      "back_window_1_-4",
+      "back_window_1_4"
+    ],
+    "removedSourceWindowBackdropObjects": [
+      "WindowView_00",
+      "WindowView_01",
+      "WindowView_02",
+      "WindowView_03",
+      "WindowView_04",
+      "WindowView_05",
+      "WindowView_06",
+      "WindowView_07",
+      "WindowView_08",
+      "WindowView_09",
+      "WindowView_10",
+      "WindowView_11",
+      "WindowView_12",
+      "WindowView_13",
+      "WindowView_14",
+      "WindowView_15",
+      "WindowView_16",
+      "WindowView_17",
+      "WindowView_18",
+      "WindowView_19",
+      "WindowView_20",
+      "WindowView_21",
+      "WindowView_22",
+      "WindowView_23",
+      "WindowView_24",
+      "WindowView_25",
+      "WindowView_26",
+      "WindowView_27",
+      "WindowView_28",
+      "WindowView_29",
+      "WindowView_30",
+      "WindowView_31",
+      "WindowView_32",
+      "WindowView_33",
+      "WindowView_34",
+      "WindowView_35",
+      "WindowView_36",
+      "WindowView_37",
+      "WindowView_38"
+    ],
+    "windows": [
+      {
+        "id": "rear_ground_kitchen",
+        "planeX": 58.0,
+        "min": [
+          58.0,
+          1.275,
+          32.325
+        ],
+        "max": [
+          58.0,
+          2.625,
+          33.675
+        ],
+        "clearWidth": 1.2399999999999942,
+        "clearHeight": 1.24
+      },
+      {
+        "id": "rear_ground_powder",
+        "planeX": 58.0,
+        "min": [
+          58.0,
+          1.275,
+          40.325
+        ],
+        "max": [
+          58.0,
+          2.625,
+          41.675
+        ],
+        "clearWidth": 1.2399999999999942,
+        "clearHeight": 1.24
+      },
+      {
+        "id": "rear_upper_bathroom",
+        "planeX": 58.0,
+        "min": [
+          58.0,
+          4.725,
+          32.325
+        ],
+        "max": [
+          58.0,
+          6.075,
+          33.675
+        ],
+        "clearWidth": 1.2399999999999942,
+        "clearHeight": 1.2400000000000004
+      },
+      {
+        "id": "rear_upper_hosts",
+        "planeX": 58.0,
+        "min": [
+          58.0,
+          4.725,
+          40.325
+        ],
+        "max": [
+          58.0,
+          6.075,
+          41.675
+        ],
+        "clearWidth": 1.2399999999999942,
+        "clearHeight": 1.2400000000000004
+      },
+      {
+        "id": "front_ground_living",
+        "planeX": 48.06,
+        "min": [
+          48.06,
+          1.225,
+          40.275
+        ],
+        "max": [
+          48.06,
+          2.775,
+          41.725
+        ],
+        "clearWidth": 1.3400000000000027,
+        "clearHeight": 1.4399999999999997
+      },
+      {
+        "id": "front_upper_guest",
+        "planeX": 48.06,
+        "min": [
+          48.06,
+          4.675,
+          32.275
+        ],
+        "max": [
+          48.06,
+          6.225,
+          33.725
+        ],
+        "clearWidth": 1.3400000000000027,
+        "clearHeight": 1.4399999999999997
+      },
+      {
+        "id": "front_upper_hall",
+        "planeX": 48.06,
+        "min": [
+          48.06,
+          4.675,
+          36.275
+        ],
+        "max": [
+          48.06,
+          6.225,
+          37.725
+        ],
+        "clearWidth": 1.3400000000000027,
+        "clearHeight": 1.4399999999999997
+      },
+      {
+        "id": "front_upper_student",
+        "planeX": 48.06,
+        "min": [
+          48.06,
+          4.675,
+          40.275
+        ],
+        "max": [
+          48.06,
+          6.225,
+          41.725
+        ],
+        "clearWidth": 1.3400000000000027,
+        "clearHeight": 1.4399999999999997
+      }
+    ],
+    "basementDoor": {
+      "parent": "REN_HH_BasementDoor",
+      "leaf": "REN_HH_basement_door_leaf",
+      "closed": true,
+      "openingMin": [
+        57.93,
+        0.39,
+        36.55
+      ],
+      "openingMax": [
+        58.07,
+        2.49,
+        37.45
+      ],
+      "newRoomConstructed": false
+    },
+    "sourcePropCorrections": [
+      {
+        "name": "picture_landscape",
+        "change": "low picture behind CRT rehung on solid rear wall",
+        "sourceDelta": [
+          1.150000762939456,
+          1.2811799883842467,
+          0.05000331115722645
+        ],
+        "sourceCentre": [
+          51.45,
+          2.65,
+          42.918875
+        ]
+      },
+      {
+        "name": "Detalhes_sala_00",
+        "change": "native floating shelf/book components anchored to rear wall",
+        "vertices": 288,
+        "sourceDelta": [
+          0,
+          -0.0025,
+          0.565
+        ]
+      },
+      {
+        "name": "Detalhes_sala_00",
+        "change": "native portrait components flush against rear wall",
+        "vertices": 84,
+        "sourceDelta": [
+          0,
+          0,
+          0.0775
+        ]
+      },
+      {
+        "name": "Detalhes_sala_01",
+        "change": "native floating shelf/book components anchored to rear wall",
+        "vertices": 288,
+        "sourceDelta": [
+          0,
+          -0.0025,
+          0.565
+        ]
+      },
+      {
+        "name": "Detalhes_sala_01",
+        "change": "native portrait components flush against rear wall",
+        "vertices": 1584,
+        "sourceDelta": [
+          0,
+          0,
+          0.0775
+        ]
+      },
+      {
+        "name": "Detalhes_sala_02",
+        "change": "native portrait components flush against rear wall",
+        "vertices": 252,
+        "sourceDelta": [
+          0,
+          0,
+          0.0775
+        ]
+      },
+      {
+        "name": "Detalhes_sala_05",
+        "change": "native floating shelf/book components anchored to rear wall",
+        "vertices": 288,
+        "sourceDelta": [
+          0,
+          0.0225,
+          0.565
+        ]
+      },
+      {
+        "name": "Detalhes_sala_05",
+        "change": "native portrait components flush against rear wall",
+        "vertices": 84,
+        "sourceDelta": [
+          0,
+          0,
+          0.0775
+        ]
+      },
+      {
+        "name": "Detalhes_sala_06",
+        "change": "native floating shelf/book components anchored to rear wall",
+        "vertices": 288,
+        "sourceDelta": [
+          0,
+          0,
+          0.565
+        ]
+      },
+      {
+        "name": "Detalhes_sala_06",
+        "change": "native portrait components flush against rear wall",
+        "vertices": 288,
+        "sourceDelta": [
+          0,
+          0,
+          0.0775
+        ]
+      },
+      {
+        "name": "Detalhes_sala_07",
+        "change": "native floating shelf/book components anchored to rear wall",
+        "vertices": 288,
+        "sourceDelta": [
+          0,
+          0.0225,
+          0.565
+        ]
+      },
+      {
+        "name": "Detalhes_sala_07",
+        "change": "native portrait components flush against rear wall",
+        "vertices": 84,
+        "sourceDelta": [
+          0,
+          0,
+          0.0775
+        ]
+      },
+      {
+        "name": "Detalhes_sala_08",
+        "change": "native portrait components flush against rear wall",
+        "vertices": 1584,
+        "sourceDelta": [
+          0,
+          0,
+          0.0775
+        ]
+      },
+      {
+        "name": "Sala planta baixa",
+        "change": "coffee-table plant placed on supported tabletop",
+        "sourceDelta": [
+          0.5,
+          -0.0245,
+          0
+        ]
+      },
+      {
+        "name": "Detalhes_sala_03",
+        "change": "coffee-table plant placed on supported tabletop",
+        "sourceDelta": [
+          0.5,
+          -0.0245,
+          0
+        ]
+      },
+      {
+        "name": "Detalhes_sala_09",
+        "change": "coffee-table plant placed on supported tabletop",
+        "sourceDelta": [
+          0.5,
+          -0.0245,
+          0
+        ]
+      }
+    ],
+    "removedOutOfEnvelopeProps": [
+      "chair_broken.001",
+      "box_open_flap_back.001",
+      "box_open_flap_front.001",
+      "box_open_flap_left.001",
+      "box_open_flap_right.001",
+      "box_open.001"
+    ]
+  },
+  "definitiveFurnishings": {},
+  "definitiveServices": {},
   "runtimeImageCorrections": [
     "Actual cabinet/basin clearance",
     "Upper bathroom mirror in front of tile",
@@ -69,6 +443,9 @@
     "CRT proportions"
   ],
   "removedFurnitureMeshes": [
+    "Almofada_sala",
+    "Almofada_sala.001",
+    "Almofada_sala.002",
     "Armario alto moldura",
     "Armario alto moldura.001",
     "Armario alto painel",
@@ -84,6 +461,7 @@
     "Armario pega",
     "Armario pega.001",
     "Banheiro_cortina",
+    "Banheiro_porta_escovas",
     "Banheiro_varao",
     "CRT indicador",
     "CRT tela bege",
@@ -140,11 +518,14 @@
     "Jantar_arranjo_folha.005",
     "Jantar_arranjo_folha.006",
     "Jantar_arranjo_vaso",
+    "Lavabo_porta_sabonete",
+    "Lavanderia_detergente",
     "Luminaria_banheiro",
     "Luminaria_corredor",
     "Luminaria_hall",
     "Luminaria_jantar",
     "Manta dobrada casal",
+    "Manta sobre braço do sofá",
     "Manta xadrez ajustada à cama",
     "Mural de cortiça",
     "Plafon jantar aro",
@@ -154,6 +535,39 @@
     "Puxador gaveta",
     "Puxador gaveta.001",
     "Puxador gaveta.002",
+    "REN_Guest_reading_book_cover",
+    "REN_Guest_reading_book_cover.001",
+    "REN_Guest_reading_book_pages",
+    "REN_Living_armchair_arm_welt",
+    "REN_Living_armchair_arm_welt.001",
+    "REN_Living_armchair_back_0",
+    "REN_Living_armchair_front_piping",
+    "REN_Living_armchair_lower",
+    "REN_Living_armchair_rolled_arm",
+    "REN_Living_armchair_rolled_arm.001",
+    "REN_Living_armchair_scatter",
+    "REN_Living_armchair_seat_0",
+    "REN_Living_armchair_seat_welt_0",
+    "REN_Living_sofa_arm_welt",
+    "REN_Living_sofa_arm_welt.001",
+    "REN_Living_sofa_back_0",
+    "REN_Living_sofa_back_1",
+    "REN_Living_sofa_back_2",
+    "REN_Living_sofa_front_piping",
+    "REN_Living_sofa_lower",
+    "REN_Living_sofa_rolled_arm",
+    "REN_Living_sofa_rolled_arm.001",
+    "REN_Living_sofa_scatter",
+    "REN_Living_sofa_seat_0",
+    "REN_Living_sofa_seat_1",
+    "REN_Living_sofa_seat_2",
+    "REN_Living_sofa_seat_welt_0",
+    "REN_Living_sofa_seat_welt_1",
+    "REN_Living_sofa_seat_welt_2",
+    "REN_Living_throw",
+    "REN_Student_mouse",
+    "REN_Student_mouse_cable",
+    "REN_Student_mousepad",
     "Vaso bancada cozinha_folha",
     "Vaso bancada cozinha_folha.001",
     "Vaso bancada cozinha_folha.002",
@@ -170,14 +584,63 @@
     "Vaso banheiro_folha.005",
     "Vaso banheiro_folha.006",
     "Vaso banheiro_vaso",
+    "WindowView_00",
+    "WindowView_01",
+    "WindowView_02",
+    "WindowView_03",
+    "WindowView_04",
+    "WindowView_05",
+    "WindowView_06",
+    "WindowView_07",
+    "WindowView_08",
+    "WindowView_09",
+    "WindowView_10",
+    "WindowView_11",
+    "WindowView_12",
+    "WindowView_13",
+    "WindowView_14",
+    "WindowView_15",
+    "WindowView_16",
+    "WindowView_17",
+    "WindowView_18",
+    "WindowView_19",
+    "WindowView_20",
+    "WindowView_21",
+    "WindowView_22",
+    "WindowView_23",
+    "WindowView_24",
+    "WindowView_25",
+    "WindowView_26",
+    "WindowView_27",
+    "WindowView_28",
+    "WindowView_29",
+    "WindowView_30",
+    "WindowView_31",
+    "WindowView_32",
+    "WindowView_33",
+    "WindowView_34",
+    "WindowView_35",
+    "WindowView_36",
+    "WindowView_37",
+    "WindowView_38",
     "armchair_red.001",
+    "back_window_0_-4",
+    "back_window_0_4",
+    "back_window_1_-4",
+    "back_window_1_4",
     "bath_mirror",
     "bath_tub",
     "bed_single_oak.001",
     "bookcase_tall.002",
     "bookcase_tall.003",
+    "box_open.001",
+    "box_open_flap_back.001",
+    "box_open_flap_front.001",
+    "box_open_flap_left.001",
+    "box_open_flap_right.001",
     "can_soup",
     "cereal_corn",
+    "chair_broken.001",
     "chair_ladder_pine.001",
     "chair_ladder_pine.002",
     "chair_ladder_pine.003",
@@ -233,8 +696,11 @@
     "furn_wall_cabinet_1_1",
     "kettle_stove",
     "kettle_stove_lid",
+    "milk",
     "mug",
     "mug.002",
+    "mug.003",
+    "mug.004",
     "nightstand_oak.001",
     "nightstand_oak.002",
     "nightstand_oak_drawer.001",
@@ -253,11 +719,11 @@
     "Ímã geladeira",
     "Ímã geladeira.001"
   ],
-  "newObjectsBeforeBatching": 1462,
-  "roomMaterialBatches": 134,
-  "meshObjects": 577,
-  "vertices": 178360,
-  "triangles": 189528,
+  "newObjectsBeforeBatching": 1739,
+  "roomMaterialBatches": 141,
+  "meshObjects": 573,
+  "vertices": 137019,
+  "triangles": 197306,
   "additionalColliders": [
     {
       "name": "Hosts_right_nightstand",
@@ -366,19 +832,71 @@
     {
       "name": "Laundry_hamper",
       "min": [
-        53.14,
+        53.13,
         0.39,
-        41.4
+        41.39
       ],
       "max": [
-        53.64,
-        1.0,
-        41.9
+        53.65,
+        1.05,
+        41.91
+      ]
+    },
+    {
+      "name": "HH_basement_door_closed",
+      "min": [
+        57.964,
+        0.39,
+        36.55
+      ],
+      "max": [
+        58.015,
+        2.49,
+        37.45
+      ]
+    },
+    {
+      "name": "Def_guest_nightstand",
+      "min": [
+        48.31,
+        3.84,
+        31.35
+      ],
+      "max": [
+        48.8,
+        4.54,
+        31.83
+      ]
+    },
+    {
+      "name": "Def_guest_dresser",
+      "min": [
+        52.23,
+        3.84,
+        31.84
+      ],
+      "max": [
+        52.75,
+        4.946,
+        32.76
+      ]
+    },
+    {
+      "name": "Def_guest_reading_chair",
+      "min": [
+        48.745,
+        3.84,
+        34.647
+      ],
+      "max": [
+        49.29,
+        4.954,
+        35.173
       ]
     }
   ],
   "knownLimits": [
-    "Existing isolated interior / exterior floorplan mismatch preserved; entrance still uses original short fade.",
+    "Interior retains the original door fade. Actual Westbridge geometry is mapped rigidly to the measured front door; physical interior/exterior floorplan dimensions remain different.",
     "Existing static garage has no internal doorway; no invented access or external architecture change."
   ]
 }

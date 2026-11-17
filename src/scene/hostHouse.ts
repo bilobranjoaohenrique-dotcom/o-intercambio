@@ -12,13 +12,14 @@ import { ImageProcessingConfiguration } from '@babylonjs/core/Materials/imagePro
 import '@babylonjs/loaders/glTF';
 import { createHostHouseLighting, type HostHouseLightMode } from './hostHouseLighting';
 import { createHostHouseMirrors } from './hostHouseMirrors';
+import { createHostHouseWestbridgeView, type HostHouseWestbridgeSource } from './hostHouseWestbridgeView';
 import type { InteractionTarget } from '../game/types';
 import { hhPoint, HOST_HOUSE_SOURCE, HOST_HOUSE_ORIGIN_X, HOST_HOUSE_NODE_ADJUSTMENTS,
   HOST_HOUSE_EXIT, HOST_HOUSE_EXIT_SIZE } from '../game/hostHouseLayout';
 
 /** The renovated furnished house is streamed on demand. Native architecture,
  * metre scale and navigation remain intact; furniture and finishes are refined. */
-export function buildHostHouse(scene: Scene) {
+export function buildHostHouse(scene: Scene, options: { exteriorSource?: () => HostHouseWestbridgeSource } = {}) {
   const root = new TransformNode('Daniel e Helen · interior fornecido', scene); root.setEnabled(false);
   const modelRoot = new TransformNode('Daniel e Helen · origem do GLB', scene);
   modelRoot.parent = root; modelRoot.position.x = HOST_HOUSE_ORIGIN_X;
@@ -37,11 +38,15 @@ export function buildHostHouse(scene: Scene) {
   exit.material = proxyMaterial; exit.visibility = .001; exit.isPickable = true;
   exit.metadata = { castShadow: false, hostHouseProxy: true }; meshes.push(exit);
   const exitMeshes: AbstractMesh[] = [exit];
+  const basementMeshes: AbstractMesh[] = [];
   const targets: InteractionTarget[] = [{ id: 'host-house-exit', meshes: exitMeshes,
-    label: () => 'Sair para Westbridge', execute: () => undefined }];
+    label: () => 'Sair para Westbridge', execute: () => undefined },
+    { id: 'host-house-basement-door', meshes: basementMeshes,
+      label: () => 'Examinar porta do porão', execute: () => 'A porta está fechada.' }];
   let lighting: ReturnType<typeof createHostHouseLighting> | null = null;
   let lightingMode: HostHouseLightMode = 'day';
   let mirrors: ReturnType<typeof createHostHouseMirrors> | null = null;
+  let exteriorView: ReturnType<typeof createHostHouseWestbridgeView> | null = null;
   let saved: { fogMode: number; fogColor: Color3; fogStart: number; fogEnd: number; fogDensity: number;
     clearColor: Color4; exposure: number; contrast: number; toneMappingEnabled: boolean; toneMappingType: number;
     camera: typeof scene.activeCamera; maxZ: number } | null = null;
@@ -76,15 +81,15 @@ export function buildHostHouse(scene: Scene) {
         hiddenForeign.push(mesh); mesh.setEnabled(false);
       }
       active = true; root.setEnabled(true);
-      // WindowView contains the supplied street geometry but no sky dome.
-      // Match Westbridge's afternoon background through the native windows.
+      // The actual neighbourhood shares geometry through a door-anchored frame.
+      // Its sky and outdoor lights stay local to this streamed interior.
       scene.fogMode = 0; scene.clearColor = lightingMode === 'day' ? new Color4(.69, .70, .65, 1) : new Color4(.055, .075, .12, 1);
       p.exposure = lightingMode === 'day' ? 1.02 : 1.08; p.contrast = 1.02; p.toneMappingEnabled = true;
       p.toneMappingType = ImageProcessingConfiguration.TONEMAPPING_ACES;
-      if (scene.activeCamera) scene.activeCamera.maxZ = 180;
-      lighting?.setActive(true); mirrors?.setActive(true);
+      if (scene.activeCamera) scene.activeCamera.maxZ = 500;
+      lighting?.setActive(true); exteriorView?.setActive(true); mirrors?.setActive(true);
     } else {
-      active = false; root.setEnabled(false); lighting?.setActive(false); mirrors?.setActive(false);
+      active = false; root.setEnabled(false); lighting?.setActive(false); mirrors?.setActive(false); exteriorView?.setActive(false);
       for (const light of embeddedLights) light.setEnabled(false);
       if (saved) {
         scene.fogMode = saved.fogMode; scene.fogColor = saved.fogColor; scene.fogStart = saved.fogStart;
@@ -120,6 +125,8 @@ export function buildHostHouse(scene: Scene) {
         mesh.isPickable = true; mesh.receiveShadows = false;
         mesh.metadata = { ...mesh.metadata, source: HOST_HOUSE_SOURCE, importedHostHouse: true };
         importedMeshes.push(mesh);
+        const extras = mesh.metadata?.gltf?.extras ?? {};
+        if (extras.hostHouseBasementDoor || mesh.name.startsWith('REN_HH_basement_door_')) basementMeshes.push(mesh);
       }
       meshes.push(...importedMeshes);
       for (const material of asset.materials) if ('maxSimultaneousLights' in material) material.maxSimultaneousLights = 4;
@@ -127,14 +134,22 @@ export function buildHostHouse(scene: Scene) {
       for (const light of asset.lights) { light.setEnabled(false); embeddedLights.push(light); }
       makePortalBacking(asset); lighting = createHostHouseLighting(scene, { meshes, embeddedLights });
       lighting.setMode(lightingMode); lighting.setActive(active);
-      mirrors = createHostHouseMirrors(scene, { meshes }); mirrors.setActive(active); loaded = true;
+      const interiorMeshes = [...meshes];
+      const source = options.exteriorSource?.();
+      if (source) {
+        exteriorView = createHostHouseWestbridgeView(scene, { parent: root, source, apertures: interiorMeshes });
+        exteriorView.setMode(lightingMode); exteriorView.setActive(active);
+        meshes.push(...exteriorView.meshes);
+      }
+      mirrors = createHostHouseMirrors(scene, { meshes: interiorMeshes, exteriorMeshes: exteriorView?.meshes });
+      mirrors.setActive(active); loaded = true;
     }).catch(reason => { error = String(reason?.message ?? reason); throw Error('Não foi possível carregar a casa de Daniel e Helen: ' + error); });
     return loading;
   }
   return {
     root, meshes, targets, ensureReady, setActive,
     setLightingMode(mode: HostHouseLightMode) {
-      lightingMode = mode; lighting?.setMode(mode);
+      lightingMode = mode; lighting?.setMode(mode); exteriorView?.setMode(mode);
       if (active) {
         scene.clearColor = mode === 'day' ? new Color4(.69, .70, .65, 1) : new Color4(.055, .075, .12, 1);
         scene.imageProcessingConfiguration.exposure = mode === 'day' ? 1.02 : 1.08;
@@ -147,7 +162,8 @@ export function buildHostHouse(scene: Scene) {
       meshes: importedMeshes.length, portalMeshes: portalMeshes.length, materials: container?.materials.length ?? 0,
       textures: container?.textures.length ?? 0, allTexturesReady: container?.textures.every(texture => texture.isReady()) ?? false,
       lights: embeddedLights.length + (lighting?.diagnostics.addedLights ?? 0), embeddedLights: embeddedLights.length,
-      lighting: lighting?.diagnostics ?? null, mirrors: mirrors?.diagnostics ?? null,
+      lighting: lighting?.diagnostics ?? null, mirrors: mirrors?.diagnostics ?? null, exteriorView: exteriorView?.diagnostics ?? null,
+      basementDoor: { closed: true, meshes: basementMeshes.length, newBasementRoom: false },
       activeEmbeddedLights: embeddedLights.filter(light => light.isEnabled()).map(light => light.name),
       animationGroups: container?.animationGroups.length ?? 0,
       runningAnimations: container?.animationGroups.filter(clip => clip.isPlaying).length ?? 0,
@@ -158,7 +174,7 @@ export function buildHostHouse(scene: Scene) {
     }; },
     dispose() {
       if (disposed) return; setActive(false); disposed = true;
-      mirrors?.dispose(); lighting?.dispose(); container?.dispose(); proxyMaterial.dispose(); root.dispose(false, false);
+      mirrors?.dispose(); exteriorView?.dispose(); lighting?.dispose(); container?.dispose(); proxyMaterial.dispose(); root.dispose(false, false);
     },
   };
 }

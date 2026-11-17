@@ -105,3 +105,15 @@ test('host house renovation: new guest furniture blocks passage through it while
  assert.ok(end.z>hutch.z+hutch.halfDepth,'new wall hutch cannot be walked through');
  assert.ok(!l.HOST_HOUSE_SOLIDS.some(s=>s.name==='bookcase_tall.002'),'removed overlapping laundry shelf leaves no invisible blocker');
 });
+
+test('host house basement: ordinary ground route reaches the new closed door without entering an invented room',()=>{
+ const nav=createHostHouseNavigation();
+ const start=l.hhPoint(54.5,2.04,36.3);
+ const route=follow(nav,start,[l.hhPoint(57.35,2.04,36.3),l.hhPoint(57.35,2.04,37)]);
+ close(nav.floorHeight(route.position),.39,'basement approach remains on the ground floor');
+ const solid=l.HOST_HOUSE_SOLIDS.find(s=>s.name==='HH_basement_door_closed');assert.ok(solid);
+ const stopped=nav.move(route.position,-2,0);
+ assert.equal(circleOverlapsObstacle(stopped,solid),false,'closed leaf stops the protagonist');
+ assert.ok(stopped.x>solid.x,'player remains on the interior side of the door');
+ assert.equal(nav.isWalkable(l.hhPoint(58.5,0,37)),false,'no new room or unbounded basement navigation added');
+});

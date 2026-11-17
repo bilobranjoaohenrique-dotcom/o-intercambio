@@ -22,6 +22,25 @@ import { WB_PORCH_HEIGHT } from '../game/westbridgeLayout';
 export type WestbridgeTime = 'afternoon' | 'night';
 const point = (x: number, y: number, z: number) => new Vector3(500-x,y,z);
 
+/** Shared painter for the original sky and its independent interior copy. */
+export function paintWestbridgeSky(texture: DynamicTexture, timeOfDay: WestbridgeTime) {
+  const c=texture.getContext() as unknown as CanvasRenderingContext2D;
+  const gradient=c.createLinearGradient(0,0,0,256);
+  if(timeOfDay==='afternoon'){
+    gradient.addColorStop(0,'#526f82');gradient.addColorStop(.43,'#9aadb1');gradient.addColorStop(.53,'#d7c5a0');
+    gradient.addColorStop(.64,'#e5bd91');gradient.addColorStop(.85,'#b1b09e');gradient.addColorStop(1,'#858c7e');
+  }else{
+    gradient.addColorStop(0,'#101b32');gradient.addColorStop(.46,'#26384a');gradient.addColorStop(.62,'#58616b');gradient.addColorStop(1,'#353f43');
+  }
+  c.fillStyle=gradient;c.fillRect(0,0,512,256);
+  if(timeOfDay==='afternoon')for(let i=0;i<24;i++){
+    const y=28+(i*31)%92,x=(i*127)%512;
+    c.fillStyle=`rgba(229,215,188,${.035+(i%4)*.012})`;
+    for(const offset of[-512,0,512]){c.beginPath();c.ellipse(x+offset,y,36+(i%6)*9,2+(i%3),-.06,0,Math.PI*2);c.fill();}
+  }
+  texture.update(false);
+}
+
 /** This rig is owned by one streamed set. Global scene state is restored when
  * the player leaves it; no home, airport or cabin material/light is changed. */
 export function createWestbridgeLighting(scene: Scene, parent: TransformNode, initialQuality: Settings['quality']) {
@@ -51,21 +70,7 @@ export function createWestbridgeLighting(scene: Scene, parent: TransformNode, in
   let saved:{fogMode:number;fogColor:Color3;fogStart:number;fogEnd:number;fogDensity:number;clearColor:Color4;
     exposure:number;contrast:number;toneMappingEnabled:boolean;toneMappingType:number;camera:typeof scene.activeCamera;maxZ:number}|null=null;
   function paintSky(){
-    const c=skyTexture.getContext() as unknown as CanvasRenderingContext2D;
-    const gradient=c.createLinearGradient(0,0,0,256);
-    if(timeOfDay==='afternoon'){
-      gradient.addColorStop(0,'#526f82');gradient.addColorStop(.43,'#9aadb1');gradient.addColorStop(.53,'#d7c5a0');
-      gradient.addColorStop(.64,'#e5bd91');gradient.addColorStop(.85,'#b1b09e');gradient.addColorStop(1,'#858c7e');
-    }else{
-      gradient.addColorStop(0,'#101b32');gradient.addColorStop(.46,'#26384a');gradient.addColorStop(.62,'#58616b');gradient.addColorStop(1,'#353f43');
-    }
-    c.fillStyle=gradient;c.fillRect(0,0,512,256);
-    if(timeOfDay==='afternoon')for(let i=0;i<24;i++){
-      const y=28+(i*31)%92,x=(i*127)%512;
-      c.fillStyle=`rgba(229,215,188,${.035+(i%4)*.012})`;
-      for(const offset of[-512,0,512]){c.beginPath();c.ellipse(x+offset,y,36+(i%6)*9,2+(i%3),-.06,0,Math.PI*2);c.fill();}
-    }
-    skyTexture.update(false);
+    paintWestbridgeSky(skyTexture,timeOfDay);
   }
   function bindLights(){
     const all=[...staticMeshes,...extraMeshes];ambient.includedOnlyMeshes=all;sun.includedOnlyMeshes=all;
